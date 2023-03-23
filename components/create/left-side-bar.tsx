@@ -41,9 +41,9 @@ const LeftSideBar: React.FC<{}> = ({}) => {
   const pathName = usePathname();
 
   return (
-    <div className='flex flex-col justify-between w-full h-full border-r border-r-light-divider dark:border-r-dark-divider'>
+    <div className='flex flex-col justify-between w-full h-full border-r border-r-light-divider dark:border-r-dark-divider pt-16'>
 
-      <div>
+      <div className='border-t border-t-light-divider dark:border-t-dark-divider'>
         { createRoutes.map((route, index) => {
           return (
             <Link key={index} href={route?.pathname}>
@@ -63,7 +63,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
         })}
       </div>
 
-      <div className='flex flex-row justify-between p-3 items-center border-t border-t-light-divider dark:border-t-dark-divider'>
+      <button className='flex flex-row justify-between p-3 items-center border-t border-t-light-divider dark:border-t-dark-divider hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary'>
 
         <div className='flex flex-row gap-3 items-center'>
 
@@ -74,7 +74,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
             alt='profile image'
           />
 
-          <div className=' flex flex-col gap-0'>
+          <div className='flex flex-col gap-0 items-start'>
             <span className='text-sm'>Mark</span>
             <span className='text-light-text-secondary dark:text-dark-text-secondary text-sm'>Edit Profile</span>
           </div>
@@ -82,7 +82,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
 
         <FiMoreHorizontal className='text-light-text-secondary dark:text-dark-text-secondary'/>
 
-      </div>
+      </button>
     </div>
   )
 }

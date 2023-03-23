@@ -14,7 +14,7 @@ const Home: React.FC<{}> = () => {
       <div className='flex flex-col items-center gap-4'>
         {/* Comic Journaling */}
         
-        <Link href="/create">
+        <Link href="/create/characters">
           <button className="inline-flex items-center rounded-full bg-emerald-600 px-3 py-2 text-sm text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             <span>Create comic book</span>
           </button>
