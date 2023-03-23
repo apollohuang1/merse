@@ -14,7 +14,8 @@ export const metadata = {
 
 export default function RootLayout({children,}: {children: React.ReactNode;}) {
   return (
-    <html lang="en" className="[color-scheme:dark] bg-black">
+    // <html lang="en" className="[color-scheme:dark] bg-black">
+    <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,7 +26,7 @@ export default function RootLayout({children,}: {children: React.ReactNode;}) {
       </head>
 
       <body>
-        <div className='grid grid-cols-[250px_auto] w-screen h-screen'>
+        <div className='grid grid-cols-[250px_auto] w-screen h-screen bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary'>
 
           {/* left side bar */}
           <LeftSideBar/>

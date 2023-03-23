@@ -20,8 +20,8 @@ const CharacterCard: React.FC<{
       </div>
 
       {/* overlay */}
-      <div className='flex flex-col w-full h-full absolute group-hover:bg-black group-hover:bg-opacity-40 cursor-pointer items-center justify-center transition-all active:opacity-70'>
-        <FiEdit2 className='w-7 h-7 text-light-text-primary dark:text-dark-text-primary hidden group-hover:block group-active:scale-90 transition-all'/>
+      <div className='flex flex-col w-full h-full absolute group-hover:bg-black group-hover:bg-opacity-20 group-hover:dark:bg-opacity-40 cursor-pointer items-center justify-center transition-all active:opacity-70'>
+        <FiEdit2 className='w-7 h-7 text-dark-text-primary hidden group-hover:block group-active:scale-90 transition-all'/>
       </div>
     </div>
   )
