@@ -1,3 +1,4 @@
+import LeftSideBar from '@/components/create/left-side-bar';
 import React from 'react'
 
 
@@ -10,30 +11,6 @@ export const metadata = {
   description:
     'A playground to explore new Next.js App Router features such as nested layouts, instant loading states, streaming, and component level data fetching.',
 };
-
-const createRoutes = [
-  // character, storyboard, cover, styles, review.
-  {
-    path: '/create/character',
-    pathname: 'character',
-  },
-  {
-    path: '/create/storyboard',
-    pathname: 'storyboard',
-  },
-  {
-    path: '/create/cover',
-    pathname: 'cover',
-  },
-  {
-    path: '/create/styles',
-    pathname: 'styles',
-  },
-  {
-    path: '/create/review',
-    pathname: 'review',
-  },
-];
 
 export default function RootLayout({children,}: {children: React.ReactNode;}) {
   return (
@@ -48,12 +25,12 @@ export default function RootLayout({children,}: {children: React.ReactNode;}) {
       </head>
 
       <body>
-        <div className='grid grid-cols-[300px_auto] w-screen h-screen'>
+        <div className='grid grid-cols-[250px_auto] w-screen h-screen'>
 
-          <div className='w-full h-full'>
+          {/* left side bar */}
+          <LeftSideBar/>
 
-          </div>
-
+          {/* main container */}
           <div className='w-full h-full'>
             {children}
           </div>
