@@ -1,19 +1,22 @@
+import { CartoonCharacter } from '@/models/cartoon-character';
 import React from 'react'
 import { FiEdit2 } from 'react-icons/fi';
 
-type Props = {}
-
-const CharacterCard = (props: Props) => {
+const CharacterCard: React.FC<{
+  character: CartoonCharacter | null
+}> = ({
+  character
+}) => {
   return (
     <div className='group grid grid-rows-[80%_20%] aspect-square bg-light-background-secondary dark:bg-dark-background-secondary relative'>
       <img 
-        src="https://images.unsplash.com/photo-1639628735078-ed2f038a193e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" 
+        src={character?.imageURL ?? ""}
         alt="character image"
         className="w-full h-full object-cover"
       />
 
       <div className='flex items-center justify-center w-full h-full'>
-        Lorem Ipsum
+        { character?.name ?? "Lorem Ipsum"}
       </div>
 
       {/* overlay */}
