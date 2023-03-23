@@ -9,7 +9,73 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      // tailwind height
+      height: {
+        'navigationBar': '40px',
+        'withoutNavigationBar': 'calc(100vh - 40px)',
+      },
+      gridTemplateRows: {
+        '12': 'repeat(12, minmax(0, 1fr))',
+      },
+      colors: {
+        // accent: "#4D9D7D", // green
+        accent: "#E52B12",
+        accentSecondary: "#5FA78A", // secondary green
+        // accent: "#972B34", // crimson
+        // accentSecondary: "#A14048", // crimson
+        transparent: "transparent",
+        light: {
+          accent: "#E52B12",
+          appleBlue: "#007AFF", // blue
+          divider: "#EFEFEF", // opque
+          blue: "#007AFF",
+          red: '#FF3B30',
+          pink: '#FF2D55',
+          green: "#34C759",
+          orange: {
+            border: '#FF9F0A',
+            background: '#FFE2B6',
+          },
+          background: {
+            primary: '#FFFFFF', // white
+            secondary: "#F5F5F5", // google
+            tertiary: "#ECECEC", // google
+          },
+          text: {
+            primary: '#000000', // black
+            secondary: '#8A8A8E',
+            tertiary: '#C4C4C6',
+          },
+        },
+        dark: {
+          accent: "#E52B12",
+          appleBlue: '#0A84FF', // blue
+          divider: "#262626", // opaque
+          blue: '#0A84FF',
+          red: '#FF453A',
+          pink: '#FF375F',
+          green: "#32D74B",
+          orange: {
+            border: '#FF9F0A',
+            background: '#4D3003',
+          },
+          background: {
+            primary: '#000000', // black
+            secondary: "#121212",
+            tertiary: "#1C1C1C",
+          },
+          elevated: {
+
+          },
+          text: {
+            primary: '#FFFFFF', // white
+            secondary: '#8D8D92',
+            tertiary: '#47474A',
+          },
+        }
+      }
+    },
   },
   plugins: [],
 }
