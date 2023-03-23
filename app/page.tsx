@@ -15,12 +15,12 @@ const Home: React.FC<{}> = () => {
         {/* Comic Journaling */}
         
         <Link href="/create">
-          <button className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          <button className="inline-flex items-center rounded-full bg-emerald-600 px-3 py-2 text-sm text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             <span>Create comic book</span>
           </button>
         </Link>
 
-        <span>just click the button, ignore the ui in this page for now</span>
+        <span className='text-light-text-secondary'>just click the button, ignore the ui in this page for now</span>
       </div>
 
     </div>
