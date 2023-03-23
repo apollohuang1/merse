@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  button {
+    /* @apply hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary transition-all; */
+    @apply hover:brightness-125 ease-in duration-100;
+    @apply active:bg-opacity-50;
+  }
+
+  span, p {
+    /* @apply text-light-text-primary dark:text-dark-text-primary; */
+  }
+}
+
 /* :root {
   --max-width: 1100px;
   --border-radius: 12px;
