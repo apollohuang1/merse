@@ -19,13 +19,13 @@ const CreateHeader: React.FC<{
 }) => {
   return (
     <div className='flex flex-row justify-between items-center w-fulls'>
-      <div className='flex flex-col'>
 
+      <div className='flex flex-col'>
         <h1 className='text-2xl font-bold'>{title}</h1>
         <p className='text-light-text-secondary'>{description}</p>
       </div>
 
-      <button className="inline-flex items-center rounded-full hover:brightness-150 bg-light-background-secondary dark:bg-dark-background-secondary px-6 py-2 text-sm text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1">
+      <button className="inline-flex items-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary px-6 py-2 text-sm text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1">
         <span>Continue</span>
         <FiArrowRight className='text-light-text-primary dark:text-dark-text-primary'/>
       </button>
