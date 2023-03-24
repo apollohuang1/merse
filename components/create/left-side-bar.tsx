@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 import { FiMoreHorizontal } from "react-icons/fi";
-import { Switch } from "@headlessui/react";
+import { Menu } from "@headlessui/react";
 
 type Props = {};
 
@@ -38,20 +38,26 @@ const createRoutes = [
 ];
 
 const LeftSideBar: React.FC<{}> = ({}) => {
-
-
   const pathName = usePathname();
-
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
 
   const toggleColorSchemToLight = () => {
     document.documentElement.classList.remove("dark");
-    setIsDarkMode(false);
+    // setIsDarkMode(false);
+    localStorage.theme = "light";
   };
 
   const toggleColorSchemeToDark = () => {
+    localStorage.theme = "dark";
     document.documentElement.classList.add("dark");
-    setIsDarkMode(true);
+    // setIsDarkMode(true);
+  };
+
+  const toggleColorScheme = () => {
+    if (localStorage.theme === "dark") {
+      toggleColorSchemToLight();
+    } else {
+      toggleColorSchemeToDark();
+    }
   };
 
 
@@ -108,55 +114,19 @@ const LeftSideBar: React.FC<{}> = ({}) => {
       <div className="flex flex-col">
         {/* toggle color scheme row with tailwind headless ui toggle button */}
 
-        <div className="flex flex-row justify-between p-3 items-center border-t border-t-light-divider dark:border-t-dark-divider">
-
-          <div className="flex flex-row gap-3 items-center">
-            <div className="flex flex-col gap-0 items-start">
-              <span className="text-sm">Dark Mode</span>
-            </div>
-          </div>
-
-          {/* <div className='flex flex-row gap-3 items-center'>
-            <div className='flex flex-col gap-0 items-start'>
-              <button 
-                className='text-sm'
-                onClick={() => {
-                  toggleColorScheme();
-                }}
-              >
-                Toggle
-              </button>
-            </div>
-          </div> */}
-
-          <Switch
-            checked={true}
-            onChange={(checked) => {
-              if (isDarkMode) {
-                toggleColorSchemToLight();
-              } else {
-                toggleColorSchemeToDark();
-              }
-            }}
-            className={clsx(
-              isDarkMode ? "bg-emerald-500" : "bg-gray-200",
-              "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none"
-            )}
-          >
-            <span className="sr-only">Use setting</span>
-            <span
-              aria-hidden="true"
-              className={clsx(
-                isDarkMode ? "translate-x-5" : "translate-x-0",
-                "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-              )}
-            />
-          </Switch>
-        </div>
+        <button
+          onClick={() => {
+            toggleColorScheme();
+          }}
+          className="flex flex-row justify-between p-3 items-center border-t border-t-light-divider dark:border-t-dark-divider hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary w-full"
+        >
+          <span className="text-sm">Dark Mode</span>
+          <FiMoreHorizontal className="text-light-text-secondary dark:text-dark-text-secondary" />
+        </button>
+        
 
         <button className="flex flex-row justify-between p-3 items-center border-t border-t-light-divider dark:border-t-dark-divider hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary">
           <div className="flex flex-row gap-3 items-center">
-            
             <img
               src="https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg"
               className="rounded-full w-9 h-9"
