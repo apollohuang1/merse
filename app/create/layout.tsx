@@ -32,7 +32,7 @@ export default function RootLayout({children,}: {children: React.ReactNode;}) {
           <LeftSideBar/>
 
           {/* main container */}
-          <div className='w-full h-full'>
+          <div className='w-full h-full max-h-screen overflow-scroll'>
             {children}
           </div>
 

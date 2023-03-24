@@ -12,11 +12,13 @@ const SlideOver: React.FC<{
   onOpen: () => void;
   onClose: () => void;
   isOpen: boolean;
+  title?: string;
 }> = ({
   children,
   onOpen,
   onClose,
   isOpen,
+  title,
 }) => {
 
   return (
@@ -50,13 +52,15 @@ const SlideOver: React.FC<{
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-3xl border-l border-l-light-divider dark:border-l-dark-divider">
 
-                  <div className="flex h-full flex-col overflow-y-scroll py-6 shadow-xl bg-light-background-primary dark:bg-dark-background-primary">
-                    <div className="px-4 sm:px-6">
+                <Dialog.Panel className="pointer-events-auto w-screen max-w-2xl border-l border-l-light-divider dark:border-l-dark-divider">
+                  <div className="flex h-full flex-col overflow-y-scroll pb-6 shadow-xl bg-light-background-primary dark:bg-dark-background-primary">
+                    {/* <div className="p-4 border-b border-b-light-divider dark:border-b-dark-divider"> */}
+                    <div className="p-4">
                       <div className="flex items-start justify-between">
+
                         <Dialog.Title className=" text-xl font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary">
-                          Edit Character
+                          { title }
                         </Dialog.Title>
 
                         <div className="ml-3 flex h-7 items-center">
@@ -76,6 +80,7 @@ const SlideOver: React.FC<{
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
                       { children }
                     </div>
+
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

@@ -156,7 +156,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
 
         <button className="flex flex-row justify-between p-3 items-center border-t border-t-light-divider dark:border-t-dark-divider hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary">
           <div className="flex flex-row gap-3 items-center">
-            {/* @ts-ignore */}
+            
             <img
               src="https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg"
               className="rounded-full w-9 h-9"
