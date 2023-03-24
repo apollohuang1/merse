@@ -9,7 +9,7 @@ const Styles = (props: Props) => {
     <MaxWidthContainer>
       <CreateHeader
         title="Styles"
-        description="Choose a style for your book."
+        description="Choose a drawing style for your comic story"
         createRouteConfig={{
           next: {
             title: "Review",
