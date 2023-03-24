@@ -89,7 +89,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
                   "flex items-center justify-center w-full h-16 border-b border-b-light-divider dark:border-b-dark-divider transition-all active:opacity-50",
                   // { 'hover:dark:bg-dark-background-secondary hover:bg-light-background-secondary': !isActive },
                   {
-                    "bg-light-background-tertiary dark:bg-dark-background-tertiary text-light-text-primary dark:text-dark-text-primary":
+                    "bg-light-background-tertiary dark:bg-dark-background-tertiary text-light-text-primary dark:text-dark-text-primary transition-all text-lg":
                       pathName === route.pathname,
                   },
                   {

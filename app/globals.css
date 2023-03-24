@@ -5,7 +5,7 @@
 @layer base {
   button {
     /* @apply hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary transition-all; */
-    @apply ease-in duration-100 active:bg-opacity-50 ;
+    @apply ease-in duration-100 active:bg-opacity-50 active:opacity-50 ;
   }
 
   span, p {

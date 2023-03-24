@@ -4,11 +4,14 @@ import { FiEdit2 } from 'react-icons/fi';
 
 const CharacterCard: React.FC<{
   character: CartoonCharacter | null
+  onEditing?: () => void
 }> = ({
-  character
+  character,
+  onEditing
 }) => {
   return (
     <div className='group grid grid-rows-[80%_20%] aspect-square bg-light-background-secondary dark:bg-dark-background-secondary relative'>
+
       <img 
         src={character?.imageURL ?? ""}
         alt="character image"
@@ -20,9 +23,13 @@ const CharacterCard: React.FC<{
       </div>
 
       {/* overlay */}
-      <div className='flex flex-col w-full h-full absolute group-hover:bg-black group-hover:bg-opacity-20 group-hover:dark:bg-opacity-40 cursor-pointer items-center justify-center transition-all active:opacity-70'>
+      <button
+        onClick={onEditing}
+        className='flex flex-col w-full h-full absolute group-hover:bg-black group-hover:bg-opacity-20 group-hover:dark:bg-opacity-40 cursor-pointer items-center justify-center transition-all active:opacity-70'
+      >
         <FiEdit2 className='w-7 h-7 text-dark-text-primary hidden group-hover:block group-active:scale-90 transition-all'/>
-      </div>
+      </button>
+
     </div>
   )
 }
