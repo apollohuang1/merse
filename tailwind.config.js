@@ -40,8 +40,8 @@ module.exports = {
           },
           background: {
             primary: '#FFFFFF', // white
-            secondary: "#F5F5F5", // google
-            tertiary: "#ECECEC", // google
+            secondary: "#F6F6F6",
+            tertiary: "#DDDDDD",
           },
           text: {
             primary: '#000000', // black
@@ -63,8 +63,10 @@ module.exports = {
           },
           background: {
             primary: '#000000', // black
+            // secondary: "#1C1C1E",
             secondary: "#121212",
-            tertiary: "#1C1C1C",
+            tertiary: "#1A1A1A",
+            justalittlebitdarkerthan1c1c1e: "#1D1D1F",
           },
           elevated: {
 

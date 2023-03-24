@@ -22,7 +22,9 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
       </head>
       
-      <body>{children}</body>
+      <body className='bg-light-background-primary dark:bg-dark-background-primary'>
+        {children}
+      </body>
     </html>
   )
 }
