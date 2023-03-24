@@ -11,10 +11,6 @@ const Review = (props: Props) => {
         title="Review"
         description="Review your story."
         createRouteConfig={{
-          next: {
-            title: "Publish",
-            pathname: "/create/publish",
-          },
           back: {
             title: "Styles",
             pathname: "/create/styles",
