@@ -10,9 +10,15 @@ const Cover = (props: Props) => {
       <CreateHeader
         title="Cover"
         description="Create a cover to your book."
-        continueConfig={{
-          title: "Styles",
-          pathname: "/create/styles", 
+        createRouteConfig={{
+          next: {
+            title: "Styles",
+            pathname: "/create/styles",
+          },
+          back: {
+            title: "Storyboard",
+            pathname: "/create/storyboard",
+          }
         }}
       />
 

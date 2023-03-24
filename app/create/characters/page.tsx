@@ -23,9 +23,11 @@ const CreateCharacterPage = (props: Props) => {
           <CreateHeader
             title="Characters"
             description="Add characters to your story."
-            continueConfig={{
-              title: "Storyboard",
-              pathname: "/create/storyboard",
+            createRouteConfig={{
+              next: {
+                title: "Storyboard",
+                pathname: "/create/storyboard",
+              },
             }}
           />
 
@@ -107,7 +109,7 @@ const CreateCharacterPage = (props: Props) => {
               name="description"
               id="description"
               rows={4}
-              className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary outline-light-text-tertiary dark:outline-dark-text-tertiary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
+              className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary outline-light-text-primary dark:outline-dark-text-primary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
               placeholder="Enter character's description"
             />
           </div>

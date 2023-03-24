@@ -1,22 +1,22 @@
 import Link from 'next/link'
 import React from 'react'
-import { FiArrowRight } from 'react-icons/fi'
+import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
 
 
 
-export type ContinueConfig = {
-  title: string,
-  pathname: string
+export type CreateRouteConfig = {
+  next?: { title: string, pathname: string },
+  back?: { title: string, pathname: string }
 }
 
 const CreateHeader: React.FC<{
   title: string,
   description: string
-  continueConfig?: ContinueConfig
+  createRouteConfig?: CreateRouteConfig
 }> = ({
   title,
   description,
-  continueConfig
+  createRouteConfig
 }) => {
   return (
     <div className='flex flex-row justify-between items-center w-fulls sticky top-0 z-10 bg-light-background-primary dark:bg-dark-background-primary pt-7 pb-3'>
@@ -26,15 +26,31 @@ const CreateHeader: React.FC<{
         <p className='text-light-text-secondary font-light'>{description}</p>
       </div>
 
-      { continueConfig &&
-        <Link
-          href={continueConfig?.pathname ?? "/"}
-          className="group inline-flex items-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary px-6 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
-        >
-          <span>{continueConfig?.title ?? "Continue"}</span>
-          <FiArrowRight className='text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[2px] transition-all hover:duration-300'/>
-        </Link>
-      }
+      <div className='flex flex-row gap-3'>
+
+        {/* back button */}
+        { createRouteConfig?.back &&
+          <Link 
+            href={createRouteConfig.back.pathname}
+            className="group inline-flex items-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary px-6 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
+          >
+            <FiArrowLeft className='text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[-2px] transition-all hover:duration-300'/>
+            <span>{createRouteConfig?.back?.title}</span>
+          </Link>
+        }
+
+
+        { createRouteConfig?.next &&
+          <Link
+            href={createRouteConfig?.next?.pathname ?? "/"}
+            className="group inline-flex items-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary px-6 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
+          >
+            <span>{createRouteConfig?.next?.title ?? "Continue"}</span>
+            <FiArrowRight className='text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[2px] transition-all hover:duration-300'/>
+          </Link>
+        }
+      </div>
+
 
     </div>
   )

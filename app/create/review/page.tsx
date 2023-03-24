@@ -10,6 +10,16 @@ const Review = (props: Props) => {
       <CreateHeader
         title="Review"
         description="Review your story."
+        createRouteConfig={{
+          next: {
+            title: "Publish",
+            pathname: "/create/publish",
+          },
+          back: {
+            title: "Styles",
+            pathname: "/create/styles",
+          }
+        }}
       />
 
     </MaxWidthContainer>

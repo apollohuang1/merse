@@ -10,9 +10,15 @@ const Storyboard = (props: Props) => {
       <CreateHeader 
         title="Storyboard"
         description="Add scenes to your story."
-        continueConfig={{
-          title: "Cover",
-          pathname: "/create/cover", 
+        createRouteConfig={{
+          next: {
+            title: "Cover",
+            pathname: "/create/cover"
+          },
+          back: {
+            title: "Characters",
+            pathname: "/create/characters"
+          }
         }}
       />
 

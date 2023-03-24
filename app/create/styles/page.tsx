@@ -10,9 +10,15 @@ const Styles = (props: Props) => {
       <CreateHeader
         title="Styles"
         description="Choose a style for your book."
-        continueConfig={{
-          title: "Review",
-          pathname: "/create/review",
+        createRouteConfig={{
+          next: {
+            title: "Review",
+            pathname: "/create/review",
+          },
+          back: {
+            title: "Cover",
+            pathname: "/create/cover",
+          }
         }}
       />
 
