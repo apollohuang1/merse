@@ -18,13 +18,13 @@ const CreateCharacterPage = (props: Props) => {
   return (
     <>
       <MaxWidthContainer>
-        <div className="flex flex-col px-7 gap-8">
+        <div className="flex flex-col gap-8">
           {/* create header */}
           <CreateHeader
             title="Characters"
             description="Add characters to your story."
             continueConfig={{
-              title: "Continue",
+              title: "Storyboard",
               pathname: "/create/storyboard",
             }}
           />
@@ -68,7 +68,12 @@ const CreateCharacterPage = (props: Props) => {
         onOpen={() => setIsCreatingNewCharacter(true)}
         title="Create New Character"
       >
-        <form className="flex flex-col gap-7 w-full">
+        <form 
+          className="flex flex-col gap-7 w-full"
+          onSubmit={(e) => {
+            e.preventDefault()
+          }}
+        >
           {/* creating cartoon character form and let user input cartoon's composition */}
 
           <div className="flex flex-col gap-2">
@@ -84,13 +89,20 @@ const CreateCharacterPage = (props: Props) => {
               name="name"
               id="name"
               enterKeyHint="next"
-              className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary focus:border focus:outline-light-text-primary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
+              className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-light-text-primary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
               placeholder="Enter character's name"
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <label htmlFor="description">Description</label>
+
+            <label 
+              htmlFor="description"
+              className="flex text-sm font-medium"
+            >
+              Description
+            </label>
+
             <textarea
               name="description"
               id="description"

@@ -79,7 +79,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
   // }, []);
 
   return (
-    <div className="flex flex-col justify-between w-full h-full border-r border-r-light-divider dark:border-r-dark-divider pt-16 bg-light-background-secondary dark:bg-dark-background-secondary">
+    <div className="flex flex-col justify-between w-full h-full border-r border-r-light-divider dark:border-r-dark-divider pt-16">
       <div className="border-t border-t-light-divider dark:border-t-dark-divider">
         {createRoutes.map((route, index) => {
           return (
@@ -89,7 +89,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
                   "flex items-center justify-center w-full h-16 border-b border-b-light-divider dark:border-b-dark-divider transition-all active:opacity-50",
                   // { 'hover:dark:bg-dark-background-secondary hover:bg-light-background-secondary': !isActive },
                   {
-                    "bg-light-background-tertiary dark:bg-dark-background-tertiary text-light-text-primary dark:text-dark-text-primary transition-all text-lg":
+                    "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg":
                       pathName === route.pathname,
                   },
                   {
