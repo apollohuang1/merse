@@ -164,7 +164,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
             />
 
             <div className="flex flex-col gap-0 items-start">
-              <span className="text-sm">Mark</span>
+              <span className="text-sm">Comics</span>
               <span className="text-light-text-secondary dark:text-dark-text-secondary text-sm">
                 Edit Profile
               </span>

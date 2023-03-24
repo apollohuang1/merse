@@ -25,7 +25,12 @@ const CreateHeader: React.FC<{
         <p className='text-light-text-secondary font-light'>{description}</p>
       </div>
 
-      <button className="inline-flex items-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary px-6 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider">
+      <button 
+        onClick={() => {
+          alert('continue')
+        }}
+        className="inline-flex items-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary px-6 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
+      >
         <span>Continue</span>
         <FiArrowRight className='text-light-text-primary dark:text-dark-text-primary'/>
       </button>
