@@ -25,13 +25,12 @@ const Storyboard = (props: Props) => {
           }}
         />
 
-        {/* chat bar at the bottom within this container */}
+        {/* chat bar at the bottom */}
         <div className="flex flex-row h-12 bg-light-background-secondary dark:bg-dark-background-secondary px-4">
-          {/* text input */}
           <div className="flex flex-row items-center justify-center h-full w-full">
             <input
               type="text"
-              className="w-full h-full text-light-text-primary dark:text-dark-text-primary bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none"
+              className="w-full h-full text-light-text-primary dark:text-dark-text-primary bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
               placeholder="Type a message..."
             />
 
