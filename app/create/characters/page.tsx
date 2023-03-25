@@ -17,16 +17,16 @@ const CreateCharacterPage = (props: Props) => {
   const [isCreatingNewCharacter, setIsCreatingNewCharacter] =
     React.useState(false);
 
-  const [selectedImageData, setSelectedImageData] = React.useState<File | null>(
-    null
-  );
+  const [selectedImageData, setSelectedImageData] = React.useState<File | null>(null);
 
-  const [newCharacterName, setNewCharacterName] = React.useState("");
+  const [newCharacterName, setNewCharacterName] = React.useState<string>("");
+  const [newCharacterDescription, setNewCharacterDescription] = React.useState<string>("");
 
   return (
     <>
       <MaxWidthContainer>
         <div className="flex flex-col gap-8">
+
           {/* create header */}
           <CreateHeader
             title="Characters"
@@ -85,8 +85,8 @@ const CreateCharacterPage = (props: Props) => {
             <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
               {selectedImageData ? (
                 <Menu as="div" className="flex">
-                  <Menu.Button>
 
+                  <Menu.Button>
                     <div className="flex w-full h-full">
                       <img
                         src={URL.createObjectURL(selectedImageData)}
@@ -98,7 +98,6 @@ const CreateCharacterPage = (props: Props) => {
                         <FiEdit2 className="w-7 h-7 text-white" />
                       </div>
                     </div>
-
                   </Menu.Button>
 
                   <Transition
@@ -111,12 +110,14 @@ const CreateCharacterPage = (props: Props) => {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute z-10 w-56 origin-bottom-left bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none">
-                      <Menu.Item>
+                      <Menu.Item >
                         {({ active }) => (
-                          <div className={clsx(
-                            "flex flex-row items-center px-4 relative text-sm cursor-pointer h-12 border-b border-b-light-divider dark:border-b-dark-divider",
-                            { "bg-light-background-tertiary dark:bg-dark-background-tertiary" : active }
-                          )}>
+                          <div
+                            className={clsx(
+                              "flex flex-row items-center px-4 relative text-sm cursor-pointer h-12 border-b border-b-light-divider dark:border-b-dark-divider cursor-pointer",
+                              { "bg-light-background-tertiary dark:bg-dark-background-tertiary" : active }
+                            )}
+                          >
 
                             <div>Upload Photo</div>
 
@@ -125,9 +126,9 @@ const CreateCharacterPage = (props: Props) => {
                               className="group absolute w-full h-full opacity-0 hover:cursor-pointer"
                               accept="image/*"
                               onChange={(e) => {
-                                if (e.target.files && e.target.files[0]) {
-                                  setSelectedImageData(e.target.files[0]);
-                                }
+                                // set selected photo to null
+                                e.preventDefault();
+                                setSelectedImageData(null);
                               }}
                             />
                           </div>
@@ -137,6 +138,10 @@ const CreateCharacterPage = (props: Props) => {
                       <Menu.Item>
                         {({ active }) => (
                           <div
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setSelectedImageData(null);
+                            }}
                             className={clsx(
                               "flex flex-row items-center px-4 text-sm text-light-red dark:text-dark-red cursor-pointer h-12",
                               { "bg-light-background-tertiary dark:bg-dark-background-tertiary" : active }
@@ -157,6 +162,7 @@ const CreateCharacterPage = (props: Props) => {
                     className="group absolute w-full h-full opacity-0 rounded-full hover:cursor-pointer"
                     accept="image/*"
                     onChange={(e) => {
+                      e.preventDefault();
                       if (e.target.files && e.target.files[0]) {
                         setSelectedImageData(e.target.files[0]);
                       }
@@ -188,6 +194,7 @@ const CreateCharacterPage = (props: Props) => {
                 id="name"
                 enterKeyHint="next"
                 className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500"
+                value={newCharacterName}
                 placeholder="Enter character's name"
                 onChange={(e) => {
                   setNewCharacterName(e.target.value);
@@ -205,7 +212,11 @@ const CreateCharacterPage = (props: Props) => {
                 id="description"
                 rows={4}
                 className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500"
+                value={newCharacterDescription}
                 placeholder="Enter character's description"
+                onChange={(e) => {
+                  setNewCharacterDescription(e.target.value);
+                }}
               />
             </div>
 
