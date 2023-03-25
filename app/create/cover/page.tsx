@@ -12,7 +12,7 @@ const Cover = (props: Props) => {
       <div className="flex flex-col w-full h-full justify-between pb-7">
         <CreateHeader
           title="Cover"
-          description="Create a cover to your book."
+          description="Create a cover for your book."
           createRouteConfig={{
             next: {
               title: "Styles",
