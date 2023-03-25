@@ -18,7 +18,7 @@ const CharacterCard: React.FC<{
         className="w-full h-full object-cover"
       />
 
-      <div className='flex items-center justify-center w-full h-full'>
+      <div className='flex items-center justify-center w-full h-full text-light-text-secondary dark:text-dark-text-secondary'>
         { character?.name ?? "Lorem Ipsum"}
       </div>
 

@@ -5,8 +5,10 @@ import CreateHeader from "@/components/create/create-header";
 import MaxWidthContainer from "@/components/create/max-width-container";
 import SlideOver from "@/components/slide-over";
 import { sampleCharacter } from "@/util/characters";
-import React from "react";
-import { FiPlus, FiX } from "react-icons/fi";
+import { Menu, Transition } from "@headlessui/react";
+import clsx from "clsx";
+import React, { Fragment } from "react";
+import { FiEdit2, FiPlus, FiX } from "react-icons/fi";
 
 type Props = {};
 
@@ -14,6 +16,12 @@ const CreateCharacterPage = (props: Props) => {
   const [isEditingCharacter, setIsEditingCharacter] = React.useState(false);
   const [isCreatingNewCharacter, setIsCreatingNewCharacter] =
     React.useState(false);
+
+  const [selectedImageData, setSelectedImageData] = React.useState<File | null>(
+    null
+  );
+
+  const [newCharacterName, setNewCharacterName] = React.useState("");
 
   return (
     <>
@@ -74,16 +82,88 @@ const CreateCharacterPage = (props: Props) => {
           {/* face image container */}
           <div className="flex flex-row w-full justify-center">
             {/* circle image input */}
-            <div className="group relative w-40 h-40">
-              <div className="flex absolute w-full h-full items-center justify-center aspect-square bg-light-background-secondary dark:bg-dark-background-secondary rounded-full group-hover:bg-light-background-tertiary dark:group-hover:bg-dark-background-tertiary transition-all group-active:opacity-50 border border-light-divider dark:border-dark-divider">
-                <FiPlus className="w-7 h-7 text-light-text-tertiary  dark:text-dark-text-secondary" />
-              </div>
+            <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
+              {selectedImageData ? (
+                <Menu as="div" className="flex">
+                  <Menu.Button>
 
-              <input
-                type="file"
-                className="group absolute w-full h-full opacity-0 rounded-full hover:cursor-pointer"
-                accept="image/*"
-              />
+                    <div className="flex w-full h-full">
+                      <img
+                        src={URL.createObjectURL(selectedImageData)}
+                        className="absolute w-full h-full object-cover rounded-full"
+                      />
+
+                      {/* overlay  */}
+                      <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-20 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 rounded-full group-active:opacity-50 transition-all">
+                        <FiEdit2 className="w-7 h-7 text-white" />
+                      </div>
+                    </div>
+
+                  </Menu.Button>
+
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute z-10 w-56 origin-bottom-left bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <div className={clsx(
+                            "flex flex-row items-center px-4 relative text-sm cursor-pointer h-12 border-b border-b-light-divider dark:border-b-dark-divider",
+                            { "bg-light-background-tertiary dark:bg-dark-background-tertiary" : active }
+                          )}>
+
+                            <div>Upload Photo</div>
+
+                            <input
+                              type="file"
+                              className="group absolute w-full h-full opacity-0 hover:cursor-pointer"
+                              accept="image/*"
+                              onChange={(e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                  setSelectedImageData(e.target.files[0]);
+                                }
+                              }}
+                            />
+                          </div>
+                        )}
+                      </Menu.Item>
+
+                      <Menu.Item>
+                        {({ active }) => (
+                          <div
+                            className={clsx(
+                              "flex flex-row items-center px-4 text-sm text-light-red dark:text-dark-red cursor-pointer h-12",
+                              { "bg-light-background-tertiary dark:bg-dark-background-tertiary" : active }
+                            )}
+                          >
+                            Remove Current Photo
+                          </div>
+                        )}
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              ) : (
+                <div className="flex absolute w-full h-full items-center justify-center aspect-square bg-light-background-secondary dark:bg-dark-background-secondary rounded-full group-hover:bg-light-background-tertiary dark:group-hover:bg-dark-background-tertiary transition-all group-active:opacity-50">
+                  <FiPlus className="w-7 h-7 text-light-text-tertiary  dark:text-dark-text-secondary" />
+                  <input
+                    type="file"
+                    className="group absolute w-full h-full opacity-0 rounded-full hover:cursor-pointer"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setSelectedImageData(e.target.files[0]);
+                      }
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
@@ -109,6 +189,9 @@ const CreateCharacterPage = (props: Props) => {
                 enterKeyHint="next"
                 className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500"
                 placeholder="Enter character's name"
+                onChange={(e) => {
+                  setNewCharacterName(e.target.value);
+                }}
               />
             </div>
 
