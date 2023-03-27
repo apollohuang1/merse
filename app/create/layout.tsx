@@ -34,7 +34,7 @@ export default function RootLayout({children,}: {children: React.ReactNode;}) {
           </div>
 
           {/* main container */}
-          <div className='w-full h-full max-h-screen overflow-scroll'>
+          <div className='w-full h-full overflow-scroll'>
             {children}
           </div>
 
