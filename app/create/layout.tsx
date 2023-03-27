@@ -26,7 +26,7 @@ export default function RootLayout({children,}: {children: React.ReactNode;}) {
       </head>
 
       <body>
-        <div className='grid grid-cols-[250px_auto] max-sm:flex max-sm:flex-col w-screen h-screen bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary'>
+        <div className='grid grid-cols-[250px_auto] max-lg:grid-cols-[175px_auto] max-sm:flex max-sm:flex-col w-screen h-screen bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary'>
 
           {/* left side bar */}
           <div className='flex max-sm:hidden'>
