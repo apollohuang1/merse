@@ -17,8 +17,8 @@ const Cover = (props: Props) => {
           description="Create a cover for your book."
           createRouteConfig={{
             next: {
-              title: "Styles",
-              pathname: "/create/styles",
+              title: "Review",
+              pathname: "/create/review",
             },
             back: {
               title: "Storyboard",

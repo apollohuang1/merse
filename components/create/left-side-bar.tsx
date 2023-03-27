@@ -16,6 +16,10 @@ type Props = {};
 const createRoutes = [
   // character, storyboard, cover, styles, review.
   {
+    pathname: "/create/styles",
+    path: "Styles",
+  },
+  {
     pathname: "/create/characters",
     path: "Characters",
   },
@@ -26,10 +30,6 @@ const createRoutes = [
   {
     pathname: "/create/cover",
     path: "Cover",
-  },
-  {
-    pathname: "/create/styles",
-    path: "Styles",
   },
   {
     pathname: "/create/review",
@@ -87,7 +87,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
   return (
     <div className="flex flex-col justify-between w-full h-full border-r border-r-light-divider dark:border-r-dark-divider pt-16">
       <div className="border-t border-t-light-divider dark:border-t-dark-divider">
-        {createRoutes.map((route, index) => {
+        { createRoutes.map((route, index) => {
           return (
             <Link key={index} href={route?.pathname}>
               <button

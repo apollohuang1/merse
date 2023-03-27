@@ -36,12 +36,15 @@ const CreateCharacterPage = (props: Props) => {
                 title: "Storyboard",
                 pathname: "/create/storyboard",
               },
+              back: {
+                title: "Styles",
+                pathname: "/create/styles",
+              }
             }}
           />
 
           {/* created characters list */}
-          <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-7 w-full h-full">
-
+          <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full">
             <button
               onClick={() => {
                 setIsCreatingNewCharacter(true);
