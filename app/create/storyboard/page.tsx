@@ -26,7 +26,7 @@ const Storyboard = (props: Props) => {
         />
 
         {/* chat bar at the bottom */}
-        <div className="flex flex-row h-14 bg-light-background-secondary dark:bg-dark-background-secondary px-4 rounded-md">
+        <div className="flex flex-row h-12 bg-light-background-secondary dark:bg-dark-background-secondary px-4 rounded-md">
           <div className="flex flex-row items-center justify-center h-full w-full">
 
             <input

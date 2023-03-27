@@ -114,7 +114,7 @@ const CreateCharacterPage = (props: Props) => {
                         {({ active }) => (
                           <div
                             className={clsx(
-                              "flex flex-row items-center px-4 relative text-sm cursor-pointer h-12 border-b border-b-light-divider dark:border-b-dark-divider cursor-pointer",
+                              "flex flex-row items-center px-4 relative text-sm h-12 border-b border-b-light-divider dark:border-b-dark-divider cursor-pointer",
                               { "bg-light-background-tertiary dark:bg-dark-background-tertiary" : active }
                             )}
                           >
