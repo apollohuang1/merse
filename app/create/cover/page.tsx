@@ -38,19 +38,22 @@ const Cover = (props: Props) => {
 
 
         {/* chat bar at the bottom */}
-        <div className="flex flex-row h-12 bg-light-background-secondary dark:bg-dark-background-secondary px-4 rounded-md flex-shrink-0">
-          <div className="flex flex-row items-center justify-center h-full w-full">
 
-            <input
-              type="text"
-              className="w-full h-full text-light-text-primary dark:text-dark-text-primary bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
-              placeholder="Type a message..."
-            />
+        <div className="block px-7">
+          <div className="flex flex-row h-12 bg-light-background-secondary dark:bg-dark-background-secondary px-4 rounded-md flex-shrink-0 border border-light-divider dark:border-dark-divider">
+            <div className="flex flex-row items-center justify-center h-full w-full">
 
-            {/* send button */}
-            <button className="flex items-center justify-center w-8 h-8 ml-2 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary active:opacity-70 rounded-md">
-              <FiArrowRight className="w-5 h-5 text-light-text-primary dark:text-dark-text-primary" />
-            </button>
+              <input
+                type="text"
+                className="w-full h-full text-light-text-primary dark:text-dark-text-primary bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
+                placeholder="Type a message..."
+              />
+
+              {/* send button */}
+              <button className="flex items-center justify-center w-8 h-8 ml-2 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary active:opacity-70 rounded-md">
+                <FiArrowRight className="w-5 h-5 text-light-text-primary dark:text-dark-text-primary" />
+              </button>
+            </div>
           </div>
         </div>
 
