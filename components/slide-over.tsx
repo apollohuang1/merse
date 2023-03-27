@@ -18,7 +18,7 @@ const SlideOver: React.FC<{
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-10 text-light-text-primary dark:text-dark-text-primary"
+        className="relative text-light-text-primary dark:text-dark-text-primary z-50"
         onClose={onClose}
       >
         {/* curtain overlay */}
