@@ -24,11 +24,11 @@ const styleSamples = [
   },
   { 
     id: "2",
-    artwork: { url: "https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/lrg/9798/6750/9798675032778.jpg" } 
+    artwork: { url: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/71Jav7-OpHL._AC_UF1000,1000_QL80_.jpg" } 
   },
   { 
     id: "3",
-    artwork: { url: "https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/lrg/9798/6750/9798675043545.jpg" } 
+    artwork: { url: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/71BBMdxzpqL._AC_UF1000,1000_QL80_.jpg" } 
   },
   { 
     id: "4",
@@ -40,7 +40,7 @@ const styleSamples = [
   },
   {
     id: "6",
-    artwork: { url: "https://www.comicsauthority.store/wp-content/uploads/2023/03/The_Bestiary_Chronicles_001-2.jpg" } 
+    artwork: { url: "https://i.pinimg.com/564x/c3/5e/26/c35e266ac26da3b18e5fb0928685e0a0.jpg" }
   },
   { 
     id: "7",
@@ -57,6 +57,18 @@ const styleSamples = [
   { 
     id: "10",
     artwork: { url: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/51M2gzuiNuL.jpg" } 
+  },
+  {
+    id: "11",
+    artwork: { url: "https://i.pinimg.com/564x/5a/1e/e1/5a1ee1ca2681d9b00ca61323501d9337.jpg" },
+  },
+  {
+    id: "12",
+    artwork: { url: "https://www.comicsauthority.store/wp-content/uploads/2023/03/The_Bestiary_Chronicles_001-2.jpg" } 
+  },
+  {
+    id: "13",
+    artwork: { url: "https://i.pinimg.com/564x/54/d6/72/54d672bcf3d1f8f8ced2e7cba664a192.jpg" },
   },
 ]
 
