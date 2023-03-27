@@ -116,7 +116,7 @@ const Styles = (props: Props) => {
       />
 
       {/* created characters list */}
-      <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-7 w-full h-full max-w-4xl py-7">
+      <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-7 w-full h-full max-w-4xl p-7">
         {styleSamples.map((style: CartoonStyle, i) => (
           <button
             key={i}

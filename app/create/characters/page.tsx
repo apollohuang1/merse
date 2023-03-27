@@ -44,7 +44,7 @@ const CreateCharacterPage = (props: Props) => {
           />
 
           {/* created characters list */}
-          <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full">
+          <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full px-7">
             <button
               onClick={() => {
                 setIsCreatingNewCharacter(true);

@@ -15,7 +15,8 @@ const CreateHeader: React.FC<{
 }> = ({ title, description, createRouteConfig }) => {
   return (
     <div className="flex flex-row w-full sticky top-0 z-20 bg-light-background-primary dark:bg-dark-background-primary justify-center">
-      <div className="flex flex-row justify-between items-start pt-7 pb-4 w-full max-w-4xl">
+
+      <div className="flex flex-row justify-between items-start pt-7 pb-4 px-7 w-full max-w-4xl">
         <div className="flex flex-col max-w-sm">
           <h1 className="text-2xl font-bold">{title}</h1>
           <p className="text-light-text-secondary font-light">{description}</p>
