@@ -129,7 +129,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
           <div className="flex flex-row gap-3 items-center">
             <img
               src="https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg"
-              className="rounded-full w-9 h-9"
+              className="rounded-full w-9 h-9 object-cover"
               alt="profile image"
             />
 

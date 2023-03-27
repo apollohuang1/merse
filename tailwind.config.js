@@ -40,7 +40,7 @@ module.exports = {
           },
           background: {
             primary: '#FFFFFF', // white
-            secondary: "#F6F6F6",
+            secondary: "#F2F2F2",
             tertiary: "#DDDDDD",
           },
           text: {
@@ -63,8 +63,8 @@ module.exports = {
           },
           background: {
             primary: '#000000', // black
-            // secondary: "#1C1C1E",
-            secondary: "#121212",
+            secondary: "#151515",
+            // secondary: "#121212",
             tertiary: "#1A1A1A",
             justalittlebitdarkerthan1c1c1e: "#1D1D1F",
           },

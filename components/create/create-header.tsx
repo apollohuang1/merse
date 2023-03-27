@@ -20,7 +20,7 @@ const CreateHeader: React.FC<{
   createRouteConfig
 }) => {
   return (
-    <div className='flex flex-row justify-between items-start w-fulls sticky top-0 z-10 bg-light-background-primary dark:bg-dark-background-primary pt-7 pb-3'>
+    <div className='flex flex-row justify-between items-start w-fulls sticky top-0 z-10 bg-light-background-primary dark:bg-dark-background-primary py-7'>
 
       <div className='flex flex-col max-w-sm'>
         <h1 className='text-2xl font-bold'>{title}</h1>

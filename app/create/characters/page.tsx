@@ -25,7 +25,7 @@ const CreateCharacterPage = (props: Props) => {
   return (
     <>
       <MaxWidthContainer>
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col">
 
           {/* create header */}
           <CreateHeader
@@ -41,11 +41,12 @@ const CreateCharacterPage = (props: Props) => {
 
           {/* created characters list */}
           <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-7 w-full h-full">
+
             <button
               onClick={() => {
                 setIsCreatingNewCharacter(true);
               }}
-              className="group flex w-full h-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70"
+              className="group flex w-full h-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg"
             >
               <FiPlus className="w-7 h-7 text-light-text-secondary dark:text-dark-text-secondary group-active:scale-90 transition-all" />
             </button>
@@ -85,7 +86,6 @@ const CreateCharacterPage = (props: Props) => {
             <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
               {selectedImageData ? (
                 <Menu as="div" className="flex">
-
                   <Menu.Button>
                     <div className="flex w-full h-full">
                       <img
@@ -193,7 +193,7 @@ const CreateCharacterPage = (props: Props) => {
                 name="name"
                 id="name"
                 enterKeyHint="next"
-                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500"
+                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
                 value={newCharacterName}
                 placeholder="Enter character's name"
                 onChange={(e) => {
@@ -211,7 +211,7 @@ const CreateCharacterPage = (props: Props) => {
                 name="description"
                 id="description"
                 rows={4}
-                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500"
+                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
                 value={newCharacterDescription}
                 placeholder="Enter character's description"
                 onChange={(e) => {

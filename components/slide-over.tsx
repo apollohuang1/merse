@@ -72,7 +72,7 @@ const SlideOver: React.FC<{
                       </div>
                     </div>
 
-                    <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                    <div className="relative mt-6 flex-1 px-4 sm:px-6 overflow-scroll">
                       {children}
                     </div>
 
