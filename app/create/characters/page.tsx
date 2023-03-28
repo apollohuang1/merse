@@ -18,7 +18,7 @@ const CreateCharacterPage = (props: Props) => {
   const [isCreatingNewCharacter, setIsCreatingNewCharacter] =
     React.useState(false);
 
-  const [selectedImageData, setSelectedImageData] = React.useState<File | null>(null);
+  const [selectedImageData, setSelectedImageData] = React.useState<any>(null);
 
   const [newCharacterImageURL, setNewCharacterImageURL] =
     React.useState<string>("");
@@ -82,7 +82,7 @@ const CreateCharacterPage = (props: Props) => {
           <div className="flex flex-row w-full justify-center">
             {/* circle image input */}
             <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
-              {selectedImageData || newCharacterImageURL !== "" ? (
+              {selectedImageData || (newCharacterImageURL !== "") ? (
                 <Menu as="div" className="flex">
                   <Menu.Button>
                     <div className="flex w-full h-full">
@@ -91,6 +91,7 @@ const CreateCharacterPage = (props: Props) => {
                         className="absolute w-full h-full object-cover rounded-full"
                         alt="character face"
                       />
+
 
                       {/* overlay  */}
                       <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-20 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 rounded-full group-active:opacity-50 transition-all">
