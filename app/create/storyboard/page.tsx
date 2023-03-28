@@ -2,6 +2,7 @@
 
 import CreateHeader from "@/components/create/create-header";
 import React from "react";
+import { FiEdit2 } from "react-icons/fi";
 import { createRoutes } from "../layout";
 
 type Props = {};
@@ -16,9 +17,7 @@ export const storyboardSamples = [
   { artwork: { url: "https://ninisencoree.files.wordpress.com/2020/04/kakaotalk_20200411_174604120.jpg" }},
   { artwork: { url: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg" }},
   { artwork: { url: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg" }},
-  { artwork: { url: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg" }},
-
-
+  { artwork: { url: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg" }}
 ]
 
 const Storyboard = (props: Props) => {
@@ -34,7 +33,7 @@ const Storyboard = (props: Props) => {
         <div className="w-full h-full overflow-hidden bg-light-background-secondary dark:bg-dark-background-secondary p-7 rounded-lg">
           <textarea
             placeholder="Type a full journaling prompt..."
-            className="w-full h-full bg-transparent placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-none"
+            className="w-full h-full bg-transparent placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-none resize-none"
           />
         </div>
 
@@ -45,8 +44,13 @@ const Storyboard = (props: Props) => {
             {storyboardSamples.map((style, index) => (
               <div
                 key={index}
-                className="relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg border border-light-divider dark:border-dark-divider"
+                className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg border border-light-divider dark:border-dark-divider"
               >
+
+                {/* overlay  */}
+                <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
+                  <FiEdit2 className="w-9 h-9 text-white" />
+                </div>
 
                 <img
                   src={style?.artwork?.url}
