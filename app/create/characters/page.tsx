@@ -70,6 +70,7 @@ const CreateCharacterPage = (props: Props) => {
         <div className="flex flex-col gap-4">editing cover</div>
       </SlideOver>
 
+
       {/* creating new character slideover */}
       <SlideOver
         isOpen={isCreatingNewCharacter}
@@ -80,6 +81,7 @@ const CreateCharacterPage = (props: Props) => {
         <div className="flex flex-col gap-7">
           {/* face image container */}
           <div className="flex flex-row w-full justify-center">
+
             {/* circle image input */}
             <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
               {selectedImageData || (newCharacterImageURL !== "") ? (
@@ -91,7 +93,6 @@ const CreateCharacterPage = (props: Props) => {
                         className="absolute w-full h-full object-cover rounded-full"
                         alt="character face"
                       />
-
 
                       {/* overlay  */}
                       <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-20 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 rounded-full group-active:opacity-50 transition-all">
@@ -199,7 +200,7 @@ const CreateCharacterPage = (props: Props) => {
                 name="imageURL"
                 id="imageURL"
                 enterKeyHint="next"
-                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
+                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                 value={newCharacterImageURL ?? ""}
                 placeholder="Enter character's image URL"
                 onChange={(e) => {
@@ -221,7 +222,7 @@ const CreateCharacterPage = (props: Props) => {
                 name="name"
                 id="name"
                 enterKeyHint="next"
-                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
+                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                 value={newCharacterName}
                 placeholder="Enter character's name"
                 onChange={(e) => {
@@ -239,7 +240,7 @@ const CreateCharacterPage = (props: Props) => {
                 name="description"
                 id="description"
                 rows={4}
-                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md min-h-[100px]"
+                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md min-h-[100px] border border-light-divider dark:border-dark-divider bg-transparent"
                 value={newCharacterDescription}
                 placeholder="Enter character's description"
                 onChange={(e) => {
@@ -262,7 +263,7 @@ const CreateCharacterPage = (props: Props) => {
                   name="age"
                   id="age"
                   enterKeyHint="next"
-                  className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                   value={newCharacterAge}
                   placeholder="Enter character's age"
                   onChange={(e: any) => {
@@ -281,7 +282,7 @@ const CreateCharacterPage = (props: Props) => {
                   id="location"
                   name="location"
                   defaultValue={"none"}
-                  className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                 >
                   {/* get all the option of gender including lgptq+ */}
                   <option value="male">Male</option>
