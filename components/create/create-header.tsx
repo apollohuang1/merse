@@ -8,7 +8,7 @@ const CreateHeader: React.FC<{
   currentRoute: CreateRoute;
 }> = ({ currentRoute }) => {
   return (
-    <div className="flex flex-row w-full sticky top-0 z-20 bg-light-background-primary dark:bg-dark-background-primary justify-center">
+    <div className="flex flex-row w-full sticky top-0 z-20 bg-light-background-primary dark:bg-dark-background-primary justify-center px-7">
       <div className="flex flex-row justify-between items-start pt-7 pb-4 w-full max-w-4xl">
         <div className="flex flex-col max-w-sm">
           <h1 className="text-2xl font-bold">

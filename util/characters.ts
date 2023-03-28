@@ -84,12 +84,12 @@ export const styleSamples = [
     id: "4",
     artwork: { url: "https://blog-cdn.reedsy.com/uploads/2019/12/click.jpg" },
   },
-  {
-    id: "5",
-    artwork: {
-      url: "https://d23.com/app/uploads/2015/07/walt-files-comic-book-controversary-feat-2.1.jpg",
-    },
-  },
+  // {
+  //   id: "5",
+  //   artwork: {
+  //     url: "https://d23.com/app/uploads/2015/07/walt-files-comic-book-controversary-feat-2.1.jpg",
+  //   },
+  // },
   {
     id: "6",
     artwork: {

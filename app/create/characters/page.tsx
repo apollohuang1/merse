@@ -18,11 +18,16 @@ const CreateCharacterPage = (props: Props) => {
   const [isCreatingNewCharacter, setIsCreatingNewCharacter] =
     React.useState(false);
 
-  const [selectedImageData, setSelectedImageData] = React.useState<File | null>(
-    null
-  );
+  const [selectedImageData, setSelectedImageData] = React.useState<File | null>(null);
+
+  const [newCharacterImageURL, setNewCharacterImageURL] =
+    React.useState<string>("");
 
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
+  const [newCharacterAge, setNewCharacterAge] = React.useState<number>(0);
+  const [newCharacterGender, setNewCharacterGender] =
+    React.useState<string>("");
+
   const [newCharacterDescription, setNewCharacterDescription] =
     React.useState<string>("");
 
@@ -31,7 +36,7 @@ const CreateCharacterPage = (props: Props) => {
       <div className="grid grid-rows-[100px_auto] overflow-x-hidden overflow-y-scroll">
         <CreateHeader currentRoute={createRoutes[1]} />
 
-        <div className="flex flex-col w-full h-full justify-center items-center">  
+        <div className="flex flex-col w-full h-full justify-center items-center">
           {/* created characters list */}
           <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-4xl py-7">
             <button
@@ -65,6 +70,7 @@ const CreateCharacterPage = (props: Props) => {
         <div className="flex flex-col gap-4">editing cover</div>
       </SlideOver>
 
+      {/* creating new character slideover */}
       <SlideOver
         isOpen={isCreatingNewCharacter}
         onClose={() => setIsCreatingNewCharacter(false)}
@@ -76,13 +82,14 @@ const CreateCharacterPage = (props: Props) => {
           <div className="flex flex-row w-full justify-center">
             {/* circle image input */}
             <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
-              {selectedImageData ? (
+              {selectedImageData || newCharacterImageURL !== "" ? (
                 <Menu as="div" className="flex">
                   <Menu.Button>
                     <div className="flex w-full h-full">
-                      <img
-                        src={URL.createObjectURL(selectedImageData)}
+                      <img 
+                        src={newCharacterImageURL === "" ? URL.createObjectURL(selectedImageData) : newCharacterImageURL}
                         className="absolute w-full h-full object-cover rounded-full"
+                        alt="character face"
                       />
 
                       {/* overlay  */}
@@ -135,6 +142,7 @@ const CreateCharacterPage = (props: Props) => {
                             onClick={(e) => {
                               e.preventDefault();
                               setSelectedImageData(null);
+                              setNewCharacterImageURL("");
                             }}
                             className={clsx(
                               "flex flex-row items-center px-4 text-sm text-light-red dark:text-dark-red cursor-pointer h-12",
@@ -176,7 +184,29 @@ const CreateCharacterPage = (props: Props) => {
               e.preventDefault();
             }}
           >
-            {/* creating cartoon character form and let user input cartoon's composition */}
+            {/* image url same style as name */}
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="Image URL"
+                className="flex text-sm font-medium leading-6"
+              >
+                Image URL
+              </label>
+
+              <input
+                type="text"
+                name="imageURL"
+                id="imageURL"
+                enterKeyHint="next"
+                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
+                value={newCharacterImageURL ?? ""}
+                placeholder="Enter character's image URL"
+                onChange={(e) => {
+                  setNewCharacterImageURL(e.target.value);
+                }}
+              />
+            </div>
+
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="name"
@@ -208,7 +238,7 @@ const CreateCharacterPage = (props: Props) => {
                 name="description"
                 id="description"
                 rows={4}
-                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
+                className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md min-h-[100px]"
                 value={newCharacterDescription}
                 placeholder="Enter character's description"
                 onChange={(e) => {
@@ -217,8 +247,51 @@ const CreateCharacterPage = (props: Props) => {
               />
             </div>
 
-            {/* <label htmlFor="image">Image</label>
-            <input type="file" name="image" id="image" /> */}
+            {/* have a space where users put: age/gender/ethnicity, top/bottom clothes descriptions, hair/eye color
+            for each characters? maybe for age/gender/ethnicity/colors you could provide a dropdown list for them */}
+
+            <div className="grid grid-cols-2 gap-7">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="age" className="flex text-sm font-medium">
+                  Age
+                </label>
+
+                <input
+                  type="number"
+                  name="age"
+                  id="age"
+                  enterKeyHint="next"
+                  className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
+                  value={newCharacterAge}
+                  placeholder="Enter character's age"
+                  onChange={(e: any) => {
+                    setNewCharacterAge(e.target.value);
+                  }}
+                />
+              </div>
+
+              {/* gender */}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="gender" className="flex text-sm font-medium">
+                  Gender
+                </label>
+
+                <select
+                  id="location"
+                  name="location"
+                  defaultValue={"none"}
+                  className="w-full p-3 bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md"
+                >
+                  {/* get all the option of gender including lgptq+ */}
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="non-binary">Non-binary</option>
+                  <option value="transgender">Transgender</option>
+                  <option value="prefer not to say">Prefer not to say</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+            </div>
           </form>
         </div>
       </SlideOver>
