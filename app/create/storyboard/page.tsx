@@ -1,13 +1,25 @@
 "use client";
 
 import CreateHeader from "@/components/create/create-header";
-import MaxWidthContainer from "@/components/create/max-width-container";
-import { styleSamples } from "@/util/characters";
 import React from "react";
-import { FiArrowRight } from "react-icons/fi";
 import { createRoutes } from "../layout";
 
 type Props = {};
+
+export const storyboardSamples = [
+  { artwork: { url: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg" }},
+  { artwork: { url: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg" }},
+  { artwork: { url: "https://i.pinimg.com/736x/40/b5/ff/40b5ff11e9226543c9287ffde1bba69f.jpg" }},
+  { artwork: { url: "https://i.ytimg.com/vi/d5VBJhlbtnk/maxresdefault.jpg" }},
+  { artwork: { url: "https://static.boredpanda.com/blog/wp-content/uploads/2016/06/love-is-illustrations-korea-puuung-98-574fed60683c4__880.jpg" }},
+  { artwork: { url: "https://e1.pxfuel.com/desktop-wallpaper/522/148/desktop-wallpaper-puuung-on-instagram-coffee-time-1%EF%B8%8F%E2%83%A3-an-art-print-greeting-card-and-post-card-are-available-on-redbubble-puuung1-redbub%E2%80%A6-puuung.jpg" }},
+  { artwork: { url: "https://ninisencoree.files.wordpress.com/2020/04/kakaotalk_20200411_174604120.jpg" }},
+  { artwork: { url: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg" }},
+  { artwork: { url: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg" }},
+  { artwork: { url: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg" }},
+
+
+]
 
 const Storyboard = (props: Props) => {
   return (
@@ -16,24 +28,26 @@ const Storyboard = (props: Props) => {
       <CreateHeader currentRoute={createRoutes[2]} />
 
       {/* main content */}
-      <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)] p-7 gap-3">
+      <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)] p-7 gap-4">
+        
         {/* prompt left panel */}
-        <div className="w-full h-full overflow-hidden bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg">
+        <div className="w-full h-full overflow-hidden bg-light-background-secondary dark:bg-dark-background-secondary p-7 rounded-lg">
           <textarea
             placeholder="Type a full journaling prompt..."
-            className="w-full h-full bg-transparent p-7 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-none"
+            className="w-full h-full bg-transparent placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-none"
           />
         </div>
 
         {/* storyboard list right panel */}
         <div className="flex flex-col w-full h-full overflow-auto rounded-lg">
-          <div className="flex flex-col max-md:flex max-md:flex-col w-full h-full gap-3">
+          <div className="flex flex-col max-md:flex max-md:flex-col w-full h-full gap-4">
             {/* story card */}
-            {styleSamples.map((style, index) => (
+            {storyboardSamples.map((style, index) => (
               <div
                 key={index}
-                className="flex flex-col w-full border border-light-divider dark:border-dark-divider bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg"
+                className="relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg border border-light-divider dark:border-dark-divider"
               >
+
                 <img
                   src={style?.artwork?.url}
                   alt="comic book cover"
