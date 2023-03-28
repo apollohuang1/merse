@@ -9,6 +9,7 @@ import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import React, { Fragment } from "react";
 import { FiEdit2, FiPlus, FiX } from "react-icons/fi";
+import { createRoutes } from "../layout";
 
 type Props = {};
 
@@ -17,18 +18,22 @@ const CreateCharacterPage = (props: Props) => {
   const [isCreatingNewCharacter, setIsCreatingNewCharacter] =
     React.useState(false);
 
-  const [selectedImageData, setSelectedImageData] = React.useState<File | null>(null);
+  const [selectedImageData, setSelectedImageData] = React.useState<File | null>(
+    null
+  );
 
   const [newCharacterName, setNewCharacterName] = React.useState<string>("");
-  const [newCharacterDescription, setNewCharacterDescription] = React.useState<string>("");
+  const [newCharacterDescription, setNewCharacterDescription] =
+    React.useState<string>("");
 
   return (
     <>
-      <MaxWidthContainer>
-        <div className="flex flex-col">
+      <div className="grid grid-rows-[100px_auto] overflow-x-hidden overflow-y-scroll">
+        <CreateHeader currentRoute={createRoutes[1]} />
 
+        <div className="flex flex-col w-full h-full justify-center items-center">  
           {/* created characters list */}
-          <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full">
+          <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-4xl py-7">
             <button
               onClick={() => {
                 setIsCreatingNewCharacter(true);
@@ -49,7 +54,7 @@ const CreateCharacterPage = (props: Props) => {
             ))}
           </div>
         </div>
-      </MaxWidthContainer>
+      </div>
 
       <SlideOver
         isOpen={isEditingCharacter}
@@ -97,15 +102,17 @@ const CreateCharacterPage = (props: Props) => {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute z-10 w-56 origin-bottom-left bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none">
-                      <Menu.Item >
+                      <Menu.Item>
                         {({ active }) => (
                           <div
                             className={clsx(
                               "flex flex-row items-center px-4 relative text-sm h-12 border-b border-b-light-divider dark:border-b-dark-divider cursor-pointer",
-                              { "bg-light-background-tertiary dark:bg-dark-background-tertiary" : active }
+                              {
+                                "bg-light-background-tertiary dark:bg-dark-background-tertiary":
+                                  active,
+                              }
                             )}
                           >
-
                             <div>Upload Photo</div>
 
                             <input
@@ -126,12 +133,15 @@ const CreateCharacterPage = (props: Props) => {
                         {({ active }) => (
                           <div
                             onClick={(e) => {
-                              e.preventDefault()
+                              e.preventDefault();
                               setSelectedImageData(null);
                             }}
                             className={clsx(
                               "flex flex-row items-center px-4 text-sm text-light-red dark:text-dark-red cursor-pointer h-12",
-                              { "bg-light-background-tertiary dark:bg-dark-background-tertiary" : active }
+                              {
+                                "bg-light-background-tertiary dark:bg-dark-background-tertiary":
+                                  active,
+                              }
                             )}
                           >
                             Remove Current Photo
