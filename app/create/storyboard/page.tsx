@@ -7,7 +7,7 @@ import { createRoutes } from "../layout";
 
 type Props = {};
 
-export const storyboardSamples = [
+const storyboardSamples = [
   { artwork: { url: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg" }},
   { artwork: { url: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg" }},
   { artwork: { url: "https://i.pinimg.com/736x/40/b5/ff/40b5ff11e9226543c9287ffde1bba69f.jpg" }},
@@ -23,6 +23,7 @@ export const storyboardSamples = [
 const Storyboard = (props: Props) => {
   return (
     <div className="grid grid-rows-[100px_auto] overflow-auto">
+
       {/* top of grid */}
       <CreateHeader currentRoute={createRoutes[2]} />
 
