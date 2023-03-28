@@ -17,28 +17,29 @@ const Storyboard = (props: Props) => {
       <CreateHeader currentRoute={createRoutes[2]}/>
 
       {/* main content */}
-      <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)]">
+      <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)] p-7 gap-3">
         
         {/* prompt panel */}
-        <div className="w-full h-full overflow-hidden">
+        <div className="w-full h-full overflow-hidden bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg">
           <textarea
             placeholder="Type a full journaling prompt..."
             className="w-full h-full bg-transparent p-7 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary focus:outline-none"
           />
         </div>
 
-        <div className="flex flex-col w-full h-full overflow-scroll">
+        {/* storyboard list panel */}
+        <div className="flex flex-col w-full h-full overflow-auto">
           <div className="flex flex-col max-md:flex max-md:flex-col gap-3 w-full h-full">
             {/* story card */}
             {styleSamples.map((style, index) => (
               <div
                 key={index}
-                className="flex flex-col w-full border border-light-divider dark:border-dark-divider bg-light-background-secondary dark:bg-dark-background-secondary"
+                className="flex flex-col w-full border border-light-divider dark:border-dark-divider bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg"
               >
                 <img
                   src={style?.artwork?.url}
                   alt="comic book cover"
-                  className="object-cover aspect-[4/3]"
+                  className="object-cover aspect-[4/3] rounded-t-lg"
                 />
 
                 {/* story line in storyboard */}
