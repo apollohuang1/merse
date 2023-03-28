@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import CreateHeader from "@/components/create/create-header";
 import MaxWidthContainer from "@/components/create/max-width-container";
@@ -11,25 +11,23 @@ type Props = {};
 
 const Storyboard = (props: Props) => {
   return (
-
     <div className="grid grid-rows-[100px_auto] overflow-auto">
       {/* top of grid */}
-      <CreateHeader currentRoute={createRoutes[2]}/>
+      <CreateHeader currentRoute={createRoutes[2]} />
 
       {/* main content */}
       <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)] p-7 gap-3">
-        
-        {/* prompt panel */}
+        {/* prompt left panel */}
         <div className="w-full h-full overflow-hidden bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg">
           <textarea
             placeholder="Type a full journaling prompt..."
-            className="w-full h-full bg-transparent p-7 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary focus:outline-none"
+            className="w-full h-full bg-transparent p-7 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-none"
           />
         </div>
 
-        {/* storyboard list panel */}
-        <div className="flex flex-col w-full h-full overflow-auto">
-          <div className="flex flex-col max-md:flex max-md:flex-col gap-3 w-full h-full">
+        {/* storyboard list right panel */}
+        <div className="flex flex-col w-full h-full overflow-auto rounded-lg">
+          <div className="flex flex-col max-md:flex max-md:flex-col w-full h-full gap-3">
             {/* story card */}
             {styleSamples.map((style, index) => (
               <div
@@ -58,7 +56,6 @@ const Storyboard = (props: Props) => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };
