@@ -8,7 +8,7 @@ import pyautogui as pg
 discord_token = "MTA5MDAyOTI5MzgyNTk3MDE5Ng.Gk5khM.6IYZ9ESYZRC5fgHMRrfWxcoA73Ek56jENMBpgU"
 
 # Using readlines()
-prompt_file = open('prompts.txt', 'r')
+prompt_file = open('prompts.txt', 'r') 
 prompts = prompt_file.readlines()
 
 prompt_counter = 0
