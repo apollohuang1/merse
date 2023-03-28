@@ -27,24 +27,8 @@ const CreateCharacterPage = (props: Props) => {
       <MaxWidthContainer>
         <div className="flex flex-col">
 
-          {/* create header */}
-          <CreateHeader
-            title="Characters"
-            description="Add characters to your story."
-            createRouteConfig={{
-              next: {
-                title: "Storyboard",
-                pathname: "/create/storyboard",
-              },
-              back: {
-                title: "Styles",
-                pathname: "/create/styles",
-              }
-            }}
-          />
-
           {/* created characters list */}
-          <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full px-7">
+          <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full">
             <button
               onClick={() => {
                 setIsCreatingNewCharacter(true);

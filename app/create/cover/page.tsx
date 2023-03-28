@@ -11,22 +11,6 @@ const Cover = (props: Props) => {
       
       <div className="flex flex-col w-full h-full justify-between pb-7">
 
-        {/* header */}
-        <CreateHeader
-          title="Cover"
-          description="Create a cover for your book."
-          createRouteConfig={{
-            next: {
-              title: "Review",
-              pathname: "/create/review",
-            },
-            back: {
-              title: "Storyboard",
-              pathname: "/create/storyboard",
-            }
-          }}
-        />
-
         <div className='flex flex-col overflow-scroll w-full h-full items-center justify-center'>
           {/* book cover */}
             <img 

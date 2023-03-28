@@ -10,32 +10,9 @@ import Image from "next/image";
 
 import { FiMoreHorizontal } from "react-icons/fi";
 import { Menu } from "@headlessui/react";
+import { allCreateRoutes, createRoutes } from "@/app/create/layout";
 
 type Props = {};
-
-const createRoutes = [
-  // character, storyboard, cover, styles, review.
-  {
-    pathname: "/create/styles",
-    path: "Styles",
-  },
-  {
-    pathname: "/create/characters",
-    path: "Characters",
-  },
-  {
-    pathname: "/create/storyboard",
-    path: "Storyboard",
-  },
-  {
-    pathname: "/create/cover",
-    path: "Cover",
-  },
-  {
-    pathname: "/create/review",
-    path: "Review",
-  },
-];
 
 const LeftSideBar: React.FC<{}> = ({}) => {
   const pathName = usePathname();
@@ -87,7 +64,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
   return (
     <div className="flex flex-col justify-between w-full h-full border-r border-r-light-divider dark:border-r-dark-divider pt-16">
       <div className="border-t border-t-light-divider dark:border-t-dark-divider">
-        { createRoutes.map((route, index) => {
+        { allCreateRoutes.map((route, index) => {
           return (
             <Link key={index} href={route?.pathname}>
               <button
@@ -104,7 +81,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
                   }
                 )}
               >
-                <span className="font-semibold">{route.path}</span>
+                <span className="font-semibold">{route?.title}</span>
               </button>
             </Link>
           );

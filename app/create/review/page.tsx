@@ -7,17 +7,6 @@ type Props = {}
 const Review = (props: Props) => {
   return (
     <div className="flex flex-col w-full justify-center items-center">
-      <CreateHeader
-        title="Review"
-        description="Review your story."
-        createRouteConfig={{
-          back: {
-            title: "Cover",
-            pathname: "/create/cover",
-          }
-        }}
-      />
-
       {/* main content */}
       <div className="flex flex-col gap-7 w-full h-full max-w-4xl p-7">
         {/* 3 circle with character images */}
