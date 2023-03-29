@@ -2,30 +2,54 @@
 
 import CreateHeader from "@/components/create/create-header";
 import React from "react";
-import { FiEdit2 } from "react-icons/fi";
+import { FiEdit2, FiType } from "react-icons/fi";
 import { createRoutes } from "../layout";
 
-import { useEditor, EditorContent } from '@tiptap/react'
+import { useEditor, EditorContent, FloatingMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Image from '@tiptap/extension-image';
+import Image from "@tiptap/extension-image";
 
-import editorStyles from "../../../styles/editor.module.css"
+import editorStyles from "../../../styles/editor.module.css";
 import clsx from "clsx";
 
 type Props = {};
 
 const storyboardSamples = [
-  { artwork: { url: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg" }},
-  { artwork: { url: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg" }},
-  { artwork: { url: "https://i.pinimg.com/736x/40/b5/ff/40b5ff11e9226543c9287ffde1bba69f.jpg" }},
-  { artwork: { url: "https://i.ytimg.com/vi/d5VBJhlbtnk/maxresdefault.jpg" }},
-  { artwork: { url: "https://static.boredpanda.com/blog/wp-content/uploads/2016/06/love-is-illustrations-korea-puuung-98-574fed60683c4__880.jpg" }},
-  { artwork: { url: "https://e1.pxfuel.com/desktop-wallpaper/522/148/desktop-wallpaper-puuung-on-instagram-coffee-time-1%EF%B8%8F%E2%83%A3-an-art-print-greeting-card-and-post-card-are-available-on-redbubble-puuung1-redbub%E2%80%A6-puuung.jpg" }},
-  { artwork: { url: "https://ninisencoree.files.wordpress.com/2020/04/kakaotalk_20200411_174604120.jpg" }},
-  { artwork: { url: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg" }},
-  { artwork: { url: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg" }},
-  { artwork: { url: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg" }}
-]
+  {
+    artwork: {
+      url: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg",
+    },
+  },
+  {
+    artwork: {
+      url: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg",
+    },
+  },
+  {
+    artwork: {
+      url: "https://i.pinimg.com/736x/40/b5/ff/40b5ff11e9226543c9287ffde1bba69f.jpg",
+    },
+  },
+  { artwork: { url: "https://i.ytimg.com/vi/d5VBJhlbtnk/maxresdefault.jpg" } },
+  {
+    artwork: {
+      url: "https://static.boredpanda.com/blog/wp-content/uploads/2016/06/love-is-illustrations-korea-puuung-98-574fed60683c4__880.jpg",
+    },
+  },
+  {
+    artwork: {
+      url: "https://e1.pxfuel.com/desktop-wallpaper/522/148/desktop-wallpaper-puuung-on-instagram-coffee-time-1%EF%B8%8F%E2%83%A3-an-art-print-greeting-card-and-post-card-are-available-on-redbubble-puuung1-redbub%E2%80%A6-puuung.jpg",
+    },
+  },
+  {
+    artwork: {
+      url: "https://ninisencoree.files.wordpress.com/2020/04/kakaotalk_20200411_174604120.jpg",
+    },
+  },
+  { artwork: { url: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg" } },
+  { artwork: { url: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg" } },
+  { artwork: { url: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg" } },
+];
 
 const Storyboard = (props: Props) => {
 
@@ -34,36 +58,86 @@ const Storyboard = (props: Props) => {
       StarterKit.configure({
         heading: {
           HTMLAttributes: {
-            class: 'text-light-text-primary dark:text-dark-text-primary',
+            class: "text-light-text-primary dark:text-dark-text-primary",
           },
           levels: [1, 2, 3],
-        }
+        },
       }),
       Image,
     ],
     editorProps: {
       attributes: {
-        class: 'outline-none',
+        class: "outline-none w-full h-full min-h-screen",
       },
     },
-    content: '<p>Hello World! 🌎️</p>',
-  })
+    // content: "<h1>Hello World! 🌎️</h1>",
+  });
+
 
   return (
     <div className="grid grid-rows-[100px_auto] overflow-auto">
-
       {/* top of grid */}
       <CreateHeader currentRoute={createRoutes[2]} />
 
       {/* main content */}
       <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)] p-7 gap-4">
-        
         {/* prompt left panel */}
-        <div className={clsx("w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary p-7 rounded-lg", editorStyles.editor)}>
-          <EditorContent 
-            editor={editor}
-            className={editorStyles.editor}
-          />
+        <div
+          className={clsx(
+            "w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary p-7 rounded-lg",
+            editorStyles.editor
+          )}
+        >
+          <>
+            <EditorContent editor={editor} className={editorStyles.editor} />
+
+            {editor && (
+              <FloatingMenu
+                editor={editor}
+                tippyOptions={{ duration: 100 }}
+                className={clsx(
+                  "flex flex-row bg-light-background-tertiary dark:bg-dark-background-tertiary rounded-lg border border-light-divider dark:border-dark-divider",
+                )}
+              >
+
+                <button
+                  onClick={() =>
+                    editor.chain().focus().setParagraph().run()
+                  }
+                  className={clsx(
+                    "flex items-center justify-center w-8 h-8 rounded-lg outline-none focus:outline-emerald-300",
+                    { "bg-emerald-500 text-emerald-500 bg-opacity-30" : editor.isActive("paragraph") }
+                  )}
+                >
+                  <FiType />
+                </button>
+
+                <button
+                  onClick={() =>
+                    editor.chain().focus().toggleHeading({ level: 1 }).run()
+                  }
+                  className={clsx(
+                    "flex items-center justify-center w-8 h-8 rounded-lg outline-none focus:outline-emerald-300",
+                    { "bg-emerald-500 text-emerald-500 bg-opacity-30": editor.isActive("heading", { level: 1 }) }
+                  )}
+                >
+                H1
+                </button>
+
+                <button
+                  onClick={() =>
+                    editor.chain().focus().toggleHeading({ level: 2 }).run()
+                  }
+                  className={clsx(
+                    "flex items-center justify-center w-8 h-8 rounded-lg outline-none focus:outline-emerald-300",
+                    { "bg-emerald-500 text-emerald-500 bg-opacity-30": editor.isActive("heading", { level: 2 }) }
+                  )}
+                >
+                  H2
+                </button>
+              </FloatingMenu>
+            )}
+          </>
           {/* <textarea
             placeholder="Type a full journaling prompt..."
             className="w-full h-full bg-transparent placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-none resize-none"
@@ -79,7 +153,6 @@ const Storyboard = (props: Props) => {
                 key={index}
                 className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg border border-light-divider dark:border-dark-divider"
               >
-
                 {/* overlay  */}
                 <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
                   <FiEdit2 className="w-9 h-9 text-white" />

@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.13",
     "@tailwindcss/line-clamp": "^0.4.2",
+    "@tiptap/extension-floating-menu": "^2.0.0-beta.220",
     "@tiptap/extension-image": "^2.0.0-beta.220",
     "@tiptap/extension-placeholder": "^2.0.0-beta.220",
     "@tiptap/pm": "^2.0.0-beta.220",
