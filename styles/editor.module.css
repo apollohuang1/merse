@@ -1,0 +1,4 @@
+/* Remove outline from Tiptap editor */
+.editor .ProseMirror-focused {
+  outline: none;
+}

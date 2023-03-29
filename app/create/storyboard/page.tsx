@@ -5,6 +5,13 @@ import React from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { createRoutes } from "../layout";
 
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from "@tiptap/starter-kit";
+import Image from '@tiptap/extension-image'
+
+import editorStyles from "../../../styles/editor.module.css"
+import clsx from "clsx";
+
 type Props = {};
 
 const storyboardSamples = [
@@ -21,6 +28,20 @@ const storyboardSamples = [
 ]
 
 const Storyboard = (props: Props) => {
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Image
+    ],
+    editorProps: {
+      attributes: {
+        class: 'outline-none',
+      },
+    },
+    content: '<p>Hello World! 🌎️</p>',
+  })
+
   return (
     <div className="grid grid-rows-[100px_auto] overflow-auto">
 
@@ -31,11 +52,15 @@ const Storyboard = (props: Props) => {
       <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)] p-7 gap-4">
         
         {/* prompt left panel */}
-        <div className="w-full h-full overflow-hidden bg-light-background-secondary dark:bg-dark-background-secondary p-7 rounded-lg">
-          <textarea
+        <div className={clsx("w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary p-7 rounded-lg", editorStyles.editor)}>
+          <EditorContent 
+            editor={editor}
+            className={editorStyles.editor}
+          />
+          {/* <textarea
             placeholder="Type a full journaling prompt..."
             className="w-full h-full bg-transparent placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-none resize-none"
-          />
+          /> */}
         </div>
 
         {/* storyboard list right panel */}
