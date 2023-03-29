@@ -2,13 +2,15 @@
 
 import CreateHeader from "@/components/create/create-header";
 import React from "react";
-import { FiEdit2, FiList, FiType } from "react-icons/fi";
+import { FiEdit2, FiImage, FiList, FiType } from "react-icons/fi";
 import { TbHeading } from "react-icons/tb";
 import { createRoutes } from "../layout";
 
 import { useEditor, EditorContent, FloatingMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
+import ListItem from '@tiptap/extension-list-item'
+import BulletList from '@tiptap/extension-bullet-list'
 
 import editorStyles from "../../../styles/editor.module.css";
 import clsx from "clsx";
@@ -120,11 +122,27 @@ const Storyboard = (props: Props) => {
                   }
                   className={clsx(
                     "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 rounded-t-lg focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                    { " text-emerald-500 bg-opacity-30 font-semibold" : editor.isActive("bulletlist") }
+                    { " text-emerald-500 bg-opacity-30 font-semibold" : editor.isActive("bulletList") }
                   )}
                 >
                   <FiList />
                   <span>Bulleted List</span>
+                </button>
+
+                <button
+                  onClick={() =>
+                    window.prompt("Enter the image URL")
+                    // add image after submitting
+                    && editor.chain().focus().setImage({ src: "https://i.ytimg.com/vi/U1VcEgS0XkQ/maxresdefault.jpg" }).run()
+
+                  }
+                  className={clsx(
+                    "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
+                    { " text-emerald-500 bg-opacity-30 font-semibold" : editor.isActive("image") }
+                  )}
+                >
+                  <FiImage />
+                  <span>Image</span>
                 </button>
 
                 <button
@@ -185,9 +203,9 @@ const Storyboard = (props: Props) => {
                 className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg border border-light-divider dark:border-dark-divider"
               >
                 {/* overlay  */}
-                <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
+                {/* <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
                   <FiEdit2 className="w-9 h-9 text-white" />
-                </div>
+                </div> */}
 
                 <img
                   src={style?.artwork?.url}
