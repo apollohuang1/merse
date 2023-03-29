@@ -2,7 +2,8 @@
 
 import CreateHeader from "@/components/create/create-header";
 import React from "react";
-import { FiEdit2, FiType } from "react-icons/fi";
+import { FiEdit2, FiList, FiType } from "react-icons/fi";
+import { TbHeading } from "react-icons/tb";
 import { createRoutes } from "../layout";
 
 import { useEditor, EditorContent, FloatingMenu } from "@tiptap/react";
@@ -96,7 +97,7 @@ const Storyboard = (props: Props) => {
                 editor={editor}
                 tippyOptions={{ duration: 100 }}
                 className={clsx(
-                  "flex flex-row bg-light-background-tertiary dark:bg-dark-background-tertiary rounded-lg border border-light-divider dark:border-dark-divider",
+                  "flex flex-col absolute bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-xl",
                 )}
               >
 
@@ -105,11 +106,25 @@ const Storyboard = (props: Props) => {
                     editor.chain().focus().setParagraph().run()
                   }
                   className={clsx(
-                    "flex items-center justify-center w-8 h-8 rounded-lg outline-none focus:outline-emerald-300",
-                    { "bg-emerald-500 text-emerald-500 bg-opacity-30" : editor.isActive("paragraph") }
+                    "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 rounded-t-lg focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
+                    { " text-emerald-500 bg-opacity-30 font-semibold" : editor.isActive("paragraph") }
                   )}
                 >
                   <FiType />
+                  <span>Text</span>
+                </button>
+
+                <button
+                  onClick={() =>
+                    editor.chain().focus().toggleBulletList().run()
+                  }
+                  className={clsx(
+                    "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 rounded-t-lg focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
+                    { " text-emerald-500 bg-opacity-30 font-semibold" : editor.isActive("bulletlist") }
+                  )}
+                >
+                  <FiList />
+                  <span>Bulleted List</span>
                 </button>
 
                 <button
@@ -117,11 +132,13 @@ const Storyboard = (props: Props) => {
                     editor.chain().focus().toggleHeading({ level: 1 }).run()
                   }
                   className={clsx(
-                    "flex items-center justify-center w-8 h-8 rounded-lg outline-none focus:outline-emerald-300",
-                    { "bg-emerald-500 text-emerald-500 bg-opacity-30": editor.isActive("heading", { level: 1 }) }
+                    "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
+                    { "text-emerald-500 bg-opacity-30 font-semibold": editor.isActive("heading", { level: 1 }) }
                   )}
                 >
-                H1
+
+                  <TbHeading />
+                  <span>Heading 1</span>
                 </button>
 
                 <button
@@ -129,11 +146,25 @@ const Storyboard = (props: Props) => {
                     editor.chain().focus().toggleHeading({ level: 2 }).run()
                   }
                   className={clsx(
-                    "flex items-center justify-center w-8 h-8 rounded-lg outline-none focus:outline-emerald-300",
-                    { "bg-emerald-500 text-emerald-500 bg-opacity-30": editor.isActive("heading", { level: 2 }) }
+                    "flex flew-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
+                    { "text-emerald-500 bg-opacity-30 font-semibold": editor.isActive("heading", { level: 2 }) }
                   )}
                 >
-                  H2
+                  <TbHeading />
+                  <span>Heading 2</span>
+                </button>
+
+                <button
+                  onClick={() =>
+                    editor.chain().focus().toggleHeading({ level: 3 }).run()
+                  }
+                  className={clsx(
+                    "flex flex-row items-center justify-start rounded-b-lg outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
+                    { "text-emerald-500 bg-opacity-30 font-semibold": editor.isActive("heading", { level: 3 }) }
+                  )}
+                >
+                  <TbHeading />
+                  <span>Heading 3</span>
                 </button>
               </FloatingMenu>
             )}
