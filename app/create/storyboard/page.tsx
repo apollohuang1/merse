@@ -7,7 +7,7 @@ import { createRoutes } from "../layout";
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from "@tiptap/starter-kit";
-import Image from '@tiptap/extension-image'
+import Image from '@tiptap/extension-image';
 
 import editorStyles from "../../../styles/editor.module.css"
 import clsx from "clsx";
@@ -31,8 +31,15 @@ const Storyboard = (props: Props) => {
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
-      Image
+      StarterKit.configure({
+        heading: {
+          HTMLAttributes: {
+            class: 'text-light-text-primary dark:text-dark-text-primary',
+          },
+          levels: [1, 2, 3],
+        }
+      }),
+      Image,
     ],
     editorProps: {
       attributes: {

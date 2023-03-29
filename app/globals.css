@@ -11,6 +11,16 @@
   span, p {
     /* @apply text-light-text-primary dark:text-dark-text-primary; */
   }
+
+  h1 {
+    @apply text-2xl font-semibold;
+  }
+  h2 {
+    @apply text-xl font-semibold;
+  }
+  h3 {
+    @apply text-lg font-semibold;
+  }
 }
 
 /* :root {
