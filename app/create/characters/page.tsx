@@ -110,15 +110,15 @@ const CreateCharacterPage = (props: Props) => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute z-10 w-56 origin-bottom-left bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none">
+                    <Menu.Items className="absolute z-10 w-56 origin-bottom-left bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none rounded-lg">
                       <Menu.Item>
                         {({ active }) => (
                           <div
                             className={clsx(
-                              "flex flex-row items-center px-4 relative text-sm h-12 border-b border-b-light-divider dark:border-b-dark-divider cursor-pointer",
+                              "flex flex-row items-center px-4 relative text-sm h-12 border-b border-b-light-divider dark:border-b-dark-divider cursor-pointer rounded-t-lg",
                               {
                                 "bg-light-background-tertiary dark:bg-dark-background-tertiary":
-                                  active,
+                                active,
                               }
                             )}
                           >
@@ -147,7 +147,7 @@ const CreateCharacterPage = (props: Props) => {
                               setNewCharacterImageURL("");
                             }}
                             className={clsx(
-                              "flex flex-row items-center px-4 text-sm text-light-red dark:text-dark-red cursor-pointer h-12",
+                              "flex flex-row items-center px-4 text-sm text-light-red dark:text-dark-red cursor-pointer h-12 rounded-b-lg",
                               {
                                 "bg-light-background-tertiary dark:bg-dark-background-tertiary":
                                   active,
