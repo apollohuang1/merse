@@ -31,7 +31,7 @@ userInterface.on("line", async input => {
   })
 
   const generatedText = response.data.choices[0].message.content
-  console.log(generatedText)
+  console.log(generatedText) //output = generated text
 
   //new
   //__dirname here: "/Users/eemilyparkk/Documents/GitHub/comics/gpt3.5-testing/chat-gpt-api-main"
