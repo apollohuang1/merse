@@ -11,6 +11,7 @@ import {
   EditorContent,
   FloatingMenu,
   JSONContent,
+  BubbleMenu,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -56,7 +57,6 @@ const Storyboard = (props: Props) => {
         width: 2,
         class: " rounded-full transition-all",
       }),
-      // Gapcursor,
     ],
     editorProps: {
       attributes: {
@@ -154,7 +154,7 @@ const Storyboard = (props: Props) => {
                       editor.chain().focus().toggleBulletList().run()
                     }
                     className={clsx(
-                      "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 rounded-t-lg focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
+                      "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
                       {
                         " text-emerald-500 bg-opacity-30 font-semibold":
                           editor.isActive("bulletList"),
@@ -228,6 +228,96 @@ const Storyboard = (props: Props) => {
                   </button>
                 </FloatingMenu>
               )}
+
+              {editor && (
+                <BubbleMenu
+                  editor={editor}
+                  tippyOptions={{ duration: 100 }}
+                  className="flex flex-row bg-light-background-primary dark:bg-dark-background-primary rounded-lg drop-shadow-2xl border border-light-divider dark:border-dark-divider h-8"
+                >
+                  <button
+                    onClick={() =>
+                      editor.chain().focus().setHeading({level: 1 }).run()
+                    }
+                    className={clsx(
+                      "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
+                      {
+                        " text-emerald-500 bg-opacity-30":
+                          editor.isActive("heading", { level: 1 }),
+                      }
+                    )}
+                  >
+                    H1
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      editor.chain().focus().setHeading({ level: 2 }).run()
+                    }
+                    className={clsx(
+                      "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
+                      {
+                        " text-emerald-500 bg-opacity-30":
+                          editor.isActive("heading", { level: 2 }),
+                      }
+                    )}
+                  >
+                    H2
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      editor.chain().focus().setHeading({ level: 3 }).run()
+                    }
+                    className={clsx(
+                      "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
+                      {
+                        " text-emerald-500 bg-opacity-30":
+                          editor.isActive("heading", { level: 3 }),
+                      }
+                    )}
+                  >
+                    H3
+                  </button>
+
+                  <button
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    className={clsx(
+                      "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
+                      {
+                        " text-emerald-500 bg-opacity-30":
+                          editor.isActive("bold"),
+                      }
+                    )}
+                  >
+                    bold
+                  </button>
+                  <button
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    className={clsx(
+                      "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
+                      {
+                        " text-emerald-500 bg-opacity-30":
+                          editor.isActive("italic"),
+                      }
+                    )}
+                  >
+                    italic
+                  </button>
+                  <button
+                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                    className={clsx(
+                      "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
+                      {
+                        " text-emerald-500 bg-opacity-30":
+                          editor.isActive("strike"),
+                      }
+                    )}
+                  >
+                    strike
+                  </button>
+                </BubbleMenu>
+              )}
             </div>
           </div>
 
@@ -254,7 +344,7 @@ const Storyboard = (props: Props) => {
                   {/* story line in storyboard */}
                   <div className="flex p-4">
                     <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                      { style?.description }
+                      {style?.description}
                       {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                       sed do eiusmod tempor incididunt ut labore et dolore magna
                       aliqua. Ut enim ad minim veniam, quis nostrud exercitation
