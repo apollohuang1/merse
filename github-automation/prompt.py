@@ -10,12 +10,7 @@ import pyautogui as pg
 import os
 import sys
 
-#load_dotenv()
 discord_token = "MTA5MDAyOTI5MzgyNTk3MDE5Ng.Gk5khM.6IYZ9ESYZRC5fgHMRrfWxcoA73Ek56jENMBpgU"
-#client = commands.Bot(command_prefix="*", intents=discord.Intents.all())
-
-# Using readlines()
-
 
 # new start: -------------------------------------------------------------------------------- ###
 dirname = os.path.dirname(__file__)
@@ -46,8 +41,6 @@ async def on_ready():
     #uncomment: print(message)
 
     while prompt_counter < len(prompts): #22 while ...
-        # Start Automation by typing "automation" in the discord channel
-        #if msg == None:
 
         time.sleep(3)
         pg.press('tab')
@@ -67,19 +60,8 @@ async def on_ready():
             await client.close()
             await client.logout()
             sys.exit()
-        
-        
-        """
-        if prompt_counter >= len(prompts): #22, >=
-            print("Finished Midjourney!")
-            print("All prompts completed. Quitting...")
-            #quit()
-            await client.close()
-        """
-
 
         # continue Automation as soon Midjourney bot sends a message with attachment.
-
         """
         for attachment in message.attachments:
             time.sleep(3)

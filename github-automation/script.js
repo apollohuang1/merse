@@ -12,10 +12,6 @@ import.meta.url
 import { fileURLToPath } from 'url';
 import { spawn } from 'child_process'; // import spawn
 
-
-//const __dirname = path.dirname(fileURLToPath(import.meta.url));
-//console.log('__dirname:', __dirname);
-
 const openAi = new OpenAIApi(
   new Configuration({
     apiKey: process.env.OPEN_AI_API_KEY,
