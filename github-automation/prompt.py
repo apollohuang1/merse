@@ -3,13 +3,26 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 import pyautogui as pg
+import os
+
 
 
 discord_token = "MTA5MDAyOTI5MzgyNTk3MDE5Ng.Gk5khM.6IYZ9ESYZRC5fgHMRrfWxcoA73Ek56jENMBpgU"
 
 # Using readlines()
-prompt_file = open('prompts.txt', 'r') 
-prompts = prompt_file.readlines()
+
+
+# new start:
+dirname = os.path.dirname(__file__)
+path = os.path.join(dirname, '/Users/eemilyparkk/Documents/GitHub/comics/github-automation/chat-gpt-api-main/prompt.txt')
+
+with open(path, 'r') as prompt_file:
+    prompts = prompt_file.readlines()
+# new end
+
+
+#uncomment: prompt_file = open('prompt.txt', 'r')   
+#uncomment: prompts = prompt_file.readlines()
 
 prompt_counter = 0
 
@@ -34,7 +47,7 @@ async def on_message(message):
             time.sleep(3)
             pg.press('tab')
             for i in range(1):
-                time.sleep(3)
+                #time.sleep(3)
                 pg.write('/imagine')
                 time.sleep(5)
                 pg.press('tab')
