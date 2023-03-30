@@ -109,20 +109,24 @@ const Storyboard = (props: Props) => {
           {/* prompt left panel */}
           <div
             className={clsx(
-              "flex flex-col w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary bg-opacity-50 dark:bg-opacity-80 border border-light-divider dark:border-dark-divider rounded-t-lg",
+              "flex flex-col w-full h-full overflow-auto bg-light-background-secondary bg-opacity-30 dark:bg-opacity-70 dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-t-lg",
               editorStyles.editor
             )}
           >
-            <div className="flex flex-row bg-light-background-secondary dark:bg-dark-background-secondary px-7 py-3 items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider">
-              <div></div>
+            <div className="flex flex-row bg-light-background-secondary dark:bg-dark-background-secondary p-2 items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider">
 
-              <button className=" text-light-text-primary dark:text-dark-text-primary rounded-lg">
+              {/* editor toolbar */}
+              <div className="flex flex-row">
+              </div>
+
+              <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium">
                 Generate
               </button>
 
             </div>
 
             <div className="w-full h-full overflow-auto p-7">
+              
               <EditorContent editor={editor} className={editorStyles.editor} />
 
               {editor && (
