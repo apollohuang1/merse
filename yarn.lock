@@ -282,6 +282,11 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-document/-/extension-document-2.0.0-beta.220.tgz#15b4db7a92659eff7efc6d4d877dcf72e3fd61b6"
   integrity sha512-2sja4ZvOb4iynHrzinnclCSFgLyo6fJc1fBV5fIYaOgZOYcvz9KK8fgKiq+wIpG58sJEmQ5kcwwBlkXv+NTK+g==
 
+"@tiptap/extension-dropcursor@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-dropcursor/-/extension-dropcursor-2.0.0.tgz#1864ed5d13a0810f8926435a26afe06489d91f49"
+  integrity sha512-is3G7oCGLJum+KSaeYJNrtvqADndgfWhF6zbLEthXDK/sK4BgoeDfDs7cmIDaJyDStWnsVSGyh06iU27IqxaMA==
+
 "@tiptap/extension-dropcursor@^2.0.0-beta.220":
   version "2.0.0-beta.220"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-dropcursor/-/extension-dropcursor-2.0.0-beta.220.tgz#b635fa6cdf9be1027579c7ab6c00e5a811b3b30b"
@@ -293,6 +298,11 @@
   integrity sha512-+WfcBEedm82ntaVIEQAGz0Om96Rpav7a+4f7e8N4PrLKm6nZ3gBaEkZVQ6vjJ6S/1htiWCv1XosYIwRboPBG0w==
   dependencies:
     tippy.js "^6.3.7"
+
+"@tiptap/extension-gapcursor@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-gapcursor/-/extension-gapcursor-2.0.0.tgz#21fb462ea3f81fc219082de8b625b5f6c67055f0"
+  integrity sha512-in+6aY9oc3rQZP8/N5p7+exqrXKjBP5eFOSTEK+3Fzhgz7YWOXHadOUzDQi0pwidHu71NwyU/fGx6MbV+AnlUQ==
 
 "@tiptap/extension-gapcursor@^2.0.0-beta.220":
   version "2.0.0-beta.220"

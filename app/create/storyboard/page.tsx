@@ -9,12 +9,15 @@ import { createRoutes } from "../layout";
 import { useEditor, EditorContent, FloatingMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
-import ListItem from '@tiptap/extension-list-item'
-import BulletList from '@tiptap/extension-bullet-list'
+import ListItem from "@tiptap/extension-list-item";
+import BulletList from "@tiptap/extension-bullet-list";
+import DropCursor from "@tiptap/extension-dropcursor";
+import Gapcursor from "@tiptap/extension-gapcursor";
 
 import editorStyles from "../../../styles/editor.module.css";
 import clsx from "clsx";
 import Modal from "@/components/modal";
+import Placeholder from "@tiptap/extension-placeholder";
 
 type Props = {};
 
@@ -56,8 +59,8 @@ const storyboardSamples = [
 ];
 
 const Storyboard = (props: Props) => {
-
-  const [showAddingImageModal, setShowAddingImageModal] = React.useState<boolean>(false);
+  const [showAddingImageModal, setShowAddingImageModal] =
+    React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
 
   const editor = useEditor({
@@ -70,7 +73,21 @@ const Storyboard = (props: Props) => {
           levels: [1, 2, 3],
         },
       }),
-      Image,
+      Placeholder.configure({
+        placeholder: "Write your storyboard here...",
+        emptyEditorClass: "is-editor-empty",
+      }),
+      Image.configure({
+        inline: true,
+        allowBase64: true,
+        HTMLAttributes: {},
+      }),
+      DropCursor.configure({
+        color: "#10b981",
+        width: 2,
+        class: " rounded-full transition-all",
+      }),
+      Gapcursor,
     ],
     editorProps: {
       attributes: {
@@ -80,7 +97,6 @@ const Storyboard = (props: Props) => {
     // content: "<h1>Hello World! 🌎️</h1>",
   });
 
-
   return (
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
@@ -88,15 +104,25 @@ const Storyboard = (props: Props) => {
         <CreateHeader currentRoute={createRoutes[2]} />
 
         {/* main content */}
-        <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)] p-7 gap-4">
+        <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)] px-4 gap-4">
+
           {/* prompt left panel */}
           <div
             className={clsx(
-              "w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary p-7 rounded-lg",
+              "flex flex-col w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary bg-opacity-50 dark:bg-opacity-80 border border-light-divider dark:border-dark-divider rounded-t-lg",
               editorStyles.editor
             )}
           >
-            <>
+            <div className="flex flex-row bg-light-background-secondary dark:bg-dark-background-secondary px-7 py-3 items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider">
+              <div></div>
+
+              <button className=" text-light-text-primary dark:text-dark-text-primary rounded-lg">
+                Generate
+              </button>
+
+            </div>
+
+            <div className="w-full h-full overflow-auto p-7">
               <EditorContent editor={editor} className={editorStyles.editor} />
 
               {editor && (
@@ -104,17 +130,17 @@ const Storyboard = (props: Props) => {
                   editor={editor}
                   tippyOptions={{ duration: 100 }}
                   className={clsx(
-                    "flex flex-col absolute bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-xl",
+                    "flex flex-col bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-xl translate-y-[calc(50%+16px)] -translate-x-3"
                   )}
                 >
-
                   <button
-                    onClick={() =>
-                      editor.chain().focus().setParagraph().run()
-                    }
+                    onClick={() => editor.chain().focus().setParagraph().run()}
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 rounded-t-lg focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                      { " text-emerald-500 bg-opacity-30 font-semibold" : editor.isActive("paragraph") }
+                      {
+                        " text-emerald-500 bg-opacity-30 font-semibold":
+                          editor.isActive("paragraph"),
+                      }
                     )}
                   >
                     <FiType />
@@ -127,7 +153,10 @@ const Storyboard = (props: Props) => {
                     }
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 rounded-t-lg focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                      { " text-emerald-500 bg-opacity-30 font-semibold" : editor.isActive("bulletList") }
+                      {
+                        " text-emerald-500 bg-opacity-30 font-semibold":
+                          editor.isActive("bulletList"),
+                      }
                     )}
                   >
                     <FiList />
@@ -135,12 +164,13 @@ const Storyboard = (props: Props) => {
                   </button>
 
                   <button
-                    onClick={() =>
-                      setShowAddingImageModal(true)
-                    }
+                    onClick={() => setShowAddingImageModal(true)}
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                      { " text-emerald-500 bg-opacity-30 font-semibold" : editor.isActive("image") }
+                      {
+                        " text-emerald-500 bg-opacity-30 font-semibold":
+                          editor.isActive("image"),
+                      }
                     )}
                   >
                     <FiImage />
@@ -153,10 +183,12 @@ const Storyboard = (props: Props) => {
                     }
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                      { "text-emerald-500 bg-opacity-30 font-semibold": editor.isActive("heading", { level: 1 }) }
+                      {
+                        "text-emerald-500 bg-opacity-30 font-semibold":
+                          editor.isActive("heading", { level: 1 }),
+                      }
                     )}
                   >
-
                     <TbHeading />
                     <span>Heading 1</span>
                   </button>
@@ -167,7 +199,10 @@ const Storyboard = (props: Props) => {
                     }
                     className={clsx(
                       "flex flew-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                      { "text-emerald-500 bg-opacity-30 font-semibold": editor.isActive("heading", { level: 2 }) }
+                      {
+                        "text-emerald-500 bg-opacity-30 font-semibold":
+                          editor.isActive("heading", { level: 2 }),
+                      }
                     )}
                   >
                     <TbHeading />
@@ -180,7 +215,10 @@ const Storyboard = (props: Props) => {
                     }
                     className={clsx(
                       "flex flex-row items-center justify-start rounded-b-lg outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                      { "text-emerald-500 bg-opacity-30 font-semibold": editor.isActive("heading", { level: 3 }) }
+                      {
+                        "text-emerald-500 bg-opacity-30 font-semibold":
+                          editor.isActive("heading", { level: 3 }),
+                      }
                     )}
                   >
                     <TbHeading />
@@ -188,16 +226,12 @@ const Storyboard = (props: Props) => {
                   </button>
                 </FloatingMenu>
               )}
-            </>
-            {/* <textarea
-              placeholder="Type a full journaling prompt..."
-              className="w-full h-full bg-transparent placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-none resize-none"
-            /> */}
+            </div>
           </div>
 
           {/* storyboard list right panel */}
           <div className="flex flex-col w-full h-full overflow-auto rounded-lg">
-            <div className="flex flex-col max-md:flex max-md:flex-col w-full h-full gap-4">
+            <div className="grid grid-cols-2 max-md:flex max-md:flex-col w-full gap-4">
               {/* story card */}
               {storyboardSamples.map((style, index) => (
                 <div
@@ -218,8 +252,8 @@ const Storyboard = (props: Props) => {
                   {/* story line in storyboard */}
                   <div className="flex p-4">
                     <p className="text-light-text-primary dark:text-dark-text-primary">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                      do eiusmod tempor incididunt ut labore et dolore magna
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
                       aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                       ullamco laboris nisi ut aliquip ex ea commodo consequat.
                       Duis aute irure dolor in reprehenderit in voluptate velit
@@ -233,34 +267,37 @@ const Storyboard = (props: Props) => {
         </div>
       </div>
 
-      <Modal 
+      <Modal
         isOpen={showAddingImageModal}
         onClose={() => setShowAddingImageModal(false)}
-        title="Paste Image Link"
+        title="Embed Image"
       >
         <div className="flex flex-col w-full h-full">
-
           <form
             onSubmit={(e) => {
               e.preventDefault();
               if (editor) {
-                editor.chain().focus().setImage({ src: addingImageURL }).run()
+                editor.chain().focus().setImage({ src: addingImageURL }).run();
               }
               setShowAddingImageModal(false);
               setAddingImageURL("");
             }}
           >
             <input
-              type="text" 
+              type="text"
               value={addingImageURL}
+              placeholder="Paste the image link..."
               onChange={(e) => setAddingImageURL(e.target.value)}
-              className="flex flex-row w-full h-11 px-4 rounded-lg bg-transparent border border-light-divider dark:border-dark-divider focus:outline-emerald-500 focus:outline-1 outline-none transition-all text-light-text-primary dark:text-dark-text-primary"
+              className="flex flex-row w-full h-11 px-4 rounded-lg bg-transparent border border-light-divider dark:border-dark-divider focus:outline-emerald-500 focus:outline-1 outline-none transition-all text-light-text-primary dark:text-dark-text-primary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
             />
           </form>
 
           {/* cancel and add buttons on the right hand side */}
           <div className="flex flex-row w-full h-12 gap-2 mt-4 justify-end">
             <button
+              onClick={() => {
+                setShowAddingImageModal(false);
+              }}
               className="flex flex-row h-10 w-20 rounded-full outline-none transition-all text-light-text-primary dark:text-dark-text-primary items-center justify-center"
             >
               Cancel
@@ -270,7 +307,11 @@ const Storyboard = (props: Props) => {
               onClick={() => {
                 if (editor) {
                   // editor.chain().focus().setImage({ src: "https://i.ytimg.com/vi/U1VcEgS0XkQ/maxresdefault.jpg" }).run()
-                  editor.chain().focus().setImage({ src: addingImageURL }).run()
+                  editor
+                    .chain()
+                    .focus()
+                    .setImage({ src: addingImageURL })
+                    .run();
                 }
                 setShowAddingImageModal(false);
               }}
