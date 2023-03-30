@@ -6,7 +6,12 @@ import { FiEdit2, FiImage, FiList, FiType } from "react-icons/fi";
 import { TbHeading } from "react-icons/tb";
 import { createRoutes } from "../layout";
 
-import { useEditor, EditorContent, FloatingMenu } from "@tiptap/react";
+import {
+  useEditor,
+  EditorContent,
+  FloatingMenu,
+  JSONContent,
+} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import ListItem from "@tiptap/extension-list-item";
@@ -51,7 +56,7 @@ const Storyboard = (props: Props) => {
         width: 2,
         class: " rounded-full transition-all",
       }),
-      Gapcursor,
+      // Gapcursor,
     ],
     editorProps: {
       attributes: {
@@ -61,6 +66,35 @@ const Storyboard = (props: Props) => {
     // content: "<h1>Hello World! 🌎️</h1>",
   });
 
+  const generateStoryboard = () => {
+    if (editor) {
+      const editorJSON = editor.getJSON();
+      const textContent = convertTiptapJSONToText(editorJSON);
+      // const prompt = await generatePromptFromChatGPT(textContent);
+      console.log(textContent);
+    } else {
+      // handle blank editor
+    }
+  };
+
+  function convertTiptapJSONToText(tiptapJSON: JSONContent): string {
+    const { content } = tiptapJSON;
+    let text = "";
+
+    content?.forEach((node: any) => {
+      if (node.type === "text") {
+        text += node.text;
+      } else if (node.type === "image") {
+        // Include the image source as part of the text
+        text += `[IMAGE: ${node.attrs.src}]`;
+      } else if (node.content) {
+        text += convertTiptapJSONToText(node);
+      }
+    });
+
+    return text;
+  }
+
   return (
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
@@ -69,7 +103,6 @@ const Storyboard = (props: Props) => {
 
         {/* main content */}
         <div className="grid grid-cols-2 w-full h-[calc(100vh-100px)] px-4 gap-4">
-
           {/* prompt left panel */}
           <div
             className={clsx(
@@ -78,19 +111,20 @@ const Storyboard = (props: Props) => {
             )}
           >
             <div className="flex flex-row bg-light-background-secondary dark:bg-dark-background-secondary p-2 items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider">
-
               {/* editor toolbar */}
-              <div className="flex flex-row">
-              </div>
+              <div className="flex flex-row"></div>
 
-              <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium">
+              <button
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
+                onClick={() => {
+                  generateStoryboard();
+                }}
+              >
                 Generate
               </button>
-
             </div>
 
             <div className="w-full h-full overflow-auto p-7">
-              
               <EditorContent editor={editor} className={editorStyles.editor} />
 
               {editor && (
@@ -199,7 +233,7 @@ const Storyboard = (props: Props) => {
 
           {/* storyboard list right panel */}
           <div className="flex flex-col w-full h-full overflow-auto rounded-lg">
-            <div className="grid grid-cols-2 max-md:flex max-md:flex-col w-full gap-4">
+            <div className="grid grid-cols-2 w-full gap-4 max-xl:flex max-xl:flex-col">
               {/* story card */}
               {storyboardSamples.map((style, index) => (
                 <div
@@ -219,13 +253,14 @@ const Storyboard = (props: Props) => {
 
                   {/* story line in storyboard */}
                   <div className="flex p-4">
-                    <p className="text-light-text-primary dark:text-dark-text-primary">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
+                      { style?.description }
+                      {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                       sed do eiusmod tempor incididunt ut labore et dolore magna
                       aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                       ullamco laboris nisi ut aliquip ex ea commodo consequat.
                       Duis aute irure dolor in reprehenderit in voluptate velit
-                      esse cillum dolore eu fugiat nulla pariatur.
+                      esse cillum dolore eu fugiat nulla pariatur. */}
                     </p>
                   </div>
                 </div>

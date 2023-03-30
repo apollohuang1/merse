@@ -381,40 +381,66 @@ export const comicStyles: ComicStyle[] = [
 
 
 
+export type StoryboardSample = {
+  artwork: {
+    url: string,
+  },
+  description?: string,
+}
 
-export const storyboardSamples = [
+export const storyboardSamples: StoryboardSample[] = [
   {
     artwork: {
       url: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg",
     },
+    description: "I lay here in bed with my laptop, my boyfriend by my side, I feel an overwhelming sense of contentment. The world outside our window is a beautiful blur of lights and colors, but it's the warmth of his body next to mine that fills me with happiness. He's hugging his pillow, lost in thought, but I know he's there for me if I need him. It's these small moments of togetherness that make our relationship so special to me. We don't need grand gestures or elaborate plans to be happy - just being here, together, is enough. As I work on my laptop, typing away at the keys, I can feel his gentle breath on my neck, and it fills me with a sense of love and belonging. In his embrace, I feel safe and secure, and I know that no matter what life may throw our way, we'll face it together. Looking out at the city skyline, I am reminded of the vastness and beauty of the world, and how lucky I am to have him by my side to share it all. In this moment, there is nowhere else I'd rather be than here, in bed with my laptop and my love, surrounded by the warmth of our affection."
   },
   {
     artwork: {
       url: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg",
     },
+    description: "We sit here by the window, looking out at the cozy town below, our cat curled up between us, I can't help but feel grateful for this moment of peace and tranquility. The world outside may be chaotic and unpredictable, but here in our little bubble, everything feels just right. The town below is a beautiful tapestry of colors and lights, and the gentle hum of life below fills me with a sense of comfort and belonging. As we sit here, lost in our own thoughts, I am reminded of the beauty of the present moment, and how lucky I am to be able to share it with the ones I love. Our cat purrs contentedly between us, a symbol of the love and warmth that surrounds us in this cozy space. Looking out at the world below, with its bustling energy and endless possibilities, I am filled with a sense of hope and possibility, and I know that whatever the future may hold, we'll face it together, with love and resilience."
   },
   {
     artwork: {
       url: "https://i.pinimg.com/736x/40/b5/ff/40b5ff11e9226543c9287ffde1bba69f.jpg",
     },
+    description: "I sit here in my room, FaceTiming with my boyfriend, I can't help but feel a sense of connection and warmth. Even though we may be miles apart, technology has allowed us to bridge the distance and share in each other's lives. As we talk, sharing stories and laughter, I feel his presence with me, even though he's not physically here. It's moments like these that make me appreciate the power of love and human connection, and how even the simplest interactions can bring so much joy and happiness. Looking at his smiling face on the screen, I am reminded of the beauty and depth of our relationship, and how lucky I am to have him in my life. Even though we may be apart for now, I know that our love will only grow stronger with time and distance, and that no matter where life may take us, we'll always have each other to lean on. As we say our goodbyes, promising to talk again soon, I feel a sense of warmth and contentment wash over me, grateful for the technology that brings us closer together and the love that binds us forever."
   },
-  { artwork: { url: "https://i.ytimg.com/vi/d5VBJhlbtnk/maxresdefault.jpg" } },
+  { 
+    artwork: {
+     url: "https://i.ytimg.com/vi/d5VBJhlbtnk/maxresdefault.jpg"
+    },
+    description: "I walk through the library, scanning the shelves for a book to read, I catch a glimpse of my boyfriend on the other side of the bookshelf. Our eyes meet through the gaps in the books, and a smile spreads across our faces. It feels like we're the only ones in the library, lost in our own little world. I walk around the bookshelf, and we embrace each other tightly, our arms wrapping around each other's waist. The quiet hush of the library surrounds us, but it's as if the world has disappeared, leaving only us behind. In his arms, I feel safe and loved, and I know that no matter what life may throw our way, we'll always have each other to lean on. As we break apart, our eyes still locked in a deep gaze, I feel grateful for this simple yet meaningful moment of connection and love."
+  },
   {
     artwork: {
       url: "https://static.boredpanda.com/blog/wp-content/uploads/2016/06/love-is-illustrations-korea-puuung-98-574fed60683c4__880.jpg",
     },
+    description: "The rain comes down hard, but we take off running, hand in hand, laughing and splashing through puddles. We're soaked to the bone, but we don't care. As we reach our doorstep, we share a deep kiss, knowing that this is where we belong - together, in the safety and comfort of our love."
   },
   {
     artwork: {
       url: "https://e1.pxfuel.com/desktop-wallpaper/522/148/desktop-wallpaper-puuung-on-instagram-coffee-time-1%EF%B8%8F%E2%83%A3-an-art-print-greeting-card-and-post-card-are-available-on-redbubble-puuung1-redbub%E2%80%A6-puuung.jpg",
     },
+    description: "We sit across from each other at the coffee shop, our eyes locked in a deep gaze. The bustling world around us fades away, leaving only the warmth of our connection. His smile, his eyes, his touch - everything about him fills me with joy. As we finish our coffee and say our goodbyes, I feel grateful for this moment of love and connection."
   },
   {
     artwork: {
       url: "https://ninisencoree.files.wordpress.com/2020/04/kakaotalk_20200411_174604120.jpg",
     },
+    description: "We sit on the couch, huddled under a warm blanket, gazing up at the starry sky. A shooting star streaks across the sky, leaving a trail of light in its wake. We gasp in awe, our eyes locked on the fading light. In this moment, it feels like the whole universe has come alive. We hold each other tightly, grateful for this moment of love and connection under the starry night sky."
   },
-  { artwork: { url: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg" } },
-  { artwork: { url: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg" } },
-  { artwork: { url: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg" } },
+  { 
+    artwork: { url: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg" },
+    description: "We sit together in the cozy room, lost in our books, with the beautiful beach scene outside. Our cat sits between us, captivated by the view. As we turn the pages, I'm reminded of how much I love being with him. Even in silence, there's an unspoken connection between us. As we finish our books, we turn to each other, our eyes locking in a deep gaze. The beauty of the beach pales in comparison to the beauty of our love, and I know that as long as we're together, everything will fall into place."
+  },
+  { 
+    artwork: { url: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg" },
+    description: "She looks stunning on the phone, and I'm speechless. Even after all this time, her beauty still leaves me in awe. I'm grateful for technology that keeps us connected, and seeing her face fills me with a sense of comfort and belonging. Our love is strong enough to endure the distance between us. As she finishes her call and looks up at me, I'm reminded of how much I love her. In this moment, I feel grateful for her presence in my life, and I know that our love will always endure."
+  },
+  { 
+    artwork: { url: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg" },
+    description: "Walking along, we spot something small and curious on the ground. We don't know what it is, but its intricate design leaves us fascinated. As we examine it, I'm struck by the depth of our connection. Even in moments of uncertainty, our love and shared sense of wonder bring us closer together. We take it home as a keepsake, its mystery only adding to its allure. I'm grateful for the small moments of discovery and adventure that we share, and I know that no matter what happens, our love will always lead us on new and exciting journeys."
+  },
 ];
