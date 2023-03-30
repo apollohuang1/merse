@@ -1,3 +1,6 @@
+/**
+ * Runs GPT3.5 (chatgpt api)
+ */
 import { config } from "dotenv"
 config()
 

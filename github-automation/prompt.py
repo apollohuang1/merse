@@ -1,3 +1,6 @@
+"""
+Runs Midjourney Discord bot (automation tools)
+"""
 import time
 import discord
 from discord.ext import commands
