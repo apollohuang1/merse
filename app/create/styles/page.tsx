@@ -37,7 +37,7 @@ const Styles = (props: Props) => {
             <button
               key={index}
               className={clsx(
-                "flex aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-emerald-500 hover:rounded-lg",
+                "flex relative aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-emerald-500 hover:rounded-lg border border-light-divider dark:border-dark-divider",
                 {
                   "ring-4 ring-emerald-500 rounded-lg": style.artist === selectedStyle?.artist,
                 },
@@ -58,6 +58,12 @@ const Styles = (props: Props) => {
                 src={style?.artwork?.url}
                 className={clsx("w-full h-full object-cover rounded-lg")}
               />
+
+              <div className="absolute flex flex-col w-full h-full items-center justify-end">
+                {/* <span className="text-white text-sm font-bold px-2 rounded-full backdrop-blur-xl bg-[rgb(50,50,50,0.8)]"> */}
+                  {/* {style.artist} */}
+                {/* </span> */}
+              </div>
             </button>
           ))}
 
