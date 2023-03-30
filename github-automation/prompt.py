@@ -9,6 +9,27 @@ import pygetwindow as gw
 import pyautogui as pg
 import os
 import sys
+import re
+
+
+# Read the content of the file
+with open('prompt.txt', 'r') as file:
+    content = file.read()
+
+# Use regular expression to extract text inside parentheses for all panels
+matches = re.findall(r'\((.*?)\)', content)
+#matches = re.findall(r'\[(.*?)\]|\((.*?)\)', content)
+
+# Create a new string with the extracted text and "in the style of" at the end of each panel's text
+new_content = ''
+for i, text in enumerate(matches):
+    new_content += f'(Panel {i+1}: {text.strip()} in the style of)\n'
+
+# Overwrite the file with the new string
+with open('prompt.txt', 'w') as file:
+    file.write(new_content)
+
+#------------------------------------------------------------------------------------------- ###
 
 discord_token = "MTA5MDAyOTI5MzgyNTk3MDE5Ng.Gk5khM.6IYZ9ESYZRC5fgHMRrfWxcoA73Ek56jENMBpgU"
 
