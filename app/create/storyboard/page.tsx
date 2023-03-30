@@ -18,45 +18,9 @@ import editorStyles from "../../../styles/editor.module.css";
 import clsx from "clsx";
 import Modal from "@/components/modal";
 import Placeholder from "@tiptap/extension-placeholder";
+import { storyboardSamples } from "@/util/create-samples";
 
 type Props = {};
-
-const storyboardSamples = [
-  {
-    artwork: {
-      url: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg",
-    },
-  },
-  {
-    artwork: {
-      url: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg",
-    },
-  },
-  {
-    artwork: {
-      url: "https://i.pinimg.com/736x/40/b5/ff/40b5ff11e9226543c9287ffde1bba69f.jpg",
-    },
-  },
-  { artwork: { url: "https://i.ytimg.com/vi/d5VBJhlbtnk/maxresdefault.jpg" } },
-  {
-    artwork: {
-      url: "https://static.boredpanda.com/blog/wp-content/uploads/2016/06/love-is-illustrations-korea-puuung-98-574fed60683c4__880.jpg",
-    },
-  },
-  {
-    artwork: {
-      url: "https://e1.pxfuel.com/desktop-wallpaper/522/148/desktop-wallpaper-puuung-on-instagram-coffee-time-1%EF%B8%8F%E2%83%A3-an-art-print-greeting-card-and-post-card-are-available-on-redbubble-puuung1-redbub%E2%80%A6-puuung.jpg",
-    },
-  },
-  {
-    artwork: {
-      url: "https://ninisencoree.files.wordpress.com/2020/04/kakaotalk_20200411_174604120.jpg",
-    },
-  },
-  { artwork: { url: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg" } },
-  { artwork: { url: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg" } },
-  { artwork: { url: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg" } },
-];
 
 const Storyboard = (props: Props) => {
   const [showAddingImageModal, setShowAddingImageModal] =
