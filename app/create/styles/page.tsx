@@ -7,6 +7,7 @@ import clsx from "clsx";
 import React from "react";
 import { FiPlus } from "react-icons/fi";
 import { createRoutes } from "../layout";
+import { ComicStyle, comicStyles } from "@/util/create-samples";
 
 type Props = {};
 
@@ -18,7 +19,7 @@ type CartoonStyle = {
 };
 
 const Styles = (props: Props) => {
-  const [selectedStyle, setSelectedStyle] = React.useState<CartoonStyle | null>(
+  const [selectedStyle, setSelectedStyle] = React.useState<ComicStyle | null>(
     null
   );
 
@@ -32,22 +33,21 @@ const Styles = (props: Props) => {
       <div className="flex flex-col w-full h-full justify-center items-center">
         {/* created characters list */}
         <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-7 w-full h-full max-w-4xl py-7">
-          {styleSamples.map((style: CartoonStyle, i) => (
+          {comicStyles.map((style: ComicStyle, index: number) => (
             <button
-              key={i}
+              key={index}
               className={clsx(
                 "flex aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-emerald-500 hover:rounded-lg",
                 {
-                  "ring-4 ring-emerald-500 rounded-lg":
-                    style.id === selectedStyle?.id,
+                  "ring-4 ring-emerald-500 rounded-lg": style.artist === selectedStyle?.artist,
                 },
                 {
                   "opacity-50":
-                    style.id !== selectedStyle?.id && selectedStyle !== null,
+                    style.artist !== selectedStyle?.artist && selectedStyle !== null,
                 }
               )}
               onClick={() => {
-                if (style.id === selectedStyle?.id) {
+                if (style.artist === selectedStyle?.artist) {
                   setSelectedStyle(null);
                   return;
                 }
