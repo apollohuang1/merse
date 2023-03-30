@@ -7,6 +7,7 @@ import fs from "fs"
 import path from "path"
 import.meta.url
 import { fileURLToPath } from 'url';
+import { spawn } from 'child_process'; // import spawn
 
 
 //const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -48,9 +49,16 @@ userInterface.on("line", async input => {
 
   //move this text prompt to the midjourney discord bot:
   // Write the generatedText to prompt.txt
-  fs.appendFile("prompt.txt", "/imagine " + generatedText + "\n", err => {
+  fs.appendFile("prompt.txt", generatedText + "\n", err => {
     if (err) throw err
     console.log("Done storing :)")
+
+    //new spawn method autorunning prompt.py:
+    // Run prompt.py file after storing output in prompt.txt
+    const child = spawn('python', ['prompt.py']);
+    child.on('exit', (code) => {
+      process.exit(); // Exit the Node.js process running script.js
+    });
   })
 
   userInterface.prompt()
