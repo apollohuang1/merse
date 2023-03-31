@@ -105,10 +105,10 @@ const Storyboard = (props: Props) => {
   const createChatCompletion = (input: string) => {
     try {
       const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-
+      const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking. \nTEXT: " + input;
       const requestData: CreateChatCompletionRequest = {
         model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: input }],
+        messages: [{ role: "user", content: control_prompt }],
         temperature: 0.7,
       };
 
@@ -126,6 +126,7 @@ const Storyboard = (props: Props) => {
           const generatedText = response?.data?.choices[0]?.message?.content;
           console.log("🎉 We did it!");
           console.log(generatedText);
+
           console.log(response.data)
           setIsGeneratingStoryboard(false);
           return
