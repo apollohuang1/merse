@@ -27,7 +27,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { storyboardSamples } from "@/util/create-samples";
 
 // OpenAI and requests
-import { Configuration, OpenAIApi, CreateChatCompletionResponse } from "openai";
+import { Configuration, OpenAIApi, CreateChatCompletionRequest, CreateChatCompletionResponse } from "openai";
 import axios, { AxiosResponse } from "axios";
 
 type Props = {};
@@ -91,21 +91,33 @@ const Storyboard = (props: Props) => {
 
   const createChatCompletion = async (input: string) => {
     try {
-      console.log("creating it")
 
-      const config = new Configuration({
-        apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+      const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+
+      const requestData: CreateChatCompletionRequest = {
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: input }],
+        temperature: 0.7,
+      }
+
+      axios({
+        method: "POST",
+        url: 'https://api.openai.com/v1/chat/completions',
+        data: requestData,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${openaiApiKey}`,
+        },
       })
-      const openAI = new OpenAIApi(config);
-
-      const response = await openAI.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [{role: "user", content: input}]
+      .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
+        // console.log(response.data);
+        const generatedText = response?.data?.choices[0]?.message?.content;
+        console.log("🎉 We did it!")
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log(`Failed to create chat completion from http request, message: ${error?.message}`)
       });
-
-      const generatedText = response?.data?.choices[0]?.message?.content;
-
-      console.log(generatedText);
     } catch (error: any) {
       console.log(`Failed to create chat completion, message: ${error?.message}`);
     }
