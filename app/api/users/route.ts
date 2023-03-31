@@ -28,3 +28,17 @@ export async function GET(request: Request) {
 
   return NextResponse.json(body, { status: status });
 }
+
+
+export async function POST(request: Request) {
+  
+    const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URI
+    var newDog = new Pet(request.body);
+
+    newDog.save(function (err: any, dog: any) {
+      if (err) return console.error(err);
+      console.log(dog.name + " saved to pets collection.");
+    });
+
+    return NextResponse.json({ success: true, data: newDog });
+}
