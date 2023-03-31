@@ -1,6 +1,6 @@
 
-import Airbnb from "@/server/models/Airbnb";
-import dbConnect from "@/server/utils/dbConnect";
+import Airbnb from "..//../../server/models/Airbnb";
+import dbConnect from "../../../server/utils/dbConnect";
 import { NextResponse } from "next/server";
 
 

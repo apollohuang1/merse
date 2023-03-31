@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import dbConnect from "../../../server/utils/dbConnect";
 import Pet from "../../../server/models/Pet";
-import UserModel from "@/server/models/UserModel";
+import UserModel from "../../../server/models/userModel";
 
 
 export async function GET(request: Request) {
