@@ -27,7 +27,12 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { storyboardSamples } from "@/util/create-samples";
 
 // OpenAI and requests
-import { Configuration, OpenAIApi, CreateChatCompletionRequest, CreateChatCompletionResponse } from "openai";
+import {
+  Configuration,
+  OpenAIApi,
+  CreateChatCompletionRequest,
+  CreateChatCompletionResponse,
+} from "openai";
 import axios, { AxiosResponse } from "axios";
 
 type Props = {};
@@ -36,6 +41,8 @@ const Storyboard = (props: Props) => {
   const [showAddingImageModal, setShowAddingImageModal] =
     React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
+  const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
+    React.useState<boolean>(false);
 
   const editor = useEditor({
     extensions: [
@@ -77,7 +84,7 @@ const Storyboard = (props: Props) => {
         const textContent = convertTiptapJSONToText(editorJSON);
         await createChatCompletion(textContent);
         // const prompt = await generatePromptFromChatGPT(textContent);
-        console.log("🎉")
+        console.log("🎉");
         console.log(textContent);
       } else {
         // handle blank editor
@@ -88,40 +95,42 @@ const Storyboard = (props: Props) => {
     }
   };
 
-
   const createChatCompletion = async (input: string) => {
     try {
-
       const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
       const requestData: CreateChatCompletionRequest = {
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: input }],
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: input }],
         temperature: 0.7,
-      }
+      };
 
       axios({
         method: "POST",
-        url: 'https://api.openai.com/v1/chat/completions',
+        url: "https://api.openai.com/v1/chat/completions",
         data: requestData,
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${openaiApiKey}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${openaiApiKey}`,
         },
       })
-      .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
-        // console.log(response.data);
-        const generatedText = response?.data?.choices[0]?.message?.content;
-        console.log("🎉 We did it!")
-      })
-      .catch((error) => {
-        console.error(error);
-        console.log(`Failed to create chat completion from http request, message: ${error?.message}`)
-      });
+        .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
+          // console.log(response.data);
+          const generatedText = response?.data?.choices[0]?.message?.content;
+          console.log("🎉 We did it!");
+        })
+        .catch((error) => {
+          console.error(error);
+          console.log(
+            `Failed to create chat completion from http request, message: ${error?.message}`
+          );
+        });
     } catch (error: any) {
-      console.log(`Failed to create chat completion, message: ${error?.message}`);
+      console.log(
+        `Failed to create chat completion, message: ${error?.message}`
+      );
     }
-  }
+  };
 
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
@@ -139,7 +148,7 @@ const Storyboard = (props: Props) => {
     });
 
     return text;
-  }
+  };
 
   return (
     <>
@@ -152,7 +161,7 @@ const Storyboard = (props: Props) => {
           {/* prompt left panel */}
           <div
             className={clsx(
-              "flex flex-col w-full h-full overflow-auto bg-light-background-secondary bg-opacity-30 dark:bg-opacity-70 dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-t-lg",
+              "flex flex-col w-full h-full overflow-auto bg-light-background-secondary bg-opacity-30 dark:bg-opacity-70 dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-t-lg"
               // editorStyles.editor
             )}
           >
@@ -160,14 +169,18 @@ const Storyboard = (props: Props) => {
               {/* editor toolbar */}
               <div className="flex flex-row"></div>
 
-              <button
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
-                onClick={() => {
-                  generateStoryboard();
-                }}
-              >
-                Generate
-              </button>
+              {isGeneratingStoryboard ? (
+                <></>
+              ) : (
+                <button
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
+                  onClick={() => {
+                    generateStoryboard();
+                  }}
+                >
+                  Generate
+                </button>
+              )}
             </div>
 
             <div className="w-full h-full overflow-auto p-7">
@@ -284,13 +297,15 @@ const Storyboard = (props: Props) => {
                 >
                   <button
                     onClick={() =>
-                      editor.chain().focus().setHeading({level: 1 }).run()
+                      editor.chain().focus().setHeading({ level: 1 }).run()
                     }
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
                       {
-                        " text-emerald-500 bg-opacity-30":
-                          editor.isActive("heading", { level: 1 }),
+                        " text-emerald-500 bg-opacity-30": editor.isActive(
+                          "heading",
+                          { level: 1 }
+                        ),
                       }
                     )}
                   >
@@ -304,8 +319,10 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
                       {
-                        " text-emerald-500 bg-opacity-30":
-                          editor.isActive("heading", { level: 2 }),
+                        " text-emerald-500 bg-opacity-30": editor.isActive(
+                          "heading",
+                          { level: 2 }
+                        ),
                       }
                     )}
                   >
@@ -319,8 +336,10 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
                       {
-                        " text-emerald-500 bg-opacity-30":
-                          editor.isActive("heading", { level: 3 }),
+                        " text-emerald-500 bg-opacity-30": editor.isActive(
+                          "heading",
+                          { level: 3 }
+                        ),
                       }
                     )}
                   >
