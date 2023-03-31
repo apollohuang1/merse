@@ -5,12 +5,10 @@ import mongoose from "mongoose";
 
 import dbConnect from "../../../server/utils/dbConnect";
 import Pet from "../../../server/models/Pet";
+import UserModel from "@/server/models/UserModel";
 
 
 export async function GET(request: Request) {
-
-  const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URI
-
   await dbConnect();
 
   var body;
@@ -31,14 +29,24 @@ export async function GET(request: Request) {
 
 
 export async function POST(request: Request) {
-  
-    const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URI
-    var newDog = new Pet(request.body);
 
-    newDog.save(function (err: any, dog: any) {
-      if (err) return console.error(err);
-      console.log(dog.name + " saved to pets collection.");
-    });
+  const newUser = new UserModel({
+    _id: "12",
+    name: "John",
+  });
 
-    return NextResponse.json({ success: true, data: newDog });
+  try {
+    const savedUser = await newUser.save();
+    console.log(savedUser.name + " saved to users collection.");
+    return NextResponse.json({ success: true, data: savedUser });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message });
+  }
+
+  // await newUser.save(function (err: any, user: any) {
+  //   if (err) return console.error(err);
+  //   console.log(user.name + " saved to users collection.");
+  // });
+
+  // return NextResponse.json({ success: true, data: newUser });
 }
