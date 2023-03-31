@@ -1,28 +1,12 @@
-'use client'
-
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from './page.module.css'
 import Link from 'next/link'
 import { useEffect } from 'react'
-import axios from 'axios'
 
 const inter = Inter({ subsets: ['latin'] })
 
 const Home: React.FC<{}> = () => {
-
-  useEffect(() => {
-    axios({
-      method: "GET",
-      url: "/api/users",
-    })
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }, [])
 
   return (
     <div className="flex justify-center items-center w-screen h-screen">
