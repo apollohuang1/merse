@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.5.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@headlessui/react": "^1.7.13",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tiptap/extension-bubble-menu": "^2.0.1",
@@ -30,6 +33,7 @@
     "dotenv": "^16.0.3",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "framer-motion": "^10.10.0",
     "next": "13.2.4",
     "openai": "^3.2.1",
     "react": "18.2.0",

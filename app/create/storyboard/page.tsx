@@ -17,8 +17,11 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import ListItem from "@tiptap/extension-list-item";
 import BulletList from "@tiptap/extension-bullet-list";
-import DropCursor from "@tiptap/extension-dropcursor";
+// import DropCursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
+
+// ChakraUI
+import { Spinner } from '@chakra-ui/react'
 
 // import editorStyles from "../../../styles/editor.module.css";
 import clsx from "clsx";
@@ -63,11 +66,11 @@ const Storyboard = (props: Props) => {
         allowBase64: true,
         HTMLAttributes: {},
       }),
-      DropCursor.configure({
-        color: "#10b981",
-        width: 2,
-        class: " rounded-full transition-all",
-      }),
+      // DropCursor.configure({
+      //   color: "#10b981",
+      //   width: 2,
+      //   class: " rounded-full transition-all",
+      // }),
     ],
     editorProps: {
       attributes: {
@@ -95,7 +98,7 @@ const Storyboard = (props: Props) => {
     }
   };
 
-  const createChatCompletion = async (input: string) => {
+  const createChatCompletion = (input: string) => {
     try {
       const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
@@ -118,6 +121,8 @@ const Storyboard = (props: Props) => {
           // console.log(response.data);
           const generatedText = response?.data?.choices[0]?.message?.content;
           console.log("🎉 We did it!");
+          console.log(generatedText);
+          console.log(response.data)
         })
         .catch((error) => {
           console.error(error);
@@ -165,17 +170,23 @@ const Storyboard = (props: Props) => {
               // editorStyles.editor
             )}
           >
-            <div className="flex flex-row bg-light-background-secondary dark:bg-dark-background-secondary p-2 items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider">
+            <div className="flex flex-row w-full bg-light-background-secondary dark:bg-dark-background-secondary items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider p-2">
+
               {/* editor toolbar */}
+              {/* <></> */}
               <div className="flex flex-row"></div>
 
-              {isGeneratingStoryboard ? (
-                <></>
+              { isGeneratingStoryboard ? (
+                <div className="flex flex-row gap-2 items-center h-8">
+                  <Spinner speed={"0.8s"} className="w-4 h-4" />
+                  <span className="text-sm">Generating...</span>
+                </div>
               ) : (
                 <button
                   className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
                   onClick={() => {
-                    generateStoryboard();
+                    setIsGeneratingStoryboard(true);
+                    // generateStoryboard();
                   }}
                 >
                   Generate
