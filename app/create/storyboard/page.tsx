@@ -20,11 +20,15 @@ import BulletList from "@tiptap/extension-bullet-list";
 import DropCursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
 
-import editorStyles from "../../../styles/editor.module.css";
+// import editorStyles from "../../../styles/editor.module.css";
 import clsx from "clsx";
 import Modal from "@/components/modal";
 import Placeholder from "@tiptap/extension-placeholder";
 import { storyboardSamples } from "@/util/create-samples";
+
+// OpenAI and requests
+import { Configuration, OpenAIApi, CreateChatCompletionResponse } from "openai";
+import axios, { AxiosResponse } from "axios";
 
 type Props = {};
 
@@ -66,18 +70,48 @@ const Storyboard = (props: Props) => {
     // content: "<h1>Hello World! 🌎️</h1>",
   });
 
-  const generateStoryboard = () => {
-    if (editor) {
-      const editorJSON = editor.getJSON();
-      const textContent = convertTiptapJSONToText(editorJSON);
-      // const prompt = await generatePromptFromChatGPT(textContent);
-      console.log(textContent);
-    } else {
-      // handle blank editor
+  const generateStoryboard = async () => {
+    try {
+      if (editor) {
+        const editorJSON = editor.getJSON();
+        const textContent = convertTiptapJSONToText(editorJSON);
+        await createChatCompletion(textContent);
+        // const prompt = await generatePromptFromChatGPT(textContent);
+        console.log("🎉")
+        console.log(textContent);
+      } else {
+        // handle blank editor
+        console.log("editor is null");
+      }
+    } catch (error: any) {
+      console.log(`Failed to generate storyboard, message: ${error?.message}`);
     }
   };
 
-  function convertTiptapJSONToText(tiptapJSON: JSONContent): string {
+
+  const createChatCompletion = async (input: string) => {
+    try {
+      console.log("creating it")
+
+      const config = new Configuration({
+        apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+      })
+      const openAI = new OpenAIApi(config);
+
+      const response = await openAI.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{role: "user", content: input}]
+      });
+
+      const generatedText = response?.data?.choices[0]?.message?.content;
+
+      console.log(generatedText);
+    } catch (error: any) {
+      console.log(`Failed to create chat completion, message: ${error?.message}`);
+    }
+  }
+
+  const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
     let text = "";
 
@@ -107,7 +141,7 @@ const Storyboard = (props: Props) => {
           <div
             className={clsx(
               "flex flex-col w-full h-full overflow-auto bg-light-background-secondary bg-opacity-30 dark:bg-opacity-70 dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-t-lg",
-              editorStyles.editor
+              // editorStyles.editor
             )}
           >
             <div className="flex flex-row bg-light-background-secondary dark:bg-dark-background-secondary p-2 items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider">
@@ -125,7 +159,8 @@ const Storyboard = (props: Props) => {
             </div>
 
             <div className="w-full h-full overflow-auto p-7">
-              <EditorContent editor={editor} className={editorStyles.editor} />
+              {/* <EditorContent editor={editor} className={editorStyles.editor} /> */}
+              <EditorContent editor={editor} />
 
               {editor && (
                 <FloatingMenu
