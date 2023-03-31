@@ -83,17 +83,21 @@ const Storyboard = (props: Props) => {
   const generateStoryboard = async () => {
     try {
       if (editor) {
+        setIsGeneratingStoryboard(true);
         const editorJSON = editor.getJSON();
         const textContent = convertTiptapJSONToText(editorJSON);
         await createChatCompletion(textContent);
         // const prompt = await generatePromptFromChatGPT(textContent);
         console.log("🎉");
         console.log(textContent);
+        return;
       } else {
         // handle blank editor
+        setIsGeneratingStoryboard(false);
         console.log("editor is null");
       }
     } catch (error: any) {
+      setIsGeneratingStoryboard(false);
       console.log(`Failed to generate storyboard, message: ${error?.message}`);
     }
   };
@@ -123,14 +127,17 @@ const Storyboard = (props: Props) => {
           console.log("🎉 We did it!");
           console.log(generatedText);
           console.log(response.data)
+          setIsGeneratingStoryboard(false);
+          return
         })
         .catch((error) => {
-          console.error(error);
+          setIsGeneratingStoryboard(false);
           console.log(
             `Failed to create chat completion from http request, message: ${error?.message}`
           );
         });
     } catch (error: any) {
+      setIsGeneratingStoryboard(false);
       console.log(
         `Failed to create chat completion, message: ${error?.message}`
       );
@@ -185,8 +192,7 @@ const Storyboard = (props: Props) => {
                 <button
                   className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
                   onClick={() => {
-                    setIsGeneratingStoryboard(true);
-                    // generateStoryboard();
+                    generateStoryboard();
                   }}
                 >
                   Generate
