@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import dbConnect from "../../../server/utils/dbConnect";
 import Pet from "../../../server/models/Pet";
-import UserModel from "../../../server/models/userModel";
+import User from "../../../server/models/User";
 
 
 export async function GET(request: Request) {
@@ -30,7 +30,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
 
-  const newUser = new UserModel({
+  const newUser = new User({
     _id: "12",
     name: "John",
   });
