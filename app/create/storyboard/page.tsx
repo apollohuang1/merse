@@ -20,6 +20,7 @@ import BulletList from "@tiptap/extension-bullet-list";
 // import DropCursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
 
+
 // ChakraUI
 import { Spinner } from '@chakra-ui/react'
 
@@ -111,9 +112,11 @@ const Storyboard = (props: Props) => {
   //gpt3.5 API
   const createChatCompletion = (input: string) => {
     try {
+      
       const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
       //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
       const control_prompt = "For the \"TEXT_STORY\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: " + input;
+
       const requestData: CreateChatCompletionRequest = {
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: control_prompt }],
