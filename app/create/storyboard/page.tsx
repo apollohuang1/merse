@@ -131,14 +131,19 @@ const Storyboard = (props: Props) => {
           // Strip scenes out
           const stripText = (input: string) => {
             const regex = /\(([^)]+)\)/g;
+            const paragraphs = input.split(/\r?\n/);
             let matches = [];
-            let match;
-            while ((match = regex.exec(input))) {
-              const panelMatch = /Panel\s*\d+:/gi.exec(input);
+            let currentPanel = "";
+            for (const paragraph of paragraphs) {
+              const panelMatch = /^Panel\s+\d+:/gi.exec(paragraph);
               if (panelMatch) {
-                const panelName = panelMatch[0].trim();
-                const matchText = match[1].trim();
-                matches.push(`${panelName}\n${matchText}`);
+                currentPanel = panelMatch[0].trim();
+              } else {
+                const match = regex.exec(paragraph);
+                if (match && currentPanel !== "") {
+                  const matchText = match[1].trim();
+                  matches.push(`${currentPanel}\n${matchText}`);
+                }
               }
             }
             return matches.join("\n");
