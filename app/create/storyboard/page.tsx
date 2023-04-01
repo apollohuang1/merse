@@ -108,6 +108,7 @@ const Storyboard = (props: Props) => {
     // more code on handling stop generating storyboard
   }
 
+  //gpt3.5 API
   const createChatCompletion = (input: string) => {
     try {
       const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
@@ -131,8 +132,6 @@ const Storyboard = (props: Props) => {
         .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
           // console.log(response.data);
           const generatedText = response?.data?.choices[0]?.message?.content;
-
-
           // guard if generated text is null
           if (!generatedText) {
             stopGeneratingStoryboard();
@@ -168,8 +167,9 @@ const Storyboard = (props: Props) => {
           
           const sceneText = stripText(generatedText);
           console.log("###--------------------SCENES--------------------###");
+          //createImageFromText(sceneText);
           console.log(sceneText);
-
+          createImageFromText(sceneText);
           //new--------------------------------------------------------
 
           console.log(response.data)
@@ -189,6 +189,47 @@ const Storyboard = (props: Props) => {
       );
     }
   };
+
+//new--------------------------------------
+  //stable diffusion text-to-image API
+  //change this later such that it iterates through EACH panel
+  const createImageFromText = (input: string) => {
+    try {
+        //console.log("-:1");
+        const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
+        const requestData = {
+            text: input, //input
+            device: "cpu",
+            output_format: "url",
+            output_size: "1024x1024",
+        };
+        axios({
+            method: "POST",
+            url: "https://stablediffusionapi.com/api/v3/text2img",
+            data: requestData,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${stableDiffusionApiKey}`,
+            },
+        })
+        .then((response: AxiosResponse) => {
+            //console.log("-:5");
+            console.log(response.data);
+            const imageUrl = response?.data?.output_url;
+            if (!imageUrl) {
+                console.log("Failed to generate image: no output URL provided.");
+                return;
+            }
+            console.log("🖼️ Image URL:", imageUrl);
+        })
+        .catch((error) => {
+            console.log("Failed to generate image:", error);
+        });
+    } catch (error: any) {
+        console.log("Failed to generate image:", error?.message);
+    }
+};
+//new--------------------------------------^^
 
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
