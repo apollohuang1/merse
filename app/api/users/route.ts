@@ -1,23 +1,22 @@
 
 
-import { NextResponse } from "next/server";
-import mongoose from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "../../../server/utils/dbConnect";
 import Pet from "../../../server/models/Pet";
 import User from "../../../server/models/User";
 
+const mongoose = require("mongoose");
 
-export async function GET(request: Request) {
-  // await dbConnect();
 
+export async function GET(request: NextRequest) {
   try {
-    // const pets = await Pet.find({}) /* find all the data in our database */
-    return NextResponse.json({status: 200, data: {
-      hello: "world",
-    }});
-  } catch (error) {
-    return NextResponse.json({status: 400, data: error});
+    const db = await dbConnect();
+    const data = await User.find({});
+    return NextResponse.json({ data: data }, { status: 200 });
+  } catch (error: any) {
+    // return new Response(error, { status: 500 })
+    return NextResponse.json({ error: error?.message }, { status: 500 });
   }
 }
 
@@ -25,13 +24,12 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
 
   const newUser = new User({
-    _id: "12",
-    name: "John",
+    _id: new mongoose.Types.ObjectId(),
+    name: "Emily Park",
   });
 
   try {
     const savedUser = await newUser.save();
-    console.log(savedUser.name + " saved to users collection.");
     return NextResponse.json({ success: true, data: savedUser });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message });

@@ -194,8 +194,7 @@ const Storyboard = (props: Props) => {
                 <button
                   className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
                   onClick={() => {
-                    // generateStoryboard();
-                    console.log(process.env.OPENAI_API_KEY)
+                    generateStoryboard();
                   }}
                 >
                   Generate

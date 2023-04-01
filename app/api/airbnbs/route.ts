@@ -1,32 +1,16 @@
-
-import Airbnb from "..//../../server/models/Airbnb";
-import dbConnect from "../../../server/utils/dbConnect";
+import User from "@/server/models/User";
+import dbConnect from "@/server/utils/dbConnect";
 import { NextResponse } from "next/server";
+const mongoose = require('mongoose');
 
 
 export async function GET(request: Request) {
-  // await dbConnect();
-
-  // fetch all data from sample_airbnb database in mongodb sample
-  // const airbnbs = await Airbnb.find({});
-
-  return NextResponse.json({ success: true, data: [1, 2, 3, 4] });
-}
-
-
-// POST
-export async function POST(request: Request) {
-  await dbConnect();
-
-  // create a new document in the sample_airbnb collection
-  const newAirbnb = new Airbnb(request.body);
-
-  // save the new document
-  newAirbnb.save(function (err: any, airbnb: any) {
-    if (err) return console.error(err);
-    console.log(airbnb.name + " saved to sample_airbnb collection.");
-  });
-
-  // return the new document
-  return NextResponse.json({ success: true, data: newAirbnb });
+  try {
+    const db = await dbConnect();
+    const data = await User.find({});
+    return NextResponse.json({ data: data }, { status: 200 });
+  } catch (error: any) {
+    // return new Response(error, { status: 500 })
+    return NextResponse.json({ error: error?.message }, { status: 500 });
+  }
 }

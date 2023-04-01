@@ -1,17 +1,27 @@
-import Entry from "@/server/models/Entry";
 import dbConnect from "@/server/utils/dbConnect";
-import axios from "axios";
-import { NextResponse } from "next/server";
+import clientPromise from "../../../lib/mongodb";
+import { NextRequest, NextResponse } from "next/server";
 
-import mongoose from "mongoose";
 
-export async function GET(req: Request) {
-  // await dbConnect();
+export async function GET(request: Request) {
 
-  return NextResponse.json({
-    status: 200,
-    data: {
-      hello: "world",
-    },
-  });
-}
+  try {
+    const client = await clientPromise;
+    const db = client.db("sample_airbnb");
+
+    const movies = await db
+        .collection("movies")
+        .find({})
+        .sort({ metacritic: -1 })
+        .limit(10)
+        .toArray();
+
+    return NextResponse.json({
+      data: movies
+    });
+} catch (e: any) {
+    console.error(e);
+    return NextResponse.json({
+      message: "Error" + e.message
+    });
+}};
