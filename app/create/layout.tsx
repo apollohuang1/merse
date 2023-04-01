@@ -1,7 +1,10 @@
+// /create layout
+
 'use client'
 
 import CreateHeader from '@/components/create/create-header';
 import LeftSideBar from '@/components/create/left-side-bar';
+import { IEntry } from '@/server/models/Entry';
 import React from 'react'
 
 
@@ -68,6 +71,8 @@ export default function RootLayout({children,}: {children: React.ReactNode;}) {
 
   const [currentCreateRoute, setCurrentCreateRoute] = React.useState<CreateRoute>(createRoutes[0]);
   const [currentCreateRouteIdx, setCurrentCreateRouteIdx] = React.useState<number>(0);
+
+  const [savingContent, setSavingContent] = React.useState<IEntry | null>(null);
 
   return (
     <html lang="en">

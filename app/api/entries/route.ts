@@ -1,8 +1,7 @@
 import dbConnect from "@/server/utils/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import Entry from "@/server/models/Entry";
-
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 
 export async function GET(request: NextRequest) {
@@ -22,9 +21,11 @@ export async function POST(request: NextRequest) {
   try {
     const newEntry = new Entry({
       _id: new mongoose.Types.ObjectId(),
-      title: "New Life in San Francisco",
-      content: "Test Content",
-      date: Date.now(),
+      title: "Content Title Test #1 ",
+      styleRefereence: {
+        artist: "Artist Name Test #1",
+      },
+      content: "Content Test #1",
     });
 
     const savedEntry = await newEntry.save();
