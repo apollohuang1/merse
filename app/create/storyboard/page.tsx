@@ -20,6 +20,7 @@ import BulletList from "@tiptap/extension-bullet-list";
 // import DropCursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
 
+
 // ChakraUI
 import { Spinner } from '@chakra-ui/react'
 
@@ -104,7 +105,8 @@ const Storyboard = (props: Props) => {
 
   const createChatCompletion = (input: string) => {
     try {
-      const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+
+      const openaiApiKey = process.env.OPENAI_API_KEY;
 
       const requestData: CreateChatCompletionRequest = {
         model: "gpt-3.5-turbo",
@@ -192,7 +194,8 @@ const Storyboard = (props: Props) => {
                 <button
                   className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
                   onClick={() => {
-                    generateStoryboard();
+                    // generateStoryboard();
+                    console.log(process.env.OPENAI_API_KEY)
                   }}
                 >
                   Generate

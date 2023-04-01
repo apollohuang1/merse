@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "server/utils/mongodb.js", "app/api/users/route.js", "app/api/posts/route.js", "server/utils/dbConnect.js", "server/utils/dbConnect.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "server/utils/mongodb.js", "app/api/users/route.js", "app/api/posts/route.js", "server/utils/dbConnect.js", "server/utils/dbConnect.js", "app/api/entries/route.ts", "server.js", "server.js"],
   "exclude": ["node_modules"]
 }

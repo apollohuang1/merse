@@ -5,11 +5,12 @@ import { NextResponse } from "next/server";
 
 
 export async function GET(request: Request) {
-  await dbConnect();
+  // await dbConnect();
 
   // fetch all data from sample_airbnb database in mongodb sample
-  const airbnbs = await Airbnb.find({});
-  return NextResponse.json({ success: true, data: airbnbs });
+  // const airbnbs = await Airbnb.find({});
+
+  return NextResponse.json({ success: true, data: [1, 2, 3, 4] });
 }
 
 

@@ -16,6 +16,8 @@ const AirbnbSchema = new mongoose.Schema({
   house_rules: String,
   property_type: String,
   room_type: String,
+}, {
+  collection: "sample_airbnb",
 });
 
 export default mongoose.models.Airbnb || mongoose.model("Airbnb", AirbnbSchema);
