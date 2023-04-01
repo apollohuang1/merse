@@ -127,6 +127,28 @@ const Storyboard = (props: Props) => {
           console.log("🎉 We did it!");
           console.log(generatedText);
 
+          // new--------------------------------------------------------
+          // Strip scenes out
+          const stripText = (input: string) => {
+            const regex = /\(([^)]+)\)/g;
+            let matches = [];
+            let match;
+            while ((match = regex.exec(input))) {
+              const panelMatch = /Panel\s*\d+:/gi.exec(input);
+              if (panelMatch) {
+                const panelName = panelMatch[0].trim();
+                const matchText = match[1].trim();
+                matches.push(`${panelName}\n${matchText}`);
+              }
+            }
+            return matches.join("\n");
+          };
+          
+          const sceneText = stripText(generatedText);
+          console.log("###--------------------SCENES--------------------###");
+          console.log(sceneText);
+          //new--------------------------------------------------------
+
           console.log(response.data)
           setIsGeneratingStoryboard(false);
           return
