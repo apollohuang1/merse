@@ -1,6 +1,4 @@
-
-import mongoose from 'mongoose';
-// import EntryLocation from './EntryLocation';
+const mongoose = require('mongoose');
 
 const EntrySchema = new mongoose.Schema({
   title: {
