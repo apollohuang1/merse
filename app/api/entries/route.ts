@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     });
 
     const savedEntry = await newEntry.save();
-
+    
     return NextResponse.json({ success: true, data: savedEntry });
   } catch (error: any) {
     return NextResponse.json({ error: error?.message }, { status: 500 });
