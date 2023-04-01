@@ -102,6 +102,12 @@ const Storyboard = (props: Props) => {
     }
   };
 
+
+  const stopGeneratingStoryboard = () => {
+    setIsGeneratingStoryboard(false);
+    // more code on handling stop generating storyboard
+  }
+
   const createChatCompletion = (input: string) => {
     try {
       const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
@@ -124,6 +130,14 @@ const Storyboard = (props: Props) => {
         .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
           // console.log(response.data);
           const generatedText = response?.data?.choices[0]?.message?.content;
+
+
+          // guard if generated text is null
+          if (!generatedText) {
+            stopGeneratingStoryboard();
+            return;
+          }
+
           console.log("🎉 We did it!");
           console.log(generatedText);
 
@@ -155,17 +169,17 @@ const Storyboard = (props: Props) => {
           //new--------------------------------------------------------
 
           console.log(response.data)
-          setIsGeneratingStoryboard(false);
+          stopGeneratingStoryboard();
           return
         })
         .catch((error) => {
-          setIsGeneratingStoryboard(false);
+          stopGeneratingStoryboard();
           console.log(
             `Failed to create chat completion from http request, message: ${error?.message}`
           );
         });
     } catch (error: any) {
-      setIsGeneratingStoryboard(false);
+      stopGeneratingStoryboard();
       console.log(
         `Failed to create chat completion, message: ${error?.message}`
       );
