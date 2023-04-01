@@ -129,6 +129,7 @@ const Storyboard = (props: Props) => {
 
           // new--------------------------------------------------------
           // Strip scenes out
+          // Strip scenes out
           const stripText = (input: string) => {
             const regex = /\(([^)]+)\)/g;
             const paragraphs = input.split(/\r?\n/);
