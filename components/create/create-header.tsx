@@ -25,7 +25,7 @@ const CreateHeader: React.FC<{
           {currentRoute?.backConfig && (
             <Link
               href={currentRoute?.backConfig?.pathname ?? "/"}
-              className="group inline-flex items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary w-32 h-10"
+              className="group inline-flex items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary w-32 h-10 transition-all hover:scale-105 active:scale-100"
             >
               <FiArrowLeft className="text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[-2px] transition-all hover:duration-300" />
               <span>{currentRoute?.backConfig?.title ?? "Back"}</span>
@@ -36,7 +36,7 @@ const CreateHeader: React.FC<{
             <Link
               href={currentRoute?.nextConfig?.pathname ?? "/"}
               className={clsx(
-                "group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary w-32 h-10",
+                "group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary w-32 h-10 transition-all hover:scale-110 active:scale-100",
                 {
                   " bg-emerald-500 text-white hover:bg-emerald-600":
                     !currentRoute?.nextConfig,

@@ -4,10 +4,10 @@ import { FiEdit2 } from 'react-icons/fi';
 
 const CharacterCard: React.FC<{
   character: CartoonCharacter | null
-  onEditing?: () => void
+  onEditClick?: () => void
 }> = ({
   character,
-  onEditing
+  onEditClick: onEditing
 }) => {
   return (
     <div className='group grid grid-rows-[80%_20%] aspect-square bg-light-background-secondary dark:bg-dark-background-secondary relative rounded-lg border border-light-divider dark:border-dark-divider'>

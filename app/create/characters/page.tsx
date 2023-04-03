@@ -77,6 +77,7 @@ const CreateCharacterPage = (props: Props) => {
           <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-4xl py-7">
             <button
               onClick={() => {
+                clearForm();
                 setIsEditingCharacter(true);
               }}
               className="group flex w-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg"
@@ -88,7 +89,7 @@ const CreateCharacterPage = (props: Props) => {
               <CharacterCard
                 key={i}
                 character={character}
-                onEditing={() => {
+                onEditClick={() => {
                   setEditData(character);
                   setIsEditingCharacter(true);
                   // console.log(character);
