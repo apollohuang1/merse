@@ -12,6 +12,7 @@ import { FiEdit2, FiPlus, FiX } from "react-icons/fi";
 import { createRoutes } from "../layout";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { addCharacter } from "@/redux-store/store";
+import { genders } from "@/util/select";
 
 type Props = {};
 
@@ -22,25 +23,37 @@ const CreateCharacterPage = (props: Props) => {
   const dispatch = useAppDispatch();
 
   const [isEditingCharacter, setIsEditingCharacter] = React.useState(false);
-  const [isCreatingNewCharacter, setIsCreatingNewCharacter] = React.useState(false);
-
   const [selectedImageData, setSelectedImageData] = React.useState<any>(null);
 
-  const [newCharacterImageURL, setNewCharacterImageURL] =
+  const [characterImageURL, setCharacterImageURL] =
     React.useState<string>("");
 
-  const [newCharacterName, setNewCharacterName] = React.useState<string>("");
-  const [newCharacterAge, setNewCharacterAge] = React.useState<number>(0);
-  const [newCharacterGender, setNewCharacterGender] =
-    React.useState<string>("");
+  const [characterName, setCharacterName] = React.useState<string>("");
+  const [characterAge, setCharacterAge] = React.useState<number>(0);
+  const [characterGender, setCharacterGender] = React.useState<string>("");
 
   const [newCharacterDescription, setNewCharacterDescription] =
     React.useState<string>("");
 
+  const clearForm = () => {
+    setCharacterImageURL("");
+    setCharacterName("");
+    setCharacterAge(0);
+    setCharacterGender("");
+    setNewCharacterDescription("");
+  }
+
+  const setEditData = (character: any) => {
+
+  }
+
   const createNewCharacter = () => {
     dispatch(addCharacter({
-      name: newCharacterName,
-      age: newCharacterAge,
+      imageURL: characterImageURL,
+      name: characterName,
+      description: newCharacterDescription,
+      age: characterAge,
+      gender: characterGender
     }));
   }
 
@@ -52,21 +65,23 @@ const CreateCharacterPage = (props: Props) => {
         <div className="flex flex-col w-full h-full justify-center items-center">
           {/* created characters list */}
           <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-4xl py-7">
+
             <button
               onClick={() => {
-                setIsCreatingNewCharacter(true);
+                setIsEditingCharacter(true);
               }}
-              className="group flex w-full h-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg"
+              className="group flex w-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg"
             >
               <FiPlus className="w-7 h-7 text-light-text-secondary dark:text-dark-text-secondary group-active:scale-90 transition-all" />
             </button>
 
-            {sampleCharacter.map((character, i) => (
+            {entry?.characters.map((character: any, i: number) => (
               <CharacterCard
                 key={i}
                 character={character}
                 onEditing={() => {
                   setIsEditingCharacter(true);
+                  // console.log(character);
                 }}
               />
             ))}
@@ -74,30 +89,26 @@ const CreateCharacterPage = (props: Props) => {
         </div>
       </div>
 
-      <SlideOver
+      {/* <SlideOver
         isOpen={isEditingCharacter}
         onClose={() => setIsEditingCharacter(false)}
         onOpen={() => setIsEditingCharacter(true)}
         title="Edit Character"
       >
         <div className="flex flex-col gap-4">editing cover</div>
-      </SlideOver>
+      </SlideOver> */}
 
 
       {/* creating new character slideover */}
       <SlideOver
-        isOpen={isCreatingNewCharacter}
-        onClose={() => setIsCreatingNewCharacter(false)}
-        onOpen={() => setIsCreatingNewCharacter(true)}
+        isOpen={isEditingCharacter}
+        onClose={() => setIsEditingCharacter(false)}
+        onOpen={() => setIsEditingCharacter(true)}
         title="Create New Character"
         onSubmit={() => {
-          dispatch(addCharacter({
-            image: newCharacterImageURL,
-            name: newCharacterName,
-            description: newCharacterDescription,
-            age: newCharacterAge,
-          }))
-          setIsCreatingNewCharacter(false);
+          createNewCharacter();
+          setIsEditingCharacter(false);
+          clearForm();
         }}
       >
         <div className="flex flex-col gap-7">
@@ -106,13 +117,13 @@ const CreateCharacterPage = (props: Props) => {
 
             {/* circle image input */}
             <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
-              {selectedImageData || (newCharacterImageURL !== "") ? (
+              {selectedImageData || (characterImageURL !== "") ? (
                 <Menu as="div" className="flex">
                   <Menu.Button>
                     <div className="flex w-full h-full">
                       {/* image */}
                       <img 
-                        src={newCharacterImageURL === "" ? URL.createObjectURL(selectedImageData) : newCharacterImageURL}
+                        src={characterImageURL === "" ? URL.createObjectURL(selectedImageData) : characterImageURL}
                         className="absolute w-full h-full object-cover rounded-full"
                         alt="character face"
                       />
@@ -167,7 +178,7 @@ const CreateCharacterPage = (props: Props) => {
                             onClick={(e) => {
                               e.preventDefault();
                               setSelectedImageData(null);
-                              setNewCharacterImageURL("");
+                              setCharacterImageURL("");
                             }}
                             className={clsx(
                               "flex flex-row items-center px-4 text-sm text-light-red dark:text-dark-red cursor-pointer h-12 rounded-b-lg",
@@ -224,11 +235,11 @@ const CreateCharacterPage = (props: Props) => {
                 id="imageURL"
                 enterKeyHint="next"
                 className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                value={newCharacterImageURL ?? ""}
+                value={characterImageURL ?? ""}
                 // value={entry?.character?.imageURL ?? ""}
                 placeholder="Enter character's image URL"
                 onChange={(e) => {
-                  setNewCharacterImageURL(e.target.value);
+                  setCharacterImageURL(e.target.value);
                 }}
               />
             </div>
@@ -247,10 +258,10 @@ const CreateCharacterPage = (props: Props) => {
                 id="name"
                 enterKeyHint="next"
                 className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                value={newCharacterName}
+                value={characterName}
                 placeholder="Enter character's name"
                 onChange={(e) => {
-                  setNewCharacterName(e.target.value);
+                  setCharacterName(e.target.value);
                 }}
               />
             </div>
@@ -288,10 +299,10 @@ const CreateCharacterPage = (props: Props) => {
                   id="age"
                   enterKeyHint="next"
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                  value={newCharacterAge}
+                  value={characterAge}
                   placeholder="Enter character's age"
                   onChange={(e: any) => {
-                    setNewCharacterAge(e.target.value);
+                    setCharacterAge(e.target.value);
                   }}
                 />
               </div>
@@ -305,16 +316,14 @@ const CreateCharacterPage = (props: Props) => {
                 <select
                   id="location"
                   name="location"
-                  defaultValue={"none"}
+                  value={characterGender}
+                  // defaultValue={"none"}
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                  onChange={(e: any) => setCharacterGender(e.target.value)}
                 >
-                  {/* get all the option of gender including lgptq+ */}
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="non-binary">Non-binary</option>
-                  <option value="transgender">Transgender</option>
-                  <option value="prefer not to say">Prefer not to say</option>
-                  <option value="none">None</option>
+                  { genders.map((gender: any, index: number) => (
+                    <option value={gender} key={index}>{gender}</option>  
+                  ))}
                 </select>
               </div>
             </div>
