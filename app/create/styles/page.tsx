@@ -21,18 +21,25 @@ type CartoonStyle = {
 };
 
 const Styles = (props: Props) => {
-
   // const [selectedStyle, setSelectedStyle] = React.useState<ComicStyle | null>(null);
 
   // style state
-  const style = useAppSelector((state) => state.entry.style);
+  const selectedStyle = useAppSelector((state) => state.entry.style);
   const dispatch = useAppDispatch();
+
+  const handleStyleSelect = (comicStyle: ComicStyle) => {
+    // dispatch tasks with comic style payload
+    if (comicStyle.artist === selectedStyle?.artist) {
+      dispatch(setStyle(null));
+      return;
+    }
+    dispatch(setStyle(comicStyle));
+  };
 
   return (
     <div className="grid grid-rows-[100px_auto] overflow-x-hidden overflow-y-scroll">
-
       {/* top of grid */}
-      <CreateHeader currentRoute={createRoutes[0]}/>
+      <CreateHeader currentRoute={createRoutes[0]} />
 
       {/* second section of grid */}
       <div className="flex flex-col w-full h-full justify-center items-center">
@@ -44,22 +51,17 @@ const Styles = (props: Props) => {
               className={clsx(
                 "flex relative aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-emerald-500 hover:rounded-lg border border-light-divider dark:border-dark-divider",
                 {
-                  "ring-4 ring-emerald-500 rounded-lg": style && style.artist === comicStyle?.artist,
+                  "ring-4 ring-emerald-500 rounded-lg":
+                    selectedStyle &&
+                    selectedStyle.artist === comicStyle?.artist,
                 },
                 {
-                  "opacity-50": style && style?.artist !== comicStyle?.artist,
+                  "opacity-50":
+                    selectedStyle &&
+                    selectedStyle?.artist !== comicStyle?.artist,
                 }
               )}
-              onClick={() => {
-
-                dispatch(setStyle(comicStyle));
-
-                // if (style.artist === selectedStyle?.artist) {
-                //   setSelectedStyle(null);
-                //   return;
-                // }
-                // setSelectedStyle(style);
-              }}
+              onClick={() => handleStyleSelect(comicStyle)}
             >
               <img
                 src={comicStyle?.artwork?.url}
@@ -68,7 +70,7 @@ const Styles = (props: Props) => {
 
               <div className="absolute flex flex-col w-full h-full items-center justify-end">
                 {/* <span className="text-white text-sm font-bold px-2 rounded-full backdrop-blur-xl bg-[rgb(50,50,50,0.8)]"> */}
-                  {/* {style.artist} */}
+                {/* {style.artist} */}
                 {/* </span> */}
               </div>
             </button>
