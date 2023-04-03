@@ -22,7 +22,7 @@ const initialState: EntryState = {
 }
 
 
-const EntrySlice = createSlice({
+const entrySlice = createSlice({
   name: 'entry',
   initialState: initialState,
   reducers: {
@@ -49,9 +49,12 @@ const EntrySlice = createSlice({
 
 export const store: ToolkitStore = configureStore({
   reducer: {
-    entry: EntrySlice.reducer
+    entry: entrySlice.reducer
   }
 })
+
+// actions
+export const { setStyle, addCharacter, editCharacter, deleteCharacter, setStoryboard } = entrySlice.actions;
 
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -8,6 +8,8 @@ import React from "react";
 import { FiPlus } from "react-icons/fi";
 import { createRoutes } from "../layout";
 import { ComicStyle, comicStyles } from "@/util/create-samples";
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
+import { setStyle } from "@/redux-store/store";
 
 type Props = {};
 
@@ -19,9 +21,12 @@ type CartoonStyle = {
 };
 
 const Styles = (props: Props) => {
-  const [selectedStyle, setSelectedStyle] = React.useState<ComicStyle | null>(
-    null
-  );
+
+  // const [selectedStyle, setSelectedStyle] = React.useState<ComicStyle | null>(null);
+
+  // style state
+  const style = useAppSelector((state) => state.entry.style);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="grid grid-rows-[100px_auto] overflow-x-hidden overflow-y-scroll">
@@ -33,29 +38,31 @@ const Styles = (props: Props) => {
       <div className="flex flex-col w-full h-full justify-center items-center">
         {/* created characters list */}
         <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-7 w-full h-full max-w-4xl py-7">
-          {comicStyles.map((style: ComicStyle, index: number) => (
+          {comicStyles.map((comicStyle: ComicStyle, index: number) => (
             <button
               key={index}
               className={clsx(
                 "flex relative aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-emerald-500 hover:rounded-lg border border-light-divider dark:border-dark-divider",
                 {
-                  "ring-4 ring-emerald-500 rounded-lg": style.artist === selectedStyle?.artist,
+                  "ring-4 ring-emerald-500 rounded-lg": style && style.artist === comicStyle?.artist,
                 },
                 {
-                  "opacity-50":
-                    style.artist !== selectedStyle?.artist && selectedStyle !== null,
+                  "opacity-50": style && style?.artist !== comicStyle?.artist,
                 }
               )}
               onClick={() => {
-                if (style.artist === selectedStyle?.artist) {
-                  setSelectedStyle(null);
-                  return;
-                }
-                setSelectedStyle(style);
+
+                dispatch(setStyle(comicStyle));
+
+                // if (style.artist === selectedStyle?.artist) {
+                //   setSelectedStyle(null);
+                //   return;
+                // }
+                // setSelectedStyle(style);
               }}
             >
               <img
-                src={style?.artwork?.url}
+                src={comicStyle?.artwork?.url}
                 className={clsx("w-full h-full object-cover rounded-lg")}
               />
 
