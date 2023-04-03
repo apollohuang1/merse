@@ -11,7 +11,7 @@ import React, { Fragment } from "react";
 import { FiEdit2, FiPlus, FiX } from "react-icons/fi";
 import { createRoutes } from "../layout";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { addCharacter, removeCharacter } from "@/redux-store/store";
+import { addCharacter, removeCharacter, updateCharacter } from "@/redux-store/store";
 import { genders } from "@/util/select";
 import mongoose from "mongoose";
 
@@ -41,6 +41,7 @@ const CreateCharacterPage = (props: Props) => {
     setNewCharacterDescription("");
     setCharacterAge(0);
     setCharacterGender("");
+    setEditingCharacter(null);
   };
 
   const setEditData = (character: any) => {
@@ -83,7 +84,7 @@ const CreateCharacterPage = (props: Props) => {
               <FiPlus className="w-7 h-7 text-light-text-secondary dark:text-dark-text-secondary group-active:scale-90 transition-all" />
             </button>
 
-            {entry?.characters.map((character: any, i: number) => (
+            { entry?.characters.map((character: any, i: number) => (
               <CharacterCard
                 key={i}
                 character={character}
@@ -146,7 +147,20 @@ const CreateCharacterPage = (props: Props) => {
 
               <button
                 onClick={() => {
-                  createNewCharacter();
+                  if (editingCharacter) {
+                    dispatch(
+                    updateCharacter({
+                      _id: editingCharacter?._id,
+                      imageURL: characterImageURL,
+                      name: characterName,
+                      description: newCharacterDescription,
+                      age: characterAge,
+                      gender: characterGender,
+                    }))
+                  } else {
+                    createNewCharacter();
+                  }
+
                   setIsEditingCharacter(false);
                   clearForm();
                 }}

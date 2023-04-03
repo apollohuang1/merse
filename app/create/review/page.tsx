@@ -13,7 +13,7 @@ const Review = (props: Props) => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="flex flex-col w-full justify-center items-center">
+    <div className="flex flex-col w-full justify-center items-center overflow-auto">
       {/* main content */}
       <div className="flex flex-col gap-7 w-full h-full max-w-4xl p-7">
         {/* 3 circle with character images */}
