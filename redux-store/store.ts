@@ -32,13 +32,14 @@ const entrySlice = createSlice({
     addCharacter: (state: EntryState, action) => {
       state.characters.push(action.payload)
     },
+    removeCharacter: (state: EntryState, action) => {
+      // filter out the character with the given id
+      // state.characters = state.characters.filter(character => character._id !== action.payload)
+      state.characters = state.characters.filter(character => character?._id !== action.payload._id)
+    },
     editCharacter: (state: EntryState, action) => {
       const { characterIndex, characterData } = action.payload
       state.characters[characterIndex] = characterData
-    },
-    deleteCharacter: (state: EntryState, action) => {
-      const { characterIndex } = action.payload
-      state.characters.splice(characterIndex, 1)
     },
     setStoryboard: (state: EntryState, action) => {
       state.storyboard = action.payload
@@ -54,7 +55,7 @@ export const store: ToolkitStore = configureStore({
 })
 
 // actions
-export const { setStyle, addCharacter, editCharacter, deleteCharacter, setStoryboard } = entrySlice.actions;
+export const { setStyle, addCharacter, editCharacter, removeCharacter, setStoryboard } = entrySlice.actions;
 
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

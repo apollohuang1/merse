@@ -11,23 +11,22 @@ import React, { Fragment } from "react";
 import { FiEdit2, FiPlus, FiX } from "react-icons/fi";
 import { createRoutes } from "../layout";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { addCharacter } from "@/redux-store/store";
+import { addCharacter, removeCharacter } from "@/redux-store/store";
 import { genders } from "@/util/select";
+import mongoose from "mongoose";
 
 type Props = {};
 
 const CreateCharacterPage = (props: Props) => {
-
   // redux states
   const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
 
+  const [editingCharacter, setEditingCharacter] = React.useState<any>(null);
+
   const [isEditingCharacter, setIsEditingCharacter] = React.useState(false);
-  const [selectedImageData, setSelectedImageData] = React.useState<any>(null);
-
-  const [characterImageURL, setCharacterImageURL] =
-    React.useState<string>("");
-
+  const [characterImageData, setCharacterImageData] = React.useState<any>(null);
+  const [characterImageURL, setCharacterImageURL] = React.useState<string>("");
   const [characterName, setCharacterName] = React.useState<string>("");
   const [characterAge, setCharacterAge] = React.useState<number>(0);
   const [characterGender, setCharacterGender] = React.useState<string>("");
@@ -36,26 +35,36 @@ const CreateCharacterPage = (props: Props) => {
     React.useState<string>("");
 
   const clearForm = () => {
+    setCharacterImageData(null);
     setCharacterImageURL("");
     setCharacterName("");
+    setNewCharacterDescription("");
     setCharacterAge(0);
     setCharacterGender("");
-    setNewCharacterDescription("");
-  }
+  };
 
   const setEditData = (character: any) => {
-
-  }
+    setCharacterImageData(character?.imageData);
+    setCharacterImageURL(character?.imageURL);
+    setCharacterName(character?.name);
+    setNewCharacterDescription(character?.description);
+    setCharacterAge(character?.age);
+    setCharacterGender(character?.gender);
+    setEditingCharacter(character);
+  };
 
   const createNewCharacter = () => {
-    dispatch(addCharacter({
-      imageURL: characterImageURL,
-      name: characterName,
-      description: newCharacterDescription,
-      age: characterAge,
-      gender: characterGender
-    }));
-  }
+    dispatch(
+      addCharacter({
+        _id: new mongoose.Types.ObjectId(),
+        imageURL: characterImageURL,
+        name: characterName,
+        description: newCharacterDescription,
+        age: characterAge,
+        gender: characterGender,
+      })
+    );
+  };
 
   return (
     <>
@@ -65,7 +74,6 @@ const CreateCharacterPage = (props: Props) => {
         <div className="flex flex-col w-full h-full justify-center items-center">
           {/* created characters list */}
           <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-4xl py-7">
-
             <button
               onClick={() => {
                 setIsEditingCharacter(true);
@@ -80,6 +88,7 @@ const CreateCharacterPage = (props: Props) => {
                 key={i}
                 character={character}
                 onEditing={() => {
+                  setEditData(character);
                   setIsEditingCharacter(true);
                   // console.log(character);
                 }}
@@ -98,32 +107,74 @@ const CreateCharacterPage = (props: Props) => {
         <div className="flex flex-col gap-4">editing cover</div>
       </SlideOver> */}
 
-
       {/* creating new character slideover */}
       <SlideOver
         isOpen={isEditingCharacter}
         onClose={() => setIsEditingCharacter(false)}
         onOpen={() => setIsEditingCharacter(true)}
         title="Create New Character"
-        onSubmit={() => {
-          createNewCharacter();
-          setIsEditingCharacter(false);
-          clearForm();
-        }}
+        // onSubmit={() => {
+        //   createNewCharacter();
+        //   setIsEditingCharacter(false);
+        //   clearForm();
+        // }}
+        footer={
+          <div className="flex flex-shrink-0 justify-between items-center px-4 py-4 gap-3">
+
+            <button
+              type="button"
+              className="w-24 h-10 rounded-full text-light-text-secondary dark:text-dark-text-secondary bg-transparent hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+              onClick={() => {
+                dispatch(removeCharacter(editingCharacter?._id));
+                // console.log(editingCharacter);
+                setIsEditingCharacter(false);
+              }}
+            >
+              Remove
+            </button>
+
+            <div className="flex flex-row gap-3">
+              <button
+                type="button"
+                className="border border-light-divider dark:border-dark-divider w-24 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary rounded-full"
+                onClick={() => {
+                  setIsEditingCharacter(false);
+                }}
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={() => {
+                  createNewCharacter();
+                  setIsEditingCharacter(false);
+                  clearForm();
+                }}
+                type="submit"
+                className="bg-emerald-500 w-24 h-10 text-white rounded-full"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        }
       >
         <div className="flex flex-col gap-7">
           {/* face image container */}
           <div className="flex flex-row w-full justify-center">
-
             {/* circle image input */}
             <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
-              {selectedImageData || (characterImageURL !== "") ? (
+              {characterImageData || characterImageURL !== "" ? (
                 <Menu as="div" className="flex">
                   <Menu.Button>
                     <div className="flex w-full h-full">
                       {/* image */}
-                      <img 
-                        src={characterImageURL === "" ? URL.createObjectURL(selectedImageData) : characterImageURL}
+                      <img
+                        src={
+                          characterImageURL === ""
+                            ? URL.createObjectURL(characterImageData)
+                            : characterImageURL
+                        }
                         className="absolute w-full h-full object-cover rounded-full"
                         alt="character face"
                       />
@@ -152,7 +203,7 @@ const CreateCharacterPage = (props: Props) => {
                               "flex flex-row items-center px-4 relative text-sm h-12 border-b border-b-light-divider dark:border-b-dark-divider cursor-pointer rounded-t-lg",
                               {
                                 "bg-light-background-tertiary dark:bg-dark-background-tertiary":
-                                active,
+                                  active,
                               }
                             )}
                           >
@@ -165,7 +216,7 @@ const CreateCharacterPage = (props: Props) => {
                               onChange={(e) => {
                                 // set selected photo to null
                                 e.preventDefault();
-                                setSelectedImageData(null);
+                                setCharacterImageData(null);
                               }}
                             />
                           </div>
@@ -177,7 +228,7 @@ const CreateCharacterPage = (props: Props) => {
                           <div
                             onClick={(e) => {
                               e.preventDefault();
-                              setSelectedImageData(null);
+                              setCharacterImageData(null);
                               setCharacterImageURL("");
                             }}
                             className={clsx(
@@ -205,7 +256,10 @@ const CreateCharacterPage = (props: Props) => {
                     onChange={(e) => {
                       e.preventDefault();
                       if (e.target.files && e.target.files[0]) {
-                        setSelectedImageData(e.target.files[0]);
+                        setCharacterImageData(e.target.files[0]);
+                        setCharacterImageURL(
+                          URL.createObjectURL(e.target.files[0])
+                        );
                       }
                     }}
                   />
@@ -321,8 +375,10 @@ const CreateCharacterPage = (props: Props) => {
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                   onChange={(e: any) => setCharacterGender(e.target.value)}
                 >
-                  { genders.map((gender: any, index: number) => (
-                    <option value={gender} key={index}>{gender}</option>  
+                  {genders.map((gender: any, index: number) => (
+                    <option value={gender} key={index}>
+                      {gender}
+                    </option>
                   ))}
                 </select>
               </div>

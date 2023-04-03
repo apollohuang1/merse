@@ -1,5 +1,6 @@
 // Characters
 export type CartoonCharacter = {
+  _id: string;
   name: string | null;
   age: number | null;
   imageURL: string | null;

@@ -10,7 +10,7 @@ const CharacterCard: React.FC<{
   onEditing
 }) => {
   return (
-    <div className='group grid grid-rows-[80%_20%] aspect-square bg-light-background-secondary dark:bg-dark-background-secondary relative rounded-lg'>
+    <div className='group grid grid-rows-[80%_20%] aspect-square bg-light-background-secondary dark:bg-dark-background-secondary relative rounded-lg border border-light-divider dark:border-dark-divider'>
 
       <img 
         src={character?.imageURL ?? ""}

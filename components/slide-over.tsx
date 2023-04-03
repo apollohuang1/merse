@@ -13,8 +13,9 @@ const SlideOver: React.FC<{
   isOpen: boolean;
   title?: string;
   withCloseButton?: boolean;
-  onCancel?: () => void;
-  onSubmit?: () => void;
+  footer: React.ReactNode;
+  // onCancel?: () => void;
+  // onSubmit?: () => void;
 }> = ({
   children,
   onOpen,
@@ -22,7 +23,8 @@ const SlideOver: React.FC<{
   isOpen,
   title,
   withCloseButton = false,
-  onSubmit,
+  footer,
+  // onSubmit,
 }) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -57,7 +59,7 @@ const SlideOver: React.FC<{
                 leaveTo="translate-x-full"
               >
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-xl border-l border-l-light-divider dark:border-l-dark-divider">
-                  <div className="flex h-full flex-col overflow-y-scroll pb-6 shadow-xl bg-light-background-primary dark:bg-dark-background-primary">
+                  <div className="flex h-full flex-col overflow-y-scroll shadow-xl bg-light-background-primary dark:bg-dark-background-primary">
                     {/* <div className="p-4 border-b border-b-light-divider dark:border-b-dark-divider"> */}
                     <div className="p-4">
                       <div className="flex items-start justify-between">
@@ -84,26 +86,8 @@ const SlideOver: React.FC<{
                       {children}
                     </div>
 
-                    <div className="flex flex-shrink-0 justify-end px-4 py-4 gap-3">
-                      <button
-                        type="button"
-                        className="border border-light-divider dark:border-dark-divider w-24 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary rounded-full"
-                        onClick={() => {
-                          onClose();
-                        }}
-                      >
-                        Cancel
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          onSubmit && onSubmit();
-                        }}
-                        type="submit"
-                        className="bg-emerald-500 w-24 h-10 text-white rounded-full"
-                      >
-                        Save
-                      </button>
+                    <div className="py-2 border-t border-t-light-divider dark:border-t-dark-divider">
+                      { footer }
                     </div>
                   </div>
                 </Dialog.Panel>
