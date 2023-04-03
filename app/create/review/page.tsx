@@ -1,10 +1,17 @@
-import CreateHeader from '@/components/create/create-header';
-import MaxWidthContainer from '@/components/create/max-width-container';
+
+'use client';
+
 import React from 'react'
+import { useAppDispatch, useAppSelector } from '@/redux-store/hooks';
 
 type Props = {}
 
 const Review = (props: Props) => {
+
+  // redux states
+  const entry = useAppSelector((state) => state.entry.style);
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex flex-col w-full justify-center items-center">
       {/* main content */}
@@ -32,6 +39,11 @@ const Review = (props: Props) => {
             ))}
           </div>
         </div>
+
+        <div className='flex flex-col w-full'>
+          { JSON.stringify(entry) }
+        </div>
+
 
       </div>
     </div>
