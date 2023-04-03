@@ -20,9 +20,8 @@ import BulletList from "@tiptap/extension-bullet-list";
 // import DropCursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
 
-
 // ChakraUI
-import { Spinner } from '@chakra-ui/react'
+import { Spinner } from "@chakra-ui/react";
 
 // import editorStyles from "../../../styles/editor.module.css";
 import clsx from "clsx";
@@ -38,10 +37,17 @@ import {
   CreateChatCompletionResponse,
 } from "openai";
 import axios, { AxiosResponse } from "axios";
+import { setStoryboardData } from "@/redux-store/create/actions";
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 
 type Props = {};
 
 const Storyboard = (props: Props) => {
+
+  // Redux
+  const entry = useAppSelector((state) => state.entry);
+  const dispatch = useAppDispatch();
+
   const [showAddingImageModal, setShowAddingImageModal] =
     React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
@@ -103,19 +109,19 @@ const Storyboard = (props: Props) => {
     }
   };
 
-
   const stopGeneratingStoryboard = () => {
     setIsGeneratingStoryboard(false);
     // more code on handling stop generating storyboard
-  }
+  };
 
   //gpt3.5 API
   const createChatCompletion = (input: string) => {
     try {
-      
       const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
       //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
-      const control_prompt = "For the \"TEXT_STORY\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: " + input;
+      const control_prompt =
+        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
+        input;
 
       const requestData: CreateChatCompletionRequest = {
         model: "gpt-3.5-turbo",
@@ -162,12 +168,12 @@ const Storyboard = (props: Props) => {
                 if (match && currentPanel !== "") {
                   const matchText = match[1].trim();
                   matches.push(`${currentPanel}\n${matchText}`);
-                } 
+                }
               }
             }
             return matches.join("\n");
           };
-          
+
           const sceneText = stripText(generatedText);
           console.log("###--------------------SCENES--------------------###");
           //createImageFromText(sceneText);
@@ -175,9 +181,9 @@ const Storyboard = (props: Props) => {
           createImageFromText(sceneText);
           //new--------------------------------------------------------
 
-          console.log(response.data)
+          console.log(response.data);
           stopGeneratingStoryboard();
-          return
+          return;
         })
         .catch((error) => {
           stopGeneratingStoryboard();
@@ -193,46 +199,46 @@ const Storyboard = (props: Props) => {
     }
   };
 
-//new--------------------------------------
+  //new--------------------------------------
   //stable diffusion text-to-image API
   //change this later such that it iterates through EACH panel
   const createImageFromText = (input: string) => {
     try {
-        //console.log("-:1");
-        const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
-        const requestData = {
-            text: input, //input
-            device: "cpu",
-            output_format: "url",
-            output_size: "1024x1024",
-        };
-        axios({
-            method: "POST",
-            url: "https://stablediffusionapi.com/api/v3/text2img",
-            data: requestData,
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${stableDiffusionApiKey}`,
-            },
-        })
+      //console.log("-:1");
+      const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
+      const requestData = {
+        text: input, //input
+        device: "cpu",
+        output_format: "url",
+        output_size: "1024x1024",
+      };
+      axios({
+        method: "POST",
+        url: "https://stablediffusionapi.com/api/v3/text2img",
+        data: requestData,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${stableDiffusionApiKey}`,
+        },
+      })
         .then((response: AxiosResponse) => {
-            //console.log("-:5");
-            console.log(response.data);
-            const imageUrl = response?.data?.output_url;
-            if (!imageUrl) {
-                console.log("Failed to generate image: no output URL provided.");
-                return;
-            }
-            console.log("🖼️ Image URL:", imageUrl);
+          //console.log("-:5");
+          console.log(response.data);
+          const imageUrl = response?.data?.output_url;
+          if (!imageUrl) {
+            console.log("Failed to generate image: no output URL provided.");
+            return;
+          }
+          console.log("🖼️ Image URL:", imageUrl);
         })
         .catch((error) => {
-            console.log("Failed to generate image:", error);
+          console.log("Failed to generate image:", error);
         });
     } catch (error: any) {
-        console.log("Failed to generate image:", error?.message);
+      console.log("Failed to generate image:", error?.message);
     }
-};
-//new--------------------------------------^^
+  };
+  //new--------------------------------------^^
 
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
@@ -252,6 +258,12 @@ const Storyboard = (props: Props) => {
     return text;
   };
 
+  const handleSave = () => {
+    if (!editor) return;
+    const editorJSON = editor.getJSON();
+    dispatch(setStoryboardData(editorJSON));
+  };
+
   return (
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
@@ -268,12 +280,11 @@ const Storyboard = (props: Props) => {
             )}
           >
             <div className="flex flex-row w-full bg-light-background-secondary dark:bg-dark-background-secondary items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider p-2">
-
               {/* editor toolbar */}
               {/* <></> */}
               <div className="flex flex-row"></div>
 
-              { isGeneratingStoryboard ? (
+              {isGeneratingStoryboard ? (
                 <div className="flex flex-row gap-2 items-center h-8">
                   <Spinner speed={"0.8s"} className="w-4 h-4" />
                   <span className="text-sm">Generating...</span>

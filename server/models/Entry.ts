@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 export interface IEntry {
   _id: string;
   title: string;
-  styleRefereence: StyleReference;
+  styleReference: StyleReference;
   content: Object;
   characters: Character[];
 }
@@ -13,7 +13,7 @@ interface StyleReference {
 }
 
 // age/gender/ethnicity, top/bottom clothes descriptions, hair/eye color
-interface Character {
+export interface Character {
   _id: string;
   name: string;
   imageURL: string;
@@ -40,7 +40,7 @@ interface Character {
 const EntrySchema = new Schema<IEntry>({
   _id: { type: String, required: true },
   title: { type: String, required: true },
-  styleRefereence: { type: Object, required: true },
+  styleReference: { type: Object, required: true },
   content: { type: Object, required: true },
   characters: { type: [Object] , required: true },
 });

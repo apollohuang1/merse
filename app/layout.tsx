@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import "./globals.css";
+import { Provider } from "react-redux";
+import { store } from "@/redux-store/store";
 
 const metadata = {
   title: "Create Next App",
@@ -35,7 +37,9 @@ export default function RootLayout({
       </head>
 
       <body className="bg-light-background-primary dark:bg-dark-background-primary">
-        {children}
+        <Provider store={store}>
+          {children}
+        </Provider>
       </body>
     </html>
   );
