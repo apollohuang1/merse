@@ -37,7 +37,6 @@ import {
   CreateChatCompletionResponse,
 } from "openai";
 import axios, { AxiosResponse } from "axios";
-import { setStoryboardData } from "@/redux-store/create/actions";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 
 type Props = {};
@@ -256,12 +255,6 @@ const Storyboard = (props: Props) => {
     });
 
     return text;
-  };
-
-  const handleSave = () => {
-    if (!editor) return;
-    const editorJSON = editor.getJSON();
-    dispatch(setStoryboardData(editorJSON));
   };
 
   return (
