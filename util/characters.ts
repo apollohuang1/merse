@@ -3,6 +3,7 @@ import { CartoonCharacter } from "@/models/cartoon-character";
 
 export const sampleCharacter: CartoonCharacter[] = [
   {
+    _id: "1",
     name: "Charlotte Elizabeth Wilson",
     age: 20,
     imageURL: "/characters/character-1.png",
@@ -12,6 +13,7 @@ export const sampleCharacter: CartoonCharacter[] = [
     isNeutral: false,
   },
   {
+    _id: "2",
     name: "Ginevra Weasley",
     age: 18,
     imageURL: "/characters/character-2.png",
@@ -21,6 +23,7 @@ export const sampleCharacter: CartoonCharacter[] = [
     isNeutral: false,
   },
   {
+    _id: "3",
     name: "Ronsey Weasley",
     age: 15,
     imageURL: "/characters/character-3.png",
@@ -30,6 +33,7 @@ export const sampleCharacter: CartoonCharacter[] = [
     isNeutral: false,
   },
   {
+    _id: "4",
     name: "Foghorn Leghorn",
     age: 75,
     imageURL: "/characters/character-4.png",
@@ -39,6 +43,7 @@ export const sampleCharacter: CartoonCharacter[] = [
     isNeutral: false,
   },
   {
+    _id: "5",
     name: "Natalie Scholze",
     age: 75,
     imageURL: "/characters/character-5.png",
@@ -48,6 +53,7 @@ export const sampleCharacter: CartoonCharacter[] = [
     isNeutral: false,
   },
   {
+    _id: "6",
     name: "Jessica Scholze",
     age: 75,
     imageURL: "/characters/character-6.png",
