@@ -1,7 +1,7 @@
 "use client";
 
 import CreateHeader from "@/components/create/create-header";
-import React from "react";
+import React, { FormEventHandler } from "react";
 import { FiEdit2, FiImage, FiList, FiType } from "react-icons/fi";
 import { TbHeading } from "react-icons/tb";
 import { createRoutes } from "../layout";
@@ -12,6 +12,7 @@ import {
   FloatingMenu,
   JSONContent,
   BubbleMenu,
+  Editor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -38,6 +39,7 @@ import {
 } from "openai";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
+import { setStoryboard } from "@/redux-store/store";
 
 type Props = {};
 
@@ -256,6 +258,16 @@ const Storyboard = (props: Props) => {
 
     return text;
   };
+  
+  editor?.on("update", (updatedEditor) => {
+    // const text = convertTiptapJSONToText(editor?.getJSON());
+    const updatedContent = updatedEditor?.editor?.getJSON();
+    dispatch(setStoryboard(updatedContent));
+  });
+
+  editor?.on("create", (createdEditor) => {
+    createdEditor?.editor.commands.setContent(entry?.storyboard);
+  });
 
   return (
     <>
@@ -295,8 +307,9 @@ const Storyboard = (props: Props) => {
             </div>
 
             <div className="w-full h-full overflow-auto p-7">
+
               {/* <EditorContent editor={editor} className={editorStyles.editor} /> */}
-              <EditorContent editor={editor} />
+              <EditorContent editor={editor}/>
 
               {editor && (
                 <FloatingMenu

@@ -13,7 +13,17 @@ const SlideOver: React.FC<{
   isOpen: boolean;
   title?: string;
   withCloseButton?: boolean;
-}> = ({ children, onOpen, onClose, isOpen, title, withCloseButton=false }) => {
+  onCancel?: () => void;
+  onSubmit?: () => void;
+}> = ({
+  children,
+  onOpen,
+  onClose,
+  isOpen,
+  title,
+  withCloseButton = false,
+  onSubmit,
+}) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
@@ -55,7 +65,7 @@ const SlideOver: React.FC<{
                           {title}
                         </Dialog.Title>
 
-                        { withCloseButton &&
+                        {withCloseButton && (
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
@@ -66,28 +76,31 @@ const SlideOver: React.FC<{
                               <FiX className="h-5 w-5" aria-hidden="true" />
                             </button>
                           </div>
-                        }
-
-
+                        )}
                       </div>
                     </div>
 
-                    <div className="relative mt-6 flex-1 px-4 sm:px-6 overflow-scroll">
+                    <div className="mt-6 flex-1 px-4 sm:px-6 overflow-scroll">
                       {children}
                     </div>
 
                     <div className="flex flex-shrink-0 justify-end px-4 py-4 gap-3">
                       <button
                         type="button"
-                        className="rounded-none border border-light-divider dark:border-dark-divider w-24 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
-                        onClick={() => onClose()}
+                        className="border border-light-divider dark:border-dark-divider w-24 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary rounded-full"
+                        onClick={() => {
+                          onClose();
+                        }}
                       >
                         Cancel
                       </button>
 
                       <button
+                        onClick={() => {
+                          onSubmit && onSubmit();
+                        }}
                         type="submit"
-                        className="bg-emerald-500 w-24 h-10 text-white"
+                        className="bg-emerald-500 w-24 h-10 text-white rounded-full"
                       >
                         Save
                       </button>

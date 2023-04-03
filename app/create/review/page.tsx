@@ -9,7 +9,7 @@ type Props = {}
 const Review = (props: Props) => {
 
   // redux states
-  const entry = useAppSelector((state) => state.entry.style);
+  const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
 
   return (
@@ -41,7 +41,7 @@ const Review = (props: Props) => {
         </div>
 
         <div className='flex flex-col w-full'>
-          { JSON.stringify(entry) }
+          { JSON.stringify(entry, null, 2)}
         </div>
 
 

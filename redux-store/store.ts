@@ -42,7 +42,7 @@ const entrySlice = createSlice({
     },
     setStoryboard: (state: EntryState, action) => {
       state.storyboard = action.payload
-    }
+    },
   }
 })
 

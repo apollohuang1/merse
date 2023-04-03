@@ -10,13 +10,19 @@ import clsx from "clsx";
 import React, { Fragment } from "react";
 import { FiEdit2, FiPlus, FiX } from "react-icons/fi";
 import { createRoutes } from "../layout";
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
+import { addCharacter } from "@/redux-store/store";
 
 type Props = {};
 
 const CreateCharacterPage = (props: Props) => {
+
+  // redux states
+  const entry = useAppSelector((state) => state.entry);
+  const dispatch = useAppDispatch();
+
   const [isEditingCharacter, setIsEditingCharacter] = React.useState(false);
-  const [isCreatingNewCharacter, setIsCreatingNewCharacter] =
-    React.useState(false);
+  const [isCreatingNewCharacter, setIsCreatingNewCharacter] = React.useState(false);
 
   const [selectedImageData, setSelectedImageData] = React.useState<any>(null);
 
@@ -30,6 +36,13 @@ const CreateCharacterPage = (props: Props) => {
 
   const [newCharacterDescription, setNewCharacterDescription] =
     React.useState<string>("");
+
+  const createNewCharacter = () => {
+    dispatch(addCharacter({
+      name: newCharacterName,
+      age: newCharacterAge,
+    }));
+  }
 
   return (
     <>
@@ -77,6 +90,15 @@ const CreateCharacterPage = (props: Props) => {
         onClose={() => setIsCreatingNewCharacter(false)}
         onOpen={() => setIsCreatingNewCharacter(true)}
         title="Create New Character"
+        onSubmit={() => {
+          dispatch(addCharacter({
+            image: newCharacterImageURL,
+            name: newCharacterName,
+            description: newCharacterDescription,
+            age: newCharacterAge,
+          }))
+          setIsCreatingNewCharacter(false);
+        }}
       >
         <div className="flex flex-col gap-7">
           {/* face image container */}
@@ -88,6 +110,7 @@ const CreateCharacterPage = (props: Props) => {
                 <Menu as="div" className="flex">
                   <Menu.Button>
                     <div className="flex w-full h-full">
+                      {/* image */}
                       <img 
                         src={newCharacterImageURL === "" ? URL.createObjectURL(selectedImageData) : newCharacterImageURL}
                         className="absolute w-full h-full object-cover rounded-full"
@@ -202,6 +225,7 @@ const CreateCharacterPage = (props: Props) => {
                 enterKeyHint="next"
                 className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                 value={newCharacterImageURL ?? ""}
+                // value={entry?.character?.imageURL ?? ""}
                 placeholder="Enter character's image URL"
                 onChange={(e) => {
                   setNewCharacterImageURL(e.target.value);
