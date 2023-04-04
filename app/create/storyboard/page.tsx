@@ -41,6 +41,15 @@ import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setStoryboard } from "@/redux-store/store";
 
+//new---
+import express from 'express';
+import cors from 'cors';
+import { Request, Response } from 'express';
+
+//const express = require('express');
+const app = express();
+app.use(cors());
+//new---
 type Props = {};
 
 const Storyboard = (props: Props) => {
@@ -116,6 +125,27 @@ const Storyboard = (props: Props) => {
   };
 
   //gpt3.5 API
+  const stripText = (input: string) => {
+    const regex = /\(([^)]+)\)/g;
+    const paragraphs = input.split(/\r?\n/);
+    let matches = [];
+    let currentPanel = "";
+    let dialogueText = ""; //new empty var
+    for (const paragraph of paragraphs) {
+      const panelMatch = /^Panel\s+\d+:/gi.exec(paragraph);
+      if (panelMatch) {
+        currentPanel = panelMatch[0].trim();
+      } else {
+        const match = regex.exec(paragraph);
+        if (match && currentPanel !== "") {
+          const matchText = match[1].trim();
+          matches.push(`${currentPanel}\n${matchText}`);
+        }
+      }
+    }
+    return matches.join("\n");
+  };
+  
   const createChatCompletion = (input: string) => {
     try {
       const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
@@ -154,26 +184,6 @@ const Storyboard = (props: Props) => {
           // new--------------------------------------------------------
           // Strip scenes out
           // Strip scenes out
-          const stripText = (input: string) => {
-            const regex = /\(([^)]+)\)/g;
-            const paragraphs = input.split(/\r?\n/);
-            let matches = [];
-            let currentPanel = "";
-            let dialogueText = ""; //new empty var
-            for (const paragraph of paragraphs) {
-              const panelMatch = /^Panel\s+\d+:/gi.exec(paragraph);
-              if (panelMatch) {
-                currentPanel = panelMatch[0].trim();
-              } else {
-                const match = regex.exec(paragraph);
-                if (match && currentPanel !== "") {
-                  const matchText = match[1].trim();
-                  matches.push(`${currentPanel}\n${matchText}`);
-                }
-              }
-            }
-            return matches.join("\n");
-          };
 
           const sceneText = stripText(generatedText);
           console.log("###--------------------SCENES--------------------###");
@@ -207,6 +217,7 @@ const Storyboard = (props: Props) => {
     try {
       //console.log("-:1");
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
+      console.log("working?");
       const requestData = {
         text: input, //input
         device: "cpu",
@@ -239,6 +250,17 @@ const Storyboard = (props: Props) => {
       console.log("Failed to generate image:", error?.message);
     }
   };
+  //added:
+  app.post('/create-image', (req: Request, res: Response) => {
+    const inputText = req.body.inputText;
+    const sceneText = stripText(inputText);
+    createImageFromText(sceneText);
+    res.send('Image creation initiated');
+  });
+  
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+
   //new--------------------------------------^^
 
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
