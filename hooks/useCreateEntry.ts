@@ -106,14 +106,20 @@ const useEntryCreate = () => {
         console.log("###--------------------SCENES--------------------###");
         console.log(sceneText);
 
-        let splitedSceneText = sceneText
+        let splittedSceneText = sceneText
           .split("\n")
           .filter((line) => line.startsWith("Scene: "))
           .map((line) => line.substring("Scene: ".length).trim());
 
-        const firstScene = splitedSceneText[0];
+          createImageFromText(splittedSceneText[0]);
 
-        createImageFromText(firstScene);
+          
+          // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
+          
+          // iterate through splitedSceneText array
+          // for (let i = 0; i < splittedSceneText.length; i++) {
+            // createImageFromText(splittedSceneText[);
+          // }
 
         //new--------------------------------------------------------
 
