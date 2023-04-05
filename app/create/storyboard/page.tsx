@@ -125,7 +125,18 @@ const Storyboard = (props: Props) => {
                   <button
                     className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
                     onClick={() => {
-                      createImageFromText("India girl says “omg mark cooks?!”promptly crashes into table the class looks up at her she goes from brown to red");
+                      // createImageFromText("India girl says “omg mark cooks?!”promptly crashes into table the class looks up at her she goes from brown to red");
+
+                      axios.post("/api/test", {
+                        prompt: entry?.prompt,
+                      })
+                      .then((response) => {
+                        console.log(response);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                      
                     }}
                   >
                     Stable Diffusion

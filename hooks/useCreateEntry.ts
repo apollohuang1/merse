@@ -41,46 +41,38 @@ const useEntryCreate = () => {
   //new--------------------------------------
   //stable diffusion text-to-image API
   //change this later such that it iterates through EACH panel
-  const createImageFromText = (input: string) => {
-    //console.log("-:1");
-    const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
-    console.log("Key: " + stableDiffusionApiKey);
-    const requestData = {
-      key: stableDiffusionApiKey,
-      text: input, //input
-      // device: "cpu",
-      // output_format: "url",
-      // output_size: "1024x1024",
-      width: "1024",
-      height: "1024",
-      samples: "1",
-      enhance_prompt: "yes",
-      seed: null,
-    };
+  const createImageFromText = async (input: string) => {
 
-    axios({
-      method: "POST",
-      url: "https://stablediffusionapi.com/api/v3/text2img",
-      data: requestData,
-      headers: {
-        "Content-Type": "application/json",
-        // Authorization: `Bearer ${stableDiffusionApiKey}`,
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
-      },
-    })
-    .then((response: AxiosResponse) => {
-      //console.log("-:5");
-      console.log(response.data);
-      const imageUrl = response?.data?.output_url;
-      if (!imageUrl) {
-        console.log("Failed to generate image: no output URL provided.");
-        return;
-      }
-      console.log("🖼️ Image URL:", imageUrl);
-    })
-    .catch((error) => {
+    try {
+      //console.log("-:1");
+      const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
+      console.log("Key: " + stableDiffusionApiKey);
+      const requestData = {
+        key: stableDiffusionApiKey,
+        text: input, //input
+        // device: "cpu",
+        // output_format: "url",
+        // output_size: "1024x1024",
+        width: "514",
+        height: "514",
+        samples: "1",
+        // enhance_prompt: "yes",
+        seed: null,
+      };
+  
+      const response = await axios({
+        method: "POST",
+        url: "https://stablediffusionapi.com/api/v3/text2img",
+        data: requestData,
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${stableDiffusionApiKey}`,
+          // 'Access-Control-Allow-Origin': 'http://localhost:3000'
+        },
+      })
+    } catch (error:any) {
       console.log("Failed to generate image:", error?.message);
-    });
+    }
   };
   //new--------------------------------------^^
 
