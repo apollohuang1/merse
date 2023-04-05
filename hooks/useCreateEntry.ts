@@ -14,6 +14,29 @@ const useEntryCreate = () => {
     // more code on handling stop generating storyboard
   };
 
+
+  const generateStoryboard = (editor: any) => {
+    try {
+      if (editor) {
+        setIsGeneratingStoryboard(true);
+        const editorJSON = editor.getJSON();
+        const textContent = convertTiptapJSONToText(editorJSON);
+        createChatCompletion(textContent);
+        // const prompt = await generatePromptFromChatGPT(textContent);
+        console.log("🎉");
+        console.log(textContent);
+        return;
+      } else {
+        // handle blank editor
+        setIsGeneratingStoryboard(false);
+        console.log("editor is null");
+      }
+    } catch (error: any) {
+      setIsGeneratingStoryboard(false);
+      console.log(`Failed to generate storyboard, message: ${error?.message}`);
+    }
+  };
+
   //new--------------------------------------
   //stable diffusion text-to-image API
   //change this later such that it iterates through EACH panel
@@ -55,48 +78,7 @@ const useEntryCreate = () => {
   };
   //new--------------------------------------^^
 
-  const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
-    const { content } = tiptapJSON;
-    let text = "";
 
-    content?.forEach((node: any) => {
-      if (node.type === "text") {
-        text += node.text;
-      } else if (node.type === "image") {
-        // Include the image source as part of the text
-        text += `[IMAGE: ${node.attrs.src}]`;
-      } else if (node.content) {
-        text += convertTiptapJSONToText(node);
-      }
-    });
-
-    return text;
-  };
-
-
-  const generateStoryboard = async (editor: any) => {
-    try {
-      if (editor) {
-        setIsGeneratingStoryboard(true);
-        const editorJSON = editor.getJSON();
-        const textContent = convertTiptapJSONToText(editorJSON);
-        await createChatCompletion(textContent);
-        // const prompt = await generatePromptFromChatGPT(textContent);
-        console.log("🎉");
-        console.log(textContent);
-        return;
-      } else {
-        // handle blank editor
-        setIsGeneratingStoryboard(false);
-        console.log("editor is null");
-      }
-    } catch (error: any) {
-      setIsGeneratingStoryboard(false);
-      console.log(`Failed to generate storyboard, message: ${error?.message}`);
-    }
-  };
-
-  
   //gpt3.5 API
   const createChatCompletion = (input: string) => {
     try {
@@ -180,6 +162,24 @@ const useEntryCreate = () => {
         `Failed to create chat completion, message: ${error?.message}`
       );
     }
+  };
+
+  const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
+    const { content } = tiptapJSON;
+    let text = "";
+
+    content?.forEach((node: any) => {
+      if (node.type === "text") {
+        text += node.text;
+      } else if (node.type === "image") {
+        // Include the image source as part of the text
+        text += `[IMAGE: ${node.attrs.src}]`;
+      } else if (node.content) {
+        text += convertTiptapJSONToText(node);
+      }
+    });
+
+    return text;
   };
 
   return {

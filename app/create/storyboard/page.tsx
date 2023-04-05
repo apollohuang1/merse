@@ -74,11 +74,6 @@ const Storyboard = (props: Props) => {
         allowBase64: true,
         HTMLAttributes: {},
       }),
-      // DropCursor.configure({
-      //   color: "#10b981",
-      //   width: 2,
-      //   class: " rounded-full transition-all",
-      // }),
     ],
     editorProps: {
       attributes: {
