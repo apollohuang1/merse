@@ -42,7 +42,6 @@ const useEntryCreate = () => {
   //stable diffusion text-to-image API
   //change this later such that it iterates through EACH panel
   const createImageFromText = async (input: string) => {
-
     try {
       //console.log("-:1");
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
@@ -59,7 +58,7 @@ const useEntryCreate = () => {
         // enhance_prompt: "yes",
         seed: null,
       };
-  
+
       const response = await axios({
         method: "POST",
         url: "https://stablediffusionapi.com/api/v3/text2img",
@@ -69,96 +68,77 @@ const useEntryCreate = () => {
           // Authorization: `Bearer ${stableDiffusionApiKey}`,
           // 'Access-Control-Allow-Origin': 'http://localhost:3000'
         },
-      })
-    } catch (error:any) {
+      });
+    } catch (error: any) {
       console.log("Failed to generate image:", error?.message);
     }
   };
   //new--------------------------------------^^
 
   //gpt3.5 API
-  const createChatCompletion = (input: string) => {
-    try {
-      const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-      //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
-      const control_prompt =
-        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
-        input;
+  const createChatCompletion = (input: string): string | null => {
+    const openaiApiKey = process.env.OPENAI_API_KEY;
+    //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
+    const control_prompt =
+      'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
+      input;
 
-      const requestData: CreateChatCompletionRequest = {
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: control_prompt }],
-        temperature: 0.7,
-      };
+    const requestData: CreateChatCompletionRequest = {
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: control_prompt }],
+      temperature: 0.7,
+    };
 
-      axios({
-        method: "POST",
-        url: "https://api.openai.com/v1/chat/completions",
-        data: requestData,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${openaiApiKey}`,
-        },
-      })
-        .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
-          // console.log(response.data);
-          const generatedText = response?.data?.choices[0]?.message?.content;
-          // guard if generated text is null
-          if (!generatedText) {
-            stopGeneratingStoryboard();
-            return;
-          }
+    axios({
+      method: "POST",
+      url: "https://api.openai.com/v1/chat/completions",
+      data: requestData,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${openaiApiKey}`,
+      },
+    })
+      .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
+        // console.log(response.data);
+        const generatedText = response?.data?.choices[0]?.message?.content;
 
-          console.log("🎉 We did it!");
-          console.log(generatedText);
-
-          // new--------------------------------------------------------
-          // Strip scenes out
-          // Strip scenes out
-          const stripText = (input: string) => {
-            const regex = /\(([^)]+)\)/g;
-            const paragraphs = input.split(/\r?\n/);
-            let matches = [];
-            let currentPanel = "";
-            let dialogueText = ""; //new empty var
-            for (const paragraph of paragraphs) {
-              const panelMatch = /^Panel\s+\d+:/gi.exec(paragraph);
-              if (panelMatch) {
-                currentPanel = panelMatch[0].trim();
-              } else {
-                const match = regex.exec(paragraph);
-                if (match && currentPanel !== "") {
-                  const matchText = match[1].trim();
-                  matches.push(`${currentPanel}\n${matchText}`);
-                }
-              }
-            }
-            return matches.join("\n");
-          };
-
-          const sceneText = stripText(generatedText);
-          console.log("###--------------------SCENES--------------------###");
-          //createImageFromText(sceneText);
-          console.log(sceneText);
-          createImageFromText(sceneText);
-          //new--------------------------------------------------------
-
-          console.log(response.data);
+        // guard if generated text is null
+        if (!generatedText) {
           stopGeneratingStoryboard();
           return;
-        })
-        .catch((error) => {
-          stopGeneratingStoryboard();
-          console.log(
-            `Failed to create chat completion from http request, message: ${error?.message}`
-          );
-        });
-    } catch (error: any) {
-      stopGeneratingStoryboard();
-      console.log(
-        `Failed to create chat completion, message: ${error?.message}`
-      );
-    }
+        }
+
+        console.log("🎉 We did it!");
+        console.log(generatedText);
+
+        const sceneText = stripText(generatedText);
+
+        console.log("###--------------------SCENES--------------------###");
+        console.log(sceneText);
+
+        let splitedSceneText = sceneText
+          .split("\n")
+          .filter((line) => line.startsWith("Scene: "))
+          .map((line) => line.substring("Scene: ".length).trim());
+
+        console.log(splitedSceneText);
+
+        // createImageFromText(sceneText);
+        //new--------------------------------------------------------
+
+        console.log(response.data);
+        stopGeneratingStoryboard();
+        return sceneText;
+      })
+      .catch((error) => {
+        stopGeneratingStoryboard();
+        console.log(
+          `Failed to create chat completion from http request, message: ${error?.message}`
+        );
+        return null;
+      });
+
+    return null;
   };
 
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
@@ -179,10 +159,34 @@ const useEntryCreate = () => {
     return text;
   };
 
+  // new--------------------------------------------------------
+  // Strip scenes out
+  // Strip scenes out
+  const stripText = (input: string) => {
+    const regex = /\(([^)]+)\)/g;
+    const paragraphs = input.split(/\r?\n/);
+    let matches = [];
+    let currentPanel = "";
+    let dialogueText = ""; //new empty var
+    for (const paragraph of paragraphs) {
+      const panelMatch = /^Panel\s+\d+:/gi.exec(paragraph);
+      if (panelMatch) {
+        currentPanel = panelMatch[0].trim();
+      } else {
+        const match = regex.exec(paragraph);
+        if (match && currentPanel !== "") {
+          const matchText = match[1].trim();
+          matches.push(`${currentPanel}\n${matchText}`);
+        }
+      }
+    }
+    return matches.join("\n");
+  };
+
   return {
     isGeneratingStoryboard,
     generateStoryboard,
-    createImageFromText
+    createImageFromText,
   };
 };
 
