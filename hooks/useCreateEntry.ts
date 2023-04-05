@@ -16,13 +16,13 @@ const useEntryCreate = () => {
     // more code on handling stop generating storyboard
   };
 
-  const generateStoryboard = (editor: any) => {
+  const generateStoryboard = async (editor: any) => {
     try {
       if (editor) {
         setIsGeneratingStoryboard(true);
         const editorJSON = editor.getJSON();
         const textContent = convertTiptapJSONToText(editorJSON);
-        createChatCompletion(textContent);
+        await createChatCompletion(textContent);
         // const prompt = await generatePromptFromChatGPT(textContent);
         console.log("🎉");
         console.log(textContent);
@@ -66,76 +66,71 @@ const useEntryCreate = () => {
   //new--------------------------------------^^
 
   //gpt3.5 API
-  const createChatCompletion = (input: string): string | null => {
-    const openaiApiKey = process.env.OPENAI_API_KEY;
-    //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
-    const control_prompt =
-      'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
-      input;
+  const createChatCompletion = async (input: string) => {
+    try {
 
-    const requestData: CreateChatCompletionRequest = {
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: control_prompt }],
-      temperature: 0.7,
-    };
+      const openaiApiKey = process.env.OPENAI_API_KEY;
+      //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
+      
+      const control_prompt =
+        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
+        input;
 
-    axios({
-      method: "POST",
-      url: "https://api.openai.com/v1/chat/completions",
-      data: requestData,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${openaiApiKey}`,
-      },
-    })
-      .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
-        // console.log(response.data);
-        const generatedText = response?.data?.choices[0]?.message?.content;
+      const requestData: CreateChatCompletionRequest = {
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: control_prompt }],
+        temperature: 0.7,
+      };
 
-        // guard if generated text is null
-        if (!generatedText) {
-          stopGeneratingStoryboard();
-          return;
-        }
+      const openAIResponse: AxiosResponse<CreateChatCompletionResponse> =
+        await axios({
+          method: "POST",
+          url: "https://api.openai.com/v1/chat/completions",
+          data: requestData,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${openaiApiKey}`,
+          },
+        });
 
-        console.log("🎉 We did it!");
-        console.log(generatedText);
+      // console.log(response.data);
+      const generatedText = openAIResponse?.data?.choices[0]?.message?.content;
 
-        const sceneText = stripText(generatedText);
+      // guard if generated text is null
+      if (!generatedText || generatedText === "") {
+        throw new Error("Generated text is null");
+      }
 
-        console.log("###--------------------SCENES--------------------###");
-        console.log(sceneText);
+      console.log("🎉 We did it!");
+      console.log(generatedText);
 
-        let splittedSceneText = sceneText
-          .split("\n")
-          .filter((line) => line.startsWith("Scene: "))
-          .map((line) => line.substring("Scene: ".length).trim());
+      const sceneText = stripText(generatedText);
 
-          createImageFromText(splittedSceneText[0]);
+      console.log("###--------------------SCENES--------------------###");
+      console.log(sceneText);
 
-          
-          // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
-          
-          // iterate through splitedSceneText array
-          // for (let i = 0; i < splittedSceneText.length; i++) {
-            // createImageFromText(splittedSceneText[);
-          // }
+      let splittedSceneText = sceneText
+        .split("\n")
+        .filter((line) => line.startsWith("Scene: "))
+        .map((line) => line.substring("Scene: ".length).trim());
 
-        //new--------------------------------------------------------
+      // createImageFromText(splittedSceneText[0]);
 
-        console.log(response.data);
-        stopGeneratingStoryboard();
-        return sceneText;
-      })
-      .catch((error) => {
-        stopGeneratingStoryboard();
-        console.log(
-          `Failed to create chat completion from http request, message: ${error?.message}`
-        );
-        return null;
-      });
+      // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
 
-    return null;
+      // iterate through splitedSceneText array
+      // for (let i = 0; i < splittedSceneText.length; i++) {
+      // createImageFromText(splittedSceneText[);
+      // }
+
+      //new--------------------------------------------------------
+      stopGeneratingStoryboard();
+      return sceneText;
+    } catch (error: any) {
+      stopGeneratingStoryboard();
+      console.log(`Failed to create chat completion from http request, message: ${error?.message}`);
+      return null;
+    }
   };
 
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
