@@ -129,9 +129,9 @@ const Storyboard = (props: Props) => {
 
                       axios({
                         method: "post",
-                        url: "/api/test",
+                        url: "/api/text2image",
                         data: {
-                          prompt: "girl and boy holding hand in illustration style",
+                          prompt: "girl and boy holding hand in Pascal Campion artstyle",
                         },
                       })
                       .then((response) => {

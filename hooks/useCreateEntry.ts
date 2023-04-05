@@ -46,29 +46,19 @@ const useEntryCreate = () => {
       //console.log("-:1");
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
       console.log("Key: " + stableDiffusionApiKey);
-      const requestData = {
-        key: stableDiffusionApiKey,
-        text: input, //input
-        // device: "cpu",
-        // output_format: "url",
-        // output_size: "1024x1024",
-        width: "514",
-        height: "514",
-        samples: "1",
-        // enhance_prompt: "yes",
-        seed: null,
-      };
 
       const response = await axios({
         method: "POST",
         url: "https://stablediffusionapi.com/api/v3/text2img",
-        data: requestData,
+        data: { prompt: input + " in Pascal Campion artstyle" },
         headers: {
           "Content-Type": "application/json",
           // Authorization: `Bearer ${stableDiffusionApiKey}`,
           // 'Access-Control-Allow-Origin': 'http://localhost:3000'
         },
       });
+
+      console.log("Response: " + response);
     } catch (error: any) {
       console.log("Failed to generate image:", error?.message);
     }
@@ -121,9 +111,10 @@ const useEntryCreate = () => {
           .filter((line) => line.startsWith("Scene: "))
           .map((line) => line.substring("Scene: ".length).trim());
 
-        console.log(splitedSceneText);
+        const firstScene = splitedSceneText[0];
 
-        // createImageFromText(sceneText);
+        createImageFromText(firstScene);
+
         //new--------------------------------------------------------
 
         console.log(response.data);

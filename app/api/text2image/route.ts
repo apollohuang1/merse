@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
+
     const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
 
     if (!stableDiffusionApiKey) {
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     const response = await axios({
       method: "POST",
-      url: "https://stablediffusionapi.com/api/v3/text2img",
+      url: "/api/text2image",
       data: requestData,
       headers: { "Content-Type": "application/json" },
     })
