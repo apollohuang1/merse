@@ -40,20 +40,20 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setStoryboard } from "@/redux-store/store";
+import useEntryCreate from "@/hooks/useCreateEntry";
 
 type Props = {};
 
 const Storyboard = (props: Props) => {
 
-  // Redux
+  // Redux states
   const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
 
-  const [showAddingImageModal, setShowAddingImageModal] =
-    React.useState<boolean>(false);
+  const [showAddingImageModal, setShowAddingImageModal] = React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
-  const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
-    React.useState<boolean>(false);
+
+  const { generateStoryboard, isGeneratingStoryboard } = useEntryCreate();
 
   const editor = useEditor({
     extensions: [
@@ -88,176 +88,6 @@ const Storyboard = (props: Props) => {
     // content: "<h1>Hello World! 🌎️</h1>",
   });
 
-  const generateStoryboard = async () => {
-    try {
-      if (editor) {
-        setIsGeneratingStoryboard(true);
-        const editorJSON = editor.getJSON();
-        const textContent = convertTiptapJSONToText(editorJSON);
-        await createChatCompletion(textContent);
-        // const prompt = await generatePromptFromChatGPT(textContent);
-        console.log("🎉");
-        console.log(textContent);
-        return;
-      } else {
-        // handle blank editor
-        setIsGeneratingStoryboard(false);
-        console.log("editor is null");
-      }
-    } catch (error: any) {
-      setIsGeneratingStoryboard(false);
-      console.log(`Failed to generate storyboard, message: ${error?.message}`);
-    }
-  };
-
-  const stopGeneratingStoryboard = () => {
-    setIsGeneratingStoryboard(false);
-    // more code on handling stop generating storyboard
-  };
-
-  //gpt3.5 API
-  const createChatCompletion = (input: string) => {
-    try {
-      const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-      //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
-      const control_prompt =
-        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
-        input;
-
-      const requestData: CreateChatCompletionRequest = {
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: control_prompt }],
-        temperature: 0.7,
-      };
-
-      axios({
-        method: "POST",
-        url: "https://api.openai.com/v1/chat/completions",
-        data: requestData,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${openaiApiKey}`,
-        },
-      })
-        .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
-          // console.log(response.data);
-          const generatedText = response?.data?.choices[0]?.message?.content;
-          // guard if generated text is null
-          if (!generatedText) {
-            stopGeneratingStoryboard();
-            return;
-          }
-
-          console.log("🎉 We did it!");
-          console.log(generatedText);
-
-          // new--------------------------------------------------------
-          // Strip scenes out
-          // Strip scenes out
-          const stripText = (input: string) => {
-            const regex = /\(([^)]+)\)/g;
-            const paragraphs = input.split(/\r?\n/);
-            let matches = [];
-            let currentPanel = "";
-            let dialogueText = ""; //new empty var
-            for (const paragraph of paragraphs) {
-              const panelMatch = /^Panel\s+\d+:/gi.exec(paragraph);
-              if (panelMatch) {
-                currentPanel = panelMatch[0].trim();
-              } else {
-                const match = regex.exec(paragraph);
-                if (match && currentPanel !== "") {
-                  const matchText = match[1].trim();
-                  matches.push(`${currentPanel}\n${matchText}`);
-                }
-              }
-            }
-            return matches.join("\n");
-          };
-
-          const sceneText = stripText(generatedText);
-          console.log("###--------------------SCENES--------------------###");
-          //createImageFromText(sceneText);
-          console.log(sceneText);
-          createImageFromText(sceneText);
-          //new--------------------------------------------------------
-
-          console.log(response.data);
-          stopGeneratingStoryboard();
-          return;
-        })
-        .catch((error) => {
-          stopGeneratingStoryboard();
-          console.log(
-            `Failed to create chat completion from http request, message: ${error?.message}`
-          );
-        });
-    } catch (error: any) {
-      stopGeneratingStoryboard();
-      console.log(
-        `Failed to create chat completion, message: ${error?.message}`
-      );
-    }
-  };
-
-  //new--------------------------------------
-  //stable diffusion text-to-image API
-  //change this later such that it iterates through EACH panel
-  const createImageFromText = (input: string) => {
-    try {
-      //console.log("-:1");
-      const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
-      const requestData = {
-        text: input, //input
-        device: "cpu",
-        output_format: "url",
-        output_size: "1024x1024",
-      };
-      axios({
-        method: "POST",
-        url: "https://stablediffusionapi.com/api/v3/text2img",
-        data: requestData,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${stableDiffusionApiKey}`,
-        },
-      })
-        .then((response: AxiosResponse) => {
-          //console.log("-:5");
-          console.log(response.data);
-          const imageUrl = response?.data?.output_url;
-          if (!imageUrl) {
-            console.log("Failed to generate image: no output URL provided.");
-            return;
-          }
-          console.log("🖼️ Image URL:", imageUrl);
-        })
-        .catch((error) => {
-          console.log("Failed to generate image:", error);
-        });
-    } catch (error: any) {
-      console.log("Failed to generate image:", error?.message);
-    }
-  };
-  //new--------------------------------------^^
-
-  const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
-    const { content } = tiptapJSON;
-    let text = "";
-
-    content?.forEach((node: any) => {
-      if (node.type === "text") {
-        text += node.text;
-      } else if (node.type === "image") {
-        // Include the image source as part of the text
-        text += `[IMAGE: ${node.attrs.src}]`;
-      } else if (node.content) {
-        text += convertTiptapJSONToText(node);
-      }
-    });
-
-    return text;
-  };
   
   editor?.on("update", (updatedEditor) => {
     // const text = convertTiptapJSONToText(editor?.getJSON());
@@ -298,7 +128,7 @@ const Storyboard = (props: Props) => {
                 <button
                   className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
                   onClick={() => {
-                    generateStoryboard();
+                    generateStoryboard(editor);
                   }}
                 >
                   Generate
