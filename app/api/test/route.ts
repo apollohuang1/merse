@@ -3,15 +3,22 @@ import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-
   try {
-    //console.log("-:1");
     const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
-    console.log("Key: " + stableDiffusionApiKey);
+
+    if (!stableDiffusionApiKey) {
+      throw new Error("Missing Stable Diffusion API key");
+    }
+
+    const body = await req.json();
+
+    if (!body.prompt || body.prompt === "") {
+      throw new Error("Missing prompt");
+    }
 
     const requestData = {
       key: stableDiffusionApiKey,
-      prompt: "girl and boy sitting in san francisco, illustration", //input
+      prompt: body.prompt, //input
       width: "512",
       height: "512",
       samples: "1",

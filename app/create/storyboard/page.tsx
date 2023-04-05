@@ -127,8 +127,12 @@ const Storyboard = (props: Props) => {
                     onClick={() => {
                       // createImageFromText("India girl says “omg mark cooks?!”promptly crashes into table the class looks up at her she goes from brown to red");
 
-                      axios.post("/api/test", {
-                        prompt: entry?.prompt,
+                      axios({
+                        method: "post",
+                        url: "/api/test",
+                        data: {
+                          prompt: "girl and boy holding hand in illustration style",
+                        },
                       })
                       .then((response) => {
                         console.log(response);
@@ -136,7 +140,7 @@ const Storyboard = (props: Props) => {
                       .catch((error) => {
                         console.log(error);
                       });
-                      
+
                     }}
                   >
                     Stable Diffusion
