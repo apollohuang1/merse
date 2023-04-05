@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-
+    
     if (!body.prompt || body.prompt === "") {
       throw new Error("Missing prompt");
     }
@@ -32,10 +32,15 @@ export async function POST(req: NextRequest) {
       headers: { "Content-Type": "application/json" },
     })
 
+    if (response.data.status === "error") {
+      throw new Error(response.data.message);
+    }
+
     return NextResponse.json({ data: response.data }, { status: 200 });
   } catch (error:any) {
     console.log("Failed to generate image:", error?.message);
-    return NextResponse.json({ data: error?.message }, { status: 500 });
+    // return next response with message
+    return NextResponse.json({ message: error?.message }, { status: 500 });
   }
 
 
