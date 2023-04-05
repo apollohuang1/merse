@@ -45,15 +45,17 @@ import useEntryCreate from "@/hooks/useCreateEntry";
 type Props = {};
 
 const Storyboard = (props: Props) => {
+  // hooks
+  const { generateStoryboard, isGeneratingStoryboard, createImageFromText } =
+    useEntryCreate();
 
-  // Redux states
+  // redux states
   const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
 
-  const [showAddingImageModal, setShowAddingImageModal] = React.useState<boolean>(false);
+  const [showAddingImageModal, setShowAddingImageModal] =
+    React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
-
-  const { generateStoryboard, isGeneratingStoryboard } = useEntryCreate();
 
   const editor = useEditor({
     extensions: [
@@ -83,7 +85,6 @@ const Storyboard = (props: Props) => {
     // content: "<h1>Hello World! 🌎️</h1>",
   });
 
-  
   editor?.on("update", (updatedEditor) => {
     // const text = convertTiptapJSONToText(editor?.getJSON());
     const updatedContent = updatedEditor?.editor?.getJSON();
@@ -120,21 +121,31 @@ const Storyboard = (props: Props) => {
                   <span className="text-sm">Generating...</span>
                 </div>
               ) : (
-                <button
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
-                  onClick={() => {
-                    generateStoryboard(editor);
-                  }}
-                >
-                  Generate
-                </button>
+                <div className="flex flex-row gap-2 items-center h-8">
+                  <button
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
+                    onClick={() => {
+                      createImageFromText("India girl says “omg mark cooks?!”promptly crashes into table the class looks up at her she goes from brown to red");
+                    }}
+                  >
+                    Stable Diffusion
+                  </button>
+
+                  <button
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
+                    onClick={() => {
+                      generateStoryboard(editor);
+                    }}
+                  >
+                    Generate
+                  </button>
+                </div>
               )}
             </div>
 
             <div className="w-full h-full overflow-auto p-7">
-
               {/* <EditorContent editor={editor} className={editorStyles.editor} /> */}
-              <EditorContent editor={editor}/>
+              <EditorContent editor={editor} />
 
               {editor && (
                 <FloatingMenu
