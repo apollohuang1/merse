@@ -3,17 +3,8 @@
 require('dotenv').config();
 
 const nextConfig = {
-  experimental: {
-    appDir: true,
-    serverComponentsExternalPackages: ["mongoose"]
-  },
-  webpack(config, { isServer }) {
-    if (!isServer) {
-      config.resolve.fallback = {
-        fs: false,
-        net: false,
-      };
-    }
+  experimental: { appDir: true, serverComponentsExternalPackages: ["mongoose"] },
+  webpack(config) {
     config.experiments = { ...config.experiments, topLevelAwait: true };
     return config;
   },
@@ -24,4 +15,4 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig;
+module.exports = nextConfig
