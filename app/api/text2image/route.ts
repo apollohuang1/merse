@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
     const requestData = {
       key: stableDiffusionApiKey,
       prompt: body.prompt, //input
+      negative_prompt: "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs))",
       width: "512",
       height: "512",
       samples: "1",
