@@ -122,7 +122,7 @@ const Storyboard = (props: Props) => {
                 </div>
               ) : (
                 <div className="flex flex-row gap-2 items-center h-8">
-                  <button
+                  {/* <button
                     className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
                     onClick={() => {
                       // createImageFromText("India girl says “omg mark cooks?!”promptly crashes into table the class looks up at her she goes from brown to red");
@@ -144,7 +144,7 @@ const Storyboard = (props: Props) => {
                     }}
                   >
                     Stable Diffusion
-                  </button>
+                  </button> */}
 
                   <button
                     className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"

@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     const response = await axios({
       method: "POST",
-      url: "/api/text2image",
+      url: "https://stablediffusionapi.com/api/v3/text2img",
       data: requestData,
       headers: { "Content-Type": "application/json" },
     })

@@ -49,7 +49,7 @@ const useEntryCreate = () => {
 
       const response = await axios({
         method: "POST",
-        url: "https://stablediffusionapi.com/api/v3/text2img",
+        url: "/api/text2image",
         data: { prompt: input + " in Pascal Campion artstyle" },
         headers: {
           "Content-Type": "application/json",
