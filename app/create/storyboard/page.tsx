@@ -40,29 +40,22 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setStoryboard } from "@/redux-store/store";
+import useEntryCreate from "@/hooks/useCreateEntry";
 
-//new---
-import express from 'express';
-import cors from 'cors';
-import { Request, Response } from 'express';
-
-//const express = require('express');
-const app = express();
-app.use(cors());
-//new---
 type Props = {};
 
 const Storyboard = (props: Props) => {
+  // hooks
+  const { generateStoryboard, isGeneratingStoryboard, createImageFromText } =
+    useEntryCreate();
 
-  // Redux
+  // redux states
   const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
 
   const [showAddingImageModal, setShowAddingImageModal] =
     React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
-  const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
-    React.useState<boolean>(false);
 
   const editor = useEditor({
     extensions: [
@@ -83,11 +76,6 @@ const Storyboard = (props: Props) => {
         allowBase64: true,
         HTMLAttributes: {},
       }),
-      // DropCursor.configure({
-      //   color: "#10b981",
-      //   width: 2,
-      //   class: " rounded-full transition-all",
-      // }),
     ],
     editorProps: {
       attributes: {
@@ -97,190 +85,6 @@ const Storyboard = (props: Props) => {
     // content: "<h1>Hello World! 🌎️</h1>",
   });
 
-  const generateStoryboard = async () => {
-    try {
-      if (editor) {
-        setIsGeneratingStoryboard(true);
-        const editorJSON = editor.getJSON();
-        const textContent = convertTiptapJSONToText(editorJSON);
-        await createChatCompletion(textContent);
-        // const prompt = await generatePromptFromChatGPT(textContent);
-        console.log("🎉");
-        console.log(textContent);
-        return;
-      } else {
-        // handle blank editor
-        setIsGeneratingStoryboard(false);
-        console.log("editor is null");
-      }
-    } catch (error: any) {
-      setIsGeneratingStoryboard(false);
-      console.log(`Failed to generate storyboard, message: ${error?.message}`);
-    }
-  };
-
-  const stopGeneratingStoryboard = () => {
-    setIsGeneratingStoryboard(false);
-    // more code on handling stop generating storyboard
-  };
-
-  //gpt3.5 API
-  const stripText = (input: string) => {
-    const regex = /\(([^)]+)\)/g;
-    const paragraphs = input.split(/\r?\n/);
-    let matches = [];
-    let currentPanel = "";
-    let dialogueText = ""; //new empty var
-    for (const paragraph of paragraphs) {
-      const panelMatch = /^Panel\s+\d+:/gi.exec(paragraph);
-      if (panelMatch) {
-        currentPanel = panelMatch[0].trim();
-      } else {
-        const match = regex.exec(paragraph);
-        if (match && currentPanel !== "") {
-          const matchText = match[1].trim();
-          matches.push(`${currentPanel}\n${matchText}`);
-        }
-      }
-    }
-    return matches.join("\n");
-  };
-  
-  const createChatCompletion = (input: string) => {
-    try {
-      const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-      //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
-      const control_prompt =
-        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
-        input;
-
-      const requestData: CreateChatCompletionRequest = {
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: control_prompt }],
-        temperature: 0.7,
-      };
-
-      axios({
-        method: "POST",
-        url: "https://api.openai.com/v1/chat/completions",
-        data: requestData,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${openaiApiKey}`,
-        },
-      })
-        .then((response: AxiosResponse<CreateChatCompletionResponse>) => {
-          // console.log(response.data);
-          const generatedText = response?.data?.choices[0]?.message?.content;
-          // guard if generated text is null
-          if (!generatedText) {
-            stopGeneratingStoryboard();
-            return;
-          }
-
-          console.log("🎉 We did it!");
-          console.log(generatedText);
-
-          // new--------------------------------------------------------
-          // Strip scenes out
-          // Strip scenes out
-
-          const sceneText = stripText(generatedText);
-          console.log("###--------------------SCENES--------------------###");
-          //createImageFromText(sceneText);
-          console.log(sceneText);
-          createImageFromText(sceneText);
-          //new--------------------------------------------------------
-
-          console.log(response.data);
-          stopGeneratingStoryboard();
-          return;
-        })
-        .catch((error) => {
-          stopGeneratingStoryboard();
-          console.log(
-            `Failed to create chat completion from http request, message: ${error?.message}`
-          );
-        });
-    } catch (error: any) {
-      stopGeneratingStoryboard();
-      console.log(
-        `Failed to create chat completion, message: ${error?.message}`
-      );
-    }
-  };
-
-  //new--------------------------------------
-  //stable diffusion text-to-image API
-  //change this later such that it iterates through EACH panel
-  const createImageFromText = (input: string) => {
-    try {
-      //console.log("-:1");
-      const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
-      console.log("working?");
-      const requestData = {
-        text: input, //input
-        device: "cpu",
-        output_format: "url",
-        output_size: "1024x1024",
-      };
-      axios({
-        method: "POST",
-        url: "https://stablediffusionapi.com/api/v3/text2img",
-        data: requestData,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${stableDiffusionApiKey}`,
-        },
-      })
-        .then((response: AxiosResponse) => {
-          //console.log("-:5");
-          console.log(response.data);
-          const imageUrl = response?.data?.output_url;
-          if (!imageUrl) {
-            console.log("Failed to generate image: no output URL provided.");
-            return;
-          }
-          console.log("🖼️ Image URL:", imageUrl);
-        })
-        .catch((error) => {
-          console.log("Failed to generate image:", error);
-        });
-    } catch (error: any) {
-      console.log("Failed to generate image:", error?.message);
-    }
-  };
-  //added:
-  app.post('/create-image', (req: Request, res: Response) => {
-    const inputText = req.body.inputText;
-    const sceneText = stripText(inputText);
-    createImageFromText(sceneText);
-    res.send('Image creation initiated');
-  });
-  
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
-
-  //new--------------------------------------^^
-
-  const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
-    const { content } = tiptapJSON;
-    let text = "";
-
-    content?.forEach((node: any) => {
-      if (node.type === "text") {
-        text += node.text;
-      } else if (node.type === "image") {
-        // Include the image source as part of the text
-        text += `[IMAGE: ${node.attrs.src}]`;
-      } else if (node.content) {
-        text += convertTiptapJSONToText(node);
-      }
-    });
-
-    return text;
-  };
-  
   editor?.on("update", (updatedEditor) => {
     // const text = convertTiptapJSONToText(editor?.getJSON());
     const updatedContent = updatedEditor?.editor?.getJSON();
@@ -317,21 +121,46 @@ const Storyboard = (props: Props) => {
                   <span className="text-sm">Generating...</span>
                 </div>
               ) : (
-                <button
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
-                  onClick={() => {
-                    generateStoryboard();
-                  }}
-                >
-                  Generate
-                </button>
+                <div className="flex flex-row gap-2 items-center h-8">
+                  {/* <button
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
+                    onClick={() => {
+                      // createImageFromText("India girl says “omg mark cooks?!”promptly crashes into table the class looks up at her she goes from brown to red");
+
+                      axios({
+                        method: "post",
+                        url: "/api/text2image",
+                        data: {
+                          prompt: "girl and boy holding hand in Pascal Campion artstyle",
+                        },
+                      })
+                      .then((response) => {
+                        console.log(response);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+
+                    }}
+                  >
+                    Stable Diffusion
+                  </button> */}
+
+                  <button
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
+                    onClick={() => {
+                      generateStoryboard(editor);
+                    }}
+                  >
+                    Generate
+                  </button>
+                </div>
               )}
             </div>
 
             <div className="w-full h-full overflow-auto p-7">
-
               {/* <EditorContent editor={editor} className={editorStyles.editor} /> */}
-              <EditorContent editor={editor}/>
+              <EditorContent editor={editor} />
 
               {editor && (
                 <FloatingMenu
