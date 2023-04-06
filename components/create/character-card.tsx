@@ -1,4 +1,4 @@
-import { CartoonCharacter } from '@/models/cartoon-character';
+import { CartoonCharacter } from '@/models/character';
 import React from 'react'
 import { FiEdit2 } from 'react-icons/fi';
 

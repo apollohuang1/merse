@@ -1,3 +1,4 @@
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { JSONContent } from "@tiptap/react";
 import axios, { AxiosResponse } from "axios";
 import {
@@ -10,6 +11,10 @@ import React from "react";
 const useEntryCreate = () => {
   const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
     React.useState<boolean>(false);
+
+  // redux states
+  const entry = useAppSelector((state) => state.entry);
+  const dispatch = useAppDispatch();
 
   const stopGeneratingStoryboard = () => {
     setIsGeneratingStoryboard(false);

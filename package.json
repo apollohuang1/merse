@@ -1,5 +1,5 @@
 {
-  "name": "comic-journaling",
+  "name": "mobtoon",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -63,5 +63,5 @@
   "bugs": {
     "url": "https://github.com/markrachapoom/comics/issues"
   },
-  "homepage": "https://github.com/markrachapoom/comics#readme"
+  "homepage": "https://comics.merse.co"
 }

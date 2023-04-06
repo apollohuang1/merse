@@ -4,7 +4,7 @@
 
 import CreateHeader from "@/components/create/create-header";
 import LeftSideBar from "@/components/create/left-side-bar";
-import { IEntry } from "@/server/models/Entry";
+import { IEntry } from "@/server/models/entry";
 import React from "react";
 
 const metadata = {

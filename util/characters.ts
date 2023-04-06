@@ -1,4 +1,4 @@
-import { CartoonCharacter } from "@/models/cartoon-character";
+import { CartoonCharacter } from "@/models/character";
 
 
 export const sampleCharacter: CartoonCharacter[] = [

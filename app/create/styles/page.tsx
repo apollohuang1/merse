@@ -24,7 +24,7 @@ const Styles = (props: Props) => {
   // const [selectedStyle, setSelectedStyle] = React.useState<ComicStyle | null>(null);
 
   // style state
-  const selectedStyle = useAppSelector((state) => state.entry.style);
+  const selectedStyle = useAppSelector((state) => state.entry.style_reference);
   const dispatch = useAppDispatch();
 
   const handleStyleSelect = (comicStyle: ComicStyle) => {

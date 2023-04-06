@@ -1,6 +1,6 @@
 import dbConnect from "@/server/utils/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import Entry from "@/server/models/Entry";
+import Entry from "@/server/models/entry";
 import mongoose from "mongoose";
 
 
