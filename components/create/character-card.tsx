@@ -1,9 +1,10 @@
-import { CartoonCharacter } from '@/models/character';
+
+import { Character } from '@/models/character';
 import React from 'react'
 import { FiEdit2 } from 'react-icons/fi';
 
 const CharacterCard: React.FC<{
-  character: CartoonCharacter | null
+  character: Character | null
   onEditClick?: () => void
 }> = ({
   character,
@@ -13,7 +14,7 @@ const CharacterCard: React.FC<{
     <div className='group grid grid-rows-[80%_20%] aspect-square bg-light-background-secondary dark:bg-dark-background-secondary relative rounded-lg border border-light-divider dark:border-dark-divider'>
 
       <img 
-        src={character?.imageURL ?? ""}
+        src={character?.images[0].url ?? ""}
         alt="character image"
         className="w-full h-full object-cover rounded-t-lg"
       />

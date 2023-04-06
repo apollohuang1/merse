@@ -4,7 +4,7 @@
 
 import CreateHeader from "@/components/create/create-header";
 import LeftSideBar from "@/components/create/left-side-bar";
-import { IEntry } from "@/server/models/entry";
+import { Entry } from "@/models/entry";
 import React from "react";
 
 const metadata = {
@@ -75,7 +75,7 @@ export default function RootLayout({
   const [currentCreateRouteIdx, setCurrentCreateRouteIdx] =
     React.useState<number>(0);
 
-  const [savingContent, setSavingContent] = React.useState<IEntry | null>(null);
+  const [savingContent, setSavingContent] = React.useState<Entry | null>(null);
 
   return (
     <html lang="en">

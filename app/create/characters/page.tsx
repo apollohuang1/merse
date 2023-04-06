@@ -4,7 +4,6 @@ import CharacterCard from "@/components/create/character-card";
 import CreateHeader from "@/components/create/create-header";
 import MaxWidthContainer from "@/components/create/max-width-container";
 import SlideOver from "@/components/slide-over";
-import { sampleCharacter } from "@/util/characters";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import React, { Fragment } from "react";

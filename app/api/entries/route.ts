@@ -1,13 +1,13 @@
 import dbConnect from "@/server/utils/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import Entry from "@/server/models/entry";
 import mongoose from "mongoose";
+import entry from "@/server/models/entry";
 
 
 export async function GET(request: NextRequest) {
   try {
     const db = await dbConnect();
-    const data = await Entry.find({});
+    const data = await entry.find({});
     return NextResponse.json({ data: data }, { status: 200 });
   } catch (error: any) {
     // return new Response(error, { status: 500 })
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
 
   try {
-    const newEntry = new Entry({
+    const newEntry = new entry({
       _id: new mongoose.Types.ObjectId(),
       title: "Content Title Test #1 ",
       styleRefereence: {

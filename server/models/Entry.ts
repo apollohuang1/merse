@@ -1,5 +1,5 @@
 
-import { Entry } from '../../models/entry';
+import { Entry } from '@/models/entry';
 import mongoose, { Schema } from 'mongoose';
 
 

@@ -2,7 +2,6 @@
 
 import CreateHeader from "@/components/create/create-header";
 import MaxWidthContainer from "@/components/create/max-width-container";
-import { styleSamples } from "@/util/characters";
 import clsx from "clsx";
 import React from "react";
 import { FiPlus } from "react-icons/fi";
