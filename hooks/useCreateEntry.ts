@@ -43,40 +43,12 @@ const useEntryCreate = () => {
     }
   };
 
-  //new--------------------------------------
-  //stable diffusion text-to-image API
-  //change this later such that it iterates through EACH panel
-  const createImageFromText = async (input: string) => {
-    try {
-      //console.log("-:1");
-      const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
-      console.log("Key: " + stableDiffusionApiKey);
-
-      const response = await axios({
-        method: "POST",
-        url: "/api/text2image",
-        data: { prompt: input + " in Pascal Campion artstyle" },
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${stableDiffusionApiKey}`,
-          // 'Access-Control-Allow-Origin': 'http://localhost:3000'
-        },
-      });
-
-      console.log("Response: " + response);
-    } catch (error: any) {
-      console.log("Failed to generate image:", error?.message);
-    }
-  };
-  //new--------------------------------------^^
-
   //gpt3.5 API
   const createChatCompletion = async (input: string) => {
     try {
-
       const openaiApiKey = process.env.OPENAI_API_KEY;
       //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
-      
+
       const control_prompt =
         'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
         input;
@@ -119,24 +91,57 @@ const useEntryCreate = () => {
         .filter((line) => line.startsWith("Scene: "))
         .map((line) => line.substring("Scene: ".length).trim());
 
-      // createImageFromText(splittedSceneText[0]);
+      // comment this out to generate only 1 image
+      createImageFromText(splittedSceneText[0]);
+
 
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
-
       // iterate through splitedSceneText array
       // for (let i = 0; i < splittedSceneText.length; i++) {
       // createImageFromText(splittedSceneText[);
       // }
 
-      //new--------------------------------------------------------
       stopGeneratingStoryboard();
       return sceneText;
     } catch (error: any) {
       stopGeneratingStoryboard();
-      console.log(`Failed to create chat completion from http request, message: ${error?.message}`);
+      console.log(
+        `Failed to create chat completion from http request, message: ${error?.message}`
+      );
       return null;
     }
   };
+
+  //new--------------------------------------
+  //stable diffusion text-to-image API
+  //change this later such that it iterates through EACH panel
+  const createImageFromText = async (input: string) => {
+    try {
+
+      if (!input || input === "") {
+        throw new Error("Input text is null");
+      }
+
+      const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
+      const formattedPromptWithStyle = `${input} in ${entry.style_reference.artist} artstyle`;
+
+      const response = await axios({
+        method: "POST",
+        url: "/api/text2image",
+        data: {
+          prompt: formattedPromptWithStyle,
+        },
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log("Stable Diffusion API Response: ");
+      console.log(response.data);
+
+    } catch (error: any) {
+      console.log("Failed to generate image:", error?.message);
+    }
+  };
+  //new--------------------------------------^^
 
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
