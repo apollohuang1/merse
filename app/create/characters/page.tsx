@@ -49,7 +49,7 @@ const CreateCharacterPage = (props: Props) => {
 
   const setEditData = (character: any) => {
     setCharacterImageData(character?.imageData);
-    setCharacterImageURL(character?.imageURL);
+    setCharacterImageURL(character?.image_url);
     setCharacterName(character?.name);
     setNewCharacterDescription(character?.description);
     setCharacterAge(character?.age);
@@ -80,7 +80,7 @@ const CreateCharacterPage = (props: Props) => {
             {entry.characters.length > 0 ? (
               <>
                 {/* character cards */}
-                <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-4xl py-7">
+                <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full max-w-4xl">
                   <button
                     onClick={() => {
                       clearForm();
@@ -143,24 +143,20 @@ const CreateCharacterPage = (props: Props) => {
         onClose={() => setIsEditingCharacter(false)}
         onOpen={() => setIsEditingCharacter(true)}
         title="Create New Character"
-        // onSubmit={() => {
-        //   createNewCharacter();
-        //   setIsEditingCharacter(false);
-        //   clearForm();
-        // }}
         footer={
           <div className="flex flex-shrink-0 justify-between items-center px-4 py-4 gap-3">
             <button
               type="button"
               className="w-24 h-10 rounded-full text-light-text-secondary dark:text-dark-text-secondary bg-transparent hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
               onClick={() => {
-                dispatch(removeCharacter(editingCharacter?._id));
-                // console.log(editingCharacter);
+                dispatch(removeCharacter(editingCharacter));
                 setIsEditingCharacter(false);
               }}
             >
               Remove
             </button>
+
+            <span>{editingCharacter?._id}</span>
 
             <div className="flex flex-row gap-3">
               <button
