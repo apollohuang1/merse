@@ -84,13 +84,13 @@ const Storyboard = (props: Props) => {
     // content: "<h1>Hello World! 🌎️</h1>",
   });
 
-  editor?.on("update", (updatedEditor) => {
+  editor?.on("update", (updatedEditor: any) => {
     // const text = convertTiptapJSONToText(editor?.getJSON());
     const updatedContent = updatedEditor?.editor?.getJSON();
     dispatch(setStoryboard(updatedContent));
   });
 
-  editor?.on("create", (createdEditor) => {
+  editor?.on("create", (createdEditor: any) => {
     createdEditor?.editor.commands.setContent(entry?.storyboard);
   });
 

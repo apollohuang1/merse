@@ -3,8 +3,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "../../../server/utils/dbConnect";
-import Pet from "../../../server/models/Pet";
-import User from "../../../server/models/User";
+import Pet from "../../../server/models/MDBPet";
+import User from "../../../server/models/MDBUser";
 
 const mongoose = require("mongoose");
 

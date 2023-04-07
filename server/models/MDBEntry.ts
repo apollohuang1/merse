@@ -12,4 +12,3 @@ const EntrySchema = new Schema<Entry>({
 });
 
 export default mongoose.models.Entry || mongoose.model('Entry', EntrySchema);
-
