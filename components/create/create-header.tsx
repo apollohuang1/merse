@@ -1,4 +1,4 @@
-import { CreateRoute } from "@/app/create/layout";
+import { CreateRoute } from "@/util/create-constants";
 import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
@@ -19,42 +19,26 @@ const CreateHeader: React.FC<{
           </p>
         </div>
 
-        <div className="flex flex-row gap-3">
-
+        <div className="flex flex-row gap-4">
           {/* back button */}
           {currentRoute?.backConfig && (
             <Link
               href={currentRoute?.backConfig?.pathname ?? "/"}
-              className="group inline-flex items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary w-32 h-10 transition-all hover:scale-105 active:scale-100"
+              className="group inline-flex items-center justify-center rounded-full text-sm gap-1 bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary w-32 h-12 transition-all hover:scale-105 active:scale-100"
             >
               <FiArrowLeft className="text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[-2px] transition-all hover:duration-300" />
               <span>{currentRoute?.backConfig?.title ?? "Back"}</span>
             </Link>
           )}
 
-          { currentRoute?.nextConfig && (
-            <Link
-              href={currentRoute?.nextConfig?.pathname ?? "/"}
-              className={clsx(
-                "group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary w-32 h-10 transition-all hover:scale-110 active:scale-100",
-                {
-                  " bg-emerald-500 text-white hover:bg-emerald-600":
-                    !currentRoute?.nextConfig,
-                },
-                {
-                  " bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider":
-                    currentRoute?.nextConfig,
-                }
-              )}
-            >
-              <span>{currentRoute?.nextConfig?.title ?? "Finish"}</span>
+          <Link
+            href={currentRoute?.nextConfig?.pathname ?? "/"}
+            className="group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary w-32 h-12 transition-all hover:scale-105 active:scale-100 bg-light-background-secondary dark:bg-dark-background-secondary"
+          >
+            <span>{currentRoute?.nextConfig?.title ?? "Finish"}</span>
+            <FiArrowRight className="text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[-2px] transition-all hover:duration-300" />
+          </Link>
 
-              { currentRoute?.nextConfig && (
-                <FiArrowRight className="group-hover:translate-x-[2px] transition-all hover:duration-300" />
-              )}
-
-            </Link>
-          )}
         </div>
       </div>
     </div>

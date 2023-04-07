@@ -62,8 +62,10 @@ module.exports = {
             background: '#4D3003',
           },
           background: {
-            primary: '#000000', // black
-            secondary: "#151515",
+            // primary: '#000000', // black
+            primary: "#0E100E", // green satoshi fontshare
+            // secondary: "#151515", // green satoshi fontshare
+            secondary: "#161816",
             // secondary: "#121212",
             tertiary: "#2C2C2C",
             justalittlebitdarkerthan1c1c1e: "#1D1D1F",
