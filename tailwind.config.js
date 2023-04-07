@@ -40,7 +40,8 @@ module.exports = {
           },
           background: {
             primary: '#FFFFFF', // white
-            secondary: "#F2F2F2",
+            // secondary: "#F5F5F5",
+            secondary: "#F4F4F4",
             tertiary: "#DDDDDD",
           },
           text: {
