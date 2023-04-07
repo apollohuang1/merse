@@ -67,8 +67,9 @@ const Storyboard = (props: Props) => {
         },
       }),
       Placeholder.configure({
-        placeholder: "Write your storyboard here...",
-        emptyEditorClass: "is-editor-empty",
+        placeholder: "Write your diary entry here...",
+        emptyNodeClass: "text-light-text-tertiary dark:text-dark-text-tertiary",
+        // emptyEditorClass: "text-light-text-tertiary dark:text-dark-text-tertiary",
       }),
       Image.configure({
         inline: true,
