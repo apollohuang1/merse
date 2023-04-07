@@ -4,7 +4,6 @@ import CreateHeader from "@/components/create/create-header";
 import React, { FormEventHandler } from "react";
 import { FiEdit2, FiImage, FiList, FiType } from "react-icons/fi";
 import { TbHeading } from "react-icons/tb";
-import { createRoutes } from "../layout";
 
 import {
   useEditor,
@@ -28,7 +27,7 @@ import { Spinner } from "@chakra-ui/react";
 import clsx from "clsx";
 import Modal from "@/components/modal";
 import Placeholder from "@tiptap/extension-placeholder";
-import { storyboardSamples } from "@/util/create-samples";
+import { createRoutes, storyboardSamples } from "@/util/create-constants";
 
 // OpenAI and requests
 import {

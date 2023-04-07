@@ -10,7 +10,7 @@ import Image from "next/image";
 
 import { FiMoreHorizontal } from "react-icons/fi";
 import { Menu } from "@headlessui/react";
-import { allCreateRoutes, createRoutes } from "@/app/create/layout";
+import { allCreateRoutes } from "@/util/create-constants";
 
 type Props = {};
 
@@ -37,42 +37,17 @@ const LeftSideBar: React.FC<{}> = ({}) => {
     }
   };
 
-
-  // useEffect(() => {
-  //   // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-  //   if (
-  //     localStorage.theme === "dark" ||
-  //     (!("theme" in localStorage) &&
-  //       window.matchMedia("(prefers-color-scheme: dark)").matches)
-  //   ) {
-  //     document.documentElement.classList.add("dark");
-  //   } else {
-  //     document.documentElement.classList.remove("dark");
-  //   }
-
-  //   // // Whenever the user explicitly chooses light mode
-  //   // localStorage.theme = "light";
-
-  //   // // Whenever the user explicitly chooses dark mode
-  //   // localStorage.theme = "dark";
-
-  //   // // Whenever the user explicitly chooses to respect the OS preference
-  //   // localStorage.removeItem("theme");
-
-  // }, []);
-
   return (
     <div className="flex flex-col justify-between w-full h-full border-r border-r-light-divider dark:border-r-dark-divider pt-16">
-      <div className="border-t border-t-light-divider dark:border-t-dark-divider">
+      <div className="flex flex-col gap-0">
         { allCreateRoutes.map((route, index) => {
           return (
             <Link key={index} href={route?.pathname}>
               <button
                 className={clsx(
-                  "flex items-center justify-center w-full h-16 border-b border-b-light-divider dark:border-b-dark-divider transition-all active:opacity-50",
-                  // { 'hover:dark:bg-dark-background-secondary hover:bg-light-background-secondary': !isActive },
+                  "flex items-center justify-center w-full h-16 transition-all active:opacity-50",
                   {
-                    "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg":
+                    "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg border-r-2 border-r-emerald-500":
                       pathName === route.pathname,
                   },
                   {

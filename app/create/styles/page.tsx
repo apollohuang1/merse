@@ -5,8 +5,7 @@ import MaxWidthContainer from "@/components/create/max-width-container";
 import clsx from "clsx";
 import React from "react";
 import { FiPlus } from "react-icons/fi";
-import { createRoutes } from "../layout";
-import { ComicStyle, comicStyles } from "@/util/create-samples";
+import { ComicStyle, comicStyles, createRoutes } from "@/util/create-constants";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setStyle } from "@/redux-store/store";
 
@@ -50,7 +49,7 @@ const Styles = (props: Props) => {
               className={clsx(
                 "flex relative aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-emerald-500 hover:rounded-lg border border-light-divider dark:border-dark-divider rounded-lg",
                 {
-                  "ring-4 ring-emerald-500 rounded-lg":
+                  "ring-2 ring-emerald-500 rounded-lg":
                     selectedStyle &&
                     selectedStyle.artist === comicStyle?.artist,
                 },

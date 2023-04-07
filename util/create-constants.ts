@@ -1,3 +1,52 @@
+export type CreateRoute = {
+  pathname: string;
+  title: string;
+  description: string;
+  nextConfig?: CreateRoute | null;
+  backConfig?: CreateRoute | null;
+};
+
+export const allCreateRoutes: CreateRoute[] = [
+  // character, storyboard, cover, styles, review.
+  {
+    pathname: "/create/styles",
+    title: "Styles",
+    description: "Add styles to your story.",
+  },
+  {
+    pathname: "/create/characters",
+    title: "Characters",
+    description: "Add characters to your story.",
+  },
+  {
+    pathname: "/create/storyboard",
+    title: "Storyboard",
+    description: "Add storyboard to your story.",
+  },
+  {
+    pathname: "/create/cover",
+    title: "Cover",
+    description: "Add cover to your story.",
+  },
+  {
+    pathname: "/create/review",
+    title: "Review",
+    description: "Review your story.",
+  },
+];
+
+// create all routes with back config and next config
+export const createRoutes: CreateRoute[] = allCreateRoutes.map((route, i) => {
+  const nextRoute = allCreateRoutes[i + 1] || null;
+  const backRoute = allCreateRoutes[i - 1] || null;
+  return {
+    ...route,
+    nextConfig: nextRoute,
+    backConfig: backRoute,
+  };
+});
+
+
 export type ComicStyle = {
   artist: string;
   artwork?: {

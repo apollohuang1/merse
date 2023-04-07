@@ -8,11 +8,11 @@ import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import React, { Fragment } from "react";
 import { FiEdit2, FiPlus, FiX } from "react-icons/fi";
-import { createRoutes } from "../layout";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { addCharacter, removeCharacter, updateCharacter } from "@/redux-store/store";
 import { genders } from "@/util/select";
 import mongoose from "mongoose";
+import { createRoutes } from "@/util/create-constants";
 
 type Props = {};
 
