@@ -1,7 +1,9 @@
 
+import { Character } from '@/models/character'
 import { Entry } from '@/models/entry'
-import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
+import mongoose from 'mongoose'
 
 const initialState: Entry = {
   _id: "",
@@ -22,7 +24,7 @@ const entrySlice = createSlice({
     setStyle: (state: Entry, action) => {
       state.style_reference = action.payload
     },
-    addCharacter: (state: Entry, action) => {
+    addCharacter: (state: Entry, action: PayloadAction<Character>) => {
       state.characters.push(action.payload)
     },
     removeCharacter: (state: Entry, action) => {

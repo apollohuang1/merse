@@ -14,7 +14,7 @@ const CharacterCard: React.FC<{
     <div className='group grid grid-rows-[80%_20%] aspect-square bg-light-background-secondary dark:bg-dark-background-secondary relative rounded-lg border border-light-divider dark:border-dark-divider'>
 
       <img 
-        src={character?.images[0].url ?? ""}
+        src={character?.image_url ?? ""}
         alt="character image"
         className="w-full h-full object-cover rounded-t-lg"
       />

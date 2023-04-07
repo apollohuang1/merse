@@ -1,14 +1,15 @@
+import { ObjectId } from "mongoose";
 import { Character } from "./character";
 
 export interface Entry {
   _id: string;
   title: string;
   style_reference: StyleReference | null;
-  content: Object | null;
+  content: object | null;
   characters: Character[];
-  storyboard: Object | null;
-  cover: Object | null;
-  review: Object | null;
+  storyboard: object | null;
+  cover: object | null;
+  review: object | null;
 }
 
 interface StyleReference {

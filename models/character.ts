@@ -4,10 +4,11 @@ export interface Character {
   _id: string;
   name: string;
   image_url: string;
-  images: CharacterImage[];
-  description: string;
-  age: number;
-  attributes: {
+  // images?: CharacterImage[];
+  description?: string;
+  age?: number;
+  gender: string;
+  attributes?: {
     clothing: {
       top: string;
       bottom: string;
