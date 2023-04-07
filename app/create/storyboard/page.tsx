@@ -146,7 +146,7 @@ const Storyboard = (props: Props) => {
                   </button> */}
 
                   <button
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 h-8 rounded-full text-sm font-medium"
+                    className="bg-accent hover:bg-opacity-80 text-white px-3 h-8 rounded-full text-sm font-medium"
                     onClick={() => {
                       generateStoryboard(editor);
                     }}
@@ -174,7 +174,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 rounded-t-lg focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
                       {
-                        " text-emerald-500 bg-opacity-30 font-semibold":
+                        " text-accent bg-opacity-30 font-semibold":
                           editor.isActive("paragraph"),
                       }
                     )}
@@ -190,7 +190,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
                       {
-                        " text-emerald-500 bg-opacity-30 font-semibold":
+                        " text-accent bg-opacity-30 font-semibold":
                           editor.isActive("bulletList"),
                       }
                     )}
@@ -204,7 +204,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
                       {
-                        " text-emerald-500 bg-opacity-30 font-semibold":
+                        " text-accent bg-opacity-30 font-semibold":
                           editor.isActive("image"),
                       }
                     )}
@@ -220,7 +220,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
                       {
-                        "text-emerald-500 bg-opacity-30 font-semibold":
+                        "text-accent bg-opacity-30 font-semibold":
                           editor.isActive("heading", { level: 1 }),
                       }
                     )}
@@ -236,7 +236,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flew-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
                       {
-                        "text-emerald-500 bg-opacity-30 font-semibold":
+                        "text-accent bg-opacity-30 font-semibold":
                           editor.isActive("heading", { level: 2 }),
                       }
                     )}
@@ -252,7 +252,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start rounded-b-lg outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
                       {
-                        "text-emerald-500 bg-opacity-30 font-semibold":
+                        "text-accent bg-opacity-30 font-semibold":
                           editor.isActive("heading", { level: 3 }),
                       }
                     )}
@@ -276,7 +276,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
                       {
-                        " text-emerald-500 bg-opacity-30": editor.isActive(
+                        " text-accent bg-opacity-30": editor.isActive(
                           "heading",
                           { level: 1 }
                         ),
@@ -293,7 +293,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
                       {
-                        " text-emerald-500 bg-opacity-30": editor.isActive(
+                        " text-accent bg-opacity-30": editor.isActive(
                           "heading",
                           { level: 2 }
                         ),
@@ -310,7 +310,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
                       {
-                        " text-emerald-500 bg-opacity-30": editor.isActive(
+                        " text-accent bg-opacity-30": editor.isActive(
                           "heading",
                           { level: 3 }
                         ),
@@ -325,7 +325,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
                       {
-                        " text-emerald-500 bg-opacity-30":
+                        " text-accent bg-opacity-30":
                           editor.isActive("bold"),
                       }
                     )}
@@ -337,7 +337,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
                       {
-                        " text-emerald-500 bg-opacity-30":
+                        " text-accent bg-opacity-30":
                           editor.isActive("italic"),
                       }
                     )}
@@ -349,7 +349,7 @@ const Storyboard = (props: Props) => {
                     className={clsx(
                       "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
                       {
-                        " text-emerald-500 bg-opacity-30":
+                        " text-accent bg-opacity-30":
                           editor.isActive("strike"),
                       }
                     )}
@@ -421,7 +421,7 @@ const Storyboard = (props: Props) => {
               value={addingImageURL}
               placeholder="Paste the image link..."
               onChange={(e) => setAddingImageURL(e.target.value)}
-              className="flex flex-row w-full h-11 px-4 rounded-lg bg-transparent border border-light-divider dark:border-dark-divider focus:outline-emerald-500 focus:outline-1 outline-none transition-all text-light-text-primary dark:text-dark-text-primary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
+              className="flex flex-row w-full h-11 px-4 rounded-lg bg-transparent border border-light-divider dark:border-dark-divider focus:outline-accent focus:outline-1 outline-none transition-all text-light-text-primary dark:text-dark-text-primary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
             />
           </form>
 
@@ -448,7 +448,7 @@ const Storyboard = (props: Props) => {
                 }
                 setShowAddingImageModal(false);
               }}
-              className="flex flex-row h-10 w-20 rounded-full bg-emerald-500 border border-emerald-500 focus:outline-emerald-500 outline-none transition-all text-light-text-primary dark:text-dark-text-primary items-center justify-center"
+              className="flex flex-row h-10 w-20 rounded-full bg-accent border border-accent focus:outline-accent outline-none transition-all text-light-text-primary dark:text-dark-text-primary items-center justify-center"
             >
               Add
             </button>

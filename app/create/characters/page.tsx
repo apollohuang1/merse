@@ -116,7 +116,7 @@ const CreateCharacterPage = (props: Props) => {
                 >
                   <div className="flex flex-row items-center gap-8">
                     {/* plus icon */}
-                    <FiPlus className="w-7 h-7 text-emerald-500" />
+                    <FiPlus className="w-7 h-7 text-accent" />
 
                     <div className="text-start">
                       {/* header text */}
@@ -190,7 +190,7 @@ const CreateCharacterPage = (props: Props) => {
                   clearForm();
                 }}
                 type="submit"
-                className="bg-emerald-500 w-24 h-10 text-white rounded-full"
+                className="bg-accent w-24 h-10 text-white rounded-full"
               >
                 Save
               </button>
@@ -327,7 +327,7 @@ const CreateCharacterPage = (props: Props) => {
                 name="imageURL"
                 id="imageURL"
                 enterKeyHint="next"
-                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                 value={characterImageURL ?? ""}
                 // value={entry?.character?.imageURL ?? ""}
                 placeholder="Enter character's image URL"
@@ -350,7 +350,7 @@ const CreateCharacterPage = (props: Props) => {
                 name="name"
                 id="name"
                 enterKeyHint="next"
-                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                 value={characterName}
                 placeholder="Enter character's name"
                 onChange={(e) => {
@@ -368,7 +368,7 @@ const CreateCharacterPage = (props: Props) => {
                 name="description"
                 id="description"
                 rows={4}
-                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md min-h-[100px] border border-light-divider dark:border-dark-divider bg-transparent"
+                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md min-h-[100px] border border-light-divider dark:border-dark-divider bg-transparent"
                 value={newCharacterDescription}
                 placeholder="Enter character's description"
                 onChange={(e) => {
@@ -391,7 +391,7 @@ const CreateCharacterPage = (props: Props) => {
                   name="age"
                   id="age"
                   enterKeyHint="next"
-                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                   value={characterAge}
                   placeholder="Enter character's age"
                   onChange={(e: any) => {
@@ -411,7 +411,7 @@ const CreateCharacterPage = (props: Props) => {
                   name="location"
                   value={characterGender}
                   // defaultValue={"none"}
-                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-emerald-500 rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                   onChange={(e: any) => setCharacterGender(e.target.value)}
                 >
                   {genders.map((gender: any, index: number) => (

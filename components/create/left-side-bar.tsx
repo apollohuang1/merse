@@ -47,7 +47,7 @@ const LeftSideBar: React.FC<{}> = ({}) => {
                 className={clsx(
                   "flex items-center justify-center w-full h-16 transition-all active:opacity-50",
                   {
-                    "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg border-r-2 border-r-emerald-500":
+                    "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg border-r-2 border-r-accent":
                       pathName === route.pathname,
                   },
                   {

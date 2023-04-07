@@ -21,7 +21,7 @@ module.exports = {
       },
       colors: {
         // accent: "#4D9D7D", // green
-        accent: "#E52B12",
+        accent: "#10b981",
         accentSecondary: "#5FA78A", // secondary green
         // accent: "#972B34", // crimson
         // accentSecondary: "#A14048", // crimson
@@ -64,6 +64,7 @@ module.exports = {
           background: {
             // primary: '#000000', // black
             primary: "#0E100E", // green satoshi fontshare
+            // primary: "#0E1010", // blue satoshi fontshare
             // secondary: "#151515", // green satoshi fontshare
             secondary: "#161816",
             // secondary: "#121212",

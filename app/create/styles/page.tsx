@@ -47,9 +47,9 @@ const Styles = (props: Props) => {
             <button
               key={index}
               className={clsx(
-                "flex relative aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-emerald-500 hover:rounded-lg border border-light-divider dark:border-dark-divider rounded-lg",
+                "flex relative aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-accent hover:rounded-lg border border-light-divider dark:border-dark-divider rounded-lg",
                 {
-                  "ring-2 ring-emerald-500 rounded-lg":
+                  "ring-2 ring-accent rounded-lg":
                     selectedStyle &&
                     selectedStyle.artist === comicStyle?.artist,
                 },

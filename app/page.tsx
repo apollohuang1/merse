@@ -2,7 +2,6 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from './page.module.css'
 import Link from 'next/link'
-import { useEffect } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +14,7 @@ const Home: React.FC<{}> = () => {
         {/* Comic Journaling */}
         
         <Link href="/create/styles">
-          <button className="inline-flex items-center rounded-full bg-emerald-500 px-3 py-2 text-sm text-white shadow-sm hover:bg-emerald-600">
+          <button className="inline-flex items-center rounded-full bg-accent px-3 py-2 text-sm text-white shadow-sm hover:bg-emerald-600">
             <span>Create comic book</span>
           </button>
         </Link>
