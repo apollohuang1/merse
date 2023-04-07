@@ -35,7 +35,8 @@ const Styles = (props: Props) => {
   };
 
   return (
-    <div className="grid grid-rows-[100px_auto] overflow-x-hidden overflow-y-scroll">
+    <div className="flex flex-col overflow-auto">
+
       {/* top of grid */}
       <CreateHeader currentRoute={createRoutes[0]} />
 
