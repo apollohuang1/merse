@@ -9,8 +9,7 @@ import React from "react";
 
 // Hook for creating new entries
 const useEntryCreate = () => {
-  const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
-    React.useState<boolean>(false);
+  const [isGeneratingStoryboard, setIsGeneratingStoryboard] = React.useState<boolean>(false);
 
   // redux states
   const entry = useAppSelector((state) => state.entry);

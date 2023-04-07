@@ -9,7 +9,11 @@ import clsx from "clsx";
 import React, { Fragment } from "react";
 import { FiEdit2, FiPlus, FiX } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { addCharacter, removeCharacter, updateCharacter } from "@/redux-store/store";
+import {
+  addCharacter,
+  removeCharacter,
+  updateCharacter,
+} from "@/redux-store/store";
 import { genders } from "@/util/select";
 import mongoose from "mongoose";
 import { createRoutes } from "@/util/create-constants";
@@ -73,40 +77,65 @@ const CreateCharacterPage = (props: Props) => {
 
         <div className="flex flex-col w-full h-full justify-center items-center">
           {/* created characters list */}
-          <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-4xl py-7">
-            <button
-              onClick={() => {
-                clearForm();
-                setIsEditingCharacter(true);
-              }}
-              className="group flex w-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg"
-            >
-              <FiPlus className="w-7 h-7 text-light-text-secondary dark:text-dark-text-secondary group-active:scale-90 transition-all" />
-            </button>
-
-            { entry?.characters.map((character: any, i: number) => (
-              <CharacterCard
-                key={i}
-                character={character}
-                onEditClick={() => {
-                  setEditData(character);
+          {entry?.characters?.length > 0 ? (
+            <>
+            <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-4xl py-7">
+              <button
+                onClick={() => {
+                  clearForm();
                   setIsEditingCharacter(true);
-                  // console.log(character);
                 }}
-              />
-            ))}
-          </div>
+                className="group flex w-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg"
+              >
+                <FiPlus className="w-7 h-7 text-light-text-secondary dark:text-dark-text-secondary group-active:scale-90 transition-all" />
+              </button>
+
+              {entry?.characters.map((character: any, i: number) => (
+                <CharacterCard
+                  key={i}
+                  character={character}
+                  onEditClick={() => {
+                    setEditData(character);
+                    setIsEditingCharacter(true);
+                    // console.log(character);
+                  }}
+                />
+              ))}
+            </div>
+            </>
+          ) : (
+            <div className="flex flex-col w-full h-full justify-start items-center max-w-4xl py-7">
+              {/* empty dashed box for character */}
+              <button
+                onClick={() => {
+                  clearForm();
+                  setIsEditingCharacter(true);
+                }}
+                className="flex flex-col items-center justify-center text-center gap-4 w-full h-60 rounded-xl border-2 border-dashed border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+              >
+                <div className="flex flex-row items-center gap-8">
+
+                  {/* plus icon */}
+                  <FiPlus className="w-7 h-7 text-emerald-500" />
+
+                  <div className="text-start">
+                    {/* header text */}
+                    <h1 className="text-2xl font-bold text-light-text-primary dark:text-dark-text-primary">
+                      Create your first character
+                    </h1>
+
+                    {/* description */}
+                    <p className="text-light-text-secondary dark:text-dark-text-secondary">
+                      Add new characters to your story
+                    </p>
+                  </div>
+
+                </div>
+              </button>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* <SlideOver
-        isOpen={isEditingCharacter}
-        onClose={() => setIsEditingCharacter(false)}
-        onOpen={() => setIsEditingCharacter(true)}
-        title="Edit Character"
-      >
-        <div className="flex flex-col gap-4">editing cover</div>
-      </SlideOver> */}
 
       {/* creating new character slideover */}
       <SlideOver
@@ -121,7 +150,6 @@ const CreateCharacterPage = (props: Props) => {
         // }}
         footer={
           <div className="flex flex-shrink-0 justify-between items-center px-4 py-4 gap-3">
-
             <button
               type="button"
               className="w-24 h-10 rounded-full text-light-text-secondary dark:text-dark-text-secondary bg-transparent hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
@@ -149,14 +177,15 @@ const CreateCharacterPage = (props: Props) => {
                 onClick={() => {
                   if (editingCharacter) {
                     dispatch(
-                    updateCharacter({
-                      _id: editingCharacter?._id,
-                      imageURL: characterImageURL,
-                      name: characterName,
-                      description: newCharacterDescription,
-                      age: characterAge,
-                      gender: characterGender,
-                    }))
+                      updateCharacter({
+                        _id: editingCharacter?._id,
+                        imageURL: characterImageURL,
+                        name: characterName,
+                        description: newCharacterDescription,
+                        age: characterAge,
+                        gender: characterGender,
+                      })
+                    );
                   } else {
                     createNewCharacter();
                   }
