@@ -105,15 +105,22 @@ const Storyboard = (props: Props) => {
         {/* navigation header */}
         <CreateHeader currentRoute={createRoutes[2]} />
 
-        {/* main content */}
-        <div className={"flex flex-row w-full h-full overflow-hidden"}>
+        {/* main content (left and right panels columns) */}
+        <div
+          className={clsx(
+            "flex flex-row w-full h-full overflow-hidden px-7",
+            { "gap-0" : !showGeneratedStoryboard},
+            { "gap-7" : showGeneratedStoryboard}
+          )}
+        >
+          {/* left container */}
           <div className="flex flex-col w-full h-full items-center">
             <div className="flex flex-col w-full h-[calc(100vh-100px)] max-w-4xl gap-4">
               {/* prompt left panel */}
               <div className="flex flex-col w-full h-full gap-6">
-                <div className="flex flex-row w-full items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider py-3">
+                <div className="flex flex-row w-full items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider pb-3">
                   <button
-                    className="text-accent px-3 h-8 rounded-full font-medium"
+                    className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                     onClick={() => {
                       setShowGeneratedStoryboard(!showGeneratedStoryboard);
                     }}
@@ -129,9 +136,9 @@ const Storyboard = (props: Props) => {
                   ) : (
                     <div className="flex flex-row gap-2 items-center h-8">
                       <button
-                        className="text-accent px-3 h-8 rounded-full font-medium"
+                        className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                         onClick={() => {
-                          generateStoryboard(editor);
+                          // generateStoryboard(editor);
                         }}
                       >
                         Generate
@@ -141,7 +148,6 @@ const Storyboard = (props: Props) => {
                 </div>
 
                 <div className="flex flex-col w-full h-full overflow-auto">
-
                   {/* title */}
                   <input
                     type="text"
@@ -276,7 +282,11 @@ const Storyboard = (props: Props) => {
                       >
                         <button
                           onClick={() =>
-                            editor.chain().focus().setHeading({ level: 1 }).run()
+                            editor
+                              .chain()
+                              .focus()
+                              .setHeading({ level: 1 })
+                              .run()
                           }
                           className={clsx(
                             "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
@@ -293,7 +303,11 @@ const Storyboard = (props: Props) => {
 
                         <button
                           onClick={() =>
-                            editor.chain().focus().setHeading({ level: 2 }).run()
+                            editor
+                              .chain()
+                              .focus()
+                              .setHeading({ level: 2 })
+                              .run()
                           }
                           className={clsx(
                             "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
@@ -310,7 +324,11 @@ const Storyboard = (props: Props) => {
 
                         <button
                           onClick={() =>
-                            editor.chain().focus().setHeading({ level: 3 }).run()
+                            editor
+                              .chain()
+                              .focus()
+                              .setHeading({ level: 3 })
+                              .run()
                           }
                           className={clsx(
                             "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
@@ -371,23 +389,22 @@ const Storyboard = (props: Props) => {
                     )}
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
 
           <div
             className={clsx(
-              "flex flex-col h-full items-center duration-300 overflow-auto px-7 gap-4 flex-shrink-0",
+              "flex flex-col h-full items-center duration-300 overflow-auto gap-4 flex-shrink-0",
               { "w-0 opacity-0": !showGeneratedStoryboard },
-              { "w-1/2": showGeneratedStoryboard }
+              { "w-[400px]": showGeneratedStoryboard }
             )}
           >
-            <div className="grid grid-cols-2 w-full gap-4 max-xl:flex max-xl:flex-col">
+            <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">
               {storyboardSamples.map((style, index) => (
                 <div
                   key={index}
-                  className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg border border-light-divider dark:border-dark-divider"
+                  className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
                 >
                   {/* overlay  */}
                   <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
