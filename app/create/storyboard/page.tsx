@@ -2,8 +2,19 @@
 
 import CreateHeader from "@/components/create/create-header";
 import React, { FormEventHandler } from "react";
-import { FiEdit2, FiImage, FiList, FiType } from "react-icons/fi";
+import {
+  FiBold,
+  FiCode,
+  FiEdit2,
+  FiImage,
+  FiItalic,
+  FiList,
+  FiType,
+} from "react-icons/fi";
 import { TbHeading } from "react-icons/tb";
+import { VscQuote } from "react-icons/vsc";
+import { BsQuote } from "react-icons/bs";
+import { IoText } from "react-icons/io5";
 
 import {
   useEditor,
@@ -40,6 +51,7 @@ import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setStoryboard, setTitle } from "@/redux-store/store";
 import useEntryCreate from "@/hooks/useCreateEntry";
+import Blockquote from "@tiptap/extension-blockquote";
 
 type Props = {};
 
@@ -80,11 +92,17 @@ const Storyboard = (props: Props) => {
         allowBase64: true,
         HTMLAttributes: {},
       }),
+      Blockquote.configure({
+        HTMLAttributes: {
+          class:
+            "bg-light-background-secondary dark:bg-dark-background-secondary rounded-none p-4 border-l-2 border-emerald-500",
+        },
+      }),
     ],
     editorProps: {
       attributes: {
         class:
-          "outline-none w-full h-full bg-transparent min-h-[calc(100vh-300px)]",
+          "outline-none w-full h-full bg-transparent min-h-[calc(100vh-300px)] highlight selection:bg-emerald-500 selection:bg-opacity-25",
       },
     },
     // content: "<h1>Hello World! 🌎️</h1>",
@@ -118,7 +136,6 @@ const Storyboard = (props: Props) => {
           <div className="flex flex-col w-full h-full items-center">
             {/* prompt left panel */}
             <div className="flex flex-col w-full h-[calc(100vh-100px)] max-w-4xl gap-6">
-
               {/* tools bar */}
               <div className="flex flex-row w-full items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider pb-3">
                 <button
@@ -174,110 +191,35 @@ const Storyboard = (props: Props) => {
                         "flex flex-col bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-xl translate-y-[calc(50%+16px)] -translate-x-3"
                       )}
                     >
-                      <button
-                        onClick={() =>
-                          editor.chain().focus().setParagraph().run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 rounded-t-lg focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                          {
-                            " text-accent bg-opacity-30 font-semibold":
-                              editor.isActive("paragraph"),
-                          }
-                        )}
-                      >
-                        <FiType />
-                        <span>Text</span>
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          editor.chain().focus().toggleBulletList().run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                          {
-                            " text-accent bg-opacity-30 font-semibold":
-                              editor.isActive("bulletList"),
-                          }
-                        )}
-                      >
-                        <FiList />
-                        <span>Bulleted List</span>
-                      </button>
+                      {floatingMenus.map((floatingMenu, index) => (
+                        <button
+                          key={index}
+                          onClick={() => floatingMenu.onClick(editor)}
+                          className={clsx(
+                            "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
+                            {
+                              " text-accent bg-opacity-30 font-semibold":
+                                floatingMenu.isActive(editor),
+                            },
+                            {
+                              "rounded-t-lg": index === 0,
+                            }
+                          )}
+                        >
+                          {floatingMenu.icon}
+                          <span>{floatingMenu.label}</span>
+                        </button>
+                      ))}
 
                       <button
                         onClick={() => setShowAddingImageModal(true)}
                         className={clsx(
-                          "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                          {
-                            " text-accent bg-opacity-30 font-semibold":
-                              editor.isActive("image"),
-                          }
+                          "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary rounded-b-lg",
+                          { "text-accent bg-opacity-30 font-semibold": editor.isActive("image") }
                         )}
                       >
                         <FiImage />
                         <span>Image</span>
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          editor
-                            .chain()
-                            .focus()
-                            .toggleHeading({ level: 1 })
-                            .run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                          {
-                            "text-accent bg-opacity-30 font-semibold":
-                              editor.isActive("heading", { level: 1 }),
-                          }
-                        )}
-                      >
-                        <TbHeading />
-                        <span>Heading 1</span>
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          editor
-                            .chain()
-                            .focus()
-                            .toggleHeading({ level: 2 })
-                            .run()
-                        }
-                        className={clsx(
-                          "flex flew-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                          {
-                            "text-accent bg-opacity-30 font-semibold":
-                              editor.isActive("heading", { level: 2 }),
-                          }
-                        )}
-                      >
-                        <TbHeading />
-                        <span>Heading 2</span>
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          editor
-                            .chain()
-                            .focus()
-                            .toggleHeading({ level: 3 })
-                            .run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start rounded-b-lg outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                          {
-                            "text-accent bg-opacity-30 font-semibold":
-                              editor.isActive("heading", { level: 3 }),
-                          }
-                        )}
-                      >
-                        <TbHeading />
-                        <span>Heading 3</span>
                       </button>
                     </FloatingMenu>
                   )}
@@ -286,108 +228,29 @@ const Storyboard = (props: Props) => {
                     <BubbleMenu
                       editor={editor}
                       tippyOptions={{ duration: 100 }}
-                      className="flex flex-row bg-light-background-primary dark:bg-dark-background-primary rounded-lg drop-shadow-2xl border border-light-divider dark:border-dark-divider h-8"
+                      className="flex flex-row bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl border border-light-divider dark:border-dark-divider h-8"
                     >
-                      <button
-                        onClick={() =>
-                          editor.chain().focus().setHeading({ level: 1 }).run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
-                          {
-                            " text-accent bg-opacity-30": editor.isActive(
-                              "heading",
-                              { level: 1 }
-                            ),
-                          }
-                        )}
-                      >
-                        H1
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          editor.chain().focus().setHeading({ level: 2 }).run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
-                          {
-                            " text-accent bg-opacity-30": editor.isActive(
-                              "heading",
-                              { level: 2 }
-                            ),
-                          }
-                        )}
-                      >
-                        H2
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          editor.chain().focus().setHeading({ level: 3 }).run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
-                          {
-                            " text-accent bg-opacity-30": editor.isActive(
-                              "heading",
-                              { level: 3 }
-                            ),
-                          }
-                        )}
-                      >
-                        H3
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          editor.chain().focus().toggleBold().run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider pl-2",
-                          {
-                            " text-accent bg-opacity-30":
-                              editor.isActive("bold"),
-                          }
-                        )}
-                      >
-                        bold
-                      </button>
-                      <button
-                        onClick={() =>
-                          editor.chain().focus().toggleItalic().run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                          {
-                            " text-accent bg-opacity-30":
-                              editor.isActive("italic"),
-                          }
-                        )}
-                      >
-                        italic
-                      </button>
-                      <button
-                        onClick={() =>
-                          editor.chain().focus().toggleStrike().run()
-                        }
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none gap-2 px-1 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider",
-                          {
-                            " text-accent bg-opacity-30":
-                              editor.isActive("strike"),
-                          }
-                        )}
-                      >
-                        strike
-                      </button>
+                      {bubbleMenus.map((bubbleMenu: any, index: number) => (
+                        <button
+                          key={index}
+                          onClick={() => bubbleMenu.onClick(editor)}
+                          className={clsx(
+                            "flex flex-row items-center justify-start outline-none gap-2 px-2 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary",
+                            {
+                              " text-accent bg-opacity-30":
+                                bubbleMenu?.isActive(editor),
+                            }
+                          )}
+                        >
+                          {bubbleMenu.icon}
+                        </button>
+                      ))}
                     </BubbleMenu>
                   )}
                 </>
               </div>
             </div>
           </div>
-
 
           {/* right panel */}
           <div
@@ -401,7 +264,7 @@ const Storyboard = (props: Props) => {
               {storyboardSamples.map((style, index) => (
                 <div
                   key={index}
-                  className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
+                  className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
                 >
                   {/* overlay  */}
                   <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
@@ -411,7 +274,7 @@ const Storyboard = (props: Props) => {
                   <img
                     src={style?.artwork?.url}
                     alt="comic book cover"
-                    className="object-cover aspect-[4/3] rounded-t-lg"
+                    className="object-cover aspect-[4/3]"
                   />
 
                   {/* story line in storyboard */}
@@ -487,3 +350,85 @@ const Storyboard = (props: Props) => {
 };
 
 export default Storyboard;
+
+const bubbleMenus = [
+  {
+    type: "paragraph",
+    label: "Text",
+    icon: <IoText />,
+    onClick: (editor: Editor) => editor?.chain().focus().setParagraph().run(),
+    isActive: (editor: Editor) => editor?.isActive("paragraph"),
+  },
+  {
+    type: "heading1",
+    label: "Heading 1",
+    icon: "H1",
+    onClick: (editor: Editor) =>
+      editor?.chain().focus().setHeading({ level: 1 }).run(),
+    isActive: (editor: Editor) => editor?.isActive("heading", { level: 1 }),
+  },
+  {
+    type: "heading2",
+    label: "Heading 2",
+    icon: "H2",
+    onClick: (editor: Editor) =>
+      editor?.chain().focus().setHeading({ level: 2 }).run(),
+    isActive: (editor: Editor) => editor?.isActive("heading", { level: 2 }),
+  },
+  {
+    type: "heading3",
+    label: "Heading 3",
+    icon: "H3",
+    onClick: (editor: Editor) =>
+      editor?.chain().focus().setHeading({ level: 3 }).run(),
+    isActive: (editor: Editor) => editor?.isActive("heading", { level: 3 }),
+  },
+  {
+    type: "bold",
+    label: "Bold",
+    icon: <FiBold />,
+    onClick: (editor: Editor) => editor?.chain().focus().toggleBold().run(),
+    isActive: (editor: Editor) => editor?.isActive("bold"),
+  },
+  {
+    type: "italic",
+    label: "Italic",
+    icon: <FiItalic />,
+    onClick: (editor: Editor) => editor?.chain().focus().toggleItalic().run(),
+    isActive: (editor: Editor) => editor?.isActive("italic"),
+  },
+  // {
+  //   type: "underline",
+  //   icon: "Strike",
+  //   onClick: () => editor?.chain().focus().toggleStrike().run(),
+  //   isActive: editor?.isActive("strike"),
+  // },
+  {
+    type: "bulletList",
+    label: "Bullet List",
+    icon: <FiList />,
+    onClick: (editor: Editor) =>
+      editor?.chain().focus().toggleBulletList().run(),
+    isActive: (editor: Editor) => editor?.isActive("bulletList"),
+  },
+  {
+    type: "codeBlock",
+    label: "Code Block",
+    icon: <FiCode />,
+    onClick: (editor: Editor) =>
+      editor?.chain().focus().toggleCodeBlock().run(),
+    isActive: (editor: Editor) => editor?.isActive("codeBlock"),
+  },
+  {
+    type: "blockquote",
+    label: "Blockquote",
+    icon: <BsQuote />,
+    onClick: (editor: Editor) =>
+      editor?.chain().focus().toggleBlockquote().run(),
+    isActive: (editor: Editor) => editor?.isActive("blockquote"),
+  },
+];
+
+const floatingMenus = bubbleMenus.filter((menu) => {
+  return menu.type !== "bold" && menu.type !== "italic";
+});

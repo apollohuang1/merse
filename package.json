@@ -15,6 +15,7 @@
     "@headlessui/react": "^1.7.13",
     "@reduxjs/toolkit": "^1.9.3",
     "@tailwindcss/line-clamp": "^0.4.2",
+    "@tiptap/extension-blockquote": "^2.0.2",
     "@tiptap/extension-bubble-menu": "^2.0.1",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.220",
     "@tiptap/extension-dropcursor": "^2.0.0",
