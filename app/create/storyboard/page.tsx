@@ -72,8 +72,7 @@ const Storyboard = (props: Props) => {
       }),
       Placeholder.configure({
         placeholder: "Write your diary entry here...",
-        emptyNodeClass:
-          "text-light-text-tertiary dark:text-dark-text-tertiary text-base",
+        // emptyNodeClass: "text-light-text-tertiary dark:text-dark-text-tertiary text-base",
         // emptyEditorClass: "text-light-text-tertiary dark:text-dark-text-tertiary",
       }),
       Image.configure({
@@ -389,9 +388,11 @@ const Storyboard = (props: Props) => {
             </div>
           </div>
 
+
+          {/* right panel */}
           <div
             className={clsx(
-              "flex flex-col h-full items-center duration-500 overflow-auto gap-4 flex-shrink-0",
+              "flex flex-col h-full items-center duration-300 overflow-auto gap-4 flex-shrink-0",
               { "w-0 opacity-0": !showGeneratedStoryboard },
               { "w-[400px]": showGeneratedStoryboard }
             )}
@@ -486,36 +487,3 @@ const Storyboard = (props: Props) => {
 };
 
 export default Storyboard;
-
-// generated storyboard, prev right panel
-
-// {/* storyboard list right panel */}
-// <div className="flex flex-col w-full h-full overflow-auto rounded-lg">
-// <div className="grid grid-cols-2 w-full gap-4 max-xl:flex max-xl:flex-col">
-//   {/* story card */}
-//   {storyboardSamples.map((style, index) => (
-//     <div
-//       key={index}
-//       className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg border border-light-divider dark:border-dark-divider"
-//     >
-//       {/* overlay  */}
-//       <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
-//         <FiEdit2 className="w-9 h-9 text-white" />
-//       </div>
-
-//       <img
-//         src={style?.artwork?.url}
-//         alt="comic book cover"
-//         className="object-cover aspect-[4/3] rounded-t-lg"
-//       />
-
-//       {/* story line in storyboard */}
-//       <div className="flex p-4">
-//         <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-//           {style?.description}
-//         </p>
-//       </div>
-//     </div>
-//   ))}
-// </div>
-// </div>

@@ -34,21 +34,29 @@
 }
 
 /* Display a Placeholder only for the first line in an empty editor. */
-.ProseMirror p.is-editor-empty:first-child::before {
-  /* color: #adb5bd; */
+/* .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+} */
+
+/* Display Placeholders on every new line. */
+.ProseMirror p.is-empty::before {
+  color: #C4C4C6;
   content: attr(data-placeholder);
   float: left;
   height: 0;
   pointer-events: none;
 }
 
-/* Display Placeholders on every new line. */
-/* .ProseMirror p.is-empty::before {
+.dark .ProseMirror p.is-empty::before {
+  color: #47474A;
   content: attr(data-placeholder);
   float: left;
   height: 0;
   pointer-events: none;
-} */
+}
 
 /* :root {
   --max-width: 1100px;
