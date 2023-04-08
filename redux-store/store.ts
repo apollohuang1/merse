@@ -46,6 +46,9 @@ const entrySlice = createSlice({
     setStoryboard: (state: Entry, action) => {
       state.storyboard = action.payload
     },
+    setTitle: (state: Entry, action: PayloadAction<string>) => {
+      state.title = action.payload
+    }
   }
 })
 
@@ -57,7 +60,7 @@ export const store: ToolkitStore = configureStore({
 })
 
 // actions
-export const { setStyle, addCharacter, updateCharacter, removeCharacter, setStoryboard } = entrySlice.actions;
+export const { setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setStoryboard } = entrySlice.actions;
 
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

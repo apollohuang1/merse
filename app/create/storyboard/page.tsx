@@ -38,7 +38,7 @@ import {
 } from "openai";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setStoryboard } from "@/redux-store/store";
+import { setStoryboard, setTitle } from "@/redux-store/store";
 import useEntryCreate from "@/hooks/useCreateEntry";
 
 type Props = {};
@@ -52,9 +52,9 @@ const Storyboard = (props: Props) => {
   const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
 
-  const [showAddingImageModal, setShowAddingImageModal] =
-    React.useState<boolean>(false);
+  const [showAddingImageModal, setShowAddingImageModal] = React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
+  const [titleText, setTitleText] = React.useState<string>("");
 
   const [showGeneratedStoryboard, setShowGeneratedStoryboard] =
     React.useState<boolean>(false);
@@ -125,7 +125,7 @@ const Storyboard = (props: Props) => {
                       setShowGeneratedStoryboard(!showGeneratedStoryboard);
                     }}
                   >
-                    {showGeneratedStoryboard ? "Hide" : "Show "}
+                    {showGeneratedStoryboard ? "Hide" : "Show"}
                   </button>
 
                   {isGeneratingStoryboard ? (
@@ -138,7 +138,7 @@ const Storyboard = (props: Props) => {
                       <button
                         className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                         onClick={() => {
-                          // generateStoryboard(editor);
+                          generateStoryboard(editor);
                         }}
                       >
                         Generate
@@ -152,6 +152,12 @@ const Storyboard = (props: Props) => {
                   <input
                     type="text"
                     className="w-full py-3 bg-transparent outline-none text-6xl font-semibold text-[#0E100E] dark:text-[#E7FCE8] placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
+                    value={entry?.title ?? ""}
+                    // onChange={(e) => setTitleText(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const updatedTitle = e.target.value;
+                      dispatch(setTitle(updatedTitle));
+                    }}
                     placeholder="Title"
                   />
 

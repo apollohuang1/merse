@@ -156,8 +156,6 @@ const CreateCharacterPage = (props: Props) => {
               Remove
             </button>
 
-            <span>{editingCharacter?._id}</span>
-
             <div className="flex flex-row gap-3">
               <button
                 type="button"
