@@ -9,8 +9,8 @@ import React from "react";
 
 // Hook for creating new entries
 const useEntryCreate = () => {
-  
-  const [isGeneratingStoryboard, setIsGeneratingStoryboard] = React.useState<boolean>(false);
+  const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
+    React.useState<boolean>(false);
 
   // redux states
   const entry = useAppSelector((state) => state.entry);
@@ -94,7 +94,6 @@ const useEntryCreate = () => {
       // comment this out to generate only 1 image
       createImageFromText(splittedSceneText[0]);
 
-
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       // iterate through splitedSceneText array
       // for (let i = 0; i < splittedSceneText.length; i++) {
@@ -117,7 +116,6 @@ const useEntryCreate = () => {
   //change this later such that it iterates through EACH panel
   const createImageFromText = async (input: string) => {
     try {
-
       if (!input || input === "") {
         throw new Error("Input text is null");
       }
@@ -136,6 +134,38 @@ const useEntryCreate = () => {
 
       console.log("Stable Diffusion API Response: ");
       console.log(response.data);
+
+      // ❤️ Hiii Emily! Would you kindly add the code to handle the response from the API here please? 
+      // It'd be so lovely! Thank you so much! :)))) <3
+
+      // Sample of Stable Diffusion API Response (response.data) after POST request to /api/text2image:
+      
+      // {
+      //   "status": "processing",
+      //   "tip": "for faster speed, keep resolution upto 512x512",
+      //   "eta": 35.941116006399994,
+      //   "messege": "Try to fetch request after given estimated time",
+      //   "fetch_result": "https://stablediffusionapi.com/api/v3/fetch/10684517",
+      //   "id": 10684517,
+      //   "output": [],
+      //   "meta": {
+      //       "H": 512,
+      //       "W": 512,
+      //       "enable_attention_slicing": "true",
+      //       "file_prefix": "7da15755-b94b-4347-a195-ac8725a7ee97",
+      //       "guidance_scale": 7,
+      //       "model": "runwayml/stable-diffusion-v1-5",
+      //       "n_samples": 1,
+      //       "negative_prompt": "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs))",
+      //       "outdir": "out",
+      //       "prompt": "A dark alleyway at night with trash cans overflowing and rats scurrying about. In the foreground, we see the silhouette of a figure approaching. in Hergé artstyle",
+      //       "revision": "fp16",
+      //       "safetychecker": "no",
+      //       "seed": 3525930829,
+      //       "steps": 20,
+      //       "vae": "stabilityai/sd-vae-ft-mse"
+      //   }
+      // }
 
     } catch (error: any) {
       console.log("Failed to generate image:", error?.message);
