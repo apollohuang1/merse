@@ -48,6 +48,7 @@ export const createRoutes: CreateRoute[] = allCreateRoutes.map((route, i) => {
 
 
 export type ComicStyle = {
+  id?: string;
   artist: string;
   artwork?: {
     url: string;

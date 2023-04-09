@@ -142,7 +142,8 @@ const CreateCharacterPage = (props: Props) => {
         isOpen={isEditingCharacter}
         onClose={() => setIsEditingCharacter(false)}
         onOpen={() => setIsEditingCharacter(true)}
-        title="Create New Character"
+        // title={editingCharacter ? `Edit ${editingCharacter?.name}` : "Create New Character"}
+        title={editingCharacter ? "Edit Character" : "Create New Character"}
         footer={
           <div className="flex flex-shrink-0 justify-between items-center px-4 py-4 gap-3">
             <button
@@ -196,6 +197,7 @@ const CreateCharacterPage = (props: Props) => {
           </div>
         }
       >
+        {/* create/edit character slideover content */}
         <div className="flex flex-col gap-7">
           {/* face image container */}
           <div className="flex flex-row w-full justify-center">

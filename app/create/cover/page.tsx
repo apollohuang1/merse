@@ -19,7 +19,7 @@ const Cover = (props: Props) => {
   
         <div className="flex flex-col w-full h-full justify-between max-w-3xl">
 
-          <div className='flex flex-col overflow-scroll w-full h-full items-center justify-center'>
+          <div className='flex flex-col overflow-auto w-full h-full items-center justify-center'>
             {/* book cover */}
               <img 
                 src='https://www.comicsauthority.store/wp-content/uploads/2023/01/cover-smaller-e1672592557757.png'

@@ -66,7 +66,7 @@ const SlideOver: React.FC<{
                         <Dialog.Title className=" text-xl font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary">
                           {title}
                         </Dialog.Title>
-
+                        
                         {withCloseButton && (
                           <div className="ml-3 flex h-7 items-center">
                             <button
@@ -82,7 +82,7 @@ const SlideOver: React.FC<{
                       </div>
                     </div>
 
-                    <div className="mt-6 flex-1 px-4 sm:px-6 overflow-scroll">
+                    <div className="mt-6 flex-1 px-4 sm:px-6 overflow-auto">
                       {children}
                     </div>
 

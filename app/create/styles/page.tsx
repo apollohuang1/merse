@@ -3,26 +3,21 @@
 import CreateHeader from "@/components/create/create-header";
 import MaxWidthContainer from "@/components/create/max-width-container";
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { ComicStyle, comicStyles, createRoutes } from "@/util/create-constants";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setStyle } from "@/redux-store/store";
+import { setStyle, setStylesScrollPosition } from "@/redux-store/store";
 
 type Props = {};
-
-type CartoonStyle = {
-  id: string;
-  artwork: {
-    url: string;
-  };
-};
 
 const Styles = (props: Props) => {
   // const [selectedStyle, setSelectedStyle] = React.useState<ComicStyle | null>(null);
 
   // style state
   const selectedStyle = useAppSelector((state) => state.entry.style_reference);
+  const entryHelper = useAppSelector((state) => state.entryHelper);
+
   const dispatch = useAppDispatch();
 
   const handleStyleSelect = (comicStyle: ComicStyle) => {
@@ -34,9 +29,18 @@ const Styles = (props: Props) => {
     dispatch(setStyle(comicStyle));
   };
 
+  useEffect(() => {
+    // scroll to exact position with element id in format "style-[number]"
+    if (selectedStyle?.id !== null) {
+      document.getElementById(`style-${selectedStyle?.id}`)?.scrollIntoView({
+        behavior: "auto",
+        block: "center",
+      });
+    }
+  }, []);
+
   return (
     <div className="flex flex-col overflow-auto">
-
       {/* top of grid */}
       <CreateHeader currentRoute={createRoutes[0]} />
 
@@ -47,6 +51,7 @@ const Styles = (props: Props) => {
           {comicStyles.map((comicStyle: ComicStyle, index: number) => (
             <button
               key={index}
+              id={`style-${index}`}
               className={clsx(
                 "flex relative aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-accent hover:rounded-lg border border-light-divider dark:border-dark-divider rounded-lg",
                 {
@@ -60,7 +65,9 @@ const Styles = (props: Props) => {
                     selectedStyle?.artist !== comicStyle?.artist,
                 }
               )}
-              onClick={() => handleStyleSelect(comicStyle)}
+              onClick={() =>
+                handleStyleSelect({ ...comicStyle, id: index.toString() })
+              }
             >
               <img
                 src={comicStyle?.artwork?.url}
