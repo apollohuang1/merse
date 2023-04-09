@@ -139,7 +139,9 @@ const useEntryCreate = () => {
       // It'd be so lovely! Thank you so much! :)))) <3
 
       // Sample of Stable Diffusion API Response (response.data) after POST request to /api/text2image:
-      
+      // you can see there's ETA for posting request to fetch_result too  :))))
+      // the post request should use that fetch_result as a POST request url and {key: [api_key] } object as data payload
+
       // {
       //   "status": "processing",
       //   "tip": "for faster speed, keep resolution upto 512x512",
