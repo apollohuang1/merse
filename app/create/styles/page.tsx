@@ -43,7 +43,7 @@ const Styles = (props: Props) => {
       {/* second section of grid */}
       <div className="flex flex-col w-full h-full justify-center items-center">
         {/* created characters list */}
-        <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-7 w-full h-full max-w-4xl py-7">
+        <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-7 w-full h-full max-w-3xl py-7">
           {comicStyles.map((comicStyle: ComicStyle, index: number) => (
             <button
               key={index}

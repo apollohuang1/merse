@@ -54,6 +54,7 @@ module.exports = {
           accent: "#E52B12",
           appleBlue: '#0A84FF', // blue
           divider: "#262626", // opaque
+          // divider: "#2C302B", // satoshi
           blue: '#0A84FF',
           red: '#FF453A',
           pink: '#FF375F',
@@ -67,7 +68,7 @@ module.exports = {
             primary: "#0E100E", // green satoshi fontshare
             // primary: "#0E1010", // blue satoshi fontshare
             // secondary: "#151515", // green satoshi fontshare
-            secondary: "#161816",
+            secondary: "#161816", // normal
             // secondary: "#121212",
             tertiary: "#2C2C2C",
             justalittlebitdarkerthan1c1c1e: "#1D1D1F",
@@ -77,7 +78,8 @@ module.exports = {
           },
           text: {
             primary: '#FFFFFF', // white
-            secondary: '#8D8D92',
+            // secondary: '#8D8D92',
+            secondary: '#575F58', // satoshi
             tertiary: '#47474A',
           },
         }

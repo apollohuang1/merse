@@ -9,7 +9,7 @@ const MaxWidthContainer: React.FC<{
 }) => {
   return (
     <div className='flex w-full h-full justify-center'>
-      <div className='flex flex-col max-w-4xl w-full h-full'>
+      <div className='flex flex-col max-w-3xl w-full h-full'>
         { children }
       </div>
     </div>

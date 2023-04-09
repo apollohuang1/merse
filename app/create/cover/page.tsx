@@ -17,7 +17,7 @@ const Cover = (props: Props) => {
 
       <div className="flex flex-col w-full h-full justify-center items-center">
   
-        <div className="flex flex-col w-full h-full justify-between max-w-4xl">
+        <div className="flex flex-col w-full h-full justify-between max-w-3xl">
 
           <div className='flex flex-col overflow-scroll w-full h-full items-center justify-center'>
             {/* book cover */}

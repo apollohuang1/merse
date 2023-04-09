@@ -83,7 +83,8 @@ const Storyboard = (props: Props) => {
         },
       }),
       Placeholder.configure({
-        placeholder: "Write your diary entry here...",
+        // placeholder: "Write your diary entry here...",
+        placeholder: "Press tab or click to select a menu item...", 
         // emptyNodeClass: "text-light-text-tertiary dark:text-dark-text-tertiary text-base",
         // emptyEditorClass: "text-light-text-tertiary dark:text-dark-text-tertiary",
       }),
@@ -102,7 +103,7 @@ const Storyboard = (props: Props) => {
     editorProps: {
       attributes: {
         class:
-          "outline-none w-full h-full bg-transparent min-h-[calc(100vh-300px)] highlight selection:bg-emerald-500 selection:bg-opacity-25",
+          "outline-none w-full h-full bg-transparent min-h-[calc(100vh-300px)] highlight selection:bg-[#3cc9a3] selection:bg-opacity-25",
       },
     },
     // content: "<h1>Hello World! 🌎️</h1>",
@@ -135,7 +136,7 @@ const Storyboard = (props: Props) => {
           {/* left container */}
           <div className="flex flex-col w-full h-full items-center">
             {/* prompt left panel */}
-            <div className="flex flex-col w-full h-[calc(100vh-100px)] max-w-4xl gap-6">
+            <div className="flex flex-col w-full h-[calc(100vh-100px)] max-w-3xl gap-6">
               {/* tools bar */}
               <div className="flex flex-row w-full items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider pb-3">
                 <button
@@ -188,7 +189,7 @@ const Storyboard = (props: Props) => {
                       editor={editor}
                       tippyOptions={{ duration: 100 }}
                       className={clsx(
-                        "flex flex-col bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-xl translate-y-[calc(50%+16px)] -translate-x-3"
+                        "flex flex-col bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-xl translate-y-[calc(50%+21px)] -translate-x-3"
                       )}
                     >
                       {floatingMenus.map((floatingMenu, index) => (

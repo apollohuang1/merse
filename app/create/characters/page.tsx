@@ -76,17 +76,17 @@ const CreateCharacterPage = (props: Props) => {
         <CreateHeader currentRoute={createRoutes[1]} />
 
         <div className="flex flex-col w-full h-full items-center">
-          <div className={clsx("w-full h-full max-w-4xl py-7")}>
+          <div className={clsx("w-full h-full max-w-3xl py-7")}>
             {entry.characters.length > 0 ? (
               <>
                 {/* character cards */}
-                <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full max-w-4xl">
+                <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full">
                   <button
                     onClick={() => {
                       clearForm();
                       setIsEditingCharacter(true);
                     }}
-                    className="group flex w-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg"
+                    className="group flex w-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border-2 border-dashed border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg"
                   >
                     <FiPlus className="w-7 h-7 text-light-text-secondary dark:text-dark-text-secondary group-active:scale-90 transition-all" />
                   </button>
