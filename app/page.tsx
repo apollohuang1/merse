@@ -311,7 +311,7 @@ const Home: React.FC<{}> = () => {
         onClose={() => setShowLoginModal(false)}
         title="Login"
       >
-        <div className="flex flex-col items-center justify-start w-full h-full text-white gap-8 p-6">
+        <div className="flex flex-col items-center justify-start w-full h-full text-light-text-primary dark:text-dark-text-primary gap-8 p-6">
 
         
           <div className="flex flex-col items-center gap-2">
@@ -319,7 +319,7 @@ const Home: React.FC<{}> = () => {
 
             <div>
               <h1 className="font-normal">Welcome to Comic</h1>
-              <p className="text-neutral-400">Turning your journaling entry into comic book</p>
+              <p className="text-light-text-secondary dark:text-dark-text-secondary">Turning your journaling entry into comic book</p>
             </div>
           </div>
 
@@ -328,17 +328,17 @@ const Home: React.FC<{}> = () => {
             onClick={() => {
               continueWithGoogle();
             }}
-            className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-dark-background-secondary"
+            className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
           >
             <FcGoogle className="text-xl" />
-            <span className="text-sm font-medium text-white">Continue with Google</span>
+            <span className="text-sm font-medium">Continue with Google</span>
           </button>
 
           <p className="text-sm text-dark-text-secondary text-center max-w-sm border-t border-t-light-divider dark:border-t-dark-divider py-6">
             By continuing, you agree to Merce&apos;s {" "}
-            <a className="text-white hover:underline cursor-pointer">Terms of Service</a>
+            <a className="text-accent font-medium hover:underline cursor-pointer">Terms of Service</a>
             {" "} and acknowledge, you&apos;ve read our {" "}
-            <a className="text-white hover:underline cursor-pointer">Privacy Policy</a>
+            <a className="text-accent font-medium hover:underline cursor-pointer">Privacy Policy</a>
           </p>
 
         </div>

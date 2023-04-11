@@ -60,7 +60,7 @@ const Modal:React.FC<{
                           className="text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary rounded-full p-2"
                           onClick={onClose}
                         >
-                          <FiPlus className="w-6 h-6 rotate-45" />
+                          <FiPlus className="w-6 h-6 rotate-45 text-light-text-tertiary dark:text-dark-text-tertiary" />
                         </button>
                       }
                   </div>
