@@ -8,4 +8,4 @@ const UserSchema = new Schema<User>({
   profile_image_url: { type: String, required: false },
 });
 
-export default mongoose.models.User || mongoose.model('User', UserSchema);
+export default mongoose.model('User', UserSchema);

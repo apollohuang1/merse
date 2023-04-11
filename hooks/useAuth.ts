@@ -33,7 +33,15 @@ const useAuth = () => {
         console.log(response.data);
 
       } catch (error: any) {
-        console.log(error.message);
+        console.log(error);
+        switch (error.response.status) {
+          case 400:
+            console.log("User already exists");
+            // login with google
+            break;
+          default:
+            console.log(error.message);
+        }
       }
 
       setShowLoginModal(false);
