@@ -7,11 +7,16 @@ import Link from "next/link";
 import MerseLogo from "@/components/svgs/merse-logo";
 import React, { useRef } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
+import Modal from "@/components/modal";
+
+import { FcGoogle } from "react-icons/fc";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const Home: React.FC<{}> = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const [showLoginModal, setShowLoginModal] = React.useState(false);
 
   const homeContents: any[] = [
     {
@@ -138,179 +143,207 @@ const Home: React.FC<{}> = () => {
   ];
 
   return (
-    <div className="flex flex-col bg-black">
-      {/* navigation bar */}
-      <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center fixed top-0 text-white py-2 px-10 max-lg:px-7 z-10 backdrop-blur-xl bg-[rgb(13,13,14,0.7)] w-full h-navigationBar">
-        {/* logo and name */}
-        <div
-          className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all"
-          onClick={() => {
-            // with smooth scroll
-            scrollToSection(1);
-          }}
-        >
-          <MerseLogo />
-          <span>Comic</span>
+    <>
+      <div className="flex flex-col bg-black">
+        {/* navigation bar */}
+        <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center fixed top-0 text-white py-2 px-10 max-lg:px-7 z-10 backdrop-blur-xl bg-[rgb(13,13,14,0.7)] w-full h-navigationBar">
+          {/* logo and name */}
+          <div
+            className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all"
+            onClick={() => {
+              // with smooth scroll
+              scrollToSection(1);
+            }}
+          >
+            <MerseLogo />
+            <span>Comic</span>
+          </div>
+
+          {/* section navigator */}
+          <div className="flex flex-row w-full justify-center max-md:hidden">
+            <div className="flex flex-row bg-dark-background-secondary border border-dark-divider rounded-full">
+              {/* capsult tab picker to scroll to three pages below with animation */}
+              <div className="flex flex-row">
+                {homeContents.map((item: any, index: number) => {
+                  return (
+                    <button
+                      onClick={() => {
+                        scrollToSection(index + 1);
+                      }}
+                      key={index}
+                      className={`flex flex-row items-center gap-2 text-neutral-400 hover:text-white font-light px-4 hover:bg-neutral-800 rounded-full transition-all active:opacity-50`}
+                    >
+                      <span className="text-sm">{item?.sectionTitle}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* login button */}
+          <div className="flex flex-row items-center justify-end gap-2 h-full">
+            <button
+              onClick={() => {
+                setShowLoginModal(true);
+              }}
+              className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
+            >
+              <span className="text-sm">Log in</span>
+            </button>
+          </div>
+
         </div>
 
-        {/* section navigator */}
-        <div className="flex flex-row w-full justify-center max-md:hidden">
-          <div className="flex flex-row bg-dark-background-secondary border border-dark-divider rounded-full">
-            {/* capsult tab picker to scroll to three pages below with animation */}
-            <div className="flex flex-row">
-              {homeContents.map((item: any, index: number) => {
+        {/* main content */}
+        <div className="flex flex-col gap-0">
+          {/* Hero */}
+          <div
+            id="section-1"
+            className="flex relative items-center justify-center h-screen w-screen"
+          >
+            <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
+              {midjourneyGeneratedImages.map((item, index) => {
                 return (
-                  <button
-                    onClick={() => {
-                      scrollToSection(index + 1);
-                    }}
+                  <img
                     key={index}
-                    className={`flex flex-row items-center gap-2 text-neutral-400 hover:text-white font-light px-4 hover:bg-neutral-800 rounded-full transition-all active:opacity-50`}
-                  >
-                    <span className="text-sm">{item?.sectionTitle}</span>
-                  </button>
+                    src={item.image_url}
+                    className="object-cover w-full h-full z-auto"
+                  />
                 );
               })}
             </div>
-          </div>
-        </div>
 
-        {/* login button */}
-        <div className="flex flex-row items-center justify-end gap-2 h-full">
-          <button className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full">
-            <span className="text-sm">Log in</span>
+            {/* <img
+              src="https://images.unsplash.com/photo-1624961149934-efa575e8642e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2391&q=80"
+              className="object-cover w-full h-full z-auto"
+              alt="home"
+            /> */}
+
+            {/* overlay */}
+            <div className="absolute bg-black bg-opacity-75 w-full h-full"></div>
+
+            {/* text in the first section */}
+            <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-14">
+              <div className="flex flex-col leading-6 items-center text-center">
+                <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-3xl max-sm:text-2xl leading-tight">
+                  {/* Transform Journals into Comics, Effortlessly */}
+                  Journal-to-Comic Made Simple
+                </h1>
+
+                <span className="flex text-neutral-300 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
+                  Effortlessly transform journal entries into personalized comics
+                  using our intuitive app. Publish, share, and monetize your
+                  creations within a supportive community.
+                </span>
+              </div>
+
+              <Link href="/create/styles">
+                <button className="inline-flex items-center rounded-full bg-accent bg-opacity-50 backdrop-blur-xl px-4 h-10 text-sm font-medium text-white shadow-sm hover:bg-emerald-600">
+                  <span>Create comic book</span>
+                </button>
+              </Link>
+            </div>
+          </div>
+
+          {/* <div className="flex w-full h-[30vh] bg-accent">
+            <div className="grid grid-cols-3 w-full h-full justify-center items-center gap-7 p-7 max-lg:grid-rows-3">
+              { thirdSectionContents.map((item: any, index: number) => {
+                return (
+                  <div className="flex flex-col w-full h-full items-center justify-center bg-accentSecondary">
+                    <span className="text-2xl font-extralight text-white">{item?.title}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </div> */}
+
+          <div
+            id="section-2"
+            className="flex flex-col w-full bg-dark-background-primary"
+          >
+            {/* tema header text */}
+            <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh]">
+              <span className="text-4xl max-md:text-2xl font-light text-white">Our Team</span>
+            </div>
+
+            <div className="flex w-full h-full items-center justify-center pb-36 max-md:pb-14">
+              <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-md:gap-3 max-w-5xl px-6 max-md:px-3">
+                {teamMembers.map((member, index) => {
+                  return (
+                    // member detail
+                    <Link
+                      key={index}
+                      className="group flex flex-col bg-dark-background-secondary rounded-lg overflow-hidden"
+                      href={member?.twitter_url}
+                      target="_blank"
+                    >
+                      <img
+                        src={member?.image_url}
+                        className="right-0 object-cover w-full h-full aspect-[3/4] rounded-t-lg group-hover:scale-105 transition-all duration-300 z-0 group-active:scale-100"
+                      />
+
+                      <div className="flex flex-row items-center justify-between p-4 z-10 bg-dark-background-secondary">
+                        <span className="text-white text-lg max-md:text-base font-normal line-clamp-1">
+                          {member?.name}
+                        </span>
+
+                        <FiArrowUpRight className="text-white text-xl font-semibold max-md:text-base ml-2 opacity-20 group-hover:opacity-100 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* <div
+            id="section-3"
+            className="flex flex-row h-[50vh] items-end justify-center p-10 max-lg:p-7 max-md:h-[50vh]"
+          >
+            <div className="flex flex-row gap-6 text-neutral-400">
+              <a
+                href={"https://www.instagram.com/mersecompany"}
+                target={"_blank"}
+                className={"hover:text-white transition-all active:opacity-50"}
+              >
+                Instagram
+              </a>
+
+              <a
+                href={"https://www.twitter.com/mersecompany"}
+                target={"_blank"}
+                className={" hover:text-white transition-all active:opacity-50"}
+              >
+                Twitter
+              </a>
+            </div>
+          </div> */}
+
+        </div>
+      </div>
+
+      <Modal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        title="Log in"
+      >
+        <div className="flex flex-col items-center justify-center w-full h-full text-white gap-7 p-6 min-h-[20vh]">
+
+          <div>
+            <h1 className="font-normal">Welcome to Comic</h1>
+            <p className="text-neutral-400">turning your journaling entry into comic book</p>
+          </div>
+
+          {/* continue with google */}
+          <button className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-dark-background-secondary">
+            <FcGoogle className="text-xl" />
+            <span className="text-sm font-medium text-white">Continue with Google</span>
           </button>
+
         </div>
-
-      </div>
-
-      {/* main content */}
-      <div className="flex flex-col gap-0">
-        {/* Hero */}
-        <div
-          id="section-1"
-          className="flex relative items-center justify-center h-screen w-screen"
-        >
-          <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
-            {midjourneyGeneratedImages.map((item, index) => {
-              return (
-                <img
-                  key={index}
-                  src={item.image_url}
-                  className="object-cover w-full h-full z-auto"
-                />
-              );
-            })}
-          </div>
-
-          {/* <img
-            src="https://images.unsplash.com/photo-1624961149934-efa575e8642e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2391&q=80"
-            className="object-cover w-full h-full z-auto"
-            alt="home"
-          /> */}
-
-          {/* overlay */}
-          <div className="absolute bg-black bg-opacity-75 w-full h-full"></div>
-
-          {/* text in the first section */}
-          <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-14">
-            <div className="flex flex-col leading-6 items-center text-center">
-              <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-3xl max-sm:text-2xl leading-tight">
-                {/* Transform Journals into Comics, Effortlessly */}
-                Journal-to-Comic Made Simple
-              </h1>
-
-              <span className="flex text-neutral-300 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
-                Effortlessly transform journal entries into personalized comics
-                using our intuitive app. Publish, share, and monetize your
-                creations within a supportive community.
-              </span>
-            </div>
-
-            <Link href="/create/styles">
-              <button className="inline-flex items-center rounded-full bg-accent bg-opacity-50 backdrop-blur-xl px-4 h-10 text-sm font-medium text-white shadow-sm hover:bg-emerald-600">
-                <span>Create comic book</span>
-              </button>
-            </Link>
-          </div>
-        </div>
-
-        {/* <div className="flex w-full h-[30vh] bg-accent">
-          <div className="grid grid-cols-3 w-full h-full justify-center items-center gap-7 p-7 max-lg:grid-rows-3">
-            { thirdSectionContents.map((item: any, index: number) => {
-              return (
-                <div className="flex flex-col w-full h-full items-center justify-center bg-accentSecondary">
-                  <span className="text-2xl font-extralight text-white">{item?.title}</span>
-                </div>
-              )
-            })}
-          </div>
-        </div> */}
-
-        <div
-          id="section-2"
-          className="flex flex-col w-full bg-dark-background-primary"
-        >
-          {/* tema header text */}
-          <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh]">
-            <span className="text-4xl max-md:text-2xl font-light text-white">Our Team</span>
-          </div>
-
-          <div className="flex w-full h-full items-center justify-center pb-36 max-md:pb-14">
-            <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-md:gap-3 max-w-5xl px-6 max-md:px-3">
-              {teamMembers.map((member, index) => {
-                return (
-                  // member detail
-                  <Link
-                    key={index}
-                    className="group flex flex-col bg-dark-background-secondary rounded-lg overflow-hidden"
-                    href={member?.twitter_url}
-                    target="_blank"
-                  >
-                    <img
-                      src={member?.image_url}
-                      className="right-0 object-cover w-full h-full aspect-[3/4] rounded-t-lg group-hover:scale-105 transition-all duration-300 z-0 group-active:scale-100"
-                    />
-
-                    <div className="flex flex-row items-center justify-between p-4 z-10 bg-dark-background-secondary">
-                      <span className="text-white text-lg max-md:text-base font-normal line-clamp-1">
-                        {member?.name}
-                      </span>
-
-                      <FiArrowUpRight className="text-white text-xl font-semibold max-md:text-base ml-2 opacity-20 group-hover:opacity-100 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* <div
-          id="section-3"
-          className="flex flex-row h-[50vh] items-end justify-center p-10 max-lg:p-7 max-md:h-[50vh]"
-        >
-          <div className="flex flex-row gap-6 text-neutral-400">
-            <a
-              href={"https://www.instagram.com/mersecompany"}
-              target={"_blank"}
-              className={"hover:text-white transition-all active:opacity-50"}
-            >
-              Instagram
-            </a>
-
-            <a
-              href={"https://www.twitter.com/mersecompany"}
-              target={"_blank"}
-              className={" hover:text-white transition-all active:opacity-50"}
-            >
-              Twitter
-            </a>
-          </div>
-        </div> */}
-
-      </div>
-    </div>
+      </Modal>
+    </>
   );
 };
 
