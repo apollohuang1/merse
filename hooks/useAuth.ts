@@ -36,9 +36,23 @@ const useAuth = () => {
           },
         });
 
-        // setCurrentUser(response.data);
+        if (userReponse?.data?.data !== null) {
+          // user exists
+          console.log("it doesn't exist")
+          console.log(userReponse.data);
+          console.log(userReponse.data.data)
+          setCurrentUser(userReponse.data);
+          return
+        }
 
-        // console.log(response.data);
+        console.log("still here");
+
+        // user does not exist
+        // create new user
+        const createNewUserResponse = await axios.post("/api/users", newUser);
+        setCurrentUser(createNewUserResponse.data);
+
+        console.log(createNewUserResponse.data);
 
       } catch (error: any) {
         console.log(error);

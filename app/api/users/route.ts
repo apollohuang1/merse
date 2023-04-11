@@ -18,6 +18,9 @@ export async function GET(request: Request) {
       email: searchingEmail,
     });
 
+    console.log("data after finding one")
+    console.log(data);
+
     return NextResponse.json({ data: data }, { status: 200 });
   } catch (error: any) {
     // return new Response(error, { status: 500 })
