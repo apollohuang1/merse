@@ -49,7 +49,7 @@ import {
 } from "openai";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setStoryboard, setTitle } from "@/redux-store/store";
+import { setShowGeneratedStoryboard, setStoryboard, setTitle } from "@/redux-store/store";
 import useEntryCreate from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 
@@ -62,6 +62,7 @@ const Storyboard = (props: Props) => {
 
   // redux states
   const entry = useAppSelector((state) => state.entry);
+  const entryHelper = useAppSelector((state) => state.entryHelper);
   const dispatch = useAppDispatch();
 
   const [showAddingImageModal, setShowAddingImageModal] =
@@ -69,8 +70,7 @@ const Storyboard = (props: Props) => {
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
   const [titleText, setTitleText] = React.useState<string>("");
 
-  const [showGeneratedStoryboard, setShowGeneratedStoryboard] =
-    React.useState<boolean>(false);
+  // const [showGeneratedStoryboard, setShowGeneratedStoryboard] = React.useState<boolean>(false);
 
   const editor = useEditor({
     extensions: [
@@ -129,8 +129,8 @@ const Storyboard = (props: Props) => {
         <div
           className={clsx(
             "flex flex-row w-full h-full overflow-hidden px-7",
-            { "gap-0": !showGeneratedStoryboard },
-            { "gap-7": showGeneratedStoryboard }
+            { "gap-0": !entryHelper.showGeneratedStoryboard },
+            { "gap-7": entryHelper.showGeneratedStoryboard }
           )}
         >
           {/* left container */}
@@ -142,10 +142,11 @@ const Storyboard = (props: Props) => {
                 <button
                   className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                   onClick={() => {
-                    setShowGeneratedStoryboard(!showGeneratedStoryboard);
+                    // setShowGeneratedStoryboard(!showGeneratedStoryboard);
+                    dispatch(setShowGeneratedStoryboard(!entryHelper.showGeneratedStoryboard));
                   }}
                 >
-                  {showGeneratedStoryboard ? "Hide" : "Show"}
+                  {entryHelper.showGeneratedStoryboard ? "Hide" : "Show"}
                 </button>
 
                 {isGeneratingStoryboard ? (
@@ -257,8 +258,8 @@ const Storyboard = (props: Props) => {
           <div
             className={clsx(
               "flex flex-col h-full items-center duration-300 overflow-auto gap-4 flex-shrink-0",
-              { "w-0 opacity-0": !showGeneratedStoryboard },
-              { "w-[400px]": showGeneratedStoryboard }
+              { "w-0 opacity-0": !entryHelper.showGeneratedStoryboard },
+              { "w-[400px]": entryHelper.showGeneratedStoryboard }
             )}
           >
             <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">

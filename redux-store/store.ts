@@ -56,10 +56,14 @@ const entryHelperSlice = createSlice({
   name: 'entryHelper',
   initialState: {
     stylesScrollPosition: 0,
+    showGeneratedStoryboard: false,
   },
   reducers: {
     setStylesScrollPosition: (state, action) => {
       state.stylesScrollPosition = action.payload
+    },
+    setShowGeneratedStoryboard: (state, action) => {
+      state.showGeneratedStoryboard = action.payload
     }
   }
 })
@@ -74,7 +78,7 @@ export const store: ToolkitStore = configureStore({
 
 // actions
 export const { setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setStoryboard } = entrySlice.actions;
-export const { setStylesScrollPosition } = entryHelperSlice.actions;
+export const { setStylesScrollPosition, setShowGeneratedStoryboard } = entryHelperSlice.actions;
 
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
