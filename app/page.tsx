@@ -10,10 +10,18 @@ import { FiArrowUpRight } from "react-icons/fi";
 import Modal from "@/components/modal";
 
 import { FcGoogle } from "react-icons/fc";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import useAuth from "@/hooks/useAuth";
+import { useAppSelector } from "@/redux-store/hooks";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const Home: React.FC<{}> = () => {
+
+  const auth = useAppSelector((state) => state.auth);
+
+  const { continueWithGoogle } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [showLoginModal, setShowLoginModal] = React.useState(false);
@@ -21,41 +29,13 @@ const Home: React.FC<{}> = () => {
   const homeContents: any[] = [
     {
       sectionTitle: "About",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean augue augue, congue non suscipit facilisis, eleifend eu lectus. Phasellus ut nulla eros. Morbi mattis risus vel velit consectetur viverra. Sed elementum semper quam, id ultricies orci cursus id. Donec venenatis lectus at lacus bibendum, vitae gravida nisi rutrum. Quisque pretium felis ut elit vulputate, vitae finibus ante fermentum. Sed imperdiet euismod tellus vel luctus. Mauris sapien nunc, accumsan vel volutpat in, efficitur non tellus. Vivamus fringilla ullamcorper turpis pretium viverra.",
-      // imageURL: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80",
-      imageURL: "/landing-img-1.jpeg",
-      location: {
-        name: "Seoul, South Korea",
-      },
     },
-    // {
-    //   sectionTitle: "Gallery",
-    // },
-    // {
-    //   sectionTitle: "List",
-    // },
-    // {
-    //   sectionTitle: "CX",
-    // },
     {
       sectionTitle: "Team",
     },
     // {
     //   sectionTitle: "Contact",
     // }
-  ];
-
-  const thirdSectionContents: any[] = [
-    {
-      title: "Cash",
-    },
-    {
-      title: "Crypto",
-    },
-    {
-      title: "Equity",
-    },
   ];
 
   const [focusedSectionId, setFocusedSectionId] = React.useState<number>(1);
@@ -182,16 +162,19 @@ const Home: React.FC<{}> = () => {
           </div>
 
           {/* login button */}
-          <div className="flex flex-row items-center justify-end gap-2 h-full">
-            <button
-              onClick={() => {
-                setShowLoginModal(true);
-              }}
-              className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
-            >
-              <span className="text-sm font-medium">Log in</span>
-            </button>
-          </div>
+
+          { auth.user === null &&
+            <div className="flex flex-row items-center justify-end gap-2 h-full">
+              <button
+                onClick={() => {
+                  setShowLoginModal(true);
+                }}
+                className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
+              >
+                <span className="text-sm font-medium">Log in</span>
+              </button>
+            </div>
+          }
 
         </div>
 
@@ -335,8 +318,22 @@ const Home: React.FC<{}> = () => {
             <p className="text-neutral-400">Turning your journaling entry into comic book</p>
           </div>
 
+          {/* <GoogleLogin
+            onSuccess={() => {
+              console.log("success");
+            }}
+            onError={() => {
+              console.log("error");
+            }}
+          /> */}
+
           {/* continue with google */}
-          <button className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-dark-background-secondary">
+          <button
+            onClick={() => {
+              continueWithGoogle();
+            }}
+            className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-dark-background-secondary"
+          >
             <FcGoogle className="text-xl" />
             <span className="text-sm font-medium text-white">Continue with Google</span>
           </button>

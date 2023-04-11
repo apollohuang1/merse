@@ -44,6 +44,7 @@ export default function RootLayout({
             clientId={process.env.GOOGLE_CLIENT_ID as string}
             onScriptLoadSuccess={() => {
               console.log("Google script loaded successfully");
+              console.log("id" + process.env.GOOGLE_CLIENT_ID as string);
             }}
             onScriptLoadError={() => {
               console.log("Google script loaded error");
