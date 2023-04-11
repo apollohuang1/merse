@@ -2,14 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "../../../server/utils/dbConnect";
 import Pet from "../../../server/models/MDBPet";
-import MDBUser from "../../../server/models/MDBUser";
+import MDBUser from "@/server/models/MDBUser";
 
 const mongoose = require("mongoose");
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
     const db = await dbConnect();
-    const data = await MDBUser.find({});
+
+    // console.log("hey");
+    const searchParams = new URLSearchParams(request.url.split("?")[1]);
+    const searchingEmail = searchParams.get("email");
+
+    const data = await MDBUser.findOne({
+      email: searchingEmail,
+    });
+
     return NextResponse.json({ data: data }, { status: 200 });
   } catch (error: any) {
     // return new Response(error, { status: 500 })

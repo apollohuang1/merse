@@ -2,8 +2,6 @@ import React from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setUser } from "@/redux-store/store";
-import MDBUser from "@/server/models/MDBUser";
 
 const useAuth = () => {
   // const [currentGoogleUser, setCurrentGoogleUser] = React.useState<any>(null);
@@ -29,12 +27,18 @@ const useAuth = () => {
           email: googleUserData.email,
           profile_image_url: googleUserData.picture,
         };
-        
-        const response = await axios.post("/api/users", newUser);
 
-        setCurrentUser(response.data);
+        // const response = await axios.post("/api/users", newUser);
 
-        console.log(response.data);
+        const userReponse = await axios.get("/api/users", {
+          params: {
+            email: newUser.email,
+          },
+        });
+
+        // setCurrentUser(response.data);
+
+        // console.log(response.data);
 
       } catch (error: any) {
         console.log(error);
