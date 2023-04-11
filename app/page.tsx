@@ -1,29 +1,276 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
-import Link from 'next/link'
+"use client";
 
-const inter = Inter({ subsets: ['latin'] })
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import styles from "./page.module.css";
+import Link from "next/link";
+import MerseLogo from "@/components/svgs/merse-logo";
+import React, { useRef } from "react";
+
+const inter = Inter({ subsets: ["latin"] });
 
 const Home: React.FC<{}> = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const homeContents: any[] = [
+    {
+      sectionTitle: "About",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean augue augue, congue non suscipit facilisis, eleifend eu lectus. Phasellus ut nulla eros. Morbi mattis risus vel velit consectetur viverra. Sed elementum semper quam, id ultricies orci cursus id. Donec venenatis lectus at lacus bibendum, vitae gravida nisi rutrum. Quisque pretium felis ut elit vulputate, vitae finibus ante fermentum. Sed imperdiet euismod tellus vel luctus. Mauris sapien nunc, accumsan vel volutpat in, efficitur non tellus. Vivamus fringilla ullamcorper turpis pretium viverra.",
+      // imageURL: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80",
+      imageURL: "/landing-img-1.jpeg",
+      location: {
+        name: "Seoul, South Korea",
+      },
+    },
+    // {
+    //   sectionTitle: "Gallery",
+    // },
+    // {
+    //   sectionTitle: "List",
+    // },
+    // {
+    //   sectionTitle: "CX",
+    // },
+    {
+      sectionTitle: "Team",
+    },
+  ];
+
+  const thirdSectionContents: any[] = [
+    {
+      title: "Cash",
+    },
+    {
+      title: "Crypto",
+    },
+    {
+      title: "Equity",
+    },
+  ];
+
+  const [focusedSectionId, setFocusedSectionId] = React.useState<number>(1);
+
+  const scrollToSection = (sectionNumber: number) => {
+    const section = document.getElementById(`section-${sectionNumber}`);
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+
+    setFocusedSectionId(sectionNumber);
+  };
+
+  const midjourneyGeneratedImages = [
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095187326596034570/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_8a20e766-3e58-4c77-afbe-fc0502cc4021.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095187227534971053/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_c3349e20-6a95-4c74-b8b0-33735473d38f.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095188581586313266/markrachapoom_girl_with_long_hair_blue_checkered_pajamas_rollin_42d31631-9e7c-4b01-acfc-76aa15aa1ffb.png?width=1402&height=1402"
+    },
+
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095188844585951292/markrachapoom_20-year-old_2_girls_and_a_boy_traveling_together__9785f8c0-9044-48ce-b13b-cf7374994da6.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1094607894101643284/markrachapoom_A_peaceful_neighborhood_in_Connecticut_with_snowy_2b9256aa-b661-4b4e-bfcf-38c904d8e7de.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095192962029338674/markrachapoom__Emily_is_walking_in_New_York_City_dduring_Christ_e6d8df6e-5020-4aab-bb8f-338b9403c4b9.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095193054387904542/markrachapoom_Jyoti_is_walking_in_New_York_City_dduring_Christm_a1edac93-fd0e-4404-911e-bbdc47c0cba2.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095189802879561838/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_3b74d0de-5d5c-429e-a204-7bc4a807acdb.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095187060266107010/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_9cc31a01-d495-4ddd-9013-86365f09805d.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095192279221801010/markrachapoom_mommy_and_cute_little_daughter_baby_are_cooking_t_5ddc4dfd-7cba-4c5b-9093-ed7b07c3d8f9.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095192821994098728/markrachapoom_lights_stage_dancers_rhythm_elegance_chemistry_sp_9b134966-49f9-4550-98de-0e159015b45e.png?width=1402&height=1402"
+    },
+    {
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095189720667013191/markrachapoom_These_three_people_with_referenced_faces_are_trav_64e07c6e-0997-4034-8339-6396e1c2c1c5.png?width=1402&height=1402"
+    },
+  ]
 
   return (
-    <div className="flex justify-center items-center w-screen h-screen">
+    <div className="flex flex-col bg-black">
+      {/* navigation bar */}
+      <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center fixed top-0 text-white py-2 px-10 max-lg:px-7 z-10 backdrop-blur-xl bg-[rgb(13,13,14,0.7)] w-full h-navigationBar">
+        {/* logo and name */}
+        <div
+          className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all"
+          onClick={() => {
+            // with smooth scroll
+            scrollToSection(1);
+          }}
+        >
+          <MerseLogo />
+          <span>Merse Comic</span>
+        </div>
 
-      <div className='flex flex-col items-center gap-4'>
-        {/* Comic Journaling */}
-        
-        <Link href="/create/styles">
-          <button className="inline-flex items-center rounded-full bg-accent px-3 py-2 text-sm text-white shadow-sm hover:bg-emerald-600">
-            <span>Create comic book</span>
-          </button>
-        </Link>
+        {/* section navigator */}
+        <div className="flex flex-row w-full justify-center max-md:hidden">
+          <div className="flex flex-row bg-dark-background-secondary border border-dark-divider rounded-full">
+            {/* capsult tab picker to scroll to three pages below with animation */}
+            <div className="flex flex-row">
+              {homeContents.map((item: any, index: number) => {
+                return (
+                  <button
+                    onClick={() => {
+                      scrollToSection(index + 1);
+                    }}
+                    key={index}
+                    className={`flex flex-row items-center gap-2 text-neutral-400 hover:text-white font-light px-4 hover:bg-neutral-800 rounded-full transition-all active:opacity-50`}
+                  >
+                    <span className="text-sm">{item?.sectionTitle}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
 
-        <span className='text-light-text-secondary'>just click the button, ignore the ui in this page for now</span>
+        {/* By Mark Rachapoom */}
+        <div className="flex flex-row items-center justify-end gap-2 max-[320px]:hidden">
+          {/* <img
+            // src="https://pbs.twimg.com/profile_images/1616447039742808074/smK4OYuL_400x400.jpg"
+            src={"/markrachapoom.jpg"}
+            className="object-cover w-5 h-5 rounded-full"
+          /> */}
+
+          {/* <a
+            href="https://www.markrachapoom.com"
+            target={"_blank"}
+            className="text-neutral-400 font-light hover:text-white transition-all active:opacity-50"
+          >
+            By Mark Rachapoom
+          </a> */}
+        </div>
       </div>
 
+      {/* main content */}
+      <div className="flex flex-col gap-0">
+        {/* Hero */}
+        <div
+          id="section-1"
+          className="flex relative items-center justify-center h-screen w-screen"
+        >
+          {/* <video
+            src="/landing.mp4"
+            ref={videoRef}
+            // alt="home"
+            className="object-cover w-full h-full z-auto"
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls={false}
+          /> */}
+
+          <div className="grid grid-cols-4 grid-rows-3 h-full">
+            { midjourneyGeneratedImages.map((item, index) => {
+              return (
+                <img 
+                  key={index}
+                  src={item.image_url}
+                  className="object-cover w-full h-full z-auto"
+                />
+              )
+            })}
+          </div>
+
+          {/* <img
+            src="https://images.unsplash.com/photo-1624961149934-efa575e8642e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2391&q=80"
+            className="object-cover w-full h-full z-auto"
+            alt="home"
+          /> */}
+
+          {/* overlay */}
+          <div className="absolute bg-black bg-opacity-75 w-full h-full"></div>
+
+          {/* text in the first section */}
+          <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-14 max-lg:p-7">
+            <div className="flex flex-col leading-6 items-center text-center">
+
+              <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-4xl max-sm:text-3xl leading-tight">
+                {/* Transform Journals into Comics, Effortlessly */}
+                Journal-to-Comic Made Simple
+              </h1>
+
+              <span className="flex text-neutral-300 text-opacity-80 font-light text-lg max-w-3xl">
+                Effortlessly transform journal entries into personalized comics
+                using our intuitive app. Publish, share, and monetize your
+                creations within a supportive community.
+              </span>
+            </div>
+
+            {/* <div
+              className="text-white border border-white border-opacity-30 py-1 px-4 rounded-full"
+              onClick={() => {
+                // setIsLoggedIn(true);
+              }}
+            >
+              Coming Soon
+            </div> */}
+
+            <Link href="/create/styles">
+              <button className="inline-flex items-center rounded-full bg-accent bg-opacity-50 backdrop-blur-xl px-4 h-10 text-sm font-medium text-white shadow-sm hover:bg-emerald-600">
+                <span>Create comic book</span>
+              </button>
+            </Link>
+          </div>
+        </div>
+
+        {/* <div className="flex w-full h-[30vh] bg-accent">
+          <div className="grid grid-cols-3 w-full h-full justify-center items-center gap-7 p-7 max-lg:grid-rows-3">
+            { thirdSectionContents.map((item: any, index: number) => {
+              return (
+                <div className="flex flex-col w-full h-full items-center justify-center bg-accentSecondary">
+                  <span className="text-2xl font-extralight text-white">{item?.title}</span>
+                </div>
+              )
+            })}
+          </div>
+        </div> */}
+
+
+        {/* <div
+          id="section-2"
+          className="flex flex-row h-[50vh] items-end justify-center p-10 max-lg:p-7 max-md:h-[50vh]"
+        >
+          <div className="flex flex-row gap-6 text-neutral-400">
+            <a
+              href={"https://www.instagram.com/mersecompany"}
+              target={"_blank"}
+              className={"hover:text-white transition-all active:opacity-50"}
+            >
+              Instagram
+            </a>
+
+            <a
+              href={"https://www.twitter.com/mersecompany"}
+              target={"_blank"}
+              className={" hover:text-white transition-all active:opacity-50"}
+            >
+              Twitter
+            </a>
+          </div>
+        </div> */}
+
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default Home;

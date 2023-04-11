@@ -36,7 +36,8 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
       </head>
 
-      <body className="bg-light-background-primary dark:bg-dark-background-primary">
+      {/* <body className="bg-light-background-primary dark:bg-dark-background-primary"> */}
+      <body className="bg-dark-background-primary">
         <Provider store={store}>
           {children}
         </Provider>
