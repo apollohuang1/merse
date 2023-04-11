@@ -6,7 +6,7 @@ import styles from "./page.module.css";
 import Link from "next/link";
 import MerseLogo from "@/components/svgs/merse-logo";
 import React, { useRef } from "react";
-import { FiArrowUpRight } from "react-icons/fi";
+import { FiArrowUpRight, FiBookOpen } from "react-icons/fi";
 import Modal from "@/components/modal";
 
 import { FcGoogle } from "react-icons/fc";
@@ -309,23 +309,19 @@ const Home: React.FC<{}> = () => {
       <Modal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
-        title="Log in"
+        title="Login"
       >
-        <div className="flex flex-col items-center justify-center w-full h-full text-white gap-7 p-6 min-h-[30vh]">
+        <div className="flex flex-col items-center justify-start w-full h-full text-white gap-8 p-6">
 
-          <div>
-            <h1 className="font-normal">Welcome to Comic</h1>
-            <p className="text-neutral-400">Turning your journaling entry into comic book</p>
+        
+          <div className="flex flex-col items-center gap-2">
+            <FiBookOpen className="w-10 h-10" />
+
+            <div>
+              <h1 className="font-normal">Welcome to Comic</h1>
+              <p className="text-neutral-400">Turning your journaling entry into comic book</p>
+            </div>
           </div>
-
-          {/* <GoogleLogin
-            onSuccess={() => {
-              console.log("success");
-            }}
-            onError={() => {
-              console.log("error");
-            }}
-          /> */}
 
           {/* continue with google */}
           <button
@@ -338,7 +334,7 @@ const Home: React.FC<{}> = () => {
             <span className="text-sm font-medium text-white">Continue with Google</span>
           </button>
 
-          <p className="text-sm text-dark-text-secondary">
+          <p className="text-sm text-dark-text-secondary text-center max-w-sm border-t border-t-light-divider dark:border-t-dark-divider py-6">
             By continuing, you agree to Merce&apos;s {" "}
             <a className="text-white hover:underline cursor-pointer">Terms of Service</a>
             {" "} and acknowledge, you&apos;ve read our {" "}
