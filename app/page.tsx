@@ -332,7 +332,7 @@ const Home: React.FC<{}> = () => {
 
           <div>
             <h1 className="font-normal">Welcome to Comic</h1>
-            <p className="text-neutral-400">turning your journaling entry into comic book</p>
+            <p className="text-neutral-400">Turning your journaling entry into comic book</p>
           </div>
 
           {/* continue with google */}
@@ -340,6 +340,13 @@ const Home: React.FC<{}> = () => {
             <FcGoogle className="text-xl" />
             <span className="text-sm font-medium text-white">Continue with Google</span>
           </button>
+
+          <p className="text-sm text-dark-text-secondary">
+            By continuing, you agree to Merce&apos;s {" "}
+            <a className="text-white hover:underline cursor-pointer">Terms of Service</a>
+            {" "} and acknowledge, you&apos;ve read our {" "}
+            <a className="text-white hover:underline cursor-pointer">Privacy Policy</a>
+          </p>
 
         </div>
       </Modal>
