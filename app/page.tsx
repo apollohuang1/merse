@@ -199,7 +199,7 @@ const Home: React.FC<{}> = () => {
           id="section-1"
           className="flex relative items-center justify-center h-screen w-screen"
         >
-          <div className="grid grid-cols-4 grid-rows-3 h-full">
+          <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
             {midjourneyGeneratedImages.map((item, index) => {
               return (
                 <img
@@ -223,26 +223,17 @@ const Home: React.FC<{}> = () => {
           {/* text in the first section */}
           <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-14 max-lg:p-7">
             <div className="flex flex-col leading-6 items-center text-center">
-              <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-4xl max-sm:text-3xl leading-tight">
+              <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-3xl max-sm:text-2xl leading-tight">
                 {/* Transform Journals into Comics, Effortlessly */}
                 Journal-to-Comic Made Simple
               </h1>
 
-              <span className="flex text-neutral-300 text-opacity-80 font-light text-lg max-w-3xl">
+              <span className="flex text-neutral-300 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
                 Effortlessly transform journal entries into personalized comics
                 using our intuitive app. Publish, share, and monetize your
                 creations within a supportive community.
               </span>
             </div>
-
-            {/* <div
-              className="text-white border border-white border-opacity-30 py-1 px-4 rounded-full"
-              onClick={() => {
-                // setIsLoggedIn(true);
-              }}
-            >
-              Coming Soon
-            </div> */}
 
             <Link href="/create/styles">
               <button className="inline-flex items-center rounded-full bg-accent bg-opacity-50 backdrop-blur-xl px-4 h-10 text-sm font-medium text-white shadow-sm hover:bg-emerald-600">
@@ -269,12 +260,12 @@ const Home: React.FC<{}> = () => {
           className="flex flex-col w-full bg-dark-background-primary"
         >
           {/* tema header text */}
-          <div className="flex w-full items-center justify-center h-[20vh]">
-            <span className="text-4xl font-light text-white">Our Team</span>
+          <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh]">
+            <span className="text-4xl max-md:text-2xl font-light text-white">Our Team</span>
           </div>
 
-          <div className="flex w-full h-full items-center justify-center pb-36">
-            <div className="grid grid-cols-3 w-full gap-6 max-w-5xl">
+          <div className="flex w-full h-full items-center justify-center pb-36 max-md:pb-14">
+            <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-md:gap-3 max-w-5xl px-6 max-md:px-3">
               {teamMembers.map((member, index) => {
                 return (
                   // member detail
@@ -290,7 +281,7 @@ const Home: React.FC<{}> = () => {
                     />
 
                     <div className="flex flex-col items-center justify-center p-4 z-10 bg-dark-background-secondary">
-                      <span className="text-white text-lg font-normal">
+                      <span className="text-white text-lg max-md:text-base font-normal line-clamp-1">
                         {member?.name}
                       </span>
                     </div>
