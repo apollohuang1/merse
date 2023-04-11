@@ -3,14 +3,14 @@ import React from "react";
 type Props = {};
 
 const MerseLogo: React.FC<{
-  width?: "12px"|"20px";
+  width?: "10.5px"|"12px"|"20px"|"50px";
 }> = ({
-  width = "12px"
+  width = "10.5px"
 }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={`w-[10.5px] object-contain`}
+      className={`w-[${width}] object-contain`}
       viewBox="0 0 1100 1840"
       fill="none"
     >
