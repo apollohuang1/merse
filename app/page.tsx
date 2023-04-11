@@ -35,6 +35,9 @@ const Home: React.FC<{}> = () => {
     {
       sectionTitle: "Team",
     },
+    {
+      sectionTitle: "Contact",
+    }
   ];
 
   const thirdSectionContents: any[] = [
@@ -65,43 +68,73 @@ const Home: React.FC<{}> = () => {
 
   const midjourneyGeneratedImages = [
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095187326596034570/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_8a20e766-3e58-4c77-afbe-fc0502cc4021.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095187326596034570/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_8a20e766-3e58-4c77-afbe-fc0502cc4021.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095187227534971053/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_c3349e20-6a95-4c74-b8b0-33735473d38f.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095187227534971053/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_c3349e20-6a95-4c74-b8b0-33735473d38f.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095188581586313266/markrachapoom_girl_with_long_hair_blue_checkered_pajamas_rollin_42d31631-9e7c-4b01-acfc-76aa15aa1ffb.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095188581586313266/markrachapoom_girl_with_long_hair_blue_checkered_pajamas_rollin_42d31631-9e7c-4b01-acfc-76aa15aa1ffb.png?width=1402&height=1402",
     },
 
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095188844585951292/markrachapoom_20-year-old_2_girls_and_a_boy_traveling_together__9785f8c0-9044-48ce-b13b-cf7374994da6.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095188844585951292/markrachapoom_20-year-old_2_girls_and_a_boy_traveling_together__9785f8c0-9044-48ce-b13b-cf7374994da6.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1094607894101643284/markrachapoom_A_peaceful_neighborhood_in_Connecticut_with_snowy_2b9256aa-b661-4b4e-bfcf-38c904d8e7de.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1094607894101643284/markrachapoom_A_peaceful_neighborhood_in_Connecticut_with_snowy_2b9256aa-b661-4b4e-bfcf-38c904d8e7de.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095192962029338674/markrachapoom__Emily_is_walking_in_New_York_City_dduring_Christ_e6d8df6e-5020-4aab-bb8f-338b9403c4b9.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095192962029338674/markrachapoom__Emily_is_walking_in_New_York_City_dduring_Christ_e6d8df6e-5020-4aab-bb8f-338b9403c4b9.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095193054387904542/markrachapoom_Jyoti_is_walking_in_New_York_City_dduring_Christm_a1edac93-fd0e-4404-911e-bbdc47c0cba2.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095193054387904542/markrachapoom_Jyoti_is_walking_in_New_York_City_dduring_Christm_a1edac93-fd0e-4404-911e-bbdc47c0cba2.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095189802879561838/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_3b74d0de-5d5c-429e-a204-7bc4a807acdb.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095189802879561838/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_3b74d0de-5d5c-429e-a204-7bc4a807acdb.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095187060266107010/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_9cc31a01-d495-4ddd-9013-86365f09805d.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095187060266107010/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_9cc31a01-d495-4ddd-9013-86365f09805d.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095192279221801010/markrachapoom_mommy_and_cute_little_daughter_baby_are_cooking_t_5ddc4dfd-7cba-4c5b-9093-ed7b07c3d8f9.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095192279221801010/markrachapoom_mommy_and_cute_little_daughter_baby_are_cooking_t_5ddc4dfd-7cba-4c5b-9093-ed7b07c3d8f9.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095192821994098728/markrachapoom_lights_stage_dancers_rhythm_elegance_chemistry_sp_9b134966-49f9-4550-98de-0e159015b45e.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095192821994098728/markrachapoom_lights_stage_dancers_rhythm_elegance_chemistry_sp_9b134966-49f9-4550-98de-0e159015b45e.png?width=1402&height=1402",
     },
     {
-      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095189720667013191/markrachapoom_These_three_people_with_referenced_faces_are_trav_64e07c6e-0997-4034-8339-6396e1c2c1c5.png?width=1402&height=1402"
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095189720667013191/markrachapoom_These_three_people_with_referenced_faces_are_trav_64e07c6e-0997-4034-8339-6396e1c2c1c5.png?width=1402&height=1402",
     },
-  ]
+  ];
+
+  const teamMembers = [
+    {
+      name: "Emily Park",
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1094610033930678272/telegram-peer-photo-size-1-5138860470982257726-1-0-0.jpg?width=1280&height=1280",
+    },
+    {
+      name: "Jyoti Rani",
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1095208674005368882/Screenshot_2023-04-11_at_11.48.06_AM.png?width=1534&height=1400",
+    },
+    {
+      name: "Mark Rachapoom",
+      image_url:
+        "https://media.discordapp.net/attachments/1090027780525273153/1094610034140401674/At1b9Wrr_400x400.png?width=800&height=800",
+    },
+  ];
 
   return (
     <div className="flex flex-col bg-black">
@@ -166,27 +199,15 @@ const Home: React.FC<{}> = () => {
           id="section-1"
           className="flex relative items-center justify-center h-screen w-screen"
         >
-          {/* <video
-            src="/landing.mp4"
-            ref={videoRef}
-            // alt="home"
-            className="object-cover w-full h-full z-auto"
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls={false}
-          /> */}
-
           <div className="grid grid-cols-4 grid-rows-3 h-full">
-            { midjourneyGeneratedImages.map((item, index) => {
+            {midjourneyGeneratedImages.map((item, index) => {
               return (
-                <img 
+                <img
                   key={index}
                   src={item.image_url}
                   className="object-cover w-full h-full z-auto"
                 />
-              )
+              );
             })}
           </div>
 
@@ -202,7 +223,6 @@ const Home: React.FC<{}> = () => {
           {/* text in the first section */}
           <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-14 max-lg:p-7">
             <div className="flex flex-col leading-6 items-center text-center">
-
               <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-4xl max-sm:text-3xl leading-tight">
                 {/* Transform Journals into Comics, Effortlessly */}
                 Journal-to-Comic Made Simple
@@ -244,9 +264,43 @@ const Home: React.FC<{}> = () => {
           </div>
         </div> */}
 
-
-        {/* <div
+        <div
           id="section-2"
+          className="flex flex-col w-full bg-dark-background-primary"
+        >
+          {/* tema header text */}
+          <div className="flex w-full items-center justify-center h-[20vh]">
+            <span className="text-4xl font-light text-white">Our Team</span>
+          </div>
+
+          <div className="flex w-full h-full items-center justify-center pb-36">
+            <div className="grid grid-cols-3 w-full gap-6 max-w-5xl">
+              {teamMembers.map((member, index) => {
+                return (
+                  // member detail
+                  <div
+                    key={index}
+                    className="group flex flex-col bg-dark-background-secondary rounded-lg overflow-hidden"
+                  >
+                    <img
+                      src={member?.image_url}
+                      className="right-0 object-cover w-full h-full aspect-[3/4] rounded-t-lg group-hover:scale-105 transition-all duration-300 z-0"
+                    />
+
+                    <div className="flex flex-col items-center justify-center p-3 z-10 bg-dark-background-secondary">
+                      <span className="text-white text-lg font-normal">
+                        {member?.name}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="section-3"
           className="flex flex-row h-[50vh] items-end justify-center p-10 max-lg:p-7 max-md:h-[50vh]"
         >
           <div className="flex flex-row gap-6 text-neutral-400">
@@ -266,8 +320,7 @@ const Home: React.FC<{}> = () => {
               Twitter
             </a>
           </div>
-        </div> */}
-
+        </div>
       </div>
     </div>
   );
