@@ -189,7 +189,7 @@ const Home: React.FC<{}> = () => {
               }}
               className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
             >
-              <span className="text-sm">Log in</span>
+              <span className="text-sm font-medium">Log in</span>
             </button>
           </div>
 
@@ -328,7 +328,7 @@ const Home: React.FC<{}> = () => {
         onClose={() => setShowLoginModal(false)}
         title="Log in"
       >
-        <div className="flex flex-col items-center justify-center w-full h-full text-white gap-7 p-6 min-h-[20vh]">
+        <div className="flex flex-col items-center justify-center w-full h-full text-white gap-7 p-6 min-h-[30vh]">
 
           <div>
             <h1 className="font-normal">Welcome to Comic</h1>
