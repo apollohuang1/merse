@@ -8,6 +8,8 @@ import MDBUser from "@/server/models/MDBUser";
 const useAuth = () => {
   // const [currentGoogleUser, setCurrentGoogleUser] = React.useState<any>(null);
 
+  const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
+
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
@@ -33,13 +35,15 @@ const useAuth = () => {
       } catch (error: any) {
         console.log(error.message);
       }
+
+      setShowLoginModal(false);
     },
     onError: (error: any) => {
       console.log(`Failed to continue with Google, message: ${error.message}`)
     },
   });
 
-  return { continueWithGoogle };
+  return { continueWithGoogle, showLoginModal, setShowLoginModal };
 };
 
 export default useAuth;

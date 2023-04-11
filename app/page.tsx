@@ -21,10 +21,8 @@ const Home: React.FC<{}> = () => {
 
   const auth = useAppSelector((state) => state.auth);
 
-  const { continueWithGoogle } = useAuth();
+  const { continueWithGoogle, showLoginModal, setShowLoginModal } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  const [showLoginModal, setShowLoginModal] = React.useState(false);
 
   const homeContents: any[] = [
     {
