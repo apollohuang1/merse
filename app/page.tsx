@@ -35,9 +35,9 @@ const Home: React.FC<{}> = () => {
     {
       sectionTitle: "Team",
     },
-    {
-      sectionTitle: "Contact",
-    }
+    // {
+    //   sectionTitle: "Contact",
+    // }
   ];
 
   const thirdSectionContents: any[] = [
@@ -121,18 +121,18 @@ const Home: React.FC<{}> = () => {
   const teamMembers = [
     {
       name: "Emily Park",
-      image_url:
-        "https://media.discordapp.net/attachments/1090027780525273153/1094610033930678272/telegram-peer-photo-size-1-5138860470982257726-1-0-0.jpg?width=1280&height=1280",
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1094610033930678272/telegram-peer-photo-size-1-5138860470982257726-1-0-0.jpg?width=1280&height=1280",
+      twitter_url: "https://twitter.com/mlaparkk",
     },
     {
       name: "Jyoti Rani",
-      image_url:
-        "https://media.discordapp.net/attachments/1090027780525273153/1095208674005368882/Screenshot_2023-04-11_at_11.48.06_AM.png?width=1534&height=1400",
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095208674005368882/Screenshot_2023-04-11_at_11.48.06_AM.png?width=1534&height=1400",
+      twitter_url: "https://twitter.com/jyotiinar",
     },
     {
       name: "Mark Rachapoom",
-      image_url:
-        "https://media.discordapp.net/attachments/1090027780525273153/1094610034140401674/At1b9Wrr_400x400.png?width=800&height=800",
+      image_url: "https://media.discordapp.net/attachments/1090027780525273153/1094610034140401674/At1b9Wrr_400x400.png?width=800&height=800",
+      twitter_url: "https://twitter.com/markrachapoom",
     },
   ];
 
@@ -278,28 +278,30 @@ const Home: React.FC<{}> = () => {
               {teamMembers.map((member, index) => {
                 return (
                   // member detail
-                  <div
+                  <Link
                     key={index}
                     className="group flex flex-col bg-dark-background-secondary rounded-lg overflow-hidden"
+                    href={member?.twitter_url}
+                    target="_blank"
                   >
                     <img
                       src={member?.image_url}
                       className="right-0 object-cover w-full h-full aspect-[3/4] rounded-t-lg group-hover:scale-105 transition-all duration-300 z-0"
                     />
 
-                    <div className="flex flex-col items-center justify-center p-3 z-10 bg-dark-background-secondary">
+                    <div className="flex flex-col items-center justify-center p-4 z-10 bg-dark-background-secondary">
                       <span className="text-white text-lg font-normal">
                         {member?.name}
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
           </div>
         </div>
 
-        <div
+        {/* <div
           id="section-3"
           className="flex flex-row h-[50vh] items-end justify-center p-10 max-lg:p-7 max-md:h-[50vh]"
         >
@@ -320,7 +322,8 @@ const Home: React.FC<{}> = () => {
               Twitter
             </a>
           </div>
-        </div>
+        </div> */}
+
       </div>
     </div>
   );
