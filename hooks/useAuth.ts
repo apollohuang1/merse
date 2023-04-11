@@ -8,6 +8,8 @@ import MDBUser from "@/server/models/MDBUser";
 const useAuth = () => {
   // const [currentGoogleUser, setCurrentGoogleUser] = React.useState<any>(null);
 
+  const [currentUser, setCurrentUser] = React.useState<any>(null);
+
   const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
 
   const auth = useAppSelector((state) => state.auth);
@@ -27,8 +29,10 @@ const useAuth = () => {
           email: googleUserData.email,
           profile_image_url: googleUserData.picture,
         };
-
+        
         const response = await axios.post("/api/users", newUser);
+
+        setCurrentUser(response.data);
 
         console.log(response.data);
 
@@ -51,7 +55,7 @@ const useAuth = () => {
     },
   });
 
-  return { continueWithGoogle, showLoginModal, setShowLoginModal };
+  return { currentUser, continueWithGoogle, showLoginModal, setShowLoginModal };
 };
 
 export default useAuth;

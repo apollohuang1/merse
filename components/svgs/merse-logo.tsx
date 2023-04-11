@@ -19,28 +19,28 @@ const MerseLogo: React.FC<{
         stroke="white"
         // stroke-width="100"
         strokeWidth="100"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M1050 1528.59V51L788.797 312.203V1789.79L1050 1528.59Z"
         stroke="white"
         // stroke-width="100"
         strokeWidth="100"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M311.203 51V1528.59L50 1789.79V312.203L311.203 51Z"
         stroke="white"
         // stroke-width="100"
         strokeWidth="100"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M311.203 1528.59H1050L788.795 1789.79H50L311.203 1528.59Z"
         stroke="white"
         // stroke-width="100"
         strokeWidth="100"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
