@@ -150,7 +150,7 @@ const Home: React.FC<{}> = () => {
           }}
         >
           <MerseLogo />
-          <span>Merse Comic</span>
+          <span>Comic</span>
         </div>
 
         {/* section navigator */}
