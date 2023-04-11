@@ -5,6 +5,8 @@ import "./globals.css";
 import { Provider } from "react-redux";
 import { store } from "@/redux-store/store";
 
+import { GoogleOAuthProvider } from "@react-oauth/google"
+
 const metadata = {
   title: "Merse Comic",
   description: "Effortlessly transform journal entries into personalized comics using our intuitive app. Publish, share, and monetize your creations within a supportive community.",
@@ -38,7 +40,17 @@ export default function RootLayout({
       {/* <body className="bg-light-background-primary dark:bg-dark-background-primary"> */}
       <body className="bg-dark-background-primary">
         <Provider store={store}>
-          {children}
+          <GoogleOAuthProvider
+            clientId={process.env.GOOGLE_CLIENT_ID as string}
+            onScriptLoadSuccess={() => {
+              console.log("Google script loaded successfully");
+            }}
+            onScriptLoadError={() => {
+              console.log("Google script loaded error");
+            }}
+          >
+            {children}
+          </GoogleOAuthProvider>
         </Provider>
       </body>
     </html>
