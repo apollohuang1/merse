@@ -128,12 +128,19 @@ const useEntryCreate = () => {
         url: "/api/text2image",
         data: {
           prompt: formattedPromptWithStyle,
+          response_format: "url-json" // 4/10
         },
         headers: { "Content-Type": "application/json" },
       });
+      //const image_url = await generateImage(formattedPromptWithStyle); // 4/10
+      
+      const image_url = response.data.url; // 4/10
+      
+      console.log("Generated image URL:", image_url); // 4/10
 
-      console.log("Stable Diffusion API Response: ");
-      console.log(response.data);
+      // 4/10 console.log("Stable Diffusion API Response: ");
+      // 4/10 console.log(response.data);
+      
 
       // ❤️ Hiii Emily! Would you kindly add the code to handle the response from the API here please? 
       // It'd be so lovely! Thank you so much! :)))) <3
