@@ -121,7 +121,7 @@ const useEntryCreate = () => {
       }
 
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
-      const formattedPromptWithStyle = `${input} in ${entry.style_reference.artist} artstyle`;
+      const formattedPromptWithStyle = `${input} in ${entry.style_reference.artist} comic illustration artstyle`;
 
       const response = await axios({
         method: "POST",
