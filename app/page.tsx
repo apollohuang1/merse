@@ -175,22 +175,13 @@ const Home: React.FC<{}> = () => {
           </div>
         </div>
 
-        {/* By Mark Rachapoom */}
-        <div className="flex flex-row items-center justify-end gap-2 max-[320px]:hidden">
-          {/* <img
-            // src="https://pbs.twimg.com/profile_images/1616447039742808074/smK4OYuL_400x400.jpg"
-            src={"/markrachapoom.jpg"}
-            className="object-cover w-5 h-5 rounded-full"
-          /> */}
-
-          {/* <a
-            href="https://www.markrachapoom.com"
-            target={"_blank"}
-            className="text-neutral-400 font-light hover:text-white transition-all active:opacity-50"
-          >
-            By Mark Rachapoom
-          </a> */}
+        {/* login button */}
+        <div className="flex flex-row items-center justify-end gap-2 h-full">
+          <button className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full">
+            <span className="text-sm">Log in</span>
+          </button>
         </div>
+
       </div>
 
       {/* main content */}
@@ -222,7 +213,7 @@ const Home: React.FC<{}> = () => {
           <div className="absolute bg-black bg-opacity-75 w-full h-full"></div>
 
           {/* text in the first section */}
-          <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-14 max-lg:p-7">
+          <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-14">
             <div className="flex flex-col leading-6 items-center text-center">
               <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-3xl max-sm:text-2xl leading-tight">
                 {/* Transform Journals into Comics, Effortlessly */}
