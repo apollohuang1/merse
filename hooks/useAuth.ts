@@ -1,7 +1,10 @@
 import React from "react";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { useGoogleLogin } from "@react-oauth/google";
+import MDBUser from "@/server/models/MDBUser";
+import mongoose from "mongoose";
+import { NextResponse } from "next/server";
 
 const useAuth = () => {
   // const [currentGoogleUser, setCurrentGoogleUser] = React.useState<any>(null);
@@ -13,17 +16,39 @@ const useAuth = () => {
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
+
+  // google signin trigger
   const continueWithGoogle = useGoogleLogin({
     onSuccess: (tokenResponse: any) => onGoogleLoginSuccess(tokenResponse),
     onError: (error: any) => onGoogleLoginError(error),
   })
 
+
+  // google signin success handler
   const onGoogleLoginSuccess = async (tokenResponse: any) => {
-    console.log("onGoogleLoginSuccess");
-    alert("Please try again, we're fixing this issue.")
-    setShowLoginModal(false);
+    try {
+      const accessToken = tokenResponse.access_token;
+      const googleURL = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`;
+  
+      const googleUserReponse = await axios.get(googleURL);
+  
+      // create new user if not exists in db
+      const googleUserData = googleUserReponse.data;
+      const createUserReponse = await axios.post("/api/users", googleUserData);
+  
+      alert("Please try again, we're fixing this issue.")
+      setShowLoginModal(false);
+    } catch (error: AxiosError | any) {
+      if (error.response) {
+        if (error.response.status === 400 && error.response.data.error === "User already exists") {
+          // user exists handler
+        }
+      }
+    }
   }
 
+
+  // google signin failure handler
   const onGoogleLoginError = (error: any) => {
     console.log("onGoogleLoginError");
     alert("Please try again, we're fixing this issue.")

@@ -29,6 +29,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: NextRequest) {
   try {
+
+    // create new user in db
     const db = await dbConnect();
     const body = await request.json();
 
@@ -42,7 +44,7 @@ export async function POST(request: NextRequest) {
       _id: new mongoose.Types.ObjectId(),
       name: body.name,
       email: body.email,
-      profile_image_url: body.profile_image_url,
+      profile_image_url: body.picture,
     });
 
     const savedUser = await newUser.save();
