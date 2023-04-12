@@ -126,7 +126,7 @@ const useAuth = () => {
   //   },
   // });
 
-  return { currentUser, continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser };
+  return { currentUser, setCurrentUser, continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser };
 };
 
 export default useAuth;
