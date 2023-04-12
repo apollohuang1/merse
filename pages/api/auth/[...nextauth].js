@@ -8,16 +8,19 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
-        }
-      }
+      pages: {
+        signIn: "/auth/signin",
+     },
+      // authorization: {
+      //   params: {
+      //     prompt: "consent",
+      //     access_type: "offline",
+      //     response_type: "code"
+      //   }
+      // }
     }),
     // ...add more providers here
   ],
-  secret: "randomString",
+  secret: process.env.SECRET,
 }
 export default NextAuth(authOptions);
