@@ -35,6 +35,9 @@ const useAuth = () => {
       // create new user if not exists in db
       const googleUserData = googleUserReponse.data;
       const createUserReponse = await axios.post("/api/users", googleUserData);
+
+      // if user exists, return fetched user data
+      setCurrentUser(createUserReponse.data.data);
   
       alert("Please try again, we're fixing this issue.")
       setShowLoginModal(false);
@@ -42,6 +45,7 @@ const useAuth = () => {
       if (error.response) {
         if (error.response.status === 400 && error.response.data.error === "User already exists") {
           // user exists handler
+          // regularly login
         }
       }
     }

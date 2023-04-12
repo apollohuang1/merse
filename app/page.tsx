@@ -98,21 +98,21 @@ const Home: React.FC<{}> = () => {
           {/* login button */}
 
           <div className="flex flex-row items-center justify-end gap-2 h-full">
-            {session ? (
+            {currentUser ? (
               <button
                 onClick={() => {
-                  console.log(session)
+                  // console.log(session)
                   // signOut();
                 }}
                 className="flex flex-row gap-3"
               >
                 <img
-                  src={session.user?.image ?? ""}
+                  src={currentUser?.profile_image_url}
                   className="w-6 h-6 rounded-full"
                   alt="user profile image"
                 />
 
-                <span>{session.user?.name ?? "Unknown"}</span>
+                <span>{currentUser?.name ?? "Unknown"}</span>
               </button>
             ) : (
               <button

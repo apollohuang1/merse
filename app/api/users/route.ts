@@ -37,7 +37,8 @@ export async function POST(request: NextRequest) {
     const existingUser = await MDBUser.findOne({ email: body.email })
 
     if (existingUser) {
-      return NextResponse.json({ error: "User already exists" }, { status: 400 });
+      // return NextResponse.json({ error: "User already exists" }, { status: 400 });
+      return NextResponse.json({ data: existingUser }, { status: 200 });
     }
 
     const newUser = new MDBUser({
