@@ -10,7 +10,6 @@ import { FiArrowUpRight, FiBookOpen } from "react-icons/fi";
 import Modal from "@/components/modal";
 
 import { FcGoogle } from "react-icons/fc";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import useAuth from "@/hooks/useAuth";
 import { useAppSelector } from "@/redux-store/hooks";
@@ -19,9 +18,13 @@ import {
   teamMembers,
 } from "@/util/landing-constant";
 
+import { useSession, signIn, signOut } from "next-auth/react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 const Home: React.FC<{}> = () => {
+  const { data: session, status } = useSession();
+
   const auth = useAppSelector((state) => state.auth);
 
   const { currentUser, continueWithGoogle, showLoginModal, setShowLoginModal } =
@@ -94,31 +97,34 @@ const Home: React.FC<{}> = () => {
 
           {/* login button */}
 
-          {currentUser ? (
-            <div className="flex flex-row gap-3">
-              <img
-                src={currentUser?.profile_image_url ?? ""}
-                className="w-8 h-8 rounded-full"
-                alt="user profile image"
-              />
-
-              <span>
-                {currentUser?.name}
-              </span>
-
-            </div>
-          ) : (
-            <div className="flex flex-row items-center justify-end gap-2 h-full">
+          <div className="flex flex-row items-center justify-end gap-2 h-full">
+            {session ? (
               <button
                 onClick={() => {
-                  setShowLoginModal(true);
+                  signOut();
+                }}
+                className="flex flex-row gap-3"
+              >
+                <img
+                  src={session.user?.image ?? ""}
+                  className="w-6 h-6 rounded-full"
+                  alt="user profile image"
+                />
+
+                <span>{session.user?.name ?? "Unknown"}</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  signIn();
+                  // setShowLoginModal(true);
                 }}
                 className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
               >
                 <span className="text-sm font-medium">Log in</span>
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* main content */}
@@ -269,9 +275,7 @@ const Home: React.FC<{}> = () => {
 
           {/* continue with google */}
           <button
-            onClick={() => {
-              continueWithGoogle();
-            }}
+            onClick={() => signIn()}
             className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
           >
             <FcGoogle className="text-xl" />

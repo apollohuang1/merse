@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import dbConnect from "../../../server/utils/dbConnect";
-import Pet from "../../../server/models/MDBPet";
+import dbConnect from "../../../../server/utils/dbConnect";
+import Pet from "../../../../server/models/MDBPet";
 import MDBUser from "@/server/models/MDBUser";
 
 const mongoose = require("mongoose");
