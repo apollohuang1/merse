@@ -101,7 +101,8 @@ const Home: React.FC<{}> = () => {
             {session ? (
               <button
                 onClick={() => {
-                  signOut();
+                  console.log(session)
+                  // signOut();
                 }}
                 className="flex flex-row gap-3"
               >
@@ -116,8 +117,8 @@ const Home: React.FC<{}> = () => {
             ) : (
               <button
                 onClick={() => {
-                  signIn();
-                  // setShowLoginModal(true);
+                  // signIn();
+                  setShowLoginModal(true);
                 }}
                 className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
               >
@@ -275,7 +276,10 @@ const Home: React.FC<{}> = () => {
 
           {/* continue with google */}
           <button
-            onClick={() => signIn()}
+            onClick={() => {
+              alert("Please try again later, we are still working on it.")
+              setShowLoginModal(false);
+            }}
             className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
           >
             <FcGoogle className="text-xl" />
