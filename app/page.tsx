@@ -19,6 +19,7 @@ import {
 } from "@/util/landing-constant";
 
 import { useSession, signIn, signOut } from "next-auth/react";
+import { Spinner } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,8 +28,7 @@ const Home: React.FC<{}> = () => {
 
   const auth = useAppSelector((state) => state.auth);
 
-  const { currentUser, continueWithGoogle, showLoginModal, setShowLoginModal } =
-    useAuth();
+  const { currentUser, continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const homeContents: any[] = [
@@ -106,11 +106,24 @@ const Home: React.FC<{}> = () => {
                 }}
                 className="flex flex-row gap-3"
               >
-                <img
-                  src={currentUser?.profile_image_url}
-                  className="w-6 h-6 rounded-full"
-                  alt="user profile image"
-                />
+                <div className="relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden">
+                  <svg
+                    className="absolute h-full w-full text-gray-300"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+
+                  <img
+                    src={currentUser?.profile_image_url}
+                    className="absolute w-6 h-6 rounded-full"
+                    alt="user profile image"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://media.discordapp.net/attachments/1090027780525273153/1095187382095061085/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_fe116faf-39b2-46d2-8dbe-b46f9b0b4ef1.png?width=686&height=686";
+                    }}
+                  />
+                </div>
 
                 <span>{currentUser?.name ?? "Unknown"}</span>
               </button>
@@ -275,15 +288,19 @@ const Home: React.FC<{}> = () => {
           </div>
 
           {/* continue with google */}
-          <button
-            onClick={() => {
-              continueWithGoogle();
-            }}
-            className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
-          >
-            <FcGoogle className="text-xl" />
-            <span className="text-sm font-medium">Continue with Google</span>
-          </button>
+          { isLoadingCurrentUser ? (
+            <Spinner speed={"0.8s"} className="w-4 h-4" />
+          ) : (
+            <button
+              onClick={() => {
+                continueWithGoogle();
+              }}
+              className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+            >
+              <FcGoogle className="text-xl" />
+              <span className="text-sm font-medium">Continue with Google</span>
+            </button>
+          )}
 
           <p className="text-sm text-dark-text-secondary text-center max-w-sm border-t border-t-light-divider dark:border-t-dark-divider py-6">
             By continuing, you agree to Merce&apos;s{" "}

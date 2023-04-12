@@ -12,6 +12,7 @@ const useAuth = () => {
   const [currentUser, setCurrentUser] = React.useState<any>(null);
 
   const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
+  const [isLoadingCurrentUser, setIsLoadingCurrentUser] = React.useState<boolean>(false);
 
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -27,6 +28,9 @@ const useAuth = () => {
   // google signin success handler
   const onGoogleLoginSuccess = async (tokenResponse: any) => {
     try {
+
+      setIsLoadingCurrentUser(true);
+
       const accessToken = tokenResponse.access_token;
       const googleURL = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`;
   
@@ -39,7 +43,8 @@ const useAuth = () => {
       // if user exists, return fetched user data
       setCurrentUser(createUserReponse.data.data);
   
-      alert("Please try again, we're fixing this issue.")
+      // alert("Please try again, we're fixing this issue.")
+      setIsLoadingCurrentUser(false);
       setShowLoginModal(false);
     } catch (error: AxiosError | any) {
       if (error.response) {
@@ -48,6 +53,8 @@ const useAuth = () => {
           // regularly login
         }
       }
+
+      setIsLoadingCurrentUser(false);
     }
   }
 
@@ -119,7 +126,7 @@ const useAuth = () => {
   //   },
   // });
 
-  return { currentUser, continueWithGoogle, showLoginModal, setShowLoginModal };
+  return { currentUser, continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser };
 };
 
 export default useAuth;
