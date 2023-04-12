@@ -6,6 +6,7 @@ import {
   CreateChatCompletionResponse,
 } from "openai";
 import React from "react";
+import * as $ from 'jquery';
 
 // Hook for creating new entries
 const useEntryCreate = () => {
@@ -125,17 +126,17 @@ const useEntryCreate = () => {
 
       const response = await axios({
         method: "POST",
-        url: "/api/text2image",
-        data: {
+        url: "https://stablediffusionapi.com/api/v3/text2img", //api/text2img 4/11
+        data: JSON.stringify({
+          key: stableDiffusionApiKey, //new 4/11
           prompt: formattedPromptWithStyle,
-          response_format: "url-json" // 4/10
-        },
+          response_format: "url-json"
+        }),
         headers: { "Content-Type": "application/json" },
       });
       //const image_url = await generateImage(formattedPromptWithStyle); // 4/10
-      
-      const image_url = response.data.url; // 4/10
-      
+      await new Promise(resolve => setTimeout(resolve, 20000));
+      const image_url = response.data[0].link; // 4/10
       console.log("Generated image URL:", image_url); // 4/10
 
       // 4/10 console.log("Stable Diffusion API Response: ");
