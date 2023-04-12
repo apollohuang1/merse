@@ -7,6 +7,7 @@ import { store } from "@/redux-store/store";
 
 // Login Provider
 import { SessionProvider } from "next-auth/react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const metadata = {
   title: "Merse Comic",
@@ -45,9 +46,11 @@ export default function RootLayout({
       {/* <body className="bg-light-background-primary dark:bg-dark-background-primary"> */}
       <body className="bg-dark-background-primary">
         <Provider store={store}>
-          <SessionProvider>
-            {children}
-          </SessionProvider>
+          <GoogleOAuthProvider
+            clientId={process.env.GOOGLE_CLIENT_ID as string}
+          >
+            <SessionProvider>{children}</SessionProvider>
+          </GoogleOAuthProvider>
         </Provider>
       </body>
     </html>

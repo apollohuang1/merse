@@ -277,8 +277,7 @@ const Home: React.FC<{}> = () => {
           {/* continue with google */}
           <button
             onClick={() => {
-              alert("Please try again later, we are still working on it.")
-              setShowLoginModal(false);
+              continueWithGoogle();
             }}
             className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
           >

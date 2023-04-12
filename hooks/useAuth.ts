@@ -1,6 +1,7 @@
 import React from "react";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const useAuth = () => {
   // const [currentGoogleUser, setCurrentGoogleUser] = React.useState<any>(null);
@@ -12,8 +13,21 @@ const useAuth = () => {
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const continueWithGoogle = async () => {
+  const continueWithGoogle = useGoogleLogin({
+    onSuccess: (tokenResponse: any) => onGoogleLoginSuccess(tokenResponse),
+    onError: (error: any) => onGoogleLoginError(error),
+  })
 
+  const onGoogleLoginSuccess = async (tokenResponse: any) => {
+    console.log("onGoogleLoginSuccess");
+    alert("Please try again, we're fixing this issue.")
+    setShowLoginModal(false);
+  }
+
+  const onGoogleLoginError = (error: any) => {
+    console.log("onGoogleLoginError");
+    alert("Please try again, we're fixing this issue.")
+    setShowLoginModal(false);
   }
 
   // const continueWithGoogle = useGoogleLogin({
