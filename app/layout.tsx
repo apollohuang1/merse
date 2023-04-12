@@ -5,9 +5,14 @@ import "./globals.css";
 import { Provider } from "react-redux";
 import { store } from "@/redux-store/store";
 
+// Login Provider
+import { SessionProvider } from "next-auth/react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 const metadata = {
   title: "Merse Comic",
-  description: "Effortlessly transform journal entries into personalized comics using our intuitive app. Publish, share, and monetize your creations within a supportive community.",
+  description:
+    "Effortlessly transform journal entries into personalized comics using our intuitive app. Publish, share, and monetize your creations within a supportive community.",
 };
 
 export default function RootLayout({
@@ -15,12 +20,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 
@@ -38,7 +46,11 @@ export default function RootLayout({
       {/* <body className="bg-light-background-primary dark:bg-dark-background-primary"> */}
       <body className="bg-dark-background-primary">
         <Provider store={store}>
-          {children}
+          <GoogleOAuthProvider
+            clientId={process.env.GOOGLE_CLIENT_ID as string}
+          >
+            <SessionProvider>{children}</SessionProvider>
+          </GoogleOAuthProvider>
         </Provider>
       </body>
     </html>

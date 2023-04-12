@@ -68,15 +68,32 @@ const entryHelperSlice = createSlice({
   }
 })
 
+const authenticationSlice = createSlice({
+  name: 'authentication',
+  initialState: {
+    user: null,
+  },
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload
+    }
+  }
+})
+
+
+
+
 
 export const store: ToolkitStore = configureStore({
   reducer: {
+    auth: authenticationSlice.reducer,
     entry: entrySlice.reducer,
     entryHelper: entryHelperSlice.reducer
   }
 })
 
 // actions
+export const { setUser } = authenticationSlice.actions;
 export const { setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setStoryboard } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard } = entryHelperSlice.actions;
 

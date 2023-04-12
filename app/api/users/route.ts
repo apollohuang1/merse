@@ -1,18 +1,25 @@
-
-
 import { NextRequest, NextResponse } from "next/server";
 
-import dbConnect from "../../../server/utils/dbConnect";
-import Pet from "../../../server/models/MDBPet";
-import User from "../../../server/models/MDBUser";
+import MDBUser from "@/server/models/MDBUser";
+import dbConnect from "@/server/utils/dbConnect";
 
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
     const db = await dbConnect();
-    const data = await User.find({});
+
+    // console.log("hey");
+    const searchParams = new URLSearchParams(request.url.split("?")[1]);
+    const searchingEmail = searchParams.get("email");
+
+    const data = await MDBUser.findOne({
+      email: searchingEmail,
+    });
+
+    console.log("data after finding one")
+    console.log(data);
+
     return NextResponse.json({ data: data }, { status: 200 });
   } catch (error: any) {
     // return new Response(error, { status: 500 })
@@ -20,25 +27,30 @@ export async function GET(request: NextRequest) {
   }
 }
 
-
-export async function POST(request: Request) {
-
-  const newUser = new User({
-    _id: new mongoose.Types.ObjectId(),
-    name: "Emily Park",
-  });
-
+export async function POST(request: NextRequest) {
   try {
+
+    // create new user in db
+    const db = await dbConnect();
+    const body = await request.json();
+
+    const existingUser = await MDBUser.findOne({ email: body.email })
+
+    if (existingUser) {
+      // return NextResponse.json({ error: "User already exists" }, { status: 400 });
+      return NextResponse.json({ data: existingUser }, { status: 200 });
+    }
+
+    const newUser = new MDBUser({
+      _id: new mongoose.Types.ObjectId(),
+      name: body.name,
+      email: body.email,
+      profile_image_url: body.picture,
+    });
+
     const savedUser = await newUser.save();
-    return NextResponse.json({ success: true, data: savedUser });
+    return NextResponse.json({ data: savedUser }, { status: 200 });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
-  // await newUser.save(function (err: any, user: any) {
-  //   if (err) return console.error(err);
-  //   console.log(user.name + " saved to users collection.");
-  // });
-
-  // return NextResponse.json({ success: true, data: newUser });
 }
