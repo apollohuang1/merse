@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import dbConnect from "../../../../server/utils/dbConnect";
-import Pet from "../../../../server/models/MDBPet";
 import MDBUser from "@/server/models/MDBUser";
+import dbConnect from "@/server/utils/dbConnect";
 
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 export async function GET(request: Request) {
   try {
