@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     console.log("data after finding one")
     console.log(data);
 
-    return NextResponse.json({ data: data }, { status: 200 });
+    return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
     // return new Response(error, { status: 500 })
     return NextResponse.json({ error: error?.message }, { status: 500 });
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       // return NextResponse.json({ error: "User already exists" }, { status: 400 });
-      return NextResponse.json({ data: existingUser }, { status: 200 });
+      return NextResponse.json(existingUser, { status: 200 });
     }
 
     const newUser = new MDBUser({
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     });
 
     const savedUser = await newUser.save();
-    return NextResponse.json({ data: savedUser }, { status: 200 });
+    return NextResponse.json(savedUser, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
