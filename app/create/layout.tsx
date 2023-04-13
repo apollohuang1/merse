@@ -18,13 +18,11 @@ const metadata = {
     "A playground to explore new Next.js App Router features such as nested layouts, instant loading states, streaming, and component level data fetching.",
 };
 
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
   const { reloadCurrentUser } = useAuth();
 
   const [currentCreateRoute, setCurrentCreateRoute] =
@@ -35,8 +33,15 @@ export default function RootLayout({
   const [savingContent, setSavingContent] = React.useState<Entry | null>(null);
 
   useEffect(() => {
-    reloadCurrentUser();
-  }, [])
+    reloadCurrentUser()
+      .then(() => {
+        console.log("reloadCurrentUser");
+      })
+      .catch((err) => {
+        console.log("reloadCurrentUser", err);
+        // redirect to authentication page
+      });
+  }, []);
 
   return (
     <html lang="en">

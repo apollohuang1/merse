@@ -31,7 +31,7 @@ const Home: React.FC<{}> = () => {
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser } = useAuth();
+  const { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, logOut } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const homeContents: any[] = [
@@ -104,7 +104,7 @@ const Home: React.FC<{}> = () => {
             {auth?.currentUser ? (
               <button
                 onClick={() => {
-                  dispatch(setCurrentUser(null));
+                  logOut();
                 }}
                 className="flex flex-row gap-3"
               >

@@ -7,6 +7,7 @@ import mongoose from 'mongoose'
 
 const initialState: Entry = {
   _id: "",
+  user_id: "",
   title: "",
   style_reference: null,
   content: null,
@@ -21,6 +22,9 @@ const entrySlice = createSlice({
   name: 'entry',
   initialState: initialState,
   reducers: {
+    setUserId: (state: Entry, action: PayloadAction<string>) => {
+      state.user_id = action.payload
+    },
     setStyle: (state: Entry, action) => {
       state.style_reference = action.payload
     },
@@ -34,8 +38,7 @@ const entrySlice = createSlice({
       state.characters = state.characters.filter(character => character?._id !== action.payload._id)
     },
     updateCharacter: (state: Entry, action) => {
-      // update specific character in characters array
-      // set new name 
+      // update specific character in characters array, and set new name 
       state.characters = state.characters.map(character => {
         if (character?._id === action.payload._id) {
           character = action.payload

@@ -22,14 +22,20 @@ const useAuth = () => {
     reloadCurrentUser();
   }, []);
 
+  // reload current user promise
   const reloadCurrentUser = async () => {
-    // getCurrentUserFromLocalStorage();
-    const loggedInUser = localStorage.getItem("currentUser");
-    if (loggedInUser) {
-      // setCurrentUser(JSON.parse(loggedInUser));
-      const loggedInUserData = JSON.parse(loggedInUser);
-      dispatch(setCurrentUser(loggedInUserData))
-    }
+    return new Promise((resolve, reject) => {
+      const loggedInUser = localStorage.getItem("currentUser");
+      if (loggedInUser) {
+        // setCurrentUser(JSON.parse(loggedInUser));
+        const loggedInUserData = JSON.parse(loggedInUser);
+        dispatch(setCurrentUser(loggedInUserData))
+        resolve(loggedInUserData);
+      } else {
+        reject("No user found");
+        // redirect to login page
+      }
+    })
   }
 
 
@@ -85,8 +91,9 @@ const useAuth = () => {
   }
 
   const logOut = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('currentUser');
     setCurrentUser(null);
+    dispatch(setCurrentUser(null));
   }
 
   // const continueWithGoogle = useGoogleLogin({
