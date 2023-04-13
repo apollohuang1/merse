@@ -3,6 +3,7 @@
 "use client";
 
 import LeftSideBar from "@/components/create/left-side-bar";
+import useAuth from "@/hooks/useAuth";
 import { Entry } from "@/models/entry";
 import { CreateRoute, createRoutes } from "@/util/create-constants";
 import React, { useEffect } from "react";
@@ -24,12 +25,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
 
+  const { reloadCurrentUser } = useAuth();
+
   const [currentCreateRoute, setCurrentCreateRoute] =
     React.useState<CreateRoute>(createRoutes[0]);
   const [currentCreateRouteIdx, setCurrentCreateRouteIdx] =
     React.useState<number>(0);
 
   const [savingContent, setSavingContent] = React.useState<Entry | null>(null);
+
+  useEffect(() => {
+    reloadCurrentUser();
+  }, [])
 
   return (
     <html lang="en">

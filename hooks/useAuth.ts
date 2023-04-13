@@ -19,6 +19,10 @@ const useAuth = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    reloadCurrentUser();
+  }, []);
+
+  const reloadCurrentUser = async () => {
     // getCurrentUserFromLocalStorage();
     const loggedInUser = localStorage.getItem("currentUser");
     if (loggedInUser) {
@@ -26,7 +30,7 @@ const useAuth = () => {
       const loggedInUserData = JSON.parse(loggedInUser);
       dispatch(setCurrentUser(loggedInUserData))
     }
-  }, []);
+  }
 
 
   // google signin trigger
@@ -145,7 +149,7 @@ const useAuth = () => {
   //   },
   // });
 
-  return { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, logOut };
+  return { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, reloadCurrentUser, logOut };
 };
 
 export default useAuth;
