@@ -162,14 +162,8 @@ const Home: React.FC<{}> = () => {
               })}
             </div>
 
-            {/* <img
-              src="https://images.unsplash.com/photo-1624961149934-efa575e8642e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2391&q=80"
-              className="object-cover w-full h-full z-auto"
-              alt="home"
-            /> */}
-
             {/* overlay */}
-            <div className="absolute bg-black bg-opacity-75 w-full h-full"></div>
+            <div className="absolute bg-opacity-75 w-full h-full bg-gradient-to-t from-black to-transparent" />
 
             {/* text in the first section */}
             <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-14">
@@ -187,8 +181,8 @@ const Home: React.FC<{}> = () => {
               </div>
 
               <Link href="/create/styles">
-                <button className="inline-flex items-center rounded-full bg-accent bg-opacity-50 backdrop-blur-xl px-4 h-10 text-sm font-medium text-white shadow-sm hover:bg-emerald-600">
-                  <span>Create comic book</span>
+                <button className="inline-flex items-center rounded-full bg-white px-4 h-10 text-sm font-medium text-white shadow-sm hover:scale-105 active:scale-100 transition-all">
+                  <span className="text-black font-medium">Create comic book</span>
                 </button>
               </Link>
             </div>
@@ -208,7 +202,7 @@ const Home: React.FC<{}> = () => {
 
           <div
             id="section-2"
-            className="flex flex-col w-full bg-dark-background-primary"
+            className="flex flex-col w-full bg-black"
           >
             {/* tema header text */}
             <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh]">
