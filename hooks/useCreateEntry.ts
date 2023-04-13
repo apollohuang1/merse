@@ -177,9 +177,9 @@ const useCreateEntry = () => {
       console.log(response)
 
       //const image_url = await generateImage(formattedPromptWithStyle); // 4/10
-      await new Promise(resolve => setTimeout(resolve, 20000));
-
-      const image_url = response.data[0].link; // 4/10
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      
+      const image_url = response.data.output[0]; // 4/10
       console.log("Generated image URL:", image_url); // 4/10
 
       // 4/10 console.log("Stable Diffusion API Response: ");
