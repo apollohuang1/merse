@@ -20,6 +20,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+  // const { setCurrentUser } = useAuth();
+
   useEffect(() => {
     if (
       localStorage.theme === "dark" ||
@@ -46,9 +49,7 @@ export default function RootLayout({
       {/* <body className="bg-light-background-primary dark:bg-dark-background-primary"> */}
       <body className="bg-dark-background-primary">
         <Provider store={store}>
-          <GoogleOAuthProvider
-            clientId={process.env.GOOGLE_CLIENT_ID as string}
-          >
+          <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
             <SessionProvider>{children}</SessionProvider>
           </GoogleOAuthProvider>
         </Provider>

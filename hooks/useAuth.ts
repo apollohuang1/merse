@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -14,8 +14,16 @@ const useAuth = () => {
   const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
   const [isLoadingCurrentUser, setIsLoadingCurrentUser] = React.useState<boolean>(false);
 
-  const auth = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
+  // const auth = useAppSelector((state) => state.auth);
+  // const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // getCurrentUserFromLocalStorage();
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      setCurrentUser(JSON.parse(loggedInUser));
+    }
+  }, []);
 
 
   // google signin trigger
@@ -41,7 +49,9 @@ const useAuth = () => {
       const createUserReponse = await axios.post("/api/users", googleUserData);
 
       // if user exists, return fetched user data
-      setCurrentUser(createUserReponse.data.data);
+      setCurrentUser(createUserReponse.data);
+
+      localStorage.setItem('user', JSON.stringify(createUserReponse.data))
   
       // alert("Please try again, we're fixing this issue.")
       setIsLoadingCurrentUser(false);
@@ -64,6 +74,11 @@ const useAuth = () => {
     console.log("onGoogleLoginError");
     alert("Please try again, we're fixing this issue.")
     setShowLoginModal(false);
+  }
+
+  const logOut = () => {
+    localStorage.removeItem('user');
+    setCurrentUser(null);
   }
 
   // const continueWithGoogle = useGoogleLogin({
@@ -126,7 +141,7 @@ const useAuth = () => {
   //   },
   // });
 
-  return { currentUser, setCurrentUser, continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser };
+  return { currentUser, setCurrentUser, continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, logOut };
 };
 
 export default useAuth;

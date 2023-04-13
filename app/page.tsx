@@ -5,13 +5,12 @@ import { Inter } from "next/font/google";
 import styles from "./page.module.css";
 import Link from "next/link";
 import MerseLogo from "@/components/svgs/merse-logo";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { FiArrowUpRight, FiBookOpen } from "react-icons/fi";
 import Modal from "@/components/modal";
 
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
-import useAuth from "@/hooks/useAuth";
 import { useAppSelector } from "@/redux-store/hooks";
 import {
   midjourneyGeneratedImages,
@@ -20,10 +19,12 @@ import {
 
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Spinner } from "@chakra-ui/react";
+import useAuth from "@/hooks/useAuth";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const Home: React.FC<{}> = () => {
+
   const { data: session, status } = useSession();
 
   const auth = useAppSelector((state) => state.auth);
@@ -134,7 +135,7 @@ const Home: React.FC<{}> = () => {
                 }}
                 className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
               >
-                <span className="text-sm font-medium">Log in</span>
+                <span className="text-sm font-medium">Login</span>
               </button>
             )}
           </div>

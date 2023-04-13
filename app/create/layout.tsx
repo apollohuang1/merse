@@ -5,7 +5,7 @@
 import LeftSideBar from "@/components/create/left-side-bar";
 import { Entry } from "@/models/entry";
 import { CreateRoute, createRoutes } from "@/util/create-constants";
-import React from "react";
+import React, { useEffect } from "react";
 
 const metadata = {
   title: {
@@ -23,6 +23,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   const [currentCreateRoute, setCurrentCreateRoute] =
     React.useState<CreateRoute>(createRoutes[0]);
   const [currentCreateRouteIdx, setCurrentCreateRouteIdx] =
