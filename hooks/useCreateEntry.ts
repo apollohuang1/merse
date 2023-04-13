@@ -181,10 +181,8 @@ const useCreateEntry = () => {
             model: "runwayml/stable-diffusion-v1-5",
             n_samples: 1,
             negative_prompt: "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs))",
-            outdir: "out",
-            revision: "fp16",
-            safetychecker: "no",
-            seed: 3525930829,
+            safetychecker: null,
+            seed: null,
             steps: 20,
             vae: "stabilityai/sd-vae-ft-mse"
         }
