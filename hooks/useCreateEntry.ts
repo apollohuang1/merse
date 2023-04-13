@@ -124,18 +124,32 @@ const useEntryCreate = () => {
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
       const formattedPromptWithStyle = `${input} in ${entry.style_reference.artist} comic illustration artstyle`;
 
+      // const response = await axios({
+      //   method: "POST",
+      //   url: "https://stablediffusionapi.com/api/v3/text2img", //api/text2img 4/11
+      //   data: JSON.stringify({
+      //     key: stableDiffusionApiKey, //new 4/11
+      //     prompt: formattedPromptWithStyle,
+      //     response_format: "url-json"
+      //   }),
+      //   headers: { "Content-Type": "application/json" },
+      // });
+
       const response = await axios({
         method: "POST",
-        url: "https://stablediffusionapi.com/api/v3/text2img", //api/text2img 4/11
-        data: JSON.stringify({
-          key: stableDiffusionApiKey, //new 4/11
+        url: "/api/text2image",
+        data: {
           prompt: formattedPromptWithStyle,
-          response_format: "url-json"
-        }),
+        },
         headers: { "Content-Type": "application/json" },
       });
+
+      console.log("Stable Diffusion API Response: ");
+      console.log(response)
+
       //const image_url = await generateImage(formattedPromptWithStyle); // 4/10
       await new Promise(resolve => setTimeout(resolve, 20000));
+
       const image_url = response.data[0].link; // 4/10
       console.log("Generated image URL:", image_url); // 4/10
 

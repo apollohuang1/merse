@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
       throw new Error(response.data.message);
     }
 
-    return NextResponse.json({ data: response.data }, { status: 200 });
+    return NextResponse.json(response.data, { status: 200 });
   } catch (error:any) {
     console.log("Failed to generate image:", error?.message);
     // return next response with message
