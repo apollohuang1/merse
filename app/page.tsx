@@ -11,7 +11,7 @@ import Modal from "@/components/modal";
 
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
-import { useAppSelector } from "@/redux-store/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
   midjourneyGeneratedImages,
   teamMembers,
@@ -20,6 +20,7 @@ import {
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Spinner } from "@chakra-ui/react";
 import useAuth from "@/hooks/useAuth";
+import { setCurrentUser } from "@/redux-store/store";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,8 +29,9 @@ const Home: React.FC<{}> = () => {
   const { data: session, status } = useSession();
 
   const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
-  const { currentUser, setCurrentUser, continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser } = useAuth();
+  const { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const homeContents: any[] = [
@@ -99,10 +101,10 @@ const Home: React.FC<{}> = () => {
           {/* login button */}
 
           <div className="flex flex-row items-center justify-end gap-2 h-full">
-            {currentUser ? (
+            {auth?.currentUser ? (
               <button
                 onClick={() => {
-                  setCurrentUser(null);
+                  dispatch(setCurrentUser(null));
                 }}
                 className="flex flex-row gap-3"
               >
@@ -116,7 +118,7 @@ const Home: React.FC<{}> = () => {
                   </svg>
 
                   <img
-                    src={currentUser?.profile_image_url}
+                    src={auth?.currentUser?.profile_image_url}
                     className="absolute w-6 h-6 rounded-full"
                     alt="user profile image"
                     onError={(e) => {
@@ -125,7 +127,7 @@ const Home: React.FC<{}> = () => {
                   />
                 </div>
 
-                <span>{currentUser?.name ?? "Unknown"}</span>
+                <span>{auth?.currentUser?.name ?? "Unknown"}</span>
               </button>
             ) : (
               <button

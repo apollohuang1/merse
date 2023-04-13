@@ -5,23 +5,26 @@ import { useGoogleLogin } from "@react-oauth/google";
 import MDBUser from "@/server/models/MDBUser";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
+import { setCurrentUser } from "@/redux-store/store";
 
 const useAuth = () => {
   // const [currentGoogleUser, setCurrentGoogleUser] = React.useState<any>(null);
 
-  const [currentUser, setCurrentUser] = React.useState<any>(null);
+  // const [currentUser, setCurrentUser] = React.useState<any>(null);
 
   const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
   const [isLoadingCurrentUser, setIsLoadingCurrentUser] = React.useState<boolean>(false);
 
-  // const auth = useAppSelector((state) => state.auth);
-  // const dispatch = useAppDispatch();
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     // getCurrentUserFromLocalStorage();
-    const loggedInUser = localStorage.getItem("user");
+    const loggedInUser = localStorage.getItem("currentUser");
     if (loggedInUser) {
-      setCurrentUser(JSON.parse(loggedInUser));
+      // setCurrentUser(JSON.parse(loggedInUser));
+      const loggedInUserData = JSON.parse(loggedInUser);
+      dispatch(setCurrentUser(loggedInUserData))
     }
   }, []);
 
@@ -50,8 +53,9 @@ const useAuth = () => {
 
       // if user exists, return fetched user data
       setCurrentUser(createUserReponse.data);
+      dispatch(setCurrentUser(createUserReponse.data))
 
-      localStorage.setItem('user', JSON.stringify(createUserReponse.data))
+      localStorage.setItem('currentUser', JSON.stringify(createUserReponse.data))
   
       // alert("Please try again, we're fixing this issue.")
       setIsLoadingCurrentUser(false);
@@ -141,7 +145,7 @@ const useAuth = () => {
   //   },
   // });
 
-  return { currentUser, setCurrentUser, continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, logOut };
+  return { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, logOut };
 };
 
 export default useAuth;
