@@ -50,7 +50,7 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setShowGeneratedStoryboard, setStoryboard, setTitle } from "@/redux-store/store";
-import useEntryCreate from "@/hooks/useCreateEntry";
+import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 
 type Props = {};
@@ -58,7 +58,7 @@ type Props = {};
 const Storyboard = (props: Props) => {
   // hooks
   const { generateStoryboard, isGeneratingStoryboard, createImageFromText } =
-    useEntryCreate();
+    useCreateEntry();
 
   // redux states
   const entry = useAppSelector((state) => state.entry);

@@ -1,4 +1,4 @@
-import useEntryCreate from "@/hooks/useCreateEntry";
+import useCreateEntry from "@/hooks/useCreateEntry";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 

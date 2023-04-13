@@ -9,7 +9,7 @@ import React from "react";
 import * as $ from 'jquery';
 
 // Hook for creating new entries
-const useEntryCreate = () => {
+const useCreateEntry = () => {
   
   const [isGeneratingStoryboard, setIsGeneratingStoryboard] = React.useState<boolean>(false);
 
@@ -21,6 +21,11 @@ const useEntryCreate = () => {
     setIsGeneratingStoryboard(false);
     // more code on handling stop generating storyboard
   };
+
+  const saveEntry = async () => {
+    console.log("Saving entry...");
+    console.log(entry);
+  }
 
   const generateStoryboard = async (editor: any) => {
     try {
@@ -243,7 +248,8 @@ const useEntryCreate = () => {
     isGeneratingStoryboard,
     generateStoryboard,
     createImageFromText,
+    saveEntry
   };
 };
 
-export default useEntryCreate;
+export default useCreateEntry;
