@@ -5,6 +5,8 @@
 import LeftSideBar from "@/components/create/left-side-bar";
 import useAuth from "@/hooks/useAuth";
 import { Entry } from "@/models/entry";
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
+import { setUserId } from "@/redux-store/store";
 import { CreateRoute, createRoutes } from "@/util/create-constants";
 import React, { useEffect } from "react";
 
@@ -32,10 +34,14 @@ export default function RootLayout({
 
   const [savingContent, setSavingContent] = React.useState<Entry | null>(null);
 
+  const entry = useAppSelector((state) => state.entry);
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     reloadCurrentUser()
-      .then(() => {
+      .then((user: any) => {
         console.log("reloadCurrentUser");
+        dispatch(setUserId(user?._id));
       })
       .catch((err) => {
         console.log("reloadCurrentUser", err);

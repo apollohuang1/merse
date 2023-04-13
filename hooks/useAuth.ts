@@ -36,7 +36,7 @@ const useAuth = () => {
       if (loggedInUser) {
         // setCurrentUser(JSON.parse(loggedInUser));
         const loggedInUserData = JSON.parse(loggedInUser);
-        dispatch(setCurrentUser(loggedInUserData))
+        dispatch(setCurrentUser(loggedInUserData));
         resolve(loggedInUserData);
       } else {
         reject("No user found");

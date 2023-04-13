@@ -98,7 +98,7 @@ export const store: ToolkitStore = configureStore({
 
 // actions
 export const { setCurrentUser } = authenticationSlice.actions;
-export const { setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setStoryboard, setContent } = entrySlice.actions;
+export const { setUserId, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setStoryboard, setContent } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard } = entryHelperSlice.actions;
 
 

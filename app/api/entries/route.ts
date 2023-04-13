@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
 
     const newEntry = new MDBEntry({
       _id: new mongoose.Types.ObjectId(),
+      user_id: body.user_id,
       title: body.title,
       style_reference: body.style_reference,
       content: body.content,
