@@ -21,17 +21,23 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { Spinner } from "@chakra-ui/react";
 import useAuth from "@/hooks/useAuth";
 import { setCurrentUser } from "@/redux-store/store";
+import clsx from "clsx";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const Home: React.FC<{}> = () => {
-
   const { data: session, status } = useSession();
 
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, logOut } = useAuth();
+  const {
+    continueWithGoogle,
+    showLoginModal,
+    setShowLoginModal,
+    isLoadingCurrentUser,
+    logOut,
+  } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const homeContents: any[] = [
@@ -59,87 +65,114 @@ const Home: React.FC<{}> = () => {
     setFocusedSectionId(sectionNumber);
   };
 
+  const [scrollY, setScrollY] = React.useState<number>(0);
+
+  useEffect(() => {
+    // log scroll value
+    const handleScroll = () => {
+      const scrollValue = window.scrollY;
+      setScrollY(scrollValue);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
       <div className="flex flex-col bg-black">
         {/* navigation bar */}
-        <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center fixed top-0 text-white py-2 px-10 max-lg:px-7 z-10 backdrop-blur-xl bg-[rgb(13,13,14,0.7)] w-full h-navigationBar">
-          {/* logo and name */}
-          <div
-            className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all"
-            onClick={() => {
-              // with smooth scroll
-              scrollToSection(1);
-            }}
-          >
-            <MerseLogo />
-            <span>Comic</span>
-          </div>
 
-          {/* section navigator */}
-          <div className="flex flex-row w-full justify-center max-md:hidden">
-            <div className="flex flex-row bg-dark-background-secondary border border-dark-divider rounded-full">
-              {/* capsult tab picker to scroll to three pages below with animation */}
+        {/* <div className="flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 bg-[rgb(13,13,14,0.7)] backdrop-blur-xl"> */}
+        <div
+          className={clsx(
+            "flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 transition",
+            { "bg-gradient-to-b from-[rgb(0,0,0,0.4)] to-transparent" : scrollY < 150 },
+            { "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl" : scrollY >= 150 }
+          )}
+        >
+          <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center text-white py-2 px-10 max-lg:px-7 w-full h-navigationBar max-w-5xl">
+            {/* logo and name */}
+            <div
+              className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all"
+              onClick={() => {
+                // with smooth scroll
+                scrollToSection(1);
+              }}
+            >
+              <MerseLogo />
+              <span>Comic</span>
+            </div>
+
+            {/* section navigator */}
+            <div className="flex flex-row w-full justify-center max-md:hidden">
               <div className="flex flex-row">
-                {homeContents.map((item: any, index: number) => {
-                  return (
-                    <button
-                      onClick={() => {
-                        scrollToSection(index + 1);
-                      }}
-                      key={index}
-                      className={`flex flex-row items-center gap-2 text-neutral-400 hover:text-white font-light px-4 hover:bg-neutral-800 rounded-full transition-all active:opacity-50`}
-                    >
-                      <span className="text-sm">{item?.sectionTitle}</span>
-                    </button>
-                  );
-                })}
+                {/* capsult tab picker to scroll to three pages below with animation */}
+                <div className="flex flex-row">
+                  {homeContents.map((item: any, index: number) => {
+                    return (
+                      <button
+                        onClick={() => {
+                          scrollToSection(index + 1);
+                        }}
+                        key={index}
+                        className={`flex flex-row items-center gap-2 text-neutral-400 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`}
+                      >
+                        <span className="text-sm">{item?.sectionTitle}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* login button */}
+            {/* login button */}
 
-          <div className="flex flex-row items-center justify-end gap-2 h-full">
-            {auth?.currentUser ? (
-              <button
-                onClick={() => {
-                  logOut();
-                }}
-                className="flex flex-row gap-3"
-              >
-                <div className="relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden">
-                  <svg
-                    className="absolute h-full w-full text-gray-300"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
+            <div className="flex flex-row items-center justify-end gap-2 h-full">
+              {auth?.currentUser ? (
+                <button
+                  onClick={() => {
+                    logOut();
+                  }}
+                  className="flex flex-row gap-3"
+                >
+                  <div className="relative w-8 h-8 rounded-full bg-dark-text-secondary overflow-hidden">
+                    <svg
+                      className="absolute h-full w-full text-gray-300"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
 
-                  <img
-                    src={auth?.currentUser?.profile_image_url}
-                    className="absolute w-6 h-6 rounded-full"
-                    alt="user profile image"
-                    onError={(e) => {
-                      e.currentTarget.src = "https://media.discordapp.net/attachments/1090027780525273153/1095187382095061085/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_fe116faf-39b2-46d2-8dbe-b46f9b0b4ef1.png?width=686&height=686";
-                    }}
-                  />
-                </div>
+                    <img
+                      src={auth?.currentUser?.profile_image_url}
+                      className="absolute w-8 h-8 rounded-full"
+                      alt="user profile image"
+                      onError={(e) => {
+                        e.currentTarget.src =
+                          "https://media.discordapp.net/attachments/1090027780525273153/1095187382095061085/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_fe116faf-39b2-46d2-8dbe-b46f9b0b4ef1.png?width=686&height=686";
+                      }}
+                    />
+                  </div>
 
-                <span>{auth?.currentUser?.name ?? "Unknown"}</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  // signIn();
-                  setShowLoginModal(true);
-                }}
-                className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
-              >
-                <span className="text-sm font-medium">Login</span>
-              </button>
-            )}
+                  {/* <span>{auth?.currentUser?.name ?? "Unknown"}</span> */}
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    // signIn();
+                    setShowLoginModal(true);
+                  }}
+                  className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
+                >
+                  <span className="text-sm font-medium">Login</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -163,6 +196,7 @@ const Home: React.FC<{}> = () => {
             </div>
 
             {/* overlay */}
+            <div className="absolute bg-opacity-40 w-full h-full bg-black" />
             <div className="absolute bg-opacity-75 w-full h-full bg-gradient-to-t from-black to-transparent" />
 
             {/* text in the first section */}
@@ -182,7 +216,9 @@ const Home: React.FC<{}> = () => {
 
               <Link href="/create/styles">
                 <button className="inline-flex items-center rounded-full bg-white px-4 h-10 text-sm font-medium text-white shadow-sm hover:scale-105 active:scale-100 transition-all">
-                  <span className="text-black font-medium">Create comic book</span>
+                  <span className="text-black font-medium">
+                    Create comic book
+                  </span>
                 </button>
               </Link>
             </div>
@@ -200,10 +236,7 @@ const Home: React.FC<{}> = () => {
             </div>
           </div> */}
 
-          <div
-            id="section-2"
-            className="flex flex-col w-full bg-black"
-          >
+          <div id="section-2" className="flex flex-col w-full bg-black">
             {/* tema header text */}
             <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh]">
               <span className="text-4xl max-md:text-2xl font-light text-white">
@@ -284,7 +317,7 @@ const Home: React.FC<{}> = () => {
           </div>
 
           {/* continue with google */}
-          { isLoadingCurrentUser ? (
+          {isLoadingCurrentUser ? (
             <Spinner speed={"0.8s"} className="w-4 h-4" />
           ) : (
             <button
