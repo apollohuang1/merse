@@ -257,7 +257,7 @@ const Home: React.FC<{}> = () => {
             </div>
 
             <div className="flex w-full h-full items-center justify-center pb-36 max-md:pb-14">
-              <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl px-6">
+              <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl">
                 {teamMembers.map((member, index) => {
                   return (
                     // member detail
