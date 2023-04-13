@@ -90,11 +90,11 @@ const Home: React.FC<{}> = () => {
         <div
           className={clsx(
             "flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 transition",
-            { "bg-gradient-to-b from-[rgb(0,0,0,0.4)] to-transparent" : scrollY < 150 },
-            { "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl" : scrollY >= 150 }
+            { "bg-gradient-to-b from-[rgb(0,0,0,0.5)] to-transparent" : scrollY < 100 },
+            { "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl" : scrollY >= 100 }
           )}
         >
-          <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center text-white py-2 px-10 max-lg:px-7 w-full h-navigationBar max-w-5xl">
+          <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center text-white py-2 max-lg:px-7 w-full h-navigationBar max-w-5xl">
             {/* logo and name */}
             <div
               className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all"
@@ -167,7 +167,7 @@ const Home: React.FC<{}> = () => {
                     // signIn();
                     setShowLoginModal(true);
                   }}
-                  className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-full"
+                  className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-6"
                 >
                   <span className="text-sm font-medium">Login</span>
                 </button>
@@ -196,11 +196,12 @@ const Home: React.FC<{}> = () => {
             </div>
 
             {/* overlay */}
-            <div className="absolute bg-opacity-40 w-full h-full bg-black" />
+            <div className="absolute bg-opacity-[0.03] w-full h-full bg-gradient-to-tl from-[#FF9F0A30] to-transparent" />
+            <div className="absolute bg-opacity-25 w-full h-full bg-black" />
             <div className="absolute bg-opacity-75 w-full h-full bg-gradient-to-t from-black to-transparent" />
 
             {/* text in the first section */}
-            <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-14">
+            <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-28">
               <div className="flex flex-col leading-6 items-center text-center">
                 <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-3xl max-sm:text-2xl leading-tight">
                   {/* Transform Journals into Comics, Effortlessly */}
@@ -215,7 +216,7 @@ const Home: React.FC<{}> = () => {
               </div>
 
               <Link href="/create/styles">
-                <button className="inline-flex items-center rounded-full bg-white px-4 h-10 text-sm font-medium text-white shadow-sm hover:scale-105 active:scale-100 transition-all">
+                <button className="inline-flex items-center rounded-full bg-white hover:bg-opacity-80 backdrop-blur-xl px-4 h-10 text-sm font-medium text-white shadow-sm hover:scale-105 active:scale-100 transition-all">
                   <span className="text-black font-medium">
                     Create comic book
                   </span>
@@ -251,20 +252,19 @@ const Home: React.FC<{}> = () => {
                     // member detail
                     <Link
                       key={index}
-                      className="group flex flex-col bg-dark-background-secondary rounded-lg overflow-hidden"
+                      className="group flex flex-col bg-dark-background-secondary rounded-none overflow-hidden"
                       href={member?.twitter_url}
                       target="_blank"
                     >
                       <img
                         src={member?.image_url}
-                        className="right-0 object-cover w-full h-full aspect-[3/4] rounded-t-lg group-hover:scale-105 transition-all duration-300 z-0 group-active:scale-100"
+                        className="right-0 object-cover w-full h-full aspect-[3/4] rounded-none group-hover:scale-105 transition-all duration-300 z-0 group-active:scale-100"
                       />
 
                       <div className="flex flex-row items-center justify-between p-4 z-10 bg-dark-background-secondary">
                         <span className="text-white text-lg max-md:text-base font-normal line-clamp-1">
                           {member?.name}
                         </span>
-
                         <FiArrowUpRight className="text-white text-xl font-semibold max-md:text-base ml-2 opacity-20 group-hover:opacity-100 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
                       </div>
                     </Link>
