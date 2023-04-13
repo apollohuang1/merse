@@ -24,7 +24,24 @@ const useCreateEntry = () => {
 
   const saveEntry = async () => {
     console.log("Saving entry...");
-    console.log(entry);
+
+    try {
+      const response = await axios({
+        method: "POST",
+        url: "/api/entries",
+        data: entry,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      console.log("Successfully saved entry")
+
+      console.log(response);
+
+    } catch (error: any) {
+      console.log(`Failed to save entry, message: ${error?.message}`);
+    }
   }
 
   const generateStoryboard = async (editor: any) => {

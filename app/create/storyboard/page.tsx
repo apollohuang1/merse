@@ -49,7 +49,7 @@ import {
 } from "openai";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setShowGeneratedStoryboard, setStoryboard, setTitle } from "@/redux-store/store";
+import { setContent, setShowGeneratedStoryboard, setStoryboard, setTitle } from "@/redux-store/store";
 import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 
@@ -112,11 +112,11 @@ const Storyboard = (props: Props) => {
   editor?.on("update", (updatedEditor: any) => {
     // const text = convertTiptapJSONToText(editor?.getJSON());
     const updatedContent = updatedEditor?.editor?.getJSON();
-    dispatch(setStoryboard(updatedContent));
+    dispatch(setContent(updatedContent));
   });
 
   editor?.on("create", (createdEditor: any) => {
-    createdEditor?.editor.commands.setContent(entry?.storyboard);
+    createdEditor?.editor.commands.setContent(entry?.content);
   });
 
   return (

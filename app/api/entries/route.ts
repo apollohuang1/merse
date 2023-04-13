@@ -19,19 +19,27 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
 
   try {
+
+    await dbConnect();
+    
+    const body = await request.json();
+
     const newEntry = new MDBEntry({
       _id: new mongoose.Types.ObjectId(),
-      title: "Content Title Test #1 ",
-      styleRefereence: {
-        artist: "Artist Name Test #1",
+      title: body.title,
+      style_reference: body.style_reference,
+      content: body.content,
+      characters: body.characters,
+      cover: {
+        image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaCdoBj4sMKAneZ35yzHHceTTZWXaQly7e46eVsJ1oGD29RKEz71w6KG7jyvXw47uDMnQ&usqp=CAU",
       },
-      content: "Content Test #1",
     });
 
     const savedEntry = await newEntry.save();
     
-    return NextResponse.json({ success: true, data: savedEntry });
+    return NextResponse.json(savedEntry, { status: 200 });
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json({ error: error?.message }, { status: 500 });
   }
 }

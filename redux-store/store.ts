@@ -43,6 +43,9 @@ const entrySlice = createSlice({
         return character
       })
     },
+    setContent: (state: Entry, action) => {
+      state.content = action.payload
+    },
     setStoryboard: (state: Entry, action) => {
       state.storyboard = action.payload
     },
@@ -92,7 +95,7 @@ export const store: ToolkitStore = configureStore({
 
 // actions
 export const { setCurrentUser } = authenticationSlice.actions;
-export const { setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setStoryboard } = entrySlice.actions;
+export const { setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setStoryboard, setContent } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard } = entryHelperSlice.actions;
 
 
