@@ -137,7 +137,7 @@ const useEntryCreate = () => {
 
       const response = await axios({
         method: "POST",
-        url: "/api/text2image",
+        url: "/api/text2img",
         data: {
           prompt: formattedPromptWithStyle,
         },
