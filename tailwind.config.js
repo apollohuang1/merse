@@ -13,8 +13,8 @@ module.exports = {
     extend: {
       // tailwind height
       height: {
-        'navigationBar': '40px',
-        'withoutNavigationBar': 'calc(100vh - 40px)',
+        'navigationBar': '48px',
+        'withoutNavigationBar': 'calc(100vh - 48px)',
       },
       gridTemplateRows: {
         '12': 'repeat(12, minmax(0, 1fr))',

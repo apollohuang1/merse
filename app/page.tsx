@@ -90,8 +90,11 @@ const Home: React.FC<{}> = () => {
         <div
           className={clsx(
             "flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 transition",
-            { "bg-gradient-to-b from-[rgb(0,0,0,0.5)] to-transparent" : scrollY < 100 },
-            { "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl" : scrollY >= 100 }
+            {
+              "bg-gradient-to-b from-[rgb(0,0,0,0.5)] to-transparent":
+                scrollY < 100,
+            },
+            { "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl": scrollY >= 100 }
           )}
         >
           <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center text-white py-2 max-lg:px-7 w-full h-navigationBar max-w-5xl">
@@ -119,7 +122,14 @@ const Home: React.FC<{}> = () => {
                           scrollToSection(index + 1);
                         }}
                         key={index}
-                        className={`flex flex-row items-center gap-2 text-neutral-300 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`}
+                        className={clsx(
+                          `flex flex-row items-center gap-2 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`,
+                          {
+                            "text-neutral-300":
+                              scrollY < 100,
+                          },
+                          { "text-neutral-400": scrollY >= 100 }
+                        )}
                       >
                         <span className="text-sm">{item?.sectionTitle}</span>
                       </button>
@@ -186,11 +196,12 @@ const Home: React.FC<{}> = () => {
             <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
               {midjourneyGeneratedImages.map((item, index) => {
                 return (
-                  <img
-                    key={index}
-                    src={item.image_url}
-                    className="object-cover w-full h-full z-auto"
-                  />
+                  <div key={index} className="overflow-hidden w-full h-full">
+                    <img
+                      src={item.image_url}
+                      className="object-cover w-full h-full z-auto scale-110"
+                    />
+                  </div>
                 );
               })}
             </div>
@@ -208,7 +219,7 @@ const Home: React.FC<{}> = () => {
                   Journal-to-Comic Made Simple
                 </h1>
 
-                <span className="flex text-neutral-300 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
+                <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
                   Effortlessly transform journal entries into personalized
                   comics using our intuitive app. Publish, share, and monetize
                   your creations within a supportive community.
@@ -258,7 +269,7 @@ const Home: React.FC<{}> = () => {
                     >
                       <img
                         src={member?.image_url}
-                        className="right-0 object-cover w-full h-full aspect-[3/4] rounded-none group-hover:scale-105 transition-all duration-300 z-0 group-active:scale-100"
+                        className="right-0 object-cover w-full h-full aspect-[3/4] rounded-none group-hover:scale-[1.06] transition-all duration-300 z-0 group-active:scale-100 opacity-70 group-hover:opacity-100"
                       />
 
                       <div className="flex flex-row items-center justify-between p-4 z-10 bg-dark-background-secondary">
@@ -318,13 +329,15 @@ const Home: React.FC<{}> = () => {
 
           {/* continue with google */}
           {isLoadingCurrentUser ? (
-            <Spinner speed={"0.8s"} className="w-4 h-4" />
+            <div className="h-10">
+              <Spinner speed={"0.8s"} className="w-4 h-4" />
+            </div>
           ) : (
             <button
               onClick={() => {
                 continueWithGoogle();
               }}
-              className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+              className="flex flex-row items-center justify-center gap-2 px-4 h-10 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
             >
               <FcGoogle className="text-xl" />
               <span className="text-sm font-medium">Continue with Google</span>
