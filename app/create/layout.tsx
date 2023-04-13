@@ -39,7 +39,9 @@ export default function RootLayout({
       })
       .catch((err) => {
         console.log("reloadCurrentUser", err);
-        // redirect to authentication page
+        // redirect to home/authentication page
+        // alert("Please log in to continue");
+        // window.location.href = "/";
       });
   }, []);
 

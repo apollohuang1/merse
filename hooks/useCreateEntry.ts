@@ -15,6 +15,7 @@ const useCreateEntry = () => {
 
   // redux states
   const entry = useAppSelector((state) => state.entry);
+  const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const stopGeneratingStoryboard = () => {
@@ -46,6 +47,12 @@ const useCreateEntry = () => {
 
   const generateStoryboard = async (editor: any) => {
     try {
+      // guard log in to prevent anonymous users from burning our API credits
+      if (auth?.currentUser === null) {
+        alert("🚨 Please log in to generate a storyboard.\n\nFor now, you can browse and play around without logging in, but you won't be able to save your work or use AI to generate images :))")
+        throw new Error("User not logged in");
+      }
+
       if (editor) {
         setIsGeneratingStoryboard(true);
         const editorJSON = editor.getJSON();

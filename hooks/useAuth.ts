@@ -19,7 +19,14 @@ const useAuth = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    reloadCurrentUser();
+    reloadCurrentUser()
+      .then((user) => {
+        console.log("User reloaded");
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log("No authenticated user found");
+      })
   }, []);
 
   // reload current user promise
