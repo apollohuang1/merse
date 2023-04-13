@@ -209,7 +209,7 @@ const Home: React.FC<{}> = () => {
             {/* overlay */}
             <div className="absolute bg-opacity-[0.03] w-full h-full bg-gradient-to-tl from-[#FF9F0A30] to-transparent" />
             <div className="absolute bg-opacity-25 w-full h-full bg-black" />
-            <div className="absolute bg-opacity-75 w-full h-full bg-gradient-to-t from-black to-transparent" />
+            <div className="absolute bg-opacity-75 w-full h-full bg-gradient-to-t from-[rgb(13,13,13)] to-transparent" />
 
             {/* text in the first section */}
             <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-28">
@@ -248,7 +248,7 @@ const Home: React.FC<{}> = () => {
             </div>
           </div> */}
 
-          <div id="section-2" className="flex flex-col w-full bg-black">
+          <div id="section-2" className="flex flex-col w-full bg-[rgb(13,13,13)]">
             {/* tema header text */}
             <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh]">
               <span className="text-4xl max-md:text-2xl font-light text-white">
@@ -257,7 +257,7 @@ const Home: React.FC<{}> = () => {
             </div>
 
             <div className="flex w-full h-full items-center justify-center pb-36 max-md:pb-14">
-              <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-md:gap-3 max-w-5xl px-6 max-md:px-3">
+              <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl px-6">
                 {teamMembers.map((member, index) => {
                   return (
                     // member detail
@@ -269,7 +269,7 @@ const Home: React.FC<{}> = () => {
                     >
                       <img
                         src={member?.image_url}
-                        className="right-0 object-cover w-full h-full aspect-[3/4] rounded-none group-hover:scale-[1.06] transition-all duration-300 z-0 group-active:scale-100 opacity-70 group-hover:opacity-100"
+                        className="right-0 object-cover w-full h-full group-hover:scale-[1.06] transition-all duration-300 z-0 group-active:scale-100 opacity-70 group-hover:opacity-100"
                       />
 
                       <div className="flex flex-row items-center justify-between p-4 z-10 bg-dark-background-secondary">
@@ -329,8 +329,9 @@ const Home: React.FC<{}> = () => {
 
           {/* continue with google */}
           {isLoadingCurrentUser ? (
-            <div className="h-10">
+            <div className="flex flex-row h-10 gap-3 justify-center items-center">
               <Spinner speed={"0.8s"} className="w-4 h-4" />
+              <span className="text-sm">Logging in</span>
             </div>
           ) : (
             <button
