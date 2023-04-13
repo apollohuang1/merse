@@ -119,7 +119,7 @@ const Home: React.FC<{}> = () => {
                           scrollToSection(index + 1);
                         }}
                         key={index}
-                        className={`flex flex-row items-center gap-2 text-neutral-400 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`}
+                        className={`flex flex-row items-center gap-2 text-neutral-300 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`}
                       >
                         <span className="text-sm">{item?.sectionTitle}</span>
                       </button>
