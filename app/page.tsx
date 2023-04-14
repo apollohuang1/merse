@@ -214,7 +214,8 @@ const Home: React.FC<{}> = () => {
             {/* text in the first section */}
             <div className="absolute flex flex-col items-center w-full h-full justify-end gap-6 px-6 py-28">
               <div className="flex flex-col leading-6 items-center text-center">
-                <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-3xl max-sm:text-2xl leading-tight">
+
+                <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
                   {/* Transform Journals into Comics, Effortlessly */}
                   Journaling-to-Comic Made Simple
                 </h1>
@@ -228,7 +229,7 @@ const Home: React.FC<{}> = () => {
 
               <Link href="/create/styles">
                 <button className="inline-flex items-center rounded-full bg-white hover:bg-opacity-80 backdrop-blur-xl px-4 h-10 text-sm font-medium text-white shadow-sm hover:scale-105 active:scale-100 transition-all">
-                  <span className="text-black font-medium">
+                  <span className="text-light-text-primary font-medium">
                     Create comic book
                   </span>
                 </button>
@@ -267,10 +268,21 @@ const Home: React.FC<{}> = () => {
                       href={member?.twitter_url}
                       target="_blank"
                     >
-                      <img
-                        src={member?.image_url}
-                        className="right-0 object-cover w-full h-full group-hover:scale-[1.06] transition-all duration-300 z-0 group-active:scale-100 opacity-70 group-hover:opacity-100"
-                      />
+
+                      {/* <div className="relative h-full"> */}
+                        <img
+                          src={member?.image_url}
+                          className="object-cover w-full h-full group-hover:scale-[1.06] transition-all duration-300 z-0 group-active:scale-100 opacity-70 group-hover:opacity-100"
+                        />
+
+                        {/* <div className="absolute bottom-0 left-0 p-4">
+                          <img
+                            src={member?.real_image_url}
+                            className="object-cover w-16 h-16 rounded-full"
+                          />
+                        </div> */}
+
+                      {/* </div> */}
 
                       <div className="flex flex-row items-center justify-between p-4 z-10 bg-dark-background-secondary">
                         <span className="text-white text-lg max-md:text-base font-normal line-clamp-1">
