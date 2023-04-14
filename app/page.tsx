@@ -457,9 +457,9 @@ const Home: React.FC<{}> = () => {
 
           {/* continue with google */}
           {isLoadingCurrentUser ? (
-            <div className="flex flex-row h-10 gap-3 justify-center items-center">
-              <Spinner speed={"0.8s"} className="w-4 h-4" />
-              <span className="text-sm">Logging in</span>
+            <div className="flex flex-row h-10 gap-3 justify-center items-center px-4 border border-light-divider dark:border-dark-divider rounded-full">
+              <Spinner speed={"0.8s"} className="w-4 h-4 text-accent" />
+              <span className="text-sm">Logging in...</span>
             </div>
           ) : (
             <button
