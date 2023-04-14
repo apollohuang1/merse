@@ -417,7 +417,7 @@ export default useCreateEntry;
 //         "headers": {
 //             "Accept": "application/json",
 //             "Content-Type": "application/json",
-//             "Authorization": "Bearer sk-p91J9UFiQLipCceB9nTYefHFQ2LLshoVTx1rsLF23mSTXb7R"
+//             "Authorization": "Bearer {STABILITY_API_KEY}"
 //         },
 //         "method": "post",
 //         "url": "https://api.stability.ai/v1/generation/stable-diffusion-v1-5/text-to-image",
