@@ -253,7 +253,7 @@ const Home: React.FC<{}> = () => {
           <div
             id="section-2"
             // className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-[rgb(13,13,13)] items-center justify-between overflow-hidden pt-[15vh] px-6"
-            className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-white items-center justify-between overflow-hidden pt-[15vh] px-6"
+            className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-[#F5F5F7] items-center justify-between overflow-hidden pt-[15vh] px-6"
           >
             <div>
               <div className="flex flex-col text-center items-center pb-[15vh]">
@@ -286,21 +286,18 @@ const Home: React.FC<{}> = () => {
 
           <div
             id="section-3"
-            className="flex flex-col relative w-full bg-[rgb(13,13,13)] py-[15vh] items-center justify-start gap-10"
+            className="flex flex-col relative w-full bg-[rgb(13,13,13)] py-[15vh] items-center justify-start gap-16"
           >
-            <img
-              src="https://media.discordapp.net/attachments/1085234205996367923/1096388861304766545/markrachapoom_beautiful_forest_with_handful_of_cure_characters__09866b40-f6cd-41aa-9ac1-ae798fd49aeb.png?width=1189&height=686"
-              className="absolute w-full h-full opacity-[0.02] top-0 object-cover"
-            />
-
-            <div className="absolute top-0 w-full h-full bg-gradient-to-b from-[rgb(13,13,13)] to-transparent" />
 
             {/* team header text */}
-            {/* <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh] bg-red-500"> */}
-            <span className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tighte z-10">
-              Our Team
-            </span>
-            {/* </div> */}
+            <div className="flex flex-col text-center items-center">
+                <h1 className="text-5xl text-dark-text-primary font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
+                  Our Team
+                </h1>
+                <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm::text-base max-w-3xl max-md:max-w-xl">
+                  Meet the incredible people behind the scenes :)
+                </span>
+              </div>
 
             <div className="flex w-full h-full items-center justify-center px-6">
               <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl">
@@ -313,20 +310,10 @@ const Home: React.FC<{}> = () => {
                       href={member?.twitter_url}
                       target="_blank"
                     >
-                      {/* <div className="relative h-full"> */}
                       <img
                         src={member?.image_url}
                         className="object-cover w-full h-full group-hover:scale-[1.06] transition-all duration-300 z-0 group-active:scale-100 opacity-70 group-hover:opacity-100"
                       />
-
-                      {/* <div className="absolute bottom-0 left-0 p-4">
-                          <img
-                            src={member?.real_image_url}
-                            className="object-cover w-16 h-16 rounded-full"
-                          />
-                        </div> */}
-
-                      {/* </div> */}
 
                       <div className="flex flex-row items-center justify-between p-4 z-10 bg-dark-background-secondary">
                         <span className="text-white text-lg max-md:text-base font-normal line-clamp-1">
