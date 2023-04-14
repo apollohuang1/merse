@@ -216,7 +216,7 @@ const Home: React.FC<{}> = () => {
               <div className="flex flex-col leading-6 items-center text-center">
                 <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-3xl max-sm:text-2xl leading-tight">
                   {/* Transform Journals into Comics, Effortlessly */}
-                  Journal-to-Comic Made Simple
+                  Journaling-to-Comic Made Simple
                 </h1>
 
                 <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
