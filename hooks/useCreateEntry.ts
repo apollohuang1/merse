@@ -169,26 +169,35 @@ const useCreateEntry = () => {
         url: "/api/text2img",
         data: {
           prompt: formattedPromptWithStyle,
-          fetch_result: "https://stablediffusionapi.com/api/v3/fetch/10684517",
-          id: 10684517,
-          output: [],
-          meta: {
-            H: 512,
-            W: 512,
-            enable_attention_slicing: "true",
-            file_prefix: "7da15755-b94b-4347-a195-ac8725a7ee97",
-            guidance_scale: 7,
-            model: "runwayml/stable-diffusion-v1-5",
-            n_samples: 1,
-            negative_prompt: "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs))",
-            safetychecker: null,
-            seed: null,
-            steps: 20,
-            vae: "stabilityai/sd-vae-ft-mse"
-        }
-      },
+        },
         headers: { "Content-Type": "application/json" },
       });
+
+      // const response = await axios({
+      //   method: "POST",
+      //   url: "/api/text2img",
+      //   data: {
+      //     prompt: formattedPromptWithStyle,
+      //     fetch_result: "https://stablediffusionapi.com/api/v3/fetch/10684517",
+      //     id: 10684517,
+      //     output: [],
+      //     meta: {
+      //       H: 512,
+      //       W: 512,
+      //       enable_attention_slicing: "true",
+      //       file_prefix: "7da15755-b94b-4347-a195-ac8725a7ee97",
+      //       guidance_scale: 7,
+      //       model: "runwayml/stable-diffusion-v1-5",
+      //       n_samples: 1,
+      //       negative_prompt: "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs))",
+      //       safetychecker: null,
+      //       seed: null,
+      //       steps: 20,
+      //       vae: "stabilityai/sd-vae-ft-mse"
+      //   }
+      // },
+      //   headers: { "Content-Type": "application/json" },
+      // });
 
       console.log("Stable Diffusion API Response: ");
       console.log(response.data) //4/13: response

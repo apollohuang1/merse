@@ -28,7 +28,7 @@ const CreateHeader: React.FC<{
           {currentRoute?.backConfig && (
             <Link
               href={currentRoute?.backConfig?.pathname ?? "/"}
-              className="group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary w-32 h-10 transition-all hover:scale-105 active:scale-100"
+              className="group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary w-32 h-10 transition-all hover:scale-105 active:scale-100 bg-light-background-primary dark:bg-dark-background-primary"
             >
               <FiArrowLeft className="text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[-2px] transition-all hover:duration-300" />
               <span>{currentRoute?.backConfig?.title ?? "Back"}</span>
@@ -38,7 +38,7 @@ const CreateHeader: React.FC<{
           {currentRoute?.nextConfig ? (
             <Link
               href={currentRoute?.nextConfig?.pathname ?? "/"}
-              className="group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all hover:scale-105 active:scale-100 hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
+              className="group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all hover:scale-105 active:scale-100 hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary bg-light-background-primary dark:bg-dark-background-primary"
             >
               <span>{currentRoute?.nextConfig?.title ?? "Finish"}</span>
               {currentRoute?.nextConfig && (

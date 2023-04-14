@@ -45,7 +45,8 @@ module.exports = {
             tertiary: "#DDDDDD",
           },
           text: {
-            primary: '#000000', // black
+            // primary: '#000000', // black
+            primary: "#0E100E", // green satoshi fontshare
             secondary: '#8A8A8E',
             tertiary: '#C4C4C6',
           },
