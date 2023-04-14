@@ -271,6 +271,7 @@ const Home: React.FC<{}> = () => {
               muted
               playsInline
               src="./landing-demo.mp4"
+              poster="./screenshot-storyboard.png"
               className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_72px_-15px_#10b98133] max-lg:rounded-t-lg max-md:rounded-md"
             />
 
