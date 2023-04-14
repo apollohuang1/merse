@@ -6,7 +6,13 @@ import styles from "./page.module.css";
 import Link from "next/link";
 import MerseLogo from "@/components/svgs/merse-logo";
 import React, { useEffect, useRef } from "react";
-import { FiArrowUpRight, FiBookOpen } from "react-icons/fi";
+import {
+  FiArrowUpRight,
+  FiBookOpen,
+  FiLogOut,
+  FiSettings,
+  FiUser,
+} from "react-icons/fi";
 import Modal from "@/components/modal";
 
 import { FcGoogle } from "react-icons/fc";
@@ -18,7 +24,13 @@ import {
 } from "@/util/landing-constant";
 
 import { useSession, signIn, signOut } from "next-auth/react";
-import { Spinner } from "@chakra-ui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Spinner,
+} from "@chakra-ui/react";
 import useAuth from "@/hooks/useAuth";
 import { setCurrentUser } from "@/redux-store/store";
 import clsx from "clsx";
@@ -53,6 +65,30 @@ const Home: React.FC<{}> = () => {
     // {
     //   sectionTitle: "Contact",
     // }
+  ];
+
+  const menuItems = [
+    {
+      icon: <FiUser/>,
+      label: "Profile",
+      onClick: () => {
+        console.log("Profile");
+      },
+    },
+    // {
+    //   icon: <FiSettings />,
+    //   label: "Settings",
+    //   onClick: () => {
+    //     console.log("Settings");
+    //   },
+    // },
+    {
+      icon: <FiLogOut />,
+      label: "Logout",
+      onClick: () => {
+        logOut();
+      },
+    },
   ];
 
   const [focusedSectionId, setFocusedSectionId] = React.useState<number>(1);
@@ -145,34 +181,84 @@ const Home: React.FC<{}> = () => {
 
             <div className="flex flex-row items-center justify-end gap-2 h-full">
               {auth?.currentUser ? (
-                <button
-                  onClick={() => {
-                    logOut();
-                  }}
-                  className="flex flex-row gap-3"
-                >
-                  <div className="relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden">
-                    <svg
-                      className="absolute h-full w-full text-gray-300"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-
-                    <img
-                      src={auth?.currentUser?.profile_image_url}
-                      className="absolute w-6 h-6 rounded-full"
-                      alt="user profile image"
-                      onError={(e) => {
-                        e.currentTarget.src =
-                          "https://media.discordapp.net/attachments/1090027780525273153/1095187382095061085/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_fe116faf-39b2-46d2-8dbe-b46f9b0b4ef1.png?width=686&height=686";
+                <Menu>
+                  <MenuButton>
+                    <button
+                      onClick={() => {
+                        // logOut();
                       }}
-                    />
-                  </div>
+                      className="flex flex-row gap-3"
+                    >
+                      <div className="relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden">
+                        <svg
+                          className="absolute h-full w-full text-gray-300"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
 
-                  {/* <span>{auth?.currentUser?.name ?? "Unknown"}</span> */}
-                </button>
+                        <img
+                          src={auth?.currentUser?.profile_image_url}
+                          className="absolute w-6 h-6 rounded-full"
+                          alt="user profile image"
+                          onError={(e) => {
+                            e.currentTarget.src =
+                              "https://media.discordapp.net/attachments/1090027780525273153/1095187382095061085/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_fe116faf-39b2-46d2-8dbe-b46f9b0b4ef1.png?width=686&height=686";
+                          }}
+                        />
+                      </div>
+
+                      {/* <span>{auth?.currentUser?.name ?? "Unknown"}</span> */}
+                    </button>
+                  </MenuButton>
+
+                  <MenuList className="bg-light-background-primary dark:bg-dark-background-secondary w-48 rounded-lg drop-shadow-2xl">
+                    {menuItems.map((item, index) => {
+                      return (
+                        <MenuItem
+                          onClick={item.onClick}
+                          key={index}
+                          className={clsx(
+                            " px-3 h-12 transition-all duration-[275ms]",
+                            {
+                              "focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary":
+                                index !== menuItems.length - 1,
+                            },
+                            { "rounded-t-lg": index === 0 },
+                            {
+                              "rounded-b-lg focus:bg-red-500 focus:bg-opacity-30":
+                                index === menuItems.length - 1,
+                            }
+                          )}
+                        >
+                          <div
+                            className={clsx(
+                              "flex flex-row gap-3 items-center",
+                              {
+                                "text-light-red dark:text-dark-red":
+                                  item.label === "Logout",
+                              },
+                              {
+                                "text-light-text-primary dark:text-dark-text-primary": item.label !== "Logout",
+                              }
+                            )}
+                          >
+                            {item.icon}
+                            <span
+                              className={clsx("text-base font-normal", {
+                                "text-light-text-primary dark:text-dark-text-primary":
+                                  item.label !== "Logout",
+                              })}
+                            >
+                              {item.label}
+                            </span>
+                          </div>
+                        </MenuItem>
+                      );
+                    })}
+                  </MenuList>
+                </Menu>
               ) : (
                 <button
                   onClick={() => {
@@ -279,7 +365,7 @@ const Home: React.FC<{}> = () => {
                 playsInline
                 src="./landing-demo.mp4"
                 poster="./screenshot-storyboard.png"
-                className="w-full object-cover max-w-6xl rounded-t-2xl drop-shadow-2xl"
+                className="w-full object-cover max-w-6xl rounded-t-2xl shadow-[12px_32px_60px_rgb(0,0,0,0.5)]"
               />
             </div>
           </div>
@@ -288,16 +374,15 @@ const Home: React.FC<{}> = () => {
             id="section-3"
             className="flex flex-col relative w-full bg-[rgb(13,13,13)] py-[15vh] h-screen max-lg:h-auto items-center justify-start gap-16"
           >
-
             {/* team header text */}
             <div className="flex flex-col text-center items-center">
-                <h1 className="text-5xl text-dark-text-primary font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
-                  Our Team
-                </h1>
-                <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm::text-base max-w-3xl max-md:max-w-xl">
-                  Meet the incredible people behind the scenes :)
-                </span>
-              </div>
+              <h1 className="text-5xl text-dark-text-primary font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
+                Our Team
+              </h1>
+              <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm::text-base max-w-3xl max-md:max-w-xl">
+                Meet the incredible people behind the scenes :)
+              </span>
+            </div>
 
             <div className="flex w-full h-full items-center justify-center px-6">
               <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl">
@@ -306,7 +391,7 @@ const Home: React.FC<{}> = () => {
                     // member detail
                     <Link
                       key={index}
-                      className="group flex flex-col bg-dark-background-secondary rounded-xl overflow-hidden"
+                      className="group flex flex-col bg-dark-background-secondary rounded-none overflow-hidden"
                       href={member?.twitter_url}
                       target="_blank"
                     >
