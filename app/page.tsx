@@ -279,7 +279,7 @@ const Home: React.FC<{}> = () => {
                 playsInline
                 src="./landing-demo.mp4"
                 poster="./screenshot-storyboard.png"
-                className="w-full object-cover max-w-5xl rounded-t-2xl drop-shadow-2xl"
+                className="w-full object-cover max-w-6xl rounded-t-2xl drop-shadow-2xl"
               />
             </div>
           </div>
@@ -306,7 +306,7 @@ const Home: React.FC<{}> = () => {
                     // member detail
                     <Link
                       key={index}
-                      className="group flex flex-col bg-dark-background-secondary rounded-none overflow-hidden"
+                      className="group flex flex-col bg-dark-background-secondary rounded-xl overflow-hidden"
                       href={member?.twitter_url}
                       target="_blank"
                     >

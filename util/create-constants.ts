@@ -6,7 +6,7 @@ export type CreateRoute = {
   backConfig?: CreateRoute | null;
 };
 
-export const allCreateRoutes: CreateRoute[] = [
+export const allCreateRoutes: any[] = [
   // character, storyboard, cover, styles, review.
   {
     pathname: "/create/styles",
