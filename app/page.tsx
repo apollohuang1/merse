@@ -256,10 +256,12 @@ const Home: React.FC<{}> = () => {
           >
             <div className="flex flex-col text-center items-center pb-[15vh]">
               <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
-                Storyboard
+                {/* Storyboard */}
+                Jot. Generate. Publish.
               </h1>
               <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
-                Jot. Generate. Publish.
+                {/* Jot. Generate. Publish. */}
+                create an daily entry
               </span>
             </div>
 
@@ -269,7 +271,7 @@ const Home: React.FC<{}> = () => {
               muted
               playsInline
               src="./landing-demo.mp4"
-              className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_60px_-15px_#10b98133] max-lg:rounded-t-lg max-md:rounded-md"
+              className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_72px_-15px_#10b98133] max-lg:rounded-t-lg max-md:rounded-md"
             />
 
             {/* <img
