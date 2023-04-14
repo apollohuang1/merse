@@ -158,14 +158,14 @@ const Storyboard = (props: Props) => {
                   {entryHelper.showGeneratedStoryboard ? "Hide" : "Show"}
                 </button>
 
-                <button
+                {/* <button
                   className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                   onClick={() => {
                     createImageFromText("input");
                   }}
                 >
                   Test SDXL
-                </button>
+                </button> */}
 
                 {isGeneratingStoryboard ? (
                   <div className="flex flex-row gap-2 items-center h-8">

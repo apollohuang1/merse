@@ -172,17 +172,7 @@ const useCreateEntry = () => {
       // final input prompt
       const formattedPromptWithStyle = `${input} in ${entry.style_reference.artist} comic illustration artstyle`;
 
-      // const response = await axios({
-      //   method: "POST",
-      //   url: "https://stablediffusionapi.com/api/v3/text2img", //api/text2img 4/11
-      //   data: JSON.stringify({
-      //     key: stableDiffusionApiKey, //new 4/11
-      //     prompt: formattedPromptWithStyle,
-      //     response_format: "url-json"
-      //   }),
-      //   headers: { "Content-Type": "application/json" },
-      // });
-
+      // Response of regular Stable Diffusion API
       // const response = await axios({
       //   method: "POST",
       //   url: "/api/text2img",
@@ -192,7 +182,8 @@ const useCreateEntry = () => {
       //   headers: { "Content-Type": "application/json" },
       // });
 
-      const sdxlResponse: any = await axios({
+      // Response of NEW Stable Diffusion XL
+      const sdxlResponse = await axios({
         method: "POST",
         url: `https://api.stability.ai/v1/generation/${engineId}/text-to-image`,
         data: {
@@ -217,11 +208,7 @@ const useCreateEntry = () => {
       });
 
       console.log("SDXL RESPONSE:");
-      console.log(sdxlResponse);
-
-      // if (!sdxlResponse.ok) {
-      //   throw new Error(`Non-200 response: ${await sdxlResponse.text()}`);
-      // }
+      console.log(sdxlResponse.data);
 
       interface GenerationResponse {
         artifacts: Array<{
@@ -231,6 +218,8 @@ const useCreateEntry = () => {
         }>;
       }
 
+      const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
+
       // const responseJSON = (await sdxlResponse.json()) as GenerationResponse;
 
       // sdxlResponse.artifacts.forEach((image: any, index: number) => {
@@ -238,32 +227,6 @@ const useCreateEntry = () => {
       //     `./out/v1_txt2img_${index}.png`,
       //     Buffer.from(image.base64, "base64")
       //   );
-      // });
-
-      // const response = await axios({
-      //   method: "POST",
-      //   url: "/api/text2img",
-      //   data: {
-      //     prompt: formattedPromptWithStyle,
-      //     fetch_result: "https://stablediffusionapi.com/api/v3/fetch/10684517",
-      //     id: 10684517,
-      //     output: [],
-      //     meta: {
-      //       H: 512,
-      //       W: 512,
-      //       enable_attention_slicing: "true",
-      //       file_prefix: "7da15755-b94b-4347-a195-ac8725a7ee97",
-      //       guidance_scale: 7,
-      //       model: "runwayml/stable-diffusion-v1-5",
-      //       n_samples: 1,
-      //       negative_prompt: "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs))",
-      //       safetychecker: null,
-      //       seed: null,
-      //       steps: 20,
-      //       vae: "stabilityai/sd-vae-ft-mse"
-      //   }
-      // },
-      //   headers: { "Content-Type": "application/json" },
       // });
 
       // console.log("Stable Diffusion API Response: ");

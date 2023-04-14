@@ -17,20 +17,20 @@ const Cover = (props: Props) => {
 
       <div className="flex flex-col w-full h-full justify-center items-center">
   
-        <div className="flex flex-col w-full h-full justify-between max-w-3xl">
+        <div className="flex flex-col w-full h-full justify-between items-center max-w-3xl py-6">
 
-          <div className='flex flex-col overflow-auto w-full h-full items-center justify-center'>
+          {/* <div className='flex flex-col w-full items-center justify-center bg-indigo-500'> */}
             {/* book cover */}
               <img 
                 src='https://www.comicsauthority.store/wp-content/uploads/2023/01/cover-smaller-e1672592557757.png'
-                className='object-cover rounded-md aspect-[2/3] h-5/6'
+                className='object-cover rounded-md aspect-[2/3] w-[400px]'
                 alt='comic book cover'
               />
-          </div>
+          {/* </div> */}
 
 
           {/* chat bar at the bottom */}
-          <div className="block px-7">
+          <div className="block px-7 w-full">
             <div className="flex flex-row h-12 bg-light-background-secondary dark:bg-dark-background-secondary px-4 rounded-md flex-shrink-0 border border-light-divider dark:border-dark-divider">
               <div className="flex flex-row items-center justify-center h-full w-full">
 
