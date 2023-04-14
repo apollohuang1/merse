@@ -94,7 +94,7 @@ const Home: React.FC<{}> = () => {
           className={clsx(
             "flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 transition px-6",
             {
-              "bg-gradient-to-b from-[rgb(0,0,0,0.5)] to-transparent":
+              "bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent":
                 scrollY < 100,
             },
             { "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl": scrollY >= 100 }
@@ -210,7 +210,7 @@ const Home: React.FC<{}> = () => {
 
             {/* overlay */}
             <div className="absolute bg-opacity-[0.03] w-full h-full bg-gradient-to-tl from-[#FF9F0A30] to-transparent" />
-            <div className="absolute bg-opacity-25 w-full h-full bg-black" />
+            <div className="absolute bg-opacity-30 w-full h-full bg-black" />
             <div className="absolute bg-opacity-75 w-full h-full bg-gradient-to-t from-[rgb(13,13,13)] to-transparent" />
 
             {/* text in the first section */}
