@@ -52,19 +52,19 @@ export const midjourneyGeneratedImages = [
 export const teamMembers = [
   {
     name: "Emily Park",
-    // image_url: "https://media.discordapp.net/attachments/1090027780525273153/1094610033930678272/telegram-peer-photo-size-1-5138860470982257726-1-0-0.jpg?width=1280&height=1280",
+    real_image_url: "https://media.discordapp.net/attachments/1090027780525273153/1094610033930678272/telegram-peer-photo-size-1-5138860470982257726-1-0-0.jpg?width=1280&height=1280",
     image_url: "https://media.discordapp.net/attachments/1090027780525273153/1096161045543923782/markrachapoom_comic_art_style_book_illustration_in_studio_ghibl_cf902502-c123-49b8-9d2b-54466175567e.png?width=1402&height=1402",
     twitter_url: "https://twitter.com/mlaparkk",
   },
   {
     name: "Jyoti Rani",
-    // image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095208674005368882/Screenshot_2023-04-11_at_11.48.06_AM.png?width=1534&height=1400",
+    real_image_url: "https://media.discordapp.net/attachments/1090027780525273153/1095208674005368882/Screenshot_2023-04-11_at_11.48.06_AM.png?width=1534&height=1400",
     image_url: "https://media.discordapp.net/attachments/1090027780525273153/1096161331733864549/Screenshot_2023-04-14_at_2.53.37_AM.png?width=1178&height=1402",
     twitter_url: "https://twitter.com/jyotiinar",
   },
   {
     name: "Mark Rachapoom",
-    // image_url: "https://media.discordapp.net/attachments/1090027780525273153/1094610034140401674/At1b9Wrr_400x400.png?width=800&height=800",
+    real_image_url: "https://media.discordapp.net/attachments/1090027780525273153/1094610034140401674/At1b9Wrr_400x400.png?width=800&height=800",
     image_url: "https://media.discordapp.net/attachments/1090027780525273153/1096161174959165440/markrachapoom_comic_art_style_book_illustration_in_studio_ghibl_b63f5472-312d-496f-b725-3fa23806cfd7.png?width=1402&height=1402",
     twitter_url: "https://twitter.com/markrachapoom",
   },

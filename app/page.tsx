@@ -89,7 +89,7 @@ const Home: React.FC<{}> = () => {
         {/* <div className="flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 bg-[rgb(13,13,14,0.7)] backdrop-blur-xl"> */}
         <div
           className={clsx(
-            "flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 transition",
+            "flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 transition px-6",
             {
               "bg-gradient-to-b from-[rgb(0,0,0,0.5)] to-transparent":
                 scrollY < 100,
@@ -97,7 +97,7 @@ const Home: React.FC<{}> = () => {
             { "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl": scrollY >= 100 }
           )}
         >
-          <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center text-white py-2 max-lg:px-7 w-full h-navigationBar max-w-5xl">
+          <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center text-white py-2 w-full h-navigationBar max-w-5xl">
             {/* logo and name */}
             <div
               className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all"
@@ -149,7 +149,7 @@ const Home: React.FC<{}> = () => {
                   }}
                   className="flex flex-row gap-3"
                 >
-                  <div className="relative w-8 h-8 rounded-full bg-dark-text-secondary overflow-hidden">
+                  <div className="relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden">
                     <svg
                       className="absolute h-full w-full text-gray-300"
                       fill="currentColor"
@@ -160,7 +160,7 @@ const Home: React.FC<{}> = () => {
 
                     <img
                       src={auth?.currentUser?.profile_image_url}
-                      className="absolute w-8 h-8 rounded-full"
+                      className="absolute w-6 h-6 rounded-full"
                       alt="user profile image"
                       onError={(e) => {
                         e.currentTarget.src =
@@ -212,7 +212,7 @@ const Home: React.FC<{}> = () => {
             <div className="absolute bg-opacity-75 w-full h-full bg-gradient-to-t from-[rgb(13,13,13)] to-transparent" />
 
             {/* text in the first section */}
-            <div className="absolute flex flex-col items-center w-full h-full justify-end gap-5 px-10 py-28">
+            <div className="absolute flex flex-col items-center w-full h-full justify-end gap-6 px-6 py-28">
               <div className="flex flex-col leading-6 items-center text-center">
                 <h1 className="text-5xl text-white font-normal line-clamp-3 max-lg:text-3xl max-sm:text-2xl leading-tight">
                   {/* Transform Journals into Comics, Effortlessly */}
@@ -256,7 +256,7 @@ const Home: React.FC<{}> = () => {
               </span>
             </div>
 
-            <div className="flex w-full h-full items-center justify-center pb-36 max-md:pb-14">
+            <div className="flex w-full h-full items-center justify-center pb-36 max-md:pb-14 px-6">
               <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl">
                 {teamMembers.map((member, index) => {
                   return (
