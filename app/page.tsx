@@ -249,27 +249,34 @@ const Home: React.FC<{}> = () => {
 
           <div
             id="section-2"
-            className="relative flex flex-col w-full bg-[rgb(13,13,13)] items-center justify-end overflow-hidden pt-[15vh] px-6"
+            className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-[rgb(13,13,13)] items-center justify-between overflow-hidden pt-[15vh] px-6"
           >
+
+            <div className="flex flex-col text-center items-center pb-[15vh]">
+              <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">Storyboard</h1>
+              <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
+                Jot. Generate. Publish.
+              </span>
+            </div>
 
             <img
               src="./screenshot-storyboard.png"
-              className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_60px_-15px_#10b98145]"
+              className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_60px_-15px_#10b98133] max-lg:rounded-t-lg max-md:rounded-md"
             />
 
-            <div className="absolute bg-opacity-75 w-full bg-gradient-to-t from-[rgb(13,13,13)] to-transparent h-1/2" />
+            <div className="absolute bottom-0 bg-opacity-75 w-full bg-gradient-to-t from-[rgb(13,13,13)] to-transparent h-1/2" />
           </div>
 
           <div
             id="section-3"
-            className="flex flex-col w-full bg-[rgb(13,13,13)]"
+            className="flex flex-col w-full bg-[rgb(13,13,13)] py-[15vh] items-center gap-10"
           >
-            {/* tema header text */}
-            <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh]">
-              <span className="text-4xl max-md:text-2xl font-light text-white">
+            {/* team header text */}
+            {/* <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh] bg-red-500"> */}
+              <span className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tighte">
                 Our Team
               </span>
-            </div>
+            {/* </div> */}
 
             <div className="flex w-full h-full items-center justify-center pb-36 max-md:pb-14 px-6">
               <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl">
