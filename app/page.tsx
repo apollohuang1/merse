@@ -263,10 +263,19 @@ const Home: React.FC<{}> = () => {
               </span>
             </div>
 
-            <img
-              src="./screenshot-storyboard.png"
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              src="./landing-demo.mp4"
               className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_60px_-15px_#10b98133] max-lg:rounded-t-lg max-md:rounded-md"
             />
+
+            {/* <img
+              src="./screenshot-storyboard.png"
+              className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_60px_-15px_#10b98133] max-lg:rounded-t-lg max-md:rounded-md"
+            /> */}
 
             <div className="absolute bottom-0 bg-opacity-75 w-full bg-gradient-to-t from-[rgb(13,13,13)] to-transparent h-1/2" />
           </div>
