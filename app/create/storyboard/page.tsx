@@ -49,7 +49,12 @@ import {
 } from "openai";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setContent, setShowGeneratedStoryboard, setStoryboard, setTitle } from "@/redux-store/store";
+import {
+  setContent,
+  setShowGeneratedStoryboard,
+  setStoryboard,
+  setTitle,
+} from "@/redux-store/store";
 import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 
@@ -84,7 +89,7 @@ const Storyboard = (props: Props) => {
       }),
       Placeholder.configure({
         // placeholder: "Write your diary entry here...",
-        placeholder: "Press tab or click to select a menu item...", 
+        placeholder: "Press tab or click to select a menu item...",
         // emptyNodeClass: "text-light-text-tertiary dark:text-dark-text-tertiary text-base",
         // emptyEditorClass: "text-light-text-tertiary dark:text-dark-text-tertiary",
       }),
@@ -143,10 +148,23 @@ const Storyboard = (props: Props) => {
                   className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                   onClick={() => {
                     // setShowGeneratedStoryboard(!showGeneratedStoryboard);
-                    dispatch(setShowGeneratedStoryboard(!entryHelper.showGeneratedStoryboard));
+                    dispatch(
+                      setShowGeneratedStoryboard(
+                        !entryHelper.showGeneratedStoryboard
+                      )
+                    );
                   }}
                 >
                   {entryHelper.showGeneratedStoryboard ? "Hide" : "Show"}
+                </button>
+
+                <button
+                  className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
+                  onClick={() => {
+                    createImageFromText("input");
+                  }}
+                >
+                  Test SDXL
                 </button>
 
                 {isGeneratingStoryboard ? (
@@ -217,7 +235,10 @@ const Storyboard = (props: Props) => {
                         onClick={() => setShowAddingImageModal(true)}
                         className={clsx(
                           "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary rounded-b-lg",
-                          { "text-accent bg-opacity-30 font-semibold": editor.isActive("image") }
+                          {
+                            "text-accent bg-opacity-30 font-semibold":
+                              editor.isActive("image"),
+                          }
                         )}
                       >
                         <FiImage />
