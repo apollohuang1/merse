@@ -125,8 +125,7 @@ const Home: React.FC<{}> = () => {
                         className={clsx(
                           `flex flex-row items-center gap-2 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`,
                           {
-                            "text-neutral-300":
-                              scrollY < 100,
+                            "text-neutral-300": scrollY < 100,
                           },
                           { "text-neutral-400": scrollY >= 100 }
                         )}
@@ -214,7 +213,6 @@ const Home: React.FC<{}> = () => {
             {/* text in the first section */}
             <div className="absolute flex flex-col items-center w-full h-full justify-end gap-6 px-6 py-28">
               <div className="flex flex-col leading-6 items-center text-center">
-
                 <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
                   {/* Transform Journals into Comics, Effortlessly */}
                   Journaling-to-Comic Made Simple
@@ -249,7 +247,23 @@ const Home: React.FC<{}> = () => {
             </div>
           </div> */}
 
-          <div id="section-2" className="flex flex-col w-full bg-[rgb(13,13,13)]">
+          <div
+            id="section-2"
+            className="relative flex flex-col w-full bg-[rgb(13,13,13)] items-center justify-end overflow-hidden pt-[15vh] px-6"
+          >
+
+            <img
+              src="./screenshot-storyboard.png"
+              className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_60px_-15px_#10b98145]"
+            />
+
+            <div className="absolute bg-opacity-75 w-full bg-gradient-to-t from-[rgb(13,13,13)] to-transparent h-1/2" />
+          </div>
+
+          <div
+            id="section-3"
+            className="flex flex-col w-full bg-[rgb(13,13,13)]"
+          >
             {/* tema header text */}
             <div className="flex w-full items-center justify-center h-[20vh] max-md:h-[10vh]">
               <span className="text-4xl max-md:text-2xl font-light text-white">
@@ -268,14 +282,13 @@ const Home: React.FC<{}> = () => {
                       href={member?.twitter_url}
                       target="_blank"
                     >
-
                       {/* <div className="relative h-full"> */}
-                        <img
-                          src={member?.image_url}
-                          className="object-cover w-full h-full group-hover:scale-[1.06] transition-all duration-300 z-0 group-active:scale-100 opacity-70 group-hover:opacity-100"
-                        />
+                      <img
+                        src={member?.image_url}
+                        className="object-cover w-full h-full group-hover:scale-[1.06] transition-all duration-300 z-0 group-active:scale-100 opacity-70 group-hover:opacity-100"
+                      />
 
-                        {/* <div className="absolute bottom-0 left-0 p-4">
+                      {/* <div className="absolute bottom-0 left-0 p-4">
                           <img
                             src={member?.real_image_url}
                             className="object-cover w-16 h-16 rounded-full"
