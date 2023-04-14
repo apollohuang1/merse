@@ -252,35 +252,36 @@ const Home: React.FC<{}> = () => {
 
           <div
             id="section-2"
-            className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-[rgb(13,13,13)] items-center justify-between overflow-hidden pt-[15vh] px-6"
+            // className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-[rgb(13,13,13)] items-center justify-between overflow-hidden pt-[15vh] px-6"
+            className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-white items-center justify-between overflow-hidden pt-[15vh] px-6"
           >
-            <div className="flex flex-col text-center items-center pb-[15vh]">
-              <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
-                {/* Storyboard */}
-                Jot. Generate. Publish.
-              </h1>
-              <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
-                {/* Jot. Generate. Publish. */}
-                create a daily entry
-              </span>
+            <div>
+              <div className="flex flex-col text-center items-center pb-[15vh]">
+                <h1 className="text-5xl text-light-text-primary font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
+                  {/* Storyboard */}
+                  Jot. Generate. Publish.
+                </h1>
+                <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm::text-base max-w-3xl max-md:max-w-xl">
+                  {/* Jot. Generate. Publish. */}
+                  create a daily entry
+                </span>
+              </div>
+
+              {/* <img
+                src="./screenshot-light.png"
+                className="w-full object-cover max-w-5xl border border-light-divider rounded-t-2xl  shadow-lg max-lg:rounded-t-lg max-md:rounded-md"
+              /> */}
+
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                src="./landing-demo.mp4"
+                poster="./screenshot-storyboard.png"
+                className="w-full object-cover max-w-5xl rounded-t-2xl drop-shadow-2xl"
+              />
             </div>
-
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              src="./landing-demo.mp4"
-              poster="./screenshot-storyboard.png"
-              className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_72px_-15px_#10b98133] max-lg:rounded-t-lg max-md:rounded-md"
-            />
-
-            {/* <img
-              src="./screenshot-storyboard.png"
-              className="w-full object-cover max-w-5xl border border-dark-divider rounded-t-2xl shadow-[0px_0px_60px_-15px_#10b98133] max-lg:rounded-t-lg max-md:rounded-md"
-            /> */}
-
-            <div className="absolute bottom-0 bg-opacity-75 w-full bg-gradient-to-t from-[rgb(13,13,13)] to-transparent h-1/2" />
           </div>
 
           <div
@@ -301,7 +302,7 @@ const Home: React.FC<{}> = () => {
             </span>
             {/* </div> */}
 
-            <div className="flex w-full h-full items-center justify-center pb-36 max-md:pb-14 px-6">
+            <div className="flex w-full h-full items-center justify-center px-6">
               <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl">
                 {teamMembers.map((member, index) => {
                   return (
