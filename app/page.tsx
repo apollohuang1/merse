@@ -253,7 +253,7 @@ const Home: React.FC<{}> = () => {
           <div
             id="section-2"
             // className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-[rgb(13,13,13)] items-center justify-between overflow-hidden pt-[15vh] px-6"
-            className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-[#F5F5F7] items-center justify-between overflow-hidden pt-[15vh] px-6"
+            className="relative flex flex-col w-full h-screen max-lg:h-auto bg-[#F5F5F7] items-center justify-between overflow-hidden pt-[15vh] px-6"
           >
             <div>
               <div className="flex flex-col text-center items-center pb-[15vh]">
@@ -286,7 +286,7 @@ const Home: React.FC<{}> = () => {
 
           <div
             id="section-3"
-            className="flex flex-col relative w-full bg-[rgb(13,13,13)] py-[15vh] items-center justify-start gap-16"
+            className="flex flex-col relative w-full bg-[rgb(13,13,13)] py-[15vh] h-screen max-lg:h-auto items-center justify-start gap-16"
           >
 
             {/* team header text */}
