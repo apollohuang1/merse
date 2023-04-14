@@ -12,7 +12,7 @@ const CreateHeader: React.FC<{
   const { saveEntry } = useCreateEntry();
 
   return (
-    <div className="flex flex-row w-full sticky top-0 z-20 backdrop-blur-xl dark:backdrop-blur-xl bg-opacity-80 dark:bg-opacity-90 bg-light-background-primary dark:bg-dark-background-primary justify-center px-7">
+    <div className="flex flex-row w-full sticky top-0 z-20 backdrop-blur-xl dark:backdrop-blur-xl bg-opacity-80 dark:bg-opacity-90 bg-light-background-primary dark:bg-dark-background-primary justify-center px-6">
       <div className="flex flex-row justify-between items-start py-4 w-full h-full max-w-3xl">
         <div className="flex flex-col max-w-sm">
           <h1 className="text-2xl font-bold">

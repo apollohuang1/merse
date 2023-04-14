@@ -45,9 +45,9 @@ const Styles = (props: Props) => {
       <CreateHeader currentRoute={createRoutes[0]} />
 
       {/* second section of grid */}
-      <div className="flex flex-col w-full h-full justify-center items-center">
+      <div className="flex flex-col w-full h-full justify-center items-center px-6">
         {/* created characters list */}
-        <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-7 w-full h-full max-w-3xl py-7">
+        <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-3xl py-6">
           {comicStyles.map((comicStyle: ComicStyle, index: number) => (
             <button
               key={index}
