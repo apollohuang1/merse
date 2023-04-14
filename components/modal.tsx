@@ -46,7 +46,7 @@ const Modal:React.FC<{
               <Dialog.Panel className="flex flex-col overflow-hidden rounded-xl bg-light-background-primary dark:bg-dark-background-primary shadow-xl transition-all max-w-lg w-full">
                 <div className="flex flex-col items-start h-full w-full">
 
-                  <div className="flex items-center justify-between w-full pl-3 py-3 pr-3">
+                  <div className="flex items-center justify-between w-full p-3">
                       <Dialog.Title
                         as="h3"
                         className="text-base font-medium text-light-text-primary dark:text-dark-text-primary pl-3"

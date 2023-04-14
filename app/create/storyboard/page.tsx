@@ -316,9 +316,10 @@ const Storyboard = (props: Props) => {
       <Modal
         isOpen={showAddingImageModal}
         onClose={() => setShowAddingImageModal(false)}
+        withCloseButton={false}
         title="Embed Image"
       >
-        <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full h-full px-3 pb-3">
           <form
             onSubmit={(e) => {
               e.preventDefault();

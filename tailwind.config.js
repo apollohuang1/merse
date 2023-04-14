@@ -68,7 +68,6 @@ module.exports = {
             // primary: '#000000', // black
             primary: "#0E100E", // green satoshi fontshare
             // primary: "#0E1010", // blue satoshi fontshare
-            // secondary: "#151515", // green satoshi fontshare
             secondary: "#161816", // normal
             // secondary: "#121212",
             tertiary: "#2C2C2C",
