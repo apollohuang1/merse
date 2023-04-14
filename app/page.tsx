@@ -261,7 +261,7 @@ const Home: React.FC<{}> = () => {
               </h1>
               <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
                 {/* Jot. Generate. Publish. */}
-                create an daily entry
+                create a daily entry
               </span>
             </div>
 

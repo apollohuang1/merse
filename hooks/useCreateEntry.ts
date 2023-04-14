@@ -220,6 +220,14 @@ const useCreateEntry = () => {
 
       const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
 
+      // save base64 image data to backend
+
+      artifactsResponse.artifacts.forEach((image: any, index: number) => {
+        // loop save 
+      });
+
+
+
       // const responseJSON = (await sdxlResponse.json()) as GenerationResponse;
 
       // sdxlResponse.artifacts.forEach((image: any, index: number) => {
@@ -299,7 +307,6 @@ const useCreateEntry = () => {
 
 export default useCreateEntry;
 
-
 // ❤️ Hiii Emily! Would you kindly add the code to handle the response from the API here please?
 // It'd be so lovely! Thank you so much! :)))) <3
 
@@ -333,10 +340,6 @@ export default useCreateEntry;
 //       "vae": "stabilityai/sd-vae-ft-mse"
 //   }
 // }
-
-
-
-
 
 // Stable Diffision XL API Response example
 
