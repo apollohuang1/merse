@@ -8,8 +8,6 @@ import {
 import React from "react";
 import * as $ from "jquery";
 
-const fs = require("fs");
-
 // Hook for creating new entries
 const useCreateEntry = () => {
   const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
@@ -194,13 +192,14 @@ const useCreateEntry = () => {
       //   headers: { "Content-Type": "application/json" },
       // });
 
-      const sdxlResponse:any = await axios({
+      const sdxlResponse: any = await axios({
         method: "POST",
         url: `https://api.stability.ai/v1/generation/${engineId}/text-to-image`,
         data: {
           text_prompts: [
             {
-              text: "A lighthouse on a cliff",
+              // text: "A lighthouse on a cliff",
+              text: formattedPromptWithStyle,
             },
           ],
           cfg_scale: 7,
@@ -234,12 +233,12 @@ const useCreateEntry = () => {
 
       // const responseJSON = (await sdxlResponse.json()) as GenerationResponse;
 
-      sdxlResponse.artifacts.forEach((image: any, index: number) => {
-        fs.writeFileSync(
-          `./out/v1_txt2img_${index}.png`,
-          Buffer.from(image.base64, "base64")
-        );
-      });
+      // sdxlResponse.artifacts.forEach((image: any, index: number) => {
+      //   fs.writeFileSync(
+      //     `./out/v1_txt2img_${index}.png`,
+      //     Buffer.from(image.base64, "base64")
+      //   );
+      // });
 
       // const response = await axios({
       //   method: "POST",
@@ -279,7 +278,7 @@ const useCreateEntry = () => {
       // 4/10 console.log("Stable Diffusion API Response: ");
       // 4/10 console.log(response.data);
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       console.log("Failed to generate image:", error?.message);
     }
   };
@@ -339,35 +338,90 @@ export default useCreateEntry;
 
 
 // ❤️ Hiii Emily! Would you kindly add the code to handle the response from the API here please?
-      // It'd be so lovely! Thank you so much! :)))) <3
+// It'd be so lovely! Thank you so much! :)))) <3
 
-      // Sample of Stable Diffusion API Response (response.data) after POST request to /api/text2image:
-      // you can see there's ETA for posting request to fetch_result too  :))))
-      // the post request should use that fetch_result as a POST request url and {key: [api_key] } object as data payload
+// Sample of Stable Diffusion API Response (response.data) after POST request to /api/text2image:
+// you can see there's ETA for posting request to fetch_result too  :))))
+// the post request should use that fetch_result as a POST request url and {key: [api_key] } object as data payload
 
-      // {
-      //   "status": "processing",
-      //   "tip": "for faster speed, keep resolution upto 512x512",
-      //   "eta": 35.941116006399994,
-      //   "messege": "Try to fetch request after given estimated time",
-      //   "fetch_result": "https://stablediffusionapi.com/api/v3/fetch/10684517",
-      //   "id": 10684517,
-      //   "output": [],
-      //   "meta": {
-      //       "H": 512,
-      //       "W": 512,
-      //       "enable_attention_slicing": "true",
-      //       "file_prefix": "7da15755-b94b-4347-a195-ac8725a7ee97",
-      //       "guidance_scale": 7,
-      //       "model": "runwayml/stable-diffusion-v1-5",
-      //       "n_samples": 1,
-      //       "negative_prompt": "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs))",
-      //       "outdir": "out",
-      //       "prompt": "A dark alleyway at night with trash cans overflowing and rats scurrying about. In the foreground, we see the silhouette of a figure approaching. in Hergé artstyle",
-      //       "revision": "fp16",
-      //       "safetychecker": "no",
-      //       "seed": 3525930829,
-      //       "steps": 20,
-      //       "vae": "stabilityai/sd-vae-ft-mse"
-      //   }
-      // }
+// {
+//   "status": "processing",
+//   "tip": "for faster speed, keep resolution upto 512x512",
+//   "eta": 35.941116006399994,
+//   "messege": "Try to fetch request after given estimated time",
+//   "fetch_result": "https://stablediffusionapi.com/api/v3/fetch/10684517",
+//   "id": 10684517,
+//   "output": [],
+//   "meta": {
+//       "H": 512,
+//       "W": 512,
+//       "enable_attention_slicing": "true",
+//       "file_prefix": "7da15755-b94b-4347-a195-ac8725a7ee97",
+//       "guidance_scale": 7,
+//       "model": "runwayml/stable-diffusion-v1-5",
+//       "n_samples": 1,
+//       "negative_prompt": "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs))",
+//       "outdir": "out",
+//       "prompt": "A dark alleyway at night with trash cans overflowing and rats scurrying about. In the foreground, we see the silhouette of a figure approaching. in Hergé artstyle",
+//       "revision": "fp16",
+//       "safetychecker": "no",
+//       "seed": 3525930829,
+//       "steps": 20,
+//       "vae": "stabilityai/sd-vae-ft-mse"
+//   }
+// }
+
+
+
+
+
+// Stable Diffision XL API Response example
+
+//   {
+//     "data": {
+//         "artifacts": [
+//             {
+//                 "base64": {super base64 string is returnded here},
+//                 "seed": 288735596,
+//                 "finishReason": "SUCCESS"
+//             }
+//         ]
+//     },
+//     "status": 200,
+//     "statusText": "",
+//     "headers": {
+//         "content-type": "application/json"
+//     },
+//     "config": {
+//         "transitional": {
+//             "silentJSONParsing": true,
+//             "forcedJSONParsing": true,
+//             "clarifyTimeoutError": false
+//         },
+//         "adapter": [
+//             "xhr",
+//             "http"
+//         ],
+//         "transformRequest": [
+//             null
+//         ],
+//         "transformResponse": [
+//             null
+//         ],
+//         "timeout": 0,
+//         "xsrfCookieName": "XSRF-TOKEN",
+//         "xsrfHeaderName": "X-XSRF-TOKEN",
+//         "maxContentLength": -1,
+//         "maxBodyLength": -1,
+//         "env": {},
+//         "headers": {
+//             "Accept": "application/json",
+//             "Content-Type": "application/json",
+//             "Authorization": "Bearer sk-p91J9UFiQLipCceB9nTYefHFQ2LLshoVTx1rsLF23mSTXb7R"
+//         },
+//         "method": "post",
+//         "url": "https://api.stability.ai/v1/generation/stable-diffusion-v1-5/text-to-image",
+//         "data": "{\"text_prompts\":[{\"text\":\"A lighthouse on a cliff\"}],\"cfg_scale\":7,\"clip_guidance_preset\":\"FAST_BLUE\",\"height\":512,\"width\":512,\"samples\":1,\"steps\":30}"
+//     },
+//     "request": {}
+// }

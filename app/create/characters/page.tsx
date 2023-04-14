@@ -174,7 +174,7 @@ const CreateCharacterPage = (props: Props) => {
                     dispatch(
                       updateCharacter({
                         _id: editingCharacter?._id,
-                        imageURL: characterImageURL,
+                        image_url: characterImageURL,
                         name: characterName,
                         description: newCharacterDescription,
                         age: characterAge,
