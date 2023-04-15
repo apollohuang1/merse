@@ -170,7 +170,7 @@ const useCreateEntry = () => {
       }
 
       // final input prompt
-      const formattedPromptWithStyle = `${input} in ${entry.style_reference.artist} comic illustration artstyle`;
+      const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
 
       // Response of regular Stable Diffusion API
       // const response = await axios({
@@ -219,12 +219,28 @@ const useCreateEntry = () => {
       }
 
       const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
-
+      if (artifactsResponse) {
+        const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
+      
+        // Check if artifacts is not null or undefined
+        if (artifacts) {
+          const length = artifacts.length; // Get the length of the artifacts array
+      
+          // Loop through artifacts using a for loop
+          for (let i = 0; i < length; i++) {
+            const image = artifacts[i]; // Get the current artifact
+            const index = i; // Get the current index
+      
+            // Perform desired action on the current artifact
+            // You can access properties of the artifact using image.propertyName
+            // For example: image.id, image.name, etc.
+          }
+        }
+      }
       // save base64 image data to backend
-
-      artifactsResponse.artifacts.forEach((image: any, index: number) => {
-        // loop save 
-      });
+      // artifactsResponse.artifacts.forEach((image: any, index: number) => {
+      //   // loop save 
+      // });
 
 
 
@@ -254,11 +270,31 @@ const useCreateEntry = () => {
     }
   };
   //new--------------------------------------^^
+  // const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
+  //   const { content } = tiptapJSON;
+  //   let text = "";
+  //   const length = content?.length ?? 0; // Use nullish coalescing operator to default to 0 when content is undefined
 
+  //   for (let i = 0; i < length; i++) {
+  //       const node = content?.[i]; // Add null check here
+
+  //       if (node && node.type === "text") { // Add null check here
+  //           text += node.text;
+  //       } else if (node && node.type === "image") { // Add null check here
+  //           // Include the image source as part of the text
+  //           text += `[IMAGE: ${node.attrs?.src}]`; // Add null check for node.attrs here
+  //       } else if (node && node.content) { // Add null check here
+  //           text += convertTiptapJSONToText(node);
+  //       }
+  //   }
+
+  //   return text;
+  // };
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
     let text = "";
-
+    const length = content?.length || 0;
+    
     content?.forEach((node: any) => {
       if (node.type === "text") {
         text += node.text;
