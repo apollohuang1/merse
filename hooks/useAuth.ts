@@ -15,6 +15,8 @@ const useAuth = () => {
   const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
   const [isLoadingCurrentUser, setIsLoadingCurrentUser] = React.useState<boolean>(false);
 
+  const [showSplashScreen, setShowSplashScreen] = React.useState<boolean>(true);
+
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
@@ -32,13 +34,16 @@ const useAuth = () => {
   // reload current user promise
   const reloadCurrentUser = async () => {
     return new Promise((resolve, reject) => {
+      setShowSplashScreen(true);
       const loggedInUser = localStorage.getItem("currentUser");
       if (loggedInUser) {
         // setCurrentUser(JSON.parse(loggedInUser));
         const loggedInUserData = JSON.parse(loggedInUser);
         dispatch(setCurrentUser(loggedInUserData));
+        setShowSplashScreen(false);
         resolve(loggedInUserData);
       } else {
+        setShowSplashScreen(false);
         reject("No user found");
         // redirect to login page
       }
@@ -163,7 +168,7 @@ const useAuth = () => {
   //   },
   // });
 
-  return { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, reloadCurrentUser, logOut };
+  return { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, showSplashScreen, reloadCurrentUser, logOut };
 };
 
 export default useAuth;

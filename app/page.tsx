@@ -52,6 +52,7 @@ const Home: React.FC<{}> = () => {
     showLoginModal,
     setShowLoginModal,
     isLoadingCurrentUser,
+    showSplashScreen,
     logOut,
   } = useAuth();
 
@@ -273,10 +274,9 @@ const Home: React.FC<{}> = () => {
                             </span>
                           </div>
 
-                          { item.label !== "Logout" &&
-                            <FiChevronRight className="text-light-text-secondary dark:text-dark-text-secondary w-[18px] h-[18px]"/>
-                          }
-
+                          {item.label !== "Logout" && (
+                            <FiChevronRight className="text-light-text-secondary dark:text-dark-text-secondary w-[18px] h-[18px]" />
+                          )}
                         </MenuItem>
                       );
                     })}
@@ -530,6 +530,16 @@ const Home: React.FC<{}> = () => {
           </p>
         </div>
       </Modal>
+
+      {/* splash screen */}
+      <div
+        className={clsx(
+          "fixed flex h-screen w-screen bg-black top-0 z-[9999999999] overflow-hidden items-center justify-center",
+          { "hidden" : !showSplashScreen }
+        )}
+      >
+        <img src="/merse-white.png" className="object-contain w-8" />
+      </div>
     </>
   );
 };
