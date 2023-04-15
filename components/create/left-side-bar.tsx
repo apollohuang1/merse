@@ -11,31 +11,13 @@ import Image from "next/image";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { Menu } from "@headlessui/react";
 import { allCreateRoutes } from "@/util/create-constants";
+import useColorScheme from "@/hooks/useColorScheme";
 
 type Props = {};
 
 const LeftSideBar: React.FC<{}> = ({}) => {
   const pathName = usePathname();
-
-  const toggleColorSchemToLight = () => {
-    document.documentElement.classList.remove("dark");
-    // setIsDarkMode(false);
-    localStorage.theme = "light";
-  };
-
-  const toggleColorSchemeToDark = () => {
-    localStorage.theme = "dark";
-    document.documentElement.classList.add("dark");
-    // setIsDarkMode(true);
-  };
-
-  const toggleColorScheme = () => {
-    if (localStorage.theme === "dark") {
-      toggleColorSchemToLight();
-    } else {
-      toggleColorSchemeToDark();
-    }
-  };
+  const { toggleColorScheme } = useColorScheme();
 
   return (
     <div className="flex flex-col justify-between w-full h-full border-r border-r-light-divider dark:border-r-dark-divider pt-16">

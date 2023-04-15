@@ -222,7 +222,7 @@ const useCreateEntry = () => {
 
       // save base64 image data to backend
 
-      artifactsResponse.artifacts.forEach((image: any, index: number) => {
+      artifactsResponse.artifacts.map((image: any, index: number) => {
         // loop save 
       });
 

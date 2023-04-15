@@ -1,18 +1,30 @@
 import React from "react";
 import MerseLogo from "./svgs/merse-logo";
 import clsx from "clsx";
-import { Menu, MenuButton, MenuItem, MenuList, Spinner } from "@chakra-ui/react";
-import { FiBookOpen, FiChevronRight, FiLogOut, FiUser } from "react-icons/fi";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Spinner,
+} from "@chakra-ui/react";
+import {
+  FiBookOpen,
+  FiChevronRight,
+  FiLogOut,
+  FiSun,
+  FiUser,
+} from "react-icons/fi";
 import useAuth from "@/hooks/useAuth";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import Modal from "./modal";
 import { FcGoogle } from "react-icons/fc";
+import useColorScheme from "@/hooks/useColorScheme";
 
 const NavigationBar: React.FC<{
   isAuthenticated: boolean;
-}> = ({
-  isAuthenticated,
-}) => {
+}> = ({ isAuthenticated }) => {
+  const { toggleColorScheme } = useColorScheme();
 
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -45,6 +57,13 @@ const NavigationBar: React.FC<{
       },
     },
     {
+      icon: <FiBookOpen />,
+      label: "Create Comic",
+      onClick: () => {
+        window.location.href = "/create/styles";
+      },
+    },
+    {
       icon: <FiLogOut />,
       label: "Logout",
       onClick: () => {
@@ -52,7 +71,6 @@ const NavigationBar: React.FC<{
       },
     },
   ];
-  
 
   const homeContents: any[] = [
     {
@@ -84,27 +102,47 @@ const NavigationBar: React.FC<{
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
 
   return (
     <>
       <div
         className={clsx(
-          "flex w-full h-landingNavigationBar items-center justify-center z-10 transition px-6",
+          "flex w-full items-center justify-center z-10 transition px-6",
           {
             "bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent":
               scrollY < 100 && isAuthenticated === false,
           },
-          { "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl": scrollY >= 100 && isAuthenticated === false },
-          { "bg-light-background-primary dark:bg-dark-background-primary" : isAuthenticated },
-          { "fixed top-0" : isAuthenticated === false },
-          { "sticky top-0" : isAuthenticated === true }
+          {
+            "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl":
+              scrollY >= 100 && isAuthenticated === false,
+          },
+          {
+            "bg-light-background-primary dark:bg-dark-background-primary":
+              isAuthenticated,
+          },
+          { "fixed top-0 h-landingNavigationBar": isAuthenticated === false }, // landing
+          {
+            "sticky top-0 h-navigationBar bg-light-background-primary dark:bg-dark-background-primary border-b border-b-light-divider dark:border-b-dark-divider":
+              isAuthenticated,
+          } // home page
         )}
       >
-        <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center text-white py-2 w-full h-landingNavigationBar max-w-5xl">
+        <div
+          className={clsx(
+            "text-white py-2 max-w-5xl w-full",
+            {
+              "grid grid-cols-3 h-landingNavigationBar max-md:flex max-md:flex-row max-md:justify-between":
+                !isAuthenticated,
+            },
+            {
+              "flex flex-row h-navigationBar items-center justify-between":
+                isAuthenticated,
+            }
+          )}
+        >
           {/* logo and name */}
           <div
-            className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all"
+            className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all text-light-text-primary dark:text-dark-text-primary"
             onClick={() => {
               // with smooth scroll
               scrollToSection(1);
@@ -115,36 +153,51 @@ const NavigationBar: React.FC<{
           </div>
 
           {/* section navigator */}
-          <div className="flex flex-row w-full justify-center max-md:hidden">
-            <div className="flex flex-row">
-              {/* capsult tab picker to scroll to three pages below with animation */}
+          {isAuthenticated === false && (
+            <div className="flex flex-row w-full justify-center max-md:hidden">
               <div className="flex flex-row">
-                {homeContents.map((item: any, index: number) => {
-                  return (
-                    <button
-                      onClick={() => {
-                        scrollToSection(index + 1);
-                      }}
-                      key={index}
-                      className={clsx(
-                        `flex flex-row items-center gap-2 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`,
-                        {
-                          "text-neutral-300": scrollY < 100,
-                        },
-                        { "text-neutral-400": scrollY >= 100 }
-                      )}
-                    >
-                      <span className="text-sm">{item?.sectionTitle}</span>
-                    </button>
-                  );
-                })}
+                {/* capsult tab picker to scroll to three pages below with animation */}
+                <div className="flex flex-row">
+                  {homeContents.map((item: any, index: number) => {
+                    return (
+                      <button
+                        onClick={() => {
+                          scrollToSection(index + 1);
+                        }}
+                        key={index}
+                        className={clsx(
+                          `flex flex-row items-center gap-2 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`,
+                          {
+                            "text-neutral-300": scrollY < 100,
+                          },
+                          { "text-neutral-400": scrollY >= 100 }
+                        )}
+                      >
+                        <span className="text-sm">{item?.sectionTitle}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* login button */}
+          <div className="flex flex-row items-center justify-end gap-3 h-full">
+            {/* toggle color scheme */}
+            {isAuthenticated && (
+              <>
+                <button
+                  onClick={() => {
+                    toggleColorScheme();
+                  }}
+                  className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-7 h-7 items-center justify-center rounded-full hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                >
+                  <FiSun className="w-4 h-4" />
+                </button>
+              </>
+            )}
 
-          <div className="flex flex-row items-center justify-end gap-2 h-full">
             {auth?.currentUser ? (
               <Menu>
                 <MenuButton>
@@ -154,7 +207,12 @@ const NavigationBar: React.FC<{
                     }}
                     className="flex flex-row gap-3"
                   >
-                    <div className="relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden">
+                    <div
+                      className={clsx(
+                        "relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden",
+                        { "w-7 h-7" : isAuthenticated }
+                      )}
+                    >
                       <svg
                         className="absolute h-full w-full text-gray-300"
                         fill="currentColor"
@@ -165,7 +223,7 @@ const NavigationBar: React.FC<{
 
                       <img
                         src={auth?.currentUser?.profile_image_url}
-                        className="absolute w-6 h-6 rounded-full"
+                        className={"absolute w-full h-full rounded-full"}
                         alt="user profile image"
                         onError={(e) => {
                           e.currentTarget.src =

@@ -6,13 +6,14 @@ type Props = {};
 
 const Home = (props: Props) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center">
 
       <NavigationBar isAuthenticated={true} />
 
-      <div className="h-[1000vh] bg-red-500 w-full">
-        hello world
+      <div className="h-[1000vh] w-full max-w-5xl">
+        
       </div>
+
     </div>
   );
 };
