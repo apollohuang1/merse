@@ -169,7 +169,7 @@ const Landing = (props: Props) => {
                       />
 
                       <div className="flex flex-row items-center justify-between max-sm:justify-center p-4 z-10 bg-dark-background-secondary">
-                        <span className="text-white text-lg max-md:text-base max-sm:text-sm font-normal line-clamp-1">
+                        <span className="text-white text-lg max-md:text-base font-normal line-clamp-1">
                           {member?.name}
                         </span>
                         <FiArrowUpRight className="text-white text-xl font-semibold max-md:text-base ml-2 opacity-20 group-hover:opacity-100 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 duration-300 max-sm:hidden" />
