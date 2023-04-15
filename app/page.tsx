@@ -9,6 +9,7 @@ import Landing from "@/components/landing";
 // hooks
 import useAuth from "@/hooks/useAuth";
 import { useAppSelector } from "@/redux-store/hooks";
+import Home from "@/components/home";
 
 const HomePage: React.FC<{}> = () => {
   const { showSplashScreen, logOut } = useAuth();
@@ -17,13 +18,12 @@ const HomePage: React.FC<{}> = () => {
 
   return (
     <div className="text-white">
-      {/* {!auth?.currentUser ? (
-        <></>
+
+      {auth?.currentUser ? (
+        <Home />
       ) : (
         <Landing />
-      )} */}
-      
-      <Landing />
+      )}
 
       {/* splash screen */}
       <div
