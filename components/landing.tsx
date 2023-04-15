@@ -124,14 +124,12 @@ const Landing = (props: Props) => {
                   onClick={() => {
                     toggleVideoPlayState();
                   }}
-                  className="flex items-center justify-center w-10 h-10 rounded-full border border-neutral-400 text-white hover:scale-105 active:scale-100 transition-all"
+                  className="flex items-center justify-center w-10 h-10 max-sm:w-8 max-sm:h-8 rounded-full border border-neutral-400 text-white hover:scale-105 active:scale-100 transition-all"
                 >
                   {isDemoVidePlaying ? (
-                    <HiPause />
+                    <HiPause className="w-5 h-5 max-sm:w-4 max-sm:h-4" />
                   ) : (
-                    <div className="pl-[2px]">
-                      <HiPlay />
-                    </div>
+                    <HiPlay className="w-5 h-5 max-sm:w-4 max-sm:h-4 pl-[2px]" />
                   )}
                 </button>
               </div>
@@ -170,7 +168,7 @@ const Landing = (props: Props) => {
                         className="object-cover w-full h-full group-hover:scale-[1.06] transition-all duration-300 z-0 group-active:scale-100 opacity-70 group-hover:opacity-100"
                       />
 
-                      <div className="flex flex-row items-center justify-between p-4 z-10 bg-dark-background-secondary">
+                      <div className="flex flex-row items-center justify-between max-sm:justify-center p-4 z-10 bg-dark-background-secondary">
                         <span className="text-white text-lg max-md:text-base max-sm:text-sm font-normal line-clamp-1">
                           {member?.name}
                         </span>
