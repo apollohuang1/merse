@@ -104,10 +104,10 @@ const Landing = (props: Props) => {
       <div className="flex flex-col bg-black">
         {/* navigation bar */}
 
-        {/* <div className="flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 bg-[rgb(13,13,14,0.7)] backdrop-blur-xl"> */}
+        {/* <div className="flex w-full h-landingNavigationBar items-center justify-center fixed top-0 z-10 bg-[rgb(13,13,14,0.7)] backdrop-blur-xl"> */}
         <div
           className={clsx(
-            "flex w-full h-navigationBar items-center justify-center fixed top-0 z-10 transition px-6",
+            "flex w-full h-landingNavigationBar items-center justify-center fixed top-0 z-10 transition px-6",
             {
               "bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent":
                 scrollY < 100,
@@ -115,7 +115,7 @@ const Landing = (props: Props) => {
             { "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl": scrollY >= 100 }
           )}
         >
-          <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center text-white py-2 w-full h-navigationBar max-w-5xl">
+          <div className="grid grid-cols-3 max-md:flex max-md:flex-row max-md:justify-between items-center text-white py-2 w-full h-landingNavigationBar max-w-5xl">
             {/* logo and name */}
             <div
               className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all"

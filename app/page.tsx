@@ -1,34 +1,29 @@
 "use client";
 
-import { Inter } from "next/font/google";
 import React, { useEffect, useRef } from "react";
-
 import clsx from "clsx";
+
+// conpoments
 import Landing from "@/components/landing";
+
+// hooks
 import useAuth from "@/hooks/useAuth";
 import { useAppSelector } from "@/redux-store/hooks";
 
-const Home: React.FC<{}> = () => {
+const HomePage: React.FC<{}> = () => {
   const { showSplashScreen, logOut } = useAuth();
 
   const auth = useAppSelector((state) => state.auth);
 
   return (
     <div className="text-white">
-      
-      <Landing />
-      {/* {auth?.currentUser ? (
-        <button
-          className="fixed top-0 ri ght-0 bg-emerald-500 p-4"
-          onClick={() => {
-            logOut();
-          }}
-        >
-          <span className="text-white">Logout</span>
-        </button>
+      {/* {!auth?.currentUser ? (
+        <></>
       ) : (
         <Landing />
       )} */}
+      
+      <Landing />
 
       {/* splash screen */}
       <div
@@ -37,10 +32,10 @@ const Home: React.FC<{}> = () => {
           { hidden: !showSplashScreen }
         )}
       >
-        <img src="/merse-white.png" className="object-contain w-8" />
+        <img src="/merse-white.png" className="object-contain w-8" alt="merse logo" />
       </div>
     </div>
   );
 };
 
-export default Home;
+export default HomePage;

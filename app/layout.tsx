@@ -50,7 +50,9 @@ export default function RootLayout({
       <body className="bg-dark-background-primary">
         <Provider store={store}>
           <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
-            <SessionProvider>{children}</SessionProvider>
+            <SessionProvider>
+              { children }
+            </SessionProvider>
           </GoogleOAuthProvider>
         </Provider>
       </body>
