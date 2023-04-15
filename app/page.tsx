@@ -272,6 +272,11 @@ const Home: React.FC<{}> = () => {
                               {item.label}
                             </span>
                           </div>
+
+                          { item.label !== "Logout" &&
+                            <FiChevronRight className="text-light-text-secondary dark:text-dark-text-secondary w-[18px] h-[18px]"/>
+                          }
+
                         </MenuItem>
                       );
                     })}
@@ -412,7 +417,7 @@ const Home: React.FC<{}> = () => {
 
           <div
             id="section-3"
-            className="flex flex-col w-full bg-[rgb(13,13,15)] max-lg:h-auto items-center justify-start gap-[calc(42px+24px)]  py-[calc(42px+24px)]"
+            className="flex flex-col w-full bg-[rgb(13,13,15)] max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6"
           >
             {/* team header text */}
             <div className="flex flex-col text-center items-center">
@@ -424,8 +429,8 @@ const Home: React.FC<{}> = () => {
               </span>
             </div>
 
-            <div className="flex flex-col items-center px-6">
-              <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl">
+            <div className="flex flex-col items-center">
+              <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl max-sm:gap-4">
                 {teamMembers.map((member, index) => {
                   return (
                     // member detail
@@ -441,10 +446,10 @@ const Home: React.FC<{}> = () => {
                       />
 
                       <div className="flex flex-row items-center justify-between p-4 z-10 bg-dark-background-secondary">
-                        <span className="text-white text-lg max-md:text-base font-normal line-clamp-1">
+                        <span className="text-white text-lg max-md:text-base max-sm:text-sm font-normal line-clamp-1">
                           {member?.name}
                         </span>
-                        <FiArrowUpRight className="text-white text-xl font-semibold max-md:text-base ml-2 opacity-20 group-hover:opacity-100 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
+                        <FiArrowUpRight className="text-white text-xl font-semibold max-md:text-base ml-2 opacity-20 group-hover:opacity-100 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 duration-300 max-sm:hidden" />
                       </div>
                     </Link>
                   );
@@ -506,7 +511,7 @@ const Home: React.FC<{}> = () => {
               onClick={() => {
                 continueWithGoogle();
               }}
-              className="flex flex-row items-center justify-center gap-2 px-4 h-10 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+              className="flex flex-row items-center justify-center gap-2 px-4 h-10 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider"
             >
               <FcGoogle className="text-xl" />
               <span className="text-sm font-medium">Continue with Google</span>
@@ -514,7 +519,7 @@ const Home: React.FC<{}> = () => {
           )}
 
           <p className="text-sm text-dark-text-secondary text-center max-w-sm border-t border-t-light-divider dark:border-t-dark-divider py-6">
-            By continuing, you agree to Merce&apos;s{" "}
+            By continuing, you agree to Merse&apos;s{" "}
             <a className="text-accent font-medium hover:underline cursor-pointer">
               Terms of Service
             </a>{" "}
