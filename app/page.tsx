@@ -9,10 +9,14 @@ import React, { useEffect, useRef } from "react";
 import {
   FiArrowUpRight,
   FiBookOpen,
+  FiChevronRight,
   FiLogOut,
+  FiPause,
+  FiPlay,
   FiSettings,
   FiUser,
 } from "react-icons/fi";
+import { HiPlay, HiPause } from "react-icons/hi2";
 import Modal from "@/components/modal";
 
 import { FcGoogle } from "react-icons/fc";
@@ -50,7 +54,20 @@ const Home: React.FC<{}> = () => {
     isLoadingCurrentUser,
     logOut,
   } = useAuth();
-  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const demoVideoRef = useRef<HTMLVideoElement>(null);
+  const [isDemoVidePlaying, setIsDemoVideoPlaying] =
+    React.useState<boolean>(true);
+
+  const toggleVideoPlayState = () => {
+    if (demoVideoRef.current) {
+      if (demoVideoRef.current.paused) {
+        demoVideoRef.current.play();
+      } else {
+        demoVideoRef.current.pause();
+      }
+    }
+  };
 
   const homeContents: any[] = [
     {
@@ -69,7 +86,7 @@ const Home: React.FC<{}> = () => {
 
   const menuItems = [
     {
-      icon: <FiUser/>,
+      icon: <FiUser />,
       label: "Profile",
       onClick: () => {
         console.log("Profile");
@@ -213,16 +230,16 @@ const Home: React.FC<{}> = () => {
                     </button>
                   </MenuButton>
 
-                  <MenuList className="bg-light-background-primary dark:bg-dark-background-secondary w-48 rounded-lg drop-shadow-2xl">
+                  <MenuList className="bg-light-background-primary dark:bg-dark-background-secondary w-48 rounded-lg drop-shadow-2xl border border-light-divider dark:border-dark-divider">
                     {menuItems.map((item, index) => {
                       return (
                         <MenuItem
                           onClick={item.onClick}
                           key={index}
                           className={clsx(
-                            " px-3 h-12 transition-all duration-[275ms]",
+                            "flex flex-row justify-between px-3 h-12 transition-all duration-[275ms]",
                             {
-                              "focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary":
+                              "focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider":
                                 index !== menuItems.length - 1,
                             },
                             { "rounded-t-lg": index === 0 },
@@ -240,7 +257,8 @@ const Home: React.FC<{}> = () => {
                                   item.label === "Logout",
                               },
                               {
-                                "text-light-text-primary dark:text-dark-text-primary": item.label !== "Logout",
+                                "text-light-text-primary dark:text-dark-text-primary":
+                                  item.label !== "Logout",
                               }
                             )}
                           >
@@ -315,10 +333,9 @@ const Home: React.FC<{}> = () => {
               </div>
 
               <Link href="/create/styles">
-                <button className="inline-flex items-center rounded-full bg-white hover:bg-opacity-80 backdrop-blur-xl px-4 h-10 text-sm font-medium text-white shadow-sm hover:scale-105 active:scale-100 transition-all">
-                  <span className="text-light-text-primary font-medium">
-                    Create comic book
-                  </span>
+                <button className="flex flex-row items-center gap-1 rounded-full bg-white hover:bg-opacity-80 backdrop-blur-xl px-4 h-10 text-sm font-medium text-light-text-primary shadow-sm hover:scale-105 active:scale-100 transition-all">
+                  <span className=" font-medium">Create comic book</span>
+                  <FiChevronRight className="w-4 h-4" />
                 </button>
               </Link>
             </div>
@@ -339,59 +356,82 @@ const Home: React.FC<{}> = () => {
           <div
             id="section-2"
             // className="relative flex flex-col w-full h-withoutNavigationBar max-lg:h-auto bg-[rgb(13,13,13)] items-center justify-between overflow-hidden pt-[15vh] px-6"
-            className="relative flex flex-col w-full h-screen max-lg:h-auto bg-[#F5F5F7] items-center justify-between overflow-hidden pt-[15vh] px-6"
+            className="relative flex flex-col w-full h-screen max-lg:h-auto bg-[#F5F5F7] items-center justify-between px-6 min-h-[55vh] gap-[calc(42px+24px)]"
           >
-            <div>
-              <div className="flex flex-col text-center items-center pb-[15vh]">
-                <h1 className="text-5xl text-light-text-primary font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
-                  {/* Storyboard */}
-                  Jot. Generate. Publish.
-                </h1>
-                <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm::text-base max-w-3xl max-md:max-w-xl">
-                  {/* Jot. Generate. Publish. */}
-                  create a daily entry
-                </span>
-              </div>
+            {/* <div> */}
 
-              {/* <img
-                src="./screenshot-light.png"
-                className="w-full object-cover max-w-5xl border border-light-divider rounded-t-2xl  shadow-lg max-lg:rounded-t-lg max-md:rounded-md"
-              /> */}
+            <div className="flex flex-col text-center items-center pt-[calc(42px+24px)]">
+              <h1 className="text-5xl text-light-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
+                {/* Storyboard */}
+                Jot. Generate. Publish.
+              </h1>
+              <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm:text-base max-w-3xl max-md:max-w-xl">
+                {/* Jot. Generate. Publish. */}
+                create a daily entry
+              </span>
+            </div>
 
+            <div className="relative max-w-5xl">
               <video
                 autoPlay
                 loop
                 muted
                 playsInline
+                ref={demoVideoRef}
                 src="./landing-demo.mp4"
                 poster="./screenshot-storyboard.png"
-                className="w-full object-cover max-w-6xl rounded-t-2xl shadow-[12px_32px_60px_rgb(0,0,0,0.5)]"
+                className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.7)] bg-dark-background-primary rounded-t-2xl"
+                onPlay={() => {
+                  setIsDemoVideoPlaying(true);
+                }}
+                onPause={() => {
+                  setIsDemoVideoPlaying(false);
+                }}
               />
+
+              {/* play/pause button row with gradient overlay */}
+              <div className="absolute bottom-0 right-0 flex flex-row w-full justify-end gap-2 px-4 pb-4 pt-6 bg-gradient-to-t from-[rgb(0,0,0,0.7)] to-transparent">
+                <button
+                  onClick={() => {
+                    toggleVideoPlayState();
+                  }}
+                  className="flex items-center justify-center w-10 h-10 rounded-full border border-neutral-400 text-white hover:scale-105 active:scale-100 transition-all"
+                >
+                  {isDemoVidePlaying ? (
+                    <HiPause />
+                  ) : (
+                    <div className="pl-[2px]">
+                      <HiPlay />
+                    </div>
+                  )}
+                </button>
+              </div>
             </div>
+            {/* </div> */}
           </div>
 
           <div
             id="section-3"
-            className="flex flex-col relative w-full bg-[rgb(13,13,13)] py-[15vh] h-screen max-lg:h-auto items-center justify-start gap-16"
+            className="flex flex-col w-full bg-[rgb(13,13,15)] max-lg:h-auto items-center justify-start gap-[calc(42px+24px)]  py-[calc(42px+24px)]"
           >
             {/* team header text */}
             <div className="flex flex-col text-center items-center">
-              <h1 className="text-5xl text-dark-text-primary font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
+              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
                 Our Team
               </h1>
-              <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm::text-base max-w-3xl max-md:max-w-xl">
+              <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm:text-base max-w-3xl max-md:max-w-xl">
                 Meet the incredible people behind the scenes :)
               </span>
             </div>
 
-            <div className="flex w-full h-full items-center justify-center px-6">
+            <div className="flex flex-col items-center px-6">
               <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl">
                 {teamMembers.map((member, index) => {
                   return (
                     // member detail
                     <Link
                       key={index}
-                      className="group flex flex-col bg-dark-background-secondary rounded-none overflow-hidden"
+                      className="group flex flex-col bg-dark-background-secondary rounded-lg overflow-hidden"
                       href={member?.twitter_url}
                       target="_blank"
                     >

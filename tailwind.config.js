@@ -14,10 +14,13 @@ module.exports = {
       // tailwind height
       height: {
         'navigationBar': '42px',
-        'withoutNavigationBar': 'calc(100vh - 42px)',
+        'withoutNavigationBar': 'calc(100vh - 42px)', // change number manually if navigation bar height changes
       },
       gridTemplateRows: {
         '12': 'repeat(12, minmax(0, 1fr))',
+      },
+      padding: {
+        'navigationBar': '42px',
       },
       colors: {
         // accent: "#4D9D7D", // green
