@@ -23,14 +23,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       <div
         className={clsx(
-          "w-full h-full",
+          "w-full h-full duration-300",
           { "flex flex-col": !auth?.currentUser }, // unauthenticated
           {
-            "grid grid-cols-[80px_auto] duration-300":
+            "grid grid-cols-[80px_auto]":
               auth?.currentUser && !showFullSidebar,
           }, // authenticated, hide sidebar
           {
-            "grid grid-cols-[250px_auto] duration-300":
+            "grid grid-cols-[250px_auto]":
               auth?.currentUser && showFullSidebar,
           } // authenticated, show sidebar
         )}
@@ -40,9 +40,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-between border-r border-r-light-divider dark:border-r-dark-divider">
             <div
               className={clsx(
-                "flex h-navigationBar w-full items-center p-3",
-                { "justify-end duration-300" : showFullSidebar },
-                { "justify-center duration-300" : !showFullSidebar }
+                "flex h-navigationBar w-full items-center p-3 duration-300",
+                { "justify-end" : showFullSidebar },
+                { "justify-center" : !showFullSidebar }
               )}
             >
               <button
@@ -59,15 +59,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </button>
             </div>
 
-            <button
-              onClick={() => {
-                toggleColorScheme();
-              }}
-              className="flex flex-row justify-between p-3 items-center border-t border-t-light-divider dark:border-t-dark-divider hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary w-full"
-            >
-              <span className="text-sm">Dark Mode</span>
-              <FiMoreHorizontal className="text-light-text-secondary dark:text-dark-text-secondary" />
-            </button>
           </div>
         )}
 

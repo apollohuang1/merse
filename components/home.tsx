@@ -4,28 +4,34 @@ import Head from "next/head";
 import { useAppSelector } from "@/redux-store/hooks";
 import ProfileMenu from "./wrapper/profile-menu";
 import clsx from "clsx";
-import { FiBell, FiChevronLeft, FiChevronRight, FiSearch } from "react-icons/fi";
+import {
+  FiBell,
+  FiChevronLeft,
+  FiChevronRight,
+  FiSearch,
+  FiSun,
+} from "react-icons/fi";
 import MerseLogo from "./svgs/merse-logo";
+import useColorScheme from "@/hooks/useColorScheme";
 
 type Props = {};
 
 const Home = (props: Props) => {
   const auth = useAppSelector((state) => state.auth);
 
+  const { toggleColorScheme } = useColorScheme();
+
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center">
       <div className="grid grid-cols-3 h-navigationBar w-full px-6 items-center">
-
         <div className="flex flex-row gap-3 items-center">
-
           <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary">
             <FiChevronLeft className="w-5 h-5" />
           </button>
 
           <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary">
-            <FiChevronRight className="w-5 h-5"  />
+            <FiChevronRight className="w-5 h-5" />
           </button>
-
         </div>
 
         {/* search bar */}
@@ -40,6 +46,16 @@ const Home = (props: Props) => {
 
         <div className="flex flex-row w-full h-8 justify-end items-center">
           <div className="flex flex-row gap-3 items-center justify-center">
+
+            <button
+              onClick={() => {
+                toggleColorScheme();
+              }}
+              className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-8 h-8 items-center justify-center rounded-full hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+            >
+              <FiSun className="w-5 h-5" />
+            </button>
+
             {/* <FiBell /> */}
             <ProfileMenu>
               <button className="flex items-center justify-center">
