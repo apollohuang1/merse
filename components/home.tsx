@@ -6,14 +6,10 @@ type Props = {};
 
 const Home = (props: Props) => {
   return (
-    <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center">
-
-      <NavigationBar isAuthenticated={true} />
-
-      <div className="h-[1000vh] w-full max-w-5xl">
-        
+    <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center h-screen bg-lime-500">
+      <div className="flex flex-col items-center justify-center h-navigationBar w-full bg-red-500">
+        {/* search bar */}
       </div>
-
     </div>
   );
 };

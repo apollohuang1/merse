@@ -129,9 +129,9 @@ const NavigationBar: React.FC<{
       >
         <div
           className={clsx(
-            "text-white py-2 max-w-5xl w-full",
+            "text-white py-2 w-full",
             {
-              "grid grid-cols-3 h-landingNavigationBar max-md:flex max-md:flex-row max-md:justify-between":
+              "grid grid-cols-3 max-w-5xl h-landingNavigationBar max-md:flex max-md:flex-row max-md:justify-between":
                 !isAuthenticated,
             },
             {
