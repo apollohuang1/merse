@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import Modal from "./modal";
 import { FcGoogle } from "react-icons/fc";
 import useColorScheme from "@/hooks/useColorScheme";
+import ProfileMenu from "./wrapper/profile-menu";
 
 const NavigationBar: React.FC<{
   isAuthenticated: boolean;
@@ -47,30 +48,6 @@ const NavigationBar: React.FC<{
       });
     }
   };
-
-  const menuItems = [
-    {
-      icon: <FiUser />,
-      label: "Profile",
-      onClick: () => {
-        console.log("Profile");
-      },
-    },
-    {
-      icon: <FiBookOpen />,
-      label: "Create Comic",
-      onClick: () => {
-        window.location.href = "/create/styles";
-      },
-    },
-    {
-      icon: <FiLogOut />,
-      label: "Logout",
-      onClick: () => {
-        logOut();
-      },
-    },
-  ];
 
   const homeContents: any[] = [
     {
@@ -199,94 +176,41 @@ const NavigationBar: React.FC<{
             )}
 
             {auth?.currentUser ? (
-              <Menu>
-                <MenuButton>
-                  <button
-                    onClick={() => {
-                      // logOut();
-                    }}
-                    className="flex flex-row gap-3"
+              <ProfileMenu>
+                <button
+                  onClick={() => {
+                    // logOut();
+                  }}
+                  className="flex flex-row gap-3"
+                >
+                  <div
+                    className={clsx(
+                      "relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden",
+                      { "w-7 h-7": isAuthenticated }
+                    )}
                   >
-                    <div
-                      className={clsx(
-                        "relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden",
-                        { "w-7 h-7" : isAuthenticated }
-                      )}
+                    <svg
+                      className="absolute h-full w-full text-gray-300"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      <svg
-                        className="absolute h-full w-full text-gray-300"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                      </svg>
+                      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
 
-                      <img
-                        src={auth?.currentUser?.profile_image_url}
-                        className={"absolute w-full h-full rounded-full"}
-                        alt="user profile image"
-                        onError={(e) => {
-                          e.currentTarget.src =
-                            "https://media.discordapp.net/attachments/1090027780525273153/1095187382095061085/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_fe116faf-39b2-46d2-8dbe-b46f9b0b4ef1.png?width=686&height=686";
-                        }}
-                      />
-                    </div>
+                    <img
+                      src={auth?.currentUser?.profile_image_url}
+                      className={"absolute w-full h-full rounded-full"}
+                      alt="user profile image"
+                      onError={(e) => {
+                        e.currentTarget.src =
+                          "https://media.discordapp.net/attachments/1090027780525273153/1095187382095061085/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_fe116faf-39b2-46d2-8dbe-b46f9b0b4ef1.png?width=686&height=686";
+                      }}
+                    />
+                  </div>
 
-                    {/* <span>{auth?.currentUser?.name ?? "Unknown"}</span> */}
-                  </button>
-                </MenuButton>
-
-                <MenuList className="bg-light-background-primary dark:bg-dark-background-secondary w-48 rounded-lg drop-shadow-2xl border border-light-divider dark:border-dark-divider">
-                  {menuItems.map((item, index) => {
-                    return (
-                      <MenuItem
-                        onClick={item.onClick}
-                        key={index}
-                        className={clsx(
-                          "flex flex-row justify-between px-3 h-12 transition-all duration-[275ms]",
-                          {
-                            "focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider":
-                              index !== menuItems.length - 1,
-                          },
-                          { "rounded-t-lg": index === 0 },
-                          {
-                            "rounded-b-lg focus:bg-red-500 focus:bg-opacity-30":
-                              index === menuItems.length - 1,
-                          }
-                        )}
-                      >
-                        <div
-                          className={clsx(
-                            "flex flex-row gap-3 items-center",
-                            {
-                              "text-light-red dark:text-dark-red":
-                                item.label === "Logout",
-                            },
-                            {
-                              "text-light-text-primary dark:text-dark-text-primary":
-                                item.label !== "Logout",
-                            }
-                          )}
-                        >
-                          {item.icon}
-                          <span
-                            className={clsx("text-base font-normal", {
-                              "text-light-text-primary dark:text-dark-text-primary":
-                                item.label !== "Logout",
-                            })}
-                          >
-                            {item.label}
-                          </span>
-                        </div>
-
-                        {item.label !== "Logout" && (
-                          <FiChevronRight className="text-light-text-secondary dark:text-dark-text-secondary w-[18px] h-[18px]" />
-                        )}
-                      </MenuItem>
-                    );
-                  })}
-                </MenuList>
-              </Menu>
+                  {/* <span>{auth?.currentUser?.name ?? "Unknown"}</span> */}
+                </button>
+              </ProfileMenu>
             ) : (
               <button
                 onClick={() => {
