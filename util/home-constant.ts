@@ -1,10 +1,10 @@
 
 
-interface Artist {
+interface SampleArtist {
   name: string;
   profile_image_url: string;
 }
-export const sampleArtists: Artist[] = [
+export const sampleArtists: SampleArtist[] = [
   {
     name: "Yuri",
     profile_image_url: "https://yt3.googleusercontent.com/y8A5f7w0RIwm7xfvWnBoNbz8FPTS7olwGszIEngav5ILFkg70Zg4E7fR57ke2_XIp0kmhtd2l-Q=s900-c-k-c0x00ffffff-no-rj"
@@ -33,4 +33,15 @@ export const sampleArtists: Artist[] = [
     name: "Stable Difffusion",
     profile_image_url: "https://pbs.twimg.com/profile_images/1634515185300807682/FTOEZDkp_400x400.jpg",
   }
+]
+
+interface SampleEpisode {
+  image_url: string
+}
+
+export const sampleEdisodes = [
+  {
+    image_url: "https://i.pinimg.com/736x/42/1e/93/421e93f345c687a24edcc3b4d4a052a3.jpg"
+  },
+  
 ]

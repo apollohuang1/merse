@@ -14,6 +14,7 @@ import {
 import MerseLogo from "./svgs/merse-logo";
 import useColorScheme from "@/hooks/useColorScheme";
 import { sampleArtists } from "@/util/home-constant";
+import { storyboardSamples } from "@/util/create-constants";
 
 type Props = {};
 
@@ -25,7 +26,7 @@ const Home = (props: Props) => {
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
       {/* top navigation bar */}
-      <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-[rgb(0,0,0,0.8)] backdrop-blur-xl z-50">
+      <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-white dark:bg-black bg-opacity-80 backdrop-blur-xl z-50">
         {/* arrow left and right */}
         <div className="flex flex-row gap-3 items-center">
           <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary">
@@ -116,8 +117,7 @@ const Home = (props: Props) => {
             })}
           </div>
 
-          <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.55)] to-transparent w-full items-end justify-end p-6">
-
+          <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.6)] to-transparent w-full items-end justify-end p-6">
             <div className="flex flex-row gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
               <img
                 src={sampleArtists[1].profile_image_url}
@@ -128,21 +128,41 @@ const Home = (props: Props) => {
           </div>
         </div>
 
-        <div className="flex flex-row w-full px-6 gap-6 items-center justify-between overflow-x-auto">
-          { sampleArtists.map((artist, index) => {
+        <div className="flex flex-row w-full px-6 gap-6 items-center justify-between overflow-auto">
+          {storyboardSamples.map((artist, index) => {
             return (
-              <button key={index} className="relative w-60 bg-red-500 aspect-[3/4] min-w-[240px] rounded-lg overflow-clip">
-                <img
-                  src={artist?.profile_image_url}
-                  className="inset-0 w-full h-full object-cover"
-                />
+              <div key={index}>
+                <button className="relative aspect-video min-w-[25vw] h-[30vh] rounded-lg overflow-clip">
+                  <img
+                    src={artist?.artwork.url}
+                    className="inset-0 w-full h-full object-cover"
+                  />
 
-                {/* overlay */}
-                <div className="absolute flex items-end justify-center bottom-0 bg-gradient-to-t from-[rgb(0,0,0,0.7)] to-transparent w-full h-1/3 p-5">
-                  <span className="text-white text-lg">{artist?.name}</span>
+                  {/* overlay */}
+                  <div className="absolute flex flex-col items-start justify-end bottom-0 bg-gradient-to-t from-[rgb(0,0,0,0.75)] to-transparent w-full h-1/2 p-4 text-lg" />
+                </button>
+
+                <div className="flex flex-row">
+                  <div className="text-left py-2">
+                    <span className="text-light-text-primary dark:text-dark-text-primary text-xl font-bold">
+                      Episode {index + 1}
+                    </span>
+                    <span className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-2 w-4/6">
+                      {artist.description}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-row flex-shrink-0 gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
+                    <img
+                      src={sampleArtists[1].profile_image_url}
+                      className="w-6 h-6 rounded-full"
+                    />
+                    <span className="text-white">Puuung</span>
+                  </div>
+
                 </div>
-              </button>
-            )
+              </div>
+            );
           })}
         </div>
 
