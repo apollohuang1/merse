@@ -3,7 +3,16 @@ import NavigationBar from "./navigation-bar";
 import { useAppSelector } from "@/redux-store/hooks";
 import clsx from "clsx";
 import useColorScheme from "@/hooks/useColorScheme";
-import { FiChevronsLeft, FiFeather, FiHome, FiMenu, FiMoreHorizontal, FiSearch, FiSidebar } from "react-icons/fi";
+import {
+  FiChevronsLeft,
+  FiFeather,
+  FiHome,
+  FiMenu,
+  FiMoreHorizontal,
+  FiSearch,
+  FiSidebar,
+} from "react-icons/fi";
+import Link from "next/link";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // redux
@@ -19,7 +28,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center h-screen w-screen">
-
       <div
         className={clsx(
           "w-full h-full",
@@ -37,13 +45,12 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         {/* left side bar */}
         {auth?.currentUser && (
           <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r border-r-light-divider dark:border-dark-divider">
-
             {/* sidebar show toggle button */}
             <div
               className={clsx(
                 "flex h-navigationBar w-full items-center p-3 duration-300",
-                { "justify-end" : showFullSidebar },
-                { "justify-center" : !showFullSidebar }
+                { "justify-end": showFullSidebar },
+                { "justify-center": !showFullSidebar }
               )}
             >
               <button
@@ -52,7 +59,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 }}
                 className="flex w-10 h-10 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary items-center justify-center rounded-full"
               >
-                { showFullSidebar ? (
+                {showFullSidebar ? (
                   <FiChevronsLeft className="text-light-text-secondary dark:text-dark-text-secondary w-5 h-5" />
                 ) : (
                   <FiMenu className="text-light-text-primary dark:text-dark-text-primary w-5 h-5" />
@@ -64,42 +71,52 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
             <div className="flex flex-col w-full p-3 gap-2">
               {/* home */}
-              <SidebarMenuButton icon={<FiHome />} label="Home" isFull={showFullSidebar} />
+              <SidebarMenuButton
+                icon={<FiHome />}
+                label="Home"
+                href="/"
+                isFull={showFullSidebar}
+              />
 
               {/* subscription */}
-              <SidebarMenuButton icon={<FiFeather />} label="Subscription" isFull={showFullSidebar} />
+              <SidebarMenuButton
+                icon={<FiFeather />}
+                label="Subscription"
+                href="/"
+                isFull={showFullSidebar}
+              />
 
               {/* create */}
             </div>
-
           </div>
         )}
 
-        <div className="h-screen w-full overflow-auto">
-          { children }
-        </div>
-
+        <div className="h-screen w-full overflow-auto">{children}</div>
       </div>
     </div>
   );
 };
 
-const SidebarMenuButton: React.FC<{ icon: React.ReactNode; label: string, isFull: boolean }> = ({
-  icon,
-  label,
-  isFull
-}) => {
+const SidebarMenuButton: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+  href: string;
+  isFull: boolean;
+}> = ({ icon, label, href, isFull }) => {
   return (
-    <button className={clsx(
-      "flex items-center gap-3 px-6 w-full h-12 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary transition-all rounded-xl",
-      { "flex-col justify-center" : !isFull },
-      { "flex-row justify-start" : isFull }
-    )}>
-      { icon }
-      { isFull && <span>{ label }</span> }
-    </button>
+    <Link href={href}>
+      <button
+        className={clsx(
+          "flex items-center gap-3 px-6 w-full h-12 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary transition-all rounded-xl",
+          { "flex-col justify-center": !isFull },
+          { "flex-row justify-start": isFull }
+        )}
+      >
+        {icon}
+        {isFull && <span>{label}</span>}
+      </button>
+    </Link>
   );
 };
-
 
 export default HomeLayout;
