@@ -37,9 +37,8 @@ const useCreateEntry = () => {
           "Content-Type": "application/json",
         },
       });
-
       console.log("Successfully saved entry");
-
+      
       console.log(response);
     } catch (error: any) {
       console.log(`Failed to save entry, message: ${error?.message}`);
@@ -81,17 +80,14 @@ const useCreateEntry = () => {
     try {
       const openaiApiKey = process.env.OPENAI_API_KEY;
       //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
-
       const control_prompt =
         'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
         input;
-
       const requestData: CreateChatCompletionRequest = {
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: control_prompt }],
         temperature: 0.7,
       };
-
       const openAIResponse: AxiosResponse<CreateChatCompletionResponse> =
         await axios({
           method: "POST",
@@ -102,8 +98,6 @@ const useCreateEntry = () => {
             Authorization: `Bearer ${openaiApiKey}`,
           },
         });
-
-      // console.log(response.data);
       const generatedText = openAIResponse?.data?.choices[0]?.message?.content;
 
       // guard if generated text is null
@@ -143,49 +137,27 @@ const useCreateEntry = () => {
       return null;
     }
   };
-
-  //new--------------------------------------
-  //stable diffusion text-to-image API
-  //change this later such that it iterates through EACH panel
   const createImageFromText = async (input: string) => {
     let base_64 = "";
     let dataUrl = "";
     try {
       // stable diffusion
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
-
-      // stability api
       const engineId = "stable-diffusion-v1-5";
       const apiHost = process.env.API_HOST ?? "https://api.stability.ai";
       const apiKey = process.env.STABILITY_API_KEY;
 
-      // guard errors
-
       if (!apiKey) {
         throw new Error("Missing Stability API key.");
       }
-
       if (!input || input === "") {
         throw new Error("Input text is null");
       }
-
       if (entry?.style_reference?.artist === null) {
         throw new Error("Entry style reference is null");
       }
-
       // final input prompt
       const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
-
-      // Response of regular Stable Diffusion API
-      // const response = await axios({
-      //   method: "POST",
-      //   url: "/api/text2img",
-      //   data: {
-      //     prompt: formattedPromptWithStyle,
-      //   },
-      //   headers: { "Content-Type": "application/json" },
-      // });
-
       // Response of NEW Stable Diffusion XL
       const sdxlResponse = await axios({
         method: "POST",
@@ -210,38 +182,24 @@ const useCreateEntry = () => {
           Authorization: `Bearer ${apiKey}`,
         },
       });
-
       const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
-
       if (artifactsResponse) {
         const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
-      
         // Check if artifacts is not null or undefined
         if (artifacts) {
-          const length = artifacts.length; // Get the length of the artifacts array
-          // Loop through artifacts using a for loop
+          const length = artifacts.length; 
           for (let i = 0; i < length + 1; i++) {
-            const image = artifacts[i]; // Get the current artifact
-            // Perform desired action on the current artifact
-            // You can access properties of the artifact using image.propertyName
-            // For example: image.id, image.name, etc.
+            const image = artifacts[i];
           }
         }
       }
-
       console.log("SDXL RESPONSE:");
       console.log(sdxlResponse.data);
-
-      //new-----
-
-      /* base_64 = sdxlResponse?.data?.artifacts[0].base64;*/
-      //console.log(base_64)
 
       base_64 = sdxlResponse?.data?.artifacts[0].base64;
       const image_data = Buffer.from(base_64, 'base64');      
       dataUrl = `data:image/png;base64,${image_data.toString('base64')}`;
       //console.log(dataUrl);
-      //new----
       return dataUrl;
 
       interface GenerationResponse {
@@ -251,8 +209,6 @@ const useCreateEntry = () => {
           finishReason: string;
         }>;
       }
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-
     } catch (error: any) {
       console.log(error);
       console.log("Failed to generate image:", error?.message);
@@ -262,7 +218,6 @@ const useCreateEntry = () => {
     const { content } = tiptapJSON;
     let text = "";
     const length = content?.length || 0;
-    
     content?.forEach((node: any) => {
       if (node.type === "text") {
         text += node.text;
@@ -273,13 +228,8 @@ const useCreateEntry = () => {
         text += convertTiptapJSONToText(node);
       }
     });
-
     return text;
   };
-
-  // new--------------------------------------------------------
-  // Strip scenes out
-  // Strip scenes out
   const stripText = (input: string) => {
     const regex = /\(([^)]+)\)/g;
     const paragraphs = input.split(/\r?\n/);
@@ -300,7 +250,6 @@ const useCreateEntry = () => {
     }
     return matches.join("\n");
   };
-
   return {
     isGeneratingStoryboard,
     generateStoryboard,
