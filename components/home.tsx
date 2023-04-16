@@ -132,7 +132,7 @@ const Home = (props: Props) => {
           {storyboardSamples.map((artist, index) => {
             return (
               <div key={index}>
-                <button className="relative aspect-video min-w-[25vw] h-[30vh] rounded-lg overflow-clip">
+                <button className="relative aspect-video min-w-[18vw] h-[24vh] rounded-lg overflow-clip">
                   <img
                     src={artist?.artwork.url}
                     className="inset-0 w-full h-full object-cover"
