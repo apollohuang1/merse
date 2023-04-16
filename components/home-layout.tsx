@@ -70,7 +70,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
             {/* side menus */}
 
-            <div className="flex flex-col w-full p-3 gap-2">
+            <div className="flex flex-col w-full p-3 gap-2 items-center">
               {/* home */}
               <SidebarMenuButton
                 icon={<FiHome />}
@@ -106,14 +106,14 @@ const SidebarMenuButton: React.FC<{
   variant?: "normal" | "solid";
 }> = ({ icon, label, href, isFull, variant="normal" }) => {
   return (
-    <Link href={href}>
+    <Link href={href} className="flex w-full h-full items-center justify-center">
       <button
         className={clsx(
-          "flex items-center gap-3 px-6 w-full h-12 transition-all rounded-full",
+          "flex items-center gap-3 w-full transition-all rounded-full",
           { "bg-accent hover:bg-emerald-600": variant === "solid" },
-          { "hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary": variant === "normal" },
-          { "flex-col justify-center": !isFull },
-          { "flex-row justify-start": isFull }
+          { "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary": variant === "normal" },
+          { "flex-col justify-center h-12 w-12": !isFull },
+          { "flex-row justify-start px-6 h-12": isFull }
         )}
       >
         {icon}
