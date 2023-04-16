@@ -24,6 +24,7 @@ const Home = (props: Props) => {
 
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
+
       {/* top navigation bar */}
       <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary">
         {/* arrow left and right */}
@@ -75,36 +76,62 @@ const Home = (props: Props) => {
       </div>
 
       {/* main content */}
-      <div className="flex flex-col w-full h-full p-6 gap-6">
+      <div className="flex flex-col w-full h-full p-6 gap-6 items-center">
 
-        <div className="flex flex-row gap-5 overflow-auto py-3">
+        <div className="flex flex-row gap-5 overflow-x-auto py-3 w-full max-w-6xl">
           {sampleArtists.map((artist, index) => {
             return (
               <button
                 key={index}
-                className="flex flex-col items-center gap-2"
+                className="flex flex-col items-center gap-2 w-20 min-w-[80px]"
               >
                 <img
                   src={artist?.profile_image_url}
-                  className={"w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"}
+                  className={
+                    "w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"
+                  }
                   alt="profile image"
                 />
 
                 <span className="line-clamp-1 text-sm">{artist?.name}</span>
-
               </button>
             );
           })}
         </div>
 
         {/* <div className="rounded-xl aspect-video overflow-clip"> */}
-          <img
-            src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
-            className="w-full h-full object-cover rounded-xl shadow-[4px_24px_60px_rgb(0,0,0,0.7)]"
-          />
+        {/* <img
+          src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
+          className="w-full h-96 object-cover rounded-xl shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
+        /> */}
         {/* </div> */}
 
 
+        {/* promoted banner */}
+        <div className="flex relative w-full h-[480px] overflow-clip rounded-xl max-w-6xl">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            // ref={demoVideoRef}
+            src="./puuung.mp4"
+            // poster="./screenshot-storyboard.png"
+            className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
+          />
+
+          <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.55)] to-transparent w-full items-end p-6">
+
+            <div className="flex flex-row gap-2 items-center backdrop-blur-xl bg-[rgb(0,0,0,0.3)] pl-3 pr-4 py-2 rounded-full">
+              <img
+                src={sampleArtists[1].profile_image_url}
+                className="w-7 h-7 rounded-full"
+              />
+              <span className="text-white">Puuung</span>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   );
