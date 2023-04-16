@@ -9,6 +9,7 @@ import {
   FiHome,
   FiMenu,
   FiMoreHorizontal,
+  FiPlus,
   FiSearch,
   FiSidebar,
 } from "react-icons/fi";
@@ -85,9 +86,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 href="/"
                 isFull={showFullSidebar}
               />
-
-              {/* create */}
             </div>
+
+            {/* create */}
           </div>
         )}
 
@@ -102,12 +103,15 @@ const SidebarMenuButton: React.FC<{
   label: string;
   href: string;
   isFull: boolean;
-}> = ({ icon, label, href, isFull }) => {
+  variant?: "normal" | "solid";
+}> = ({ icon, label, href, isFull, variant="normal" }) => {
   return (
     <Link href={href}>
       <button
         className={clsx(
-          "flex items-center gap-3 px-6 w-full h-12 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary transition-all rounded-xl",
+          "flex items-center gap-3 px-6 w-full h-12 transition-all rounded-full",
+          { "bg-accent hover:bg-emerald-600": variant === "solid" },
+          { "hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary": variant === "normal" },
           { "flex-col justify-center": !isFull },
           { "flex-row justify-start": isFull }
         )}

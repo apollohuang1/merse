@@ -166,7 +166,7 @@ const Home = (props: Props) => {
           })}
         </div>
 
-        <div className="w-full h-[10000vh]"></div>
+        <div className="w-full h-[50vh]"></div>
       </div>
     </div>
   );
