@@ -25,7 +25,7 @@ const Home = (props: Props) => {
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
       {/* top navigation bar */}
-      <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary">
+      <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-[rgb(0,0,0,0.8)] backdrop-blur-xl z-50">
         {/* arrow left and right */}
         <div className="flex flex-row gap-3 items-center">
           <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary">
@@ -75,30 +75,9 @@ const Home = (props: Props) => {
       </div>
 
       {/* main content */}
-      <div className="flex flex-col w-full h-full p-6 gap-6 items-center">
-        <div className="flex flex-row gap-5 overflow-x-auto py-3 w-full max-w-6xl">
-          {sampleArtists.map((artist, index) => {
-            return (
-              <button
-                key={index}
-                className="flex flex-col items-center gap-2 w-20 min-w-[80px]"
-              >
-                <img
-                  src={artist?.profile_image_url}
-                  className={
-                    "w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"
-                  }
-                  alt="profile image"
-                />
-
-                <span className="line-clamp-1 text-sm">{artist?.name}</span>
-              </button>
-            );
-          })}
-        </div>
-
+      <div className="flex flex-col w-full h-full gap-6 items-center">
         {/* promoted banner */}
-        <div className="flex relative w-full h-[480px] overflow-clip rounded-xl max-w-6xl">
+        <div className="flex relative w-full h-[60vh] overflow-clip">
           <img
             src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
             className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
@@ -115,16 +94,59 @@ const Home = (props: Props) => {
             className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
           /> */}
 
-          <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.55)] to-transparent w-full items-end p-6">
-            <div className="flex flex-row gap-2 items-center backdrop-blur-xl bg-[rgb(0,0,0,0.3)] pl-3 pr-4 py-2 rounded-full">
+          {/* artist updates */}
+          <div className="absolute flex flex-row gap-5 overflow-x-auto p-6 w-full bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent">
+            {sampleArtists.map((artist, index) => {
+              return (
+                <button
+                  key={index}
+                  className="flex flex-col items-center gap-2 w-20 min-w-[80px]"
+                >
+                  <img
+                    src={artist?.profile_image_url}
+                    className={
+                      "w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"
+                    }
+                    alt="profile image"
+                  />
+
+                  <span className="line-clamp-1 text-sm">{artist?.name}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.55)] to-transparent w-full items-end justify-end p-6">
+
+            <div className="flex flex-row gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
               <img
                 src={sampleArtists[1].profile_image_url}
-                className="w-7 h-7 rounded-full"
+                className="w-6 h-6 rounded-full"
               />
               <span className="text-white">Puuung</span>
             </div>
           </div>
         </div>
+
+        <div className="flex flex-row w-full px-6 gap-6 items-center justify-between overflow-x-auto">
+          { sampleArtists.map((artist, index) => {
+            return (
+              <button key={index} className="relative w-60 bg-red-500 aspect-[3/4] min-w-[240px] rounded-lg overflow-clip">
+                <img
+                  src={artist?.profile_image_url}
+                  className="inset-0 w-full h-full object-cover"
+                />
+
+                {/* overlay */}
+                <div className="absolute flex items-end justify-center bottom-0 bg-gradient-to-t from-[rgb(0,0,0,0.7)] to-transparent w-full h-1/3 p-5">
+                  <span className="text-white text-lg">{artist?.name}</span>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+
+        <div className="w-full h-[10000vh]"></div>
       </div>
     </div>
   );
