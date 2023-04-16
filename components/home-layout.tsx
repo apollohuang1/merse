@@ -82,8 +82,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               {/* subscription */}
               <SidebarMenuButton
                 icon={<FiFeather />}
-                label="Subscription"
-                href="/"
+                label="Subscriptions"
+                href="/subscriptions"
                 isFull={showFullSidebar}
               />
             </div>
