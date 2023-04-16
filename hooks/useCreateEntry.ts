@@ -207,6 +207,31 @@ const useCreateEntry = () => {
         },
       });
 
+      const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
+      const base_64 = sdxlResponse?.data?.artifacts[0].base64
+      
+      //console.log(base_64)
+      if (artifactsResponse) {
+        const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
+      
+        // Check if artifacts is not null or undefined
+        if (artifacts) {
+          const length = artifacts.length; // Get the length of the artifacts array
+          console.log(length)
+      
+          // Loop through artifacts using a for loop
+          for (let i = 0; i < length + 1; i++) {
+            const image = artifacts[i]; // Get the current artifact
+            console.log(image)
+            const index = i; // Get the current index
+      
+            // Perform desired action on the current artifact
+            // You can access properties of the artifact using image.propertyName
+            // For example: image.id, image.name, etc.
+          }
+        }
+      }
+
       console.log("SDXL RESPONSE:");
       console.log(sdxlResponse.data);
 
@@ -216,26 +241,6 @@ const useCreateEntry = () => {
           seed: number;
           finishReason: string;
         }>;
-      }
-
-      const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
-      if (artifactsResponse) {
-        const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
-      
-        // Check if artifacts is not null or undefined
-        if (artifacts) {
-          const length = artifacts.length; // Get the length of the artifacts array
-      
-          // Loop through artifacts using a for loop
-          for (let i = 0; i < length; i++) {
-            const image = artifacts[i]; // Get the current artifact
-            const index = i; // Get the current index
-      
-            // Perform desired action on the current artifact
-            // You can access properties of the artifact using image.propertyName
-            // For example: image.id, image.name, etc.
-          }
-        }
       }
       // save base64 image data to backend
 
