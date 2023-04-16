@@ -29,11 +29,11 @@ const Home = (props: Props) => {
       <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-white dark:bg-black dark:bg-opacity-80 backdrop-blur-xl z-50">
         {/* arrow left and right */}
         <div className="flex flex-row gap-3 items-center">
-          <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary">
+          <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary">
             <FiChevronLeft className="w-5 h-5" />
           </button>
 
-          <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary">
+          <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary">
             <FiChevronRight className="w-5 h-5" />
           </button>
         </div>
@@ -53,7 +53,7 @@ const Home = (props: Props) => {
             onClick={() => {
               toggleColorScheme();
             }}
-            className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-8 h-8 items-center justify-center rounded-full hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+            className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-8 h-8 items-center justify-center rounded-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
           >
             <FiSun className="w-5 h-5" />
           </button>
