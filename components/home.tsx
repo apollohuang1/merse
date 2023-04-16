@@ -26,7 +26,7 @@ const Home = (props: Props) => {
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
       {/* top navigation bar */}
-      <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-white dark:bg-black bg-opacity-80 backdrop-blur-xl z-50">
+      <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-white dark:bg-black dark:bg-opacity-80 backdrop-blur-xl z-50">
         {/* arrow left and right */}
         <div className="flex flex-row gap-3 items-center">
           <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary">
@@ -120,10 +120,10 @@ const Home = (props: Props) => {
           <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.6)] to-transparent w-full items-end justify-end p-6">
             <div className="flex flex-row gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
               <img
-                src={sampleArtists[1].profile_image_url}
-                className="w-6 h-6 rounded-full"
+                src={"https://helios-i.mashable.com/imagery/articles/01c9yrWTh1c0xeucePXOaZF/hero-image.fill.size_1200x900.v1623390103.jpg"}
+                className="w-6 h-6 object-cover rounded-full border border-light-divider dark:border-dark-divider"
               />
-              <span className="text-white">Puuung</span>
+              <span className="text-white">The Last Of Us</span>
             </div>
           </div>
         </div>

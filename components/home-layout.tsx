@@ -112,7 +112,7 @@ const SidebarMenuButton: React.FC<{
           "flex items-center gap-3 w-full transition-all rounded-full",
           { "bg-accent hover:bg-emerald-600": variant === "solid" },
           { "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary": variant === "normal" },
-          { "flex-col justify-center h-12 w-12": !isFull },
+          { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
           { "flex-row justify-start px-6 h-12": isFull }
         )}
       >
