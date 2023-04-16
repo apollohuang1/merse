@@ -40,7 +40,7 @@ export default function RootLayout({
   useEffect(() => {
     reloadCurrentUser()
       .then((user: any) => {
-        console.log("reloadCurrentUser");
+        // console.log("reloadCurrentUser");
         dispatch(setUserId(user?._id));
       })
       .catch((err) => {
@@ -70,8 +70,8 @@ export default function RootLayout({
             <LeftSideBar />
           </div>
 
-          {/* main container */}
           {children}
+
         </div>
       </body>
     </html>

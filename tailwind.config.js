@@ -15,7 +15,8 @@ module.exports = {
       height: {
         'landingNavigationBar': '42px',
         'navigationBar': '56px',
-        'withoutNavigationBar': 'calc(100vh - 42px)', // change number manually if navigation bar height changes
+        'withoutNavigationBarLanding': 'calc(100vh - 42px)', // change number manually if navigation bar height changes
+        'withoutNavigationBar': 'calc(100vh - 56px)', // change number manually if navigation bar height changes
       },
       gridTemplateRows: {
         '12': 'repeat(12, minmax(0, 1fr))',

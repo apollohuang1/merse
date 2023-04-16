@@ -22,8 +22,10 @@ const Home = (props: Props) => {
   const { toggleColorScheme } = useColorScheme();
 
   return (
-    <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center">
-      <div className="grid grid-cols-3 h-navigationBar w-full px-6 items-center">
+    <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
+
+      {/* top navigation bar */}
+      <div className="grid grid-cols-3 h-navigationBar w-full px-6 items-center sticky top-0 bg-light-background-primary dark:bg-dark-background-primary">
         <div className="flex flex-row gap-3 items-center">
           <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary">
             <FiChevronLeft className="w-5 h-5" />
@@ -73,6 +75,12 @@ const Home = (props: Props) => {
           </div>
         </div>
       </div>
+
+      {/* main content */}
+      <div className="flex flex-col w-full">
+        
+      </div>
+
     </div>
   );
 };

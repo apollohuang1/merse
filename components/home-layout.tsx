@@ -11,7 +11,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const { toggleColorScheme } = useColorScheme();
 
-  const [showFullSidebar, setShowFullSidebar] = React.useState(false);
+  const [showFullSidebar, setShowFullSidebar] = React.useState(true);
 
   const toggleSidebar = () => {
     setShowFullSidebar(!showFullSidebar);
@@ -22,21 +22,21 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       <div
         className={clsx(
-          "w-full h-full duration-300",
+          "w-full h-full",
           { "flex flex-col": !auth?.currentUser }, // unauthenticated
           {
-            "grid grid-cols-[80px_auto]":
+            "grid grid-cols-[80px_auto] duration-300":
               auth?.currentUser && !showFullSidebar,
           }, // authenticated, hide sidebar
           {
-            "grid grid-cols-[250px_auto]":
+            "grid grid-cols-[250px_auto] duration-300":
               auth?.currentUser && showFullSidebar,
           } // authenticated, show sidebar
         )}
       >
         {/* left side bar */}
         {auth?.currentUser && (
-          <div className="flex flex-col w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary items-center justify-start border-r border-r-light-divider dark:border-dark-divider">
+          <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r border-r-light-divider dark:border-dark-divider overflow-hidden">
 
             {/* sidebar show toggle button */}
             <div
@@ -75,7 +75,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         )}
 
-        {children}
+        <div className="h-screen w-full overflow-auto">
+          { children }
+        </div>
+
       </div>
     </div>
   );
@@ -88,7 +91,7 @@ const SidebarMenuButton: React.FC<{ icon: React.ReactNode; label: string, isFull
 }) => {
   return (
     <button className={clsx(
-      "flex items-center gap-3 px-6 w-full h-12 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all rounded-xl",
+      "flex items-center gap-3 px-6 w-full h-12 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary transition-all rounded-xl",
       { "flex-col justify-center" : !isFull },
       { "flex-row justify-start" : isFull }
     )}>
