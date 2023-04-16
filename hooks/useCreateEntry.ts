@@ -146,6 +146,7 @@ const useCreateEntry = () => {
   //stable diffusion text-to-image API
   //change this later such that it iterates through EACH panel
   const createImageFromText = async (input: string) => {
+    let base_64 = "";
     try {
       // stable diffusion
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
@@ -208,8 +209,8 @@ const useCreateEntry = () => {
       });
 
       const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
-      const base_64 = sdxlResponse?.data?.artifacts[0].base64
-      
+      base_64 = sdxlResponse?.data?.artifacts[0].base64
+
       //console.log(base_64)
       if (artifactsResponse) {
         const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
@@ -242,59 +243,14 @@ const useCreateEntry = () => {
           finishReason: string;
         }>;
       }
-      // save base64 image data to backend
-
-      // artifactsResponse.artifacts.forEach((image: any, index: number) => {
-      //   // loop save 
-      // });
-
-
-      // const responseJSON = (await sdxlResponse.json()) as GenerationResponse;
-
-      // sdxlResponse.artifacts.forEach((image: any, index: number) => {
-      //   fs.writeFileSync(
-      //     `./out/v1_txt2img_${index}.png`,
-      //     Buffer.from(image.base64, "base64")
-      //   );
-      // });
-
-      // console.log("Stable Diffusion API Response: ");
-      // console.log(response.data); //4/13: response
-
-      //const image_url = await generateImage(formattedPromptWithStyle); // 4/10
       await new Promise((resolve) => setTimeout(resolve, 5000));
 
-      // const image_url = response.data.output[0]; // 4/10
-      // console.log("Generated image URL:", image_url); // 4/10
-
-      // 4/10 console.log("Stable Diffusion API Response: ");
-      // 4/10 console.log(response.data);
     } catch (error: any) {
       console.log(error);
       console.log("Failed to generate image:", error?.message);
     }
+    return base_64; // 4.15
   };
-  //new--------------------------------------^^
-  // const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
-  //   const { content } = tiptapJSON;
-  //   let text = "";
-  //   const length = content?.length ?? 0; // Use nullish coalescing operator to default to 0 when content is undefined
-
-  //   for (let i = 0; i < length; i++) {
-  //       const node = content?.[i]; // Add null check here
-
-  //       if (node && node.type === "text") { // Add null check here
-  //           text += node.text;
-  //       } else if (node && node.type === "image") { // Add null check here
-  //           // Include the image source as part of the text
-  //           text += `[IMAGE: ${node.attrs?.src}]`; // Add null check for node.attrs here
-  //       } else if (node && node.content) { // Add null check here
-  //           text += convertTiptapJSONToText(node);
-  //       }
-  //   }
-
-  //   return text;
-  // };
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
     let text = "";
@@ -341,10 +297,13 @@ const useCreateEntry = () => {
   return {
     isGeneratingStoryboard,
     generateStoryboard,
+    base_64: '' as string,
     createImageFromText,
     saveEntry,
   };
 };
+
+
 
 export default useCreateEntry;
 
