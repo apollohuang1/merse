@@ -40,7 +40,7 @@ const Home = (props: Props) => {
 
         <div className="flex flex-row gap-3 items-center justify-center">
           {/* search bar */}
-          <div className="group flex flex-row gap-3 px-4 items-center w-80 h-8 border border-light-divider dark:border-dark-divider rounded-full bg-light-background-secondary dark:bg-dark-background-secondary focus-within:ring-1 focus-within:ring-emerald-500 transition-all">
+          <div className="group flex flex-row gap-3 px-4 items-center w-80 h-8 border border-light-divider dark:border-dark-divider rounded-full bg-light-background-secondary dark:bg-dark-background-secondary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden">
             <FiSearch className="text-light-text-secondary dark:text-dark-text-secondary group-focus-within:text-accent" />
             <input
               type="text"
