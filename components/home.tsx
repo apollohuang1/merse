@@ -13,6 +13,7 @@ import {
 } from "react-icons/fi";
 import MerseLogo from "./svgs/merse-logo";
 import useColorScheme from "@/hooks/useColorScheme";
+import { sampleArtists } from "@/util/home-constant";
 
 type Props = {};
 
@@ -74,26 +75,36 @@ const Home = (props: Props) => {
       </div>
 
       {/* main content */}
-      <div className="flex flex-col w-full max-w-5xl h-full py-6">
+      <div className="flex flex-col w-full h-full p-6 gap-6">
+
         <div className="flex flex-row gap-5 overflow-auto py-3">
-          {/* 50 array number */}
-          {Array.from(Array(15).keys()).map((item, index) => {
+          {sampleArtists.map((artist, index) => {
             return (
               <button
                 key={index}
-                className="flex w-20 h-20 aspect-square ring-2 p-1 ring-emerald-500 rounded-full"
+                className="flex flex-col items-center gap-2"
               >
                 <img
-                  src="https://yt3.googleusercontent.com/y8A5f7w0RIwm7xfvWnBoNbz8FPTS7olwGszIEngav5ILFkg70Zg4E7fR57ke2_XIp0kmhtd2l-Q=s900-c-k-c0x00ffffff-no-rj"
-                  className={
-                    "w-full h-full object-cover aspect-square rounded-full"
-                  }
+                  src={artist?.profile_image_url}
+                  className={"w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"}
                   alt="profile image"
                 />
+
+                <span className="line-clamp-1 text-sm">{artist?.name}</span>
+
               </button>
             );
           })}
         </div>
+
+        {/* <div className="rounded-xl aspect-video overflow-clip"> */}
+          <img
+            src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
+            className="w-full h-full object-cover rounded-xl shadow-[4px_24px_60px_rgb(0,0,0,0.7)]"
+          />
+        {/* </div> */}
+
+
       </div>
     </div>
   );

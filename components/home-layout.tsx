@@ -36,7 +36,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       >
         {/* left side bar */}
         {auth?.currentUser && (
-          <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r border-r-light-divider dark:border-dark-divider overflow-hidden">
+          <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r border-r-light-divider dark:border-dark-divider">
 
             {/* sidebar show toggle button */}
             <div
