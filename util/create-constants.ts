@@ -1,3 +1,5 @@
+import createImageFromText from "@/hooks/useCreateEntry";
+
 export type CreateRoute = {
   pathname: string;
   title: string;
@@ -436,21 +438,20 @@ export type StoryboardSample = {
   description?: string;
 };
 
-
 export const storyboardSamples: StoryboardSample[] = [
   {
     artwork: {
       url: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg",
     },
     description:
-      "I lay here in bed with my laptop, my boyfriend by my side, I feel an overwhelming sense of contentment. The world outside our window is a beautiful blur of lights and colors, but it's the warmth of his body next to mine that fills me with happiness. He's hugging his pillow, lost in thought, but I know he's there for me if I need him. It's these small moments of togetherness that make our relationship so special to me. We don't need grand gestures or elaborate plans to be happy - just being here, together, is enough. As I work on my laptop, typing away at the keys, I can feel his gentle breath on my neck, and it fills me with a sense of love and belonging. In his embrace, I feel safe and secure, and I know that no matter what life may throw our way, we'll face it together. Looking out at the city skyline, I am reminded of the vastness and beauty of the world, and how lucky I am to have him by my side to share it all. In this moment, there is nowhere else I'd rather be than here, in bed with my laptop and my love, surrounded by the warmth of our affection.",
+      "I lay here in bed.",
   },
   {
     artwork: {
       url: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg",
     },
     description:
-      "We sit here by the window, looking out at the cozy town below, our cat curled up between us, I can't help but feel grateful for this moment of peace and tranquility. The world outside may be chaotic and unpredictable, but here in our little bubble, everything feels just right. The town below is a beautiful tapestry of colors and lights, and the gentle hum of life below fills me with a sense of comfort and belonging. As we sit here, lost in our own thoughts, I am reminded of the beauty of the present moment, and how lucky I am to be able to share it with the ones I love. Our cat purrs contentedly between us, a symbol of the love and warmth that surrounds us in this cozy space. Looking out at the world below, with its bustling energy and endless possibilities, I am filled with a sense of hope and possibility, and I know that whatever the future may hold, we'll face it together, with love and resilience.",
+      "We sit here by the window",
   },
   {
     artwork: {

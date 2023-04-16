@@ -7,6 +7,8 @@ import {
 } from "openai";
 import React from "react";
 import * as $ from "jquery";
+import * as base64 from 'base64-js';
+import * as fs from 'fs';
 
 // Hook for creating new entries
 const useCreateEntry = () => {
@@ -147,6 +149,7 @@ const useCreateEntry = () => {
   //change this later such that it iterates through EACH panel
   const createImageFromText = async (input: string) => {
     let base_64 = "";
+    let dataUrl = "";
     try {
       // stable diffusion
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
@@ -209,23 +212,16 @@ const useCreateEntry = () => {
       });
 
       const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
-      base_64 = sdxlResponse?.data?.artifacts[0].base64
 
-      //console.log(base_64)
       if (artifactsResponse) {
         const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
       
         // Check if artifacts is not null or undefined
         if (artifacts) {
           const length = artifacts.length; // Get the length of the artifacts array
-          console.log(length)
-      
           // Loop through artifacts using a for loop
           for (let i = 0; i < length + 1; i++) {
             const image = artifacts[i]; // Get the current artifact
-            console.log(image)
-            const index = i; // Get the current index
-      
             // Perform desired action on the current artifact
             // You can access properties of the artifact using image.propertyName
             // For example: image.id, image.name, etc.
@@ -235,6 +231,18 @@ const useCreateEntry = () => {
 
       console.log("SDXL RESPONSE:");
       console.log(sdxlResponse.data);
+
+      //new-----
+
+      /* base_64 = sdxlResponse?.data?.artifacts[0].base64;*/
+      //console.log(base_64)
+
+      base_64 = sdxlResponse?.data?.artifacts[0].base64;
+      const image_data = Buffer.from(base_64, 'base64');      
+      dataUrl = `data:image/png;base64,${image_data.toString('base64')}`;
+      //console.log(dataUrl);
+      //new----
+      return dataUrl;
 
       interface GenerationResponse {
         artifacts: Array<{
@@ -249,7 +257,6 @@ const useCreateEntry = () => {
       console.log(error);
       console.log("Failed to generate image:", error?.message);
     }
-    return base_64; // 4.15
   };
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
@@ -297,7 +304,7 @@ const useCreateEntry = () => {
   return {
     isGeneratingStoryboard,
     generateStoryboard,
-    base_64: '' as string,
+    dataUrl: '' as string,
     createImageFromText,
     saveEntry,
   };

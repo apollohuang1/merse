@@ -15,13 +15,13 @@ import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 
 type Props = {}
-const { base_64, createImageFromText } = useCreateEntry();
+//const { base_64, createImageFromText } = useCreateEntry();
 
 // const base64Image = 'data:image/png;base64,' + base_64
 
 const Review = (props: Props) => {
 
-  const { base_64 } = useCreateEntry();
+  //const { base_64 } = useCreateEntry();
 
   // redux states
   const entry = useAppSelector((state) => state.entry);
