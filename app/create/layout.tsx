@@ -40,7 +40,7 @@ export default function RootLayout({
   useEffect(() => {
     reloadCurrentUser()
       .then((user: any) => {
-        console.log("reloadCurrentUser");
+        // console.log("reloadCurrentUser");
         dispatch(setUserId(user?._id));
       })
       .catch((err) => {
@@ -52,28 +52,13 @@ export default function RootLayout({
   }, []);
 
   return (
-    <html lang="en">
-      {/* <html lang="en"> */}
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content={metadata?.description} />
-        <title>{metadata?.title?.name}</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
-      </head>
+    <div className="grid grid-cols-[250px_auto] max-lg:grid-cols-[175px_auto] max-sm:flex max-sm:flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary max-h-screen">
+      {/* left side bar */}
+      <div className="flex max-sm:hidden">
+        <LeftSideBar />
+      </div>
 
-      <body>
-        <div className="grid grid-cols-[250px_auto] max-lg:grid-cols-[175px_auto] max-sm:flex max-sm:flex-col w-screen h-screen bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary max-h-screen">
-          {/* left side bar */}
-          <div className="flex max-sm:hidden">
-            <LeftSideBar />
-          </div>
-
-          {/* main container */}
-          {children}
-        </div>
-      </body>
-    </html>
+      {children}
+    </div>
   );
 }

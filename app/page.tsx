@@ -19,7 +19,7 @@ const HomePage: React.FC<{}> = () => {
   return (
     <div className="text-white">
 
-      {auth?.currentUser ? (
+      { auth?.currentUser ? (
         <Home />
       ) : (
         <Landing />

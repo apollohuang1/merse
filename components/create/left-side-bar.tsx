@@ -6,18 +6,14 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-
-import { FiMoreHorizontal } from "react-icons/fi";
-import { Menu } from "@headlessui/react";
 import { allCreateRoutes } from "@/util/create-constants";
 import useColorScheme from "@/hooks/useColorScheme";
 
 type Props = {};
 
-const LeftSideBar: React.FC<{}> = ({}) => {
+const LeftSideBar = (props: Props) => {
+  
   const pathName = usePathname();
-  const { toggleColorScheme } = useColorScheme();
 
   return (
     <div className="flex flex-col justify-between w-full h-full border-r border-r-light-divider dark:border-r-dark-divider pt-16">
@@ -43,40 +39,6 @@ const LeftSideBar: React.FC<{}> = ({}) => {
             </Link>
           );
         })}
-      </div>
-
-      <div className="flex flex-col">
-        {/* toggle color scheme row with tailwind headless ui toggle button */}
-
-        <button
-          onClick={() => {
-            toggleColorScheme();
-          }}
-          className="flex flex-row justify-between p-3 items-center border-t border-t-light-divider dark:border-t-dark-divider hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary w-full"
-        >
-          <span className="text-sm">Dark Mode</span>
-          <FiMoreHorizontal className="text-light-text-secondary dark:text-dark-text-secondary" />
-        </button>
-        
-
-        <button className="flex flex-row justify-between p-3 items-center border-t border-t-light-divider dark:border-t-dark-divider hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary">
-          <div className="flex flex-row gap-3 items-center">
-            <img
-              src="https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg"
-              className="rounded-full w-9 h-9 object-cover"
-              alt="profile image"
-            />
-
-            <div className="flex flex-col gap-0 items-start">
-              <span className="text-sm">Comics</span>
-              <span className="text-light-text-secondary dark:text-dark-text-secondary text-sm">
-                Edit Profile
-              </span>
-            </div>
-          </div>
-
-          <FiMoreHorizontal className="text-light-text-secondary dark:text-dark-text-secondary" />
-        </button>
       </div>
     </div>
   );

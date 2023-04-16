@@ -15,7 +15,8 @@ module.exports = {
       height: {
         'landingNavigationBar': '42px',
         'navigationBar': '56px',
-        'withoutNavigationBar': 'calc(100vh - 42px)', // change number manually if navigation bar height changes
+        'withoutNavigationBarLanding': 'calc(100vh - 42px)', // change number manually if navigation bar height changes
+        'withoutNavigationBar': 'calc(100vh - 56px)', // change number manually if navigation bar height changes
       },
       gridTemplateRows: {
         '12': 'repeat(12, minmax(0, 1fr))',
@@ -72,11 +73,11 @@ module.exports = {
             background: '#4D3003',
           },
           background: {
-            // primary: '#000000', // black
-            primary: "#0E100E", // green satoshi fontshare
+            primary: '#000000', // black
+            // primary: "#0E100E", // green satoshi fontshare
             // primary: "#0E1010", // blue satoshi fontshare
-            secondary: "#161816", // normal
-            // secondary: "#121212",
+            // secondary: "#161816", // normal
+            secondary: "#121212",
             tertiary: "#2C2C2C",
             justalittlebitdarkerthan1c1c1e: "#1D1D1F",
           },
