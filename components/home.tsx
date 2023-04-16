@@ -111,7 +111,7 @@ const Home = (props: Props) => {
                     alt="profile image"
                   />
 
-                  <span className="line-clamp-1 text-sm">{artist?.name}</span>
+                  <span className="line-clamp-1 text-sm text-white">{artist?.name}</span>
                 </button>
               );
             })}
