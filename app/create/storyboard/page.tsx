@@ -9,10 +9,7 @@ import {
   FiImage,
   FiItalic,
   FiList,
-  FiType,
 } from "react-icons/fi";
-import { TbHeading } from "react-icons/tb";
-import { VscQuote } from "react-icons/vsc";
 import { BsQuote } from "react-icons/bs";
 import { IoText } from "react-icons/io5";
 
@@ -26,10 +23,6 @@ import {
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
-import ListItem from "@tiptap/extension-list-item";
-import BulletList from "@tiptap/extension-bullet-list";
-// import DropCursor from "@tiptap/extension-dropcursor";
-import Gapcursor from "@tiptap/extension-gapcursor";
 
 // ChakraUI
 import { Spinner } from "@chakra-ui/react";
@@ -53,6 +46,7 @@ import { Scene } from "@/models/entry";
 type Props = {};
 
 const Storyboard = (props: Props) => {
+
   // hooks
   const { generateStoryboard, isGeneratingStoryboard } = useCreateEntry();
 
@@ -61,12 +55,8 @@ const Storyboard = (props: Props) => {
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const dispatch = useAppDispatch();
 
-  const [showAddingImageModal, setShowAddingImageModal] =
-    React.useState<boolean>(false);
+  const [showAddingImageModal, setShowAddingImageModal] = React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
-  const [titleText, setTitleText] = React.useState<string>("");
-
-  // const [showGeneratedStoryboard, setShowGeneratedStoryboard] = React.useState<boolean>(false);
 
   const editor = useEditor({
     extensions: [
@@ -79,10 +69,7 @@ const Storyboard = (props: Props) => {
         },
       }),
       Placeholder.configure({
-        // placeholder: "Write your diary entry here...",
         placeholder: "Press tab or click to select a menu item...",
-        // emptyNodeClass: "text-light-text-tertiary dark:text-dark-text-tertiary text-base",
-        // emptyEditorClass: "text-light-text-tertiary dark:text-dark-text-tertiary",
       }),
       Image.configure({
         inline: true,
@@ -106,7 +93,6 @@ const Storyboard = (props: Props) => {
   });
 
   editor?.on("update", (updatedEditor: any) => {
-    // const text = convertTiptapJSONToText(editor?.getJSON());
     const updatedContent = updatedEditor?.editor?.getJSON();
     dispatch(setContent(updatedContent));
   });

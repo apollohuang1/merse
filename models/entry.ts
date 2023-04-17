@@ -11,9 +11,8 @@ export interface Entry {
   // storyboard: object | null;
   scenes: Scene[];
   cover: object | null;
-  // created_at: Date;
-  // updated_at: Date;
-  // review: object | null;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 interface StyleReference {

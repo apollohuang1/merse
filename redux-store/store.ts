@@ -13,9 +13,7 @@ const initialState: Entry = {
   content: null,
   characters: [],
   scenes: [],
-  cover: null,
-  // created_at: new Date(),
-  // updated_at: new Date(),
+  cover: null
 }
 
 const entrySlice = createSlice({
