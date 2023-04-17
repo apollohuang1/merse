@@ -86,7 +86,7 @@ const Home = (props: Props) => {
           </div>
         </div>
 
-        <div className="flex flex-row w-full gap-6 max-sm:gap-3 items-center justify-between overflow-auto max-sm:px-3">
+        <div className="flex flex-row w-full gap-6 max-sm:gap-3 items-center justify-between overflow-auto max-sm:px-3 px-6">
           {storyboardSamples.map((artist, index) => {
             return (
               <div key={index}>

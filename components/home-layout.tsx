@@ -4,6 +4,7 @@ import { useAppSelector } from "@/redux-store/hooks";
 import clsx from "clsx";
 import useColorScheme from "@/hooks/useColorScheme";
 import {
+  FiBookOpen,
   FiChevronLeft,
   FiChevronRight,
   FiChevronsLeft,
@@ -77,7 +78,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         {auth?.currentUser && (
           <div
             className={clsx(
-              "flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r-light-divider dark:border-dark-divider max-sm:hidden",
+              "flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r border-r-light-divider dark:border-dark-divider max-sm:hidden",
               { hidden: isCreateRoute }
             )}
           >
@@ -121,6 +122,16 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 href="/subscriptions"
                 isFull={showFullSidebar}
               />
+
+              {/* read */}
+              <SidebarMenuButton
+                icon={<FiBookOpen />}
+                label="Read Sample"
+                href="/read?id=643d84f5f181248a5028ec42"
+                isFull={showFullSidebar}
+                isNew={true}
+              />
+
             </div>
 
             {/* create */}
@@ -203,7 +214,8 @@ const SidebarMenuButton: React.FC<{
   href: string;
   isFull: boolean;
   variant?: "normal" | "solid";
-}> = ({ icon, label, href, isFull, variant = "normal" }) => {
+  isNew?: boolean;
+}> = ({ icon, label, href, isFull, variant = "normal", isNew=false }) => {
   return (
     <Link
       href={href}
@@ -211,18 +223,22 @@ const SidebarMenuButton: React.FC<{
     >
       <button
         className={clsx(
-          "flex items-center gap-3 w-full transition-all rounded-xl",
-          { "bg-accent hover:bg-emerald-600": variant === "solid" },
+          "flex flex-row items-center gap-3 w-full transition-all rounded-xl",
+          // { "bg-accent hover:bg-emerald-600": variant === "solid" },
           {
             "hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary":
               variant === "normal",
           },
           { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
-          { "flex-row justify-start px-6 h-12": isFull }
+          { "flex-row justify-between pl-6 pr-3 h-12": isFull }
         )}
       >
-        {icon}
-        {isFull && <span>{label}</span>}
+        <div className="flex flex-row items-center gap-3">
+          {icon}
+          {isFull && <span className="flex flex-shrink-0">{label}</span>}
+        </div>
+
+        {isNew && isFull && <span className="text-accent text-sm font-medium px-2 py-[2px] bg-emerald-500 bg-opacity-30 rounded-lg">New</span>}
       </button>
     </Link>
   );
