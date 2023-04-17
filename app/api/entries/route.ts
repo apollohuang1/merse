@@ -12,11 +12,17 @@ export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 
+    // access-coltrol-allow-origin
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    };
+
     const data = await MDBEntry.findOne({
       _id: id,
     })
 
-    return NextResponse.json({ data: data }, { status: 200 });
+    return NextResponse.json({ data: data }, { status: 200, headers: headers });
   } catch (error: any) {
     // return new Response(error, { status: 500 })
     return NextResponse.json({ error: error?.message }, { status: 500 });

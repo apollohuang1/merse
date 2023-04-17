@@ -21,7 +21,7 @@ const ReadPage = (props: Props) => {
   
       const response = await axios({
         method: 'GET',
-        url: `/api/entries?id=${id}`,
+        url: `https://comic.merse.co/api/entries?id=${id}`,
       })
 
       console.log(response.data);
