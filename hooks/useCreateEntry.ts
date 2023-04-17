@@ -8,6 +8,7 @@ import {
 import React from "react";
 import { addScene, setShowGeneratedStoryboard } from "@/redux-store/store";
 import { Scene } from "@/models/entry";
+import mongoose from "mongoose";
 
 // Hook for creating new entries
 const useCreateEntry = () => {
@@ -220,7 +221,7 @@ const useCreateEntry = () => {
       //     }
       //   }
       // }
-      
+
       console.log("SDXL RESPONSE:");
       console.log(sdxlResponse.data);
 
@@ -228,9 +229,12 @@ const useCreateEntry = () => {
       // const imageDataURL = base64ToImageURL(base64String);
 
       const newScene: Scene = {
-        text: input,
+        _id: new mongoose.Types.ObjectId().toString(),
         image_base64: base64String,
+        text: input,
       }
+
+      // Entry validation failed: scenes.0.image: Path `image` is required., scenes.0._id: Path `_id` is required.
 
       dispatch(addScene(newScene));
       dispatch(setShowGeneratedStoryboard(true));
