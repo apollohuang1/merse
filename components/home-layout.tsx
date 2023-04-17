@@ -110,8 +110,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         )}
         <div className="flex flex-col h-screen w-full overflow-auto">
+
           {/* top navigation bar */}
-          {!isCreateRoute && (
+          { auth?.currentUser && !isCreateRoute && (
             <>
               <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary dark:bg-opacity-80 backdrop-blur-xl z-50">
                 {/* arrow left and right */}
