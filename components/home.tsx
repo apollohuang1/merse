@@ -89,7 +89,7 @@ const Home = (props: Props) => {
       </div>
 
       {/* main content */}
-      <div className="flex flex-col w-full h-full gap-6 items-center">
+      <div className="flex flex-col w-full h-full gap-6 max-sm:gap-3 items-center">
         {/* promoted banner */}
         <div className="flex relative w-full h-[60vh] overflow-clip">
           <img
@@ -109,17 +109,17 @@ const Home = (props: Props) => {
           /> */}
 
           {/* artist updates */}
-          <div className="absolute flex flex-row gap-5 overflow-x-auto p-6 w-full bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent">
+          <div className="absolute flex flex-row gap-5 max-sm:gap-4 overflow-x-auto p-6 w-full bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent">
             {sampleArtists.map((artist, index) => {
               return (
                 <button
                   key={index}
-                  className="flex flex-col items-center gap-2 w-20 min-w-[80px]"
+                  className="flex flex-col items-center gap-2 w-20 min-w-[80px] max-sm:min-w-[64px] max-sm:w-16"
                 >
                   <img
                     src={artist?.profile_image_url}
                     className={
-                      "w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"
+                      "w-20 h-20 max-sm:w-16 max-sm:h-16 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"
                     }
                     alt="profile image"
                   />
@@ -145,11 +145,11 @@ const Home = (props: Props) => {
           </div>
         </div>
 
-        <div className="flex flex-row w-full gap-6 items-center justify-between overflow-auto">
+        <div className="flex flex-row w-full gap-6 max-sm:gap-3 items-center justify-between overflow-auto max-sm:px-3">
           {storyboardSamples.map((artist, index) => {
             return (
               <div key={index}>
-                <button className="relative aspect-video min-w-[18vw] h-[24vh] rounded-lg overflow-clip">
+                <button className="relative aspect-video min-w-[18vw] h-[24vh] max-lg:min-w-[15vw] max-lg:h-[20vh] max-md:min-w-[12vw] max-md:h-[16vh] rounded-lg overflow-clip">
                   <img
                     src={artist?.artwork.url}
                     className="inset-0 w-full h-full object-cover"
