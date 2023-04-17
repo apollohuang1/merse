@@ -12,7 +12,7 @@ import {
   FiSun,
 } from "react-icons/fi";
 import MerseLogo from "./svgs/merse-logo";
-import useColorScheme from "@/hooks/useColorScheme";
+import useColorScheme from "@/hooks/useColorScheme"
 import { sampleArtists } from "@/util/home-constant";
 import { storyboardSamples } from "@/util/create-constants";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,7 @@ const Home = (props: Props) => {
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
       {/* top navigation bar */}
-      <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-white dark:bg-black dark:bg-opacity-80 backdrop-blur-xl z-50">
+      <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary dark:bg-opacity-80 backdrop-blur-xl z-50">
         {/* arrow left and right */}
         <div className="flex flex-row gap-3 items-center">
           <button
@@ -145,7 +145,7 @@ const Home = (props: Props) => {
           </div>
         </div>
 
-        <div className="flex flex-row w-full px-6 gap-6 items-center justify-between overflow-auto">
+        <div className="flex flex-row w-full gap-6 items-center justify-between overflow-auto">
           {storyboardSamples.map((artist, index) => {
             return (
               <div key={index}>
