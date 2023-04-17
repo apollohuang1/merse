@@ -144,19 +144,24 @@ const Storyboard = (props: Props) => {
             <div className="flex flex-col w-full h-[calc(100vh-100px)] max-w-3xl gap-6">
               {/* tools bar */}
               <div className="flex flex-row w-full items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider pb-3">
-                <button
-                  className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
-                  onClick={() => {
-                    // setShowGeneratedStoryboard(!showGeneratedStoryboard);
-                    dispatch(
-                      setShowGeneratedStoryboard(
-                        !entryHelper.showGeneratedStoryboard
-                      )
-                    );
-                  }}
-                >
-                  {entryHelper.showGeneratedStoryboard ? "Hide" : "Show"}
-                </button>
+
+                { generatedScenes.length > 0 ? (
+                  <button
+                    className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
+                    onClick={() => {
+                      // setShowGeneratedStoryboard(!showGeneratedStoryboard);
+                      dispatch(
+                        setShowGeneratedStoryboard(
+                          !entryHelper.showGeneratedStoryboard
+                        )
+                      );
+                    }}
+                  >
+                    {entryHelper.showGeneratedStoryboard ? "Hide" : "Show"}
+                  </button>
+                ) : (
+                  <div className="h-10"></div>
+                )}
 
                 {/* <button
                   className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"

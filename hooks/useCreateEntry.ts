@@ -9,6 +9,7 @@ import React from "react";
 import * as $ from "jquery";
 import * as base64 from 'base64-js';
 import * as fs from 'fs';
+import { setShowGeneratedStoryboard } from "@/redux-store/store";
 
 // Hook for creating new entries
 const useCreateEntry = () => {
@@ -26,6 +27,7 @@ const useCreateEntry = () => {
 
   // redux states
   const entry = useAppSelector((state) => state.entry);
+  const entryHelper = useAppSelector((state) => state.entryHelper);
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
@@ -171,8 +173,7 @@ const useCreateEntry = () => {
       const apiHost = process.env.API_HOST ?? "https://api.stability.ai";
       const apiKey = process.env.STABILITY_API_KEY;
 
-      console.log("api key: " + apiKey)
-
+      // guards
       if (!apiKey) {
         throw new Error("Missing Stability API key.");
       }
@@ -182,6 +183,7 @@ const useCreateEntry = () => {
       if (entry?.style_reference?.artist === null) {
         throw new Error("Entry style reference is null");
       }
+
       // final input prompt
       const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
       // Response of NEW Stable Diffusion XL
@@ -225,8 +227,6 @@ const useCreateEntry = () => {
       base_64 = sdxlResponse?.data?.artifacts[0].base64;
       const image_data = Buffer.from(base_64, 'base64');      
       dataUrl = `data:image/png;base64,${image_data.toString('base64')}`;
-      console.log(dataUrl);
-      // return dataUrl;
 
       const newScene: Scene = {
         text: input,
@@ -234,6 +234,7 @@ const useCreateEntry = () => {
       }
 
       appendGeneratedScene(newScene);
+      dispatch(setShowGeneratedStoryboard(true));
 
       interface GenerationResponse {
         artifacts: Array<{
