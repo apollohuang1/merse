@@ -26,6 +26,11 @@ export const allCreateRoutes: any[] = [
     description: "Add storyboard to your story.",
   },
   {
+    pathname: "/create/layout",
+    title: "Layout",
+    description: "Layout your story.",
+  },
+  {
     pathname: "/create/cover",
     title: "Cover",
     description: "Add cover to your story.",

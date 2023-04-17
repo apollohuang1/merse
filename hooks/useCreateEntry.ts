@@ -222,6 +222,7 @@ const useCreateEntry = () => {
       console.log(sdxlResponse.data);
 
       const base64String = sdxlResponse?.data?.artifacts[0].base64;
+      const newImageURL = getImageURLFromBase64(base64String);
       // const imageDataURL = base64ToImageURL(base64String);
 
       const newScene: Scene = {
@@ -231,7 +232,6 @@ const useCreateEntry = () => {
       };
 
       // Entry validation failed: scenes.0.image: Path `image` is required., scenes.0._id: Path `_id` is required.
-
       dispatch(addScene(newScene));
       dispatch(setShowGeneratedStoryboard(true));
 

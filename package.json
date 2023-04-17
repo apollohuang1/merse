@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.5",
+    "@chakra-ui/theme": "^3.0.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@headlessui/react": "^1.7.13",
@@ -43,7 +44,7 @@
     "html-react-parser": "^3.0.15",
     "mongodb": "^5.2.0",
     "mongodb-client-encryption": "^2.7.1",
-    "mongoose": "^7.0.3",
+    "mongoose": "^7.0.4",
     "next": "13.2.4",
     "next-auth": "^4.22.0",
     "openai": "^3.2.1",
