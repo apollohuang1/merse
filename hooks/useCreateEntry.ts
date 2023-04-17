@@ -6,16 +6,12 @@ import {
   CreateChatCompletionResponse,
 } from "openai";
 import React from "react";
-import { addScene, setShowGeneratedStoryboard } from "@/redux-store/store";
+import { addScene, setIsGeneratingStoryboard, setShowGeneratedStoryboard } from "@/redux-store/store";
 import { Scene } from "@/models/entry";
 import mongoose from "mongoose";
 
 // Hook for creating new entries
 const useCreateEntry = () => {
-
-  const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
-    React.useState<boolean>(false);
-
   // redux states
   const entry = useAppSelector((state) => state.entry);
   const entryHelper = useAppSelector((state) => state.entryHelper);
@@ -23,14 +19,16 @@ const useCreateEntry = () => {
   const dispatch = useAppDispatch();
 
   const stopGeneratingStoryboard = () => {
-    setIsGeneratingStoryboard(false);
-    // more code on handling stop generating storyboard
+    dispatch(setIsGeneratingStoryboard(false));
+  };
+
+  const startGeneratingStoryboard = () => {
+    dispatch(setIsGeneratingStoryboard(true));
   };
 
   const saveEntry = async () => {
     console.log("Saving entry...");
     try {
-
       // var string = "data:image/png;base64,long-String"
       // var bindata = new Buffer(string.split(",")[1],"base64");
 
@@ -43,7 +41,7 @@ const useCreateEntry = () => {
         },
       });
       console.log("Successfully saved entry");
-      
+
       console.log(response);
     } catch (error: any) {
       console.log(`Failed to save entry, message: ${error?.message}`);
@@ -63,8 +61,8 @@ const useCreateEntry = () => {
       const manualWhitelistedEmails = [
         "markrachapoom@gmail.com",
         "emily.park@berkeley.edu",
-        "jyoti.rani@berkeley.edu"
-      ]
+        "jyoti.rani@berkeley.edu",
+      ];
 
       if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
         alert(
@@ -74,7 +72,7 @@ const useCreateEntry = () => {
       }
 
       if (editor) {
-        setIsGeneratingStoryboard(true);
+        startGeneratingStoryboard();
         const editorJSON = editor.getJSON();
         const textContent = convertTiptapJSONToText(editorJSON);
         await createChatCompletion(textContent);
@@ -84,11 +82,11 @@ const useCreateEntry = () => {
         return;
       } else {
         // handle blank editor
-        setIsGeneratingStoryboard(false);
+        stopGeneratingStoryboard();
         console.log("editor is null");
       }
     } catch (error: any) {
-      setIsGeneratingStoryboard(false);
+      stopGeneratingStoryboard();
       console.log(`Failed to generate storyboard, message: ${error?.message}`);
     }
   };
@@ -159,11 +157,8 @@ const useCreateEntry = () => {
     }
   };
 
-
   const createImageFromText = async (input: string) => {
-
     try {
-
       // stable diffusion
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
 
@@ -209,13 +204,14 @@ const useCreateEntry = () => {
           Authorization: `Bearer ${apiKey}`,
         },
       });
-      
-      const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
+
+      const artifactsResponse: GenerationResponse =
+        sdxlResponse?.data?.artifacts;
       // if (artifactsResponse) {
       //   const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
       //   // Check if artifacts is not null or undefined
       //   if (artifacts) {
-      //     const length = artifacts.length; 
+      //     const length = artifacts.length;
       //     for (let i = 0; i < length + 1; i++) {
       //       const image = artifacts[i];
       //     }
@@ -232,7 +228,7 @@ const useCreateEntry = () => {
         _id: new mongoose.Types.ObjectId().toString(),
         image_base64: base64String,
         text: input,
-      }
+      };
 
       // Entry validation failed: scenes.0.image: Path `image` is required., scenes.0._id: Path `_id` is required.
 
@@ -268,8 +264,6 @@ const useCreateEntry = () => {
     return base64;
   };
 
-
-
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
     let text = "";
@@ -286,7 +280,6 @@ const useCreateEntry = () => {
     });
     return text;
   };
-
 
   const stripText = (input: string) => {
     const regex = /\(([^)]+)\)/g;
@@ -309,15 +302,11 @@ const useCreateEntry = () => {
     return matches.join("\n");
   };
 
-
   return {
-    isGeneratingStoryboard,
     generateStoryboard,
     saveEntry,
   };
 };
-
-
 
 export default useCreateEntry;
 

@@ -48,7 +48,7 @@ type Props = {};
 const Storyboard = (props: Props) => {
 
   // hooks
-  const { generateStoryboard, isGeneratingStoryboard } = useCreateEntry();
+  const { generateStoryboard } = useCreateEntry();
 
   // redux states
   const entry = useAppSelector((state) => state.entry);
@@ -149,7 +149,7 @@ const Storyboard = (props: Props) => {
                   Test SDXL
                 </button> */}
 
-                {isGeneratingStoryboard ? (
+                {entryHelper.isGeneratingStoryboard ? (
                   <div className="flex flex-row gap-2 items-center h-8">
                     <Spinner speed={"0.8s"} className="w-4 h-4" />
                     <span className="text-sm">Generating...</span>
