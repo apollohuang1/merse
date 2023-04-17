@@ -55,6 +55,19 @@ const useCreateEntry = () => {
         throw new Error("User not logged in");
       }
 
+      const manualWhitelistedEmails = [
+        "markrachapoom@gmail.com",
+        "emily.park@berkeley.edu",
+        "jyoti.rani@berkeley.edu"
+      ]
+
+      if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
+        alert(
+          "🚨 Sorry, you're not whitelisted to use the AI yet. Please ping one of us to get access."
+        );
+        throw new Error("User not whitelisted");
+      }
+
       if (editor) {
         setIsGeneratingStoryboard(true);
         const editorJSON = editor.getJSON();

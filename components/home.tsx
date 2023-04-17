@@ -142,7 +142,7 @@ const Home = (props: Props) => {
                   <div className="absolute flex flex-col items-start justify-end bottom-0 bg-gradient-to-t from-[rgb(0,0,0,0.75)] to-transparent w-full h-1/2 p-4 text-lg" />
                 </button>
 
-                <div className="flex flex-row">
+                <div className="flex flex-row justify-between">
                   <div className="text-left py-2">
                     <span className="text-light-text-primary dark:text-dark-text-primary text-xl font-bold">
                       Episode {index + 1}
