@@ -6,21 +6,11 @@ import {
   CreateChatCompletionResponse,
 } from "openai";
 import React from "react";
-import * as $ from "jquery";
-import * as base64 from 'base64-js';
-import * as fs from 'fs';
-import { setShowGeneratedStoryboard } from "@/redux-store/store";
+import { addScene, setShowGeneratedStoryboard } from "@/redux-store/store";
+import { Scene } from "@/models/entry";
 
 // Hook for creating new entries
 const useCreateEntry = () => {
-
-  // scene model
-  interface Scene {
-    image_url: string;
-    text: string;
-  }
-
-  const [generatedScenes, setGeneratedScenes] = React.useState<Scene[]>([]);
 
   const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
     React.useState<boolean>(false);
@@ -129,6 +119,10 @@ const useCreateEntry = () => {
         throw new Error("Generated text is null");
       }
 
+      if (entry?.style_reference?.artist === null) {
+        throw new Error("Entry style reference is null");
+      }
+
       console.log("🎉 We did it!");
       console.log(generatedText);
 
@@ -143,15 +137,14 @@ const useCreateEntry = () => {
         .map((line) => line.substring("Scene: ".length).trim());
 
       // comment this out to generate only 1 image
-      createImageFromText(splittedSceneText[0]);
+      // createImageFromText(splittedSceneText[0]);
 
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       // iterate through splitedSceneText array
-      // for (let i = 0; i < splittedSceneText.length; i++) {
-      // createImageFromText(splittedSceneText[);
-      // }
+      for (let i = 0; i < splittedSceneText.length; i++) {
+        createImageFromText(splittedSceneText[i]);
+      }
 
-      stopGeneratingStoryboard();
       return sceneText;
     } catch (error: any) {
       stopGeneratingStoryboard();
@@ -233,8 +226,10 @@ const useCreateEntry = () => {
         image_url: dataUrl,
       }
 
-      appendGeneratedScene(newScene);
+      dispatch(addScene(newScene));
       dispatch(setShowGeneratedStoryboard(true));
+
+      stopGeneratingStoryboard();
 
       interface GenerationResponse {
         artifacts: Array<{
@@ -246,13 +241,9 @@ const useCreateEntry = () => {
     } catch (error: any) {
       console.log(error);
       console.log("Failed to generate image:", error?.message);
+      stopGeneratingStoryboard();
     }
   };
-
-
-  const appendGeneratedScene = (scene: Scene) => {
-    setGeneratedScenes((prev) => [...prev, scene]);
-  }
 
 
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
@@ -294,8 +285,6 @@ const useCreateEntry = () => {
   return {
     isGeneratingStoryboard,
     generateStoryboard,
-    generatedScenes,
-    createImageFromText,
     saveEntry,
   };
 };

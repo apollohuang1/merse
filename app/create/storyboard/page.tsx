@@ -40,30 +40,21 @@ import Modal from "@/components/modal";
 import Placeholder from "@tiptap/extension-placeholder";
 import { createRoutes, storyboardSamples } from "@/util/create-constants";
 
-// OpenAI and requests
-import {
-  Configuration,
-  OpenAIApi,
-  CreateChatCompletionRequest,
-  CreateChatCompletionResponse,
-} from "openai";
-import axios, { AxiosResponse } from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
   setContent,
   setShowGeneratedStoryboard,
-  setStoryboard,
   setTitle,
 } from "@/redux-store/store";
 import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
+import { Scene } from "@/models/entry";
 
 type Props = {};
 
 const Storyboard = (props: Props) => {
   // hooks
-  const { generateStoryboard, isGeneratingStoryboard, createImageFromText, generatedScenes } =
-    useCreateEntry();
+  const { generateStoryboard, isGeneratingStoryboard } = useCreateEntry();
 
   // redux states
   const entry = useAppSelector((state) => state.entry);
@@ -145,7 +136,7 @@ const Storyboard = (props: Props) => {
               {/* tools bar */}
               <div className="flex flex-row w-full items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider pb-3">
 
-                { generatedScenes.length > 0 ? (
+                { entry?.scenes?.length > 0 ? (
                   <button
                     className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                     onClick={() => {
@@ -290,7 +281,7 @@ const Storyboard = (props: Props) => {
           >
             <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">
               {
-                generatedScenes.map((scene, index) => (
+                entry?.scenes.map((scene: Scene, index: number) => (
                   <div
                   key={index}
                   className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"

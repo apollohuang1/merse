@@ -1,6 +1,6 @@
 
 import { Character } from '@/models/character'
-import { Entry } from '@/models/entry'
+import { Entry, Scene } from '@/models/entry'
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
 import mongoose from 'mongoose'
@@ -12,11 +12,10 @@ const initialState: Entry = {
   style_reference: null,
   content: null,
   characters: [],
-  storyboard: null,
+  scenes: [],
   cover: null,
   review: null,
 }
-
 
 const entrySlice = createSlice({
   name: 'entry',
@@ -49,8 +48,9 @@ const entrySlice = createSlice({
     setContent: (state: Entry, action) => {
       state.content = action.payload
     },
-    setStoryboard: (state: Entry, action) => {
-      state.storyboard = action.payload
+    addScene: (state: Entry, action: PayloadAction<Scene>) => {
+      // add scene to storyboard
+      state.scenes.push(action.payload)
     },
     setTitle: (state: Entry, action: PayloadAction<string>) => {
       state.title = action.payload
@@ -98,7 +98,7 @@ export const store: ToolkitStore = configureStore({
 
 // actions
 export const { setCurrentUser } = authenticationSlice.actions;
-export const { setUserId, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setStoryboard, setContent } = entrySlice.actions;
+export const { setUserId, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, addScene } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard } = entryHelperSlice.actions;
 
 

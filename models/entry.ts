@@ -8,7 +8,8 @@ export interface Entry {
   style_reference: StyleReference | null;
   content: object | null;
   characters: Character[];
-  storyboard: object | null;
+  // storyboard: object | null;
+  scenes: Scene[];
   cover: object | null;
   review: object | null;
 }
@@ -18,4 +19,10 @@ interface StyleReference {
   artwork: {
     url: string;
   }
+}
+
+// scene model
+export interface Scene {
+  image_url: string;
+  text: string;
 }

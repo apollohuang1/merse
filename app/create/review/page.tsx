@@ -5,14 +5,6 @@ import React from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux-store/hooks';
 import CreateHeader from '@/components/create/create-header';
 import { createRoutes } from '@/util/create-constants';
-import {
-  setContent,
-  setShowGeneratedStoryboard,
-  setStoryboard,
-  setTitle,
-} from "@/redux-store/store";
-import useCreateEntry from "@/hooks/useCreateEntry";
-import Blockquote from "@tiptap/extension-blockquote";
 
 type Props = {}
 //const { base_64, createImageFromText } = useCreateEntry();
