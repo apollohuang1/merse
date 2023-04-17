@@ -15,6 +15,7 @@ import MerseLogo from "./svgs/merse-logo";
 import useColorScheme from "@/hooks/useColorScheme";
 import { sampleArtists } from "@/util/home-constant";
 import { storyboardSamples } from "@/util/create-constants";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
@@ -23,17 +24,29 @@ const Home = (props: Props) => {
 
   const { toggleColorScheme } = useColorScheme();
 
+  const router = useRouter();
+
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
       {/* top navigation bar */}
       <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-white dark:bg-black dark:bg-opacity-80 backdrop-blur-xl z-50">
         {/* arrow left and right */}
         <div className="flex flex-row gap-3 items-center">
-          <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary">
+          <button
+            onClick={() => {
+              router.back();
+            }}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+          >
             <FiChevronLeft className="w-5 h-5" />
           </button>
 
-          <button className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary">
+          <button
+            onClick={() => {
+              router.forward();
+            }}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+          >
             <FiChevronRight className="w-5 h-5" />
           </button>
         </div>
@@ -111,7 +124,9 @@ const Home = (props: Props) => {
                     alt="profile image"
                   />
 
-                  <span className="line-clamp-1 text-sm text-white">{artist?.name}</span>
+                  <span className="line-clamp-1 text-sm text-white">
+                    {artist?.name}
+                  </span>
                 </button>
               );
             })}
@@ -120,7 +135,9 @@ const Home = (props: Props) => {
           <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.6)] to-transparent w-full items-end justify-end p-6">
             <div className="flex flex-row gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
               <img
-                src={"https://helios-i.mashable.com/imagery/articles/01c9yrWTh1c0xeucePXOaZF/hero-image.fill.size_1200x900.v1623390103.jpg"}
+                src={
+                  "https://helios-i.mashable.com/imagery/articles/01c9yrWTh1c0xeucePXOaZF/hero-image.fill.size_1200x900.v1623390103.jpg"
+                }
                 className="w-6 h-6 object-cover rounded-full border border-light-divider dark:border-dark-divider"
               />
               <span className="text-white">The Last Of Us</span>
@@ -159,7 +176,6 @@ const Home = (props: Props) => {
                     />
                     <span className="text-white">Puuung</span>
                   </div>
-
                 </div>
               </div>
             );

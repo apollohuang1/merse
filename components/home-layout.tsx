@@ -58,7 +58,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 onClick={() => {
                   toggleSidebar();
                 }}
-                className="flex w-10 h-10 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary items-center justify-center rounded-full"
+                className="flex w-10 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center justify-center rounded-xl"
               >
                 {showFullSidebar ? (
                   <FiChevronsLeft className="text-light-text-secondary dark:text-dark-text-secondary w-5 h-5" />
@@ -109,7 +109,7 @@ const SidebarMenuButton: React.FC<{
     <Link href={href} className="flex w-full h-full items-center justify-center">
       <button
         className={clsx(
-          "flex items-center gap-3 w-full transition-all rounded-full",
+          "flex items-center gap-3 w-full transition-all rounded-xl",
           { "bg-accent hover:bg-emerald-600": variant === "solid" },
           { "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary": variant === "normal" },
           { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
