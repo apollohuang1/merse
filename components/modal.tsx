@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FiPlus } from "react-icons/fi";
 
-const Modal:React.FC<{
+const Modal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
   title?: string;
@@ -11,14 +11,12 @@ const Modal:React.FC<{
 }> = ({
   isOpen,
   onClose,
-  title="",
-  withCloseButton=true,
-  children
+  title = "",
+  withCloseButton = true,
+  children,
 }) => {
-
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-
       <Dialog as="div" className="relative z-[9999]" onClose={onClose}>
         <Transition.Child
           as={Fragment}
@@ -45,30 +43,28 @@ const Modal:React.FC<{
             >
               <Dialog.Panel className="flex flex-col overflow-hidden rounded-xl bg-light-background-primary dark:bg-dark-background-primary shadow-xl transition-all max-w-lg w-full">
                 <div className="flex flex-col items-start h-full w-full">
-
                   <div className="flex items-center justify-between w-full p-3">
-                      <Dialog.Title
-                        as="h3"
-                        className="text-base font-medium text-light-text-primary dark:text-dark-text-primary pl-3"
+                    <Dialog.Title
+                      as="h3"
+                      className="text-base font-medium text-light-text-primary dark:text-dark-text-primary pl-3"
+                    >
+                      {title}
+                    </Dialog.Title>
+
+                    {withCloseButton && (
+                      <button
+                        type="button"
+                        className="text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-full p-2"
+                        onClick={onClose}
                       >
-                        { title }
-                      </Dialog.Title>
-
-                      { withCloseButton &&
-                        <button
-                          type="button"
-                          className="text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-full p-2"
-                          onClick={onClose}
-                        >
-                          <FiPlus className="w-6 h-6 rotate-45 text-light-text-secondary dark:text-dark-text-secondary" />
-                        </button>
-                      }
+                        <FiPlus className="w-6 h-6 rotate-45 text-light-text-secondary dark:text-dark-text-secondary" />
+                      </button>
+                    )}
                   </div>
 
-                  <div className="flex w-full h-full">
-                    { children }
+                  <div className="flex w-full h-full p-3">
+                    {children}
                   </div>
-
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -77,7 +73,6 @@ const Modal:React.FC<{
       </Dialog>
     </Transition.Root>
   );
-}
-
+};
 
 export default Modal;

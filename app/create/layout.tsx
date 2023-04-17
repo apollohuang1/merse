@@ -3,6 +3,7 @@
 "use client";
 
 import CreateLeftSideBar from "@/components/create/create-left-sidebar";
+import Modal from "@/components/modal";
 import useAuth from "@/hooks/useAuth";
 import { Entry } from "@/models/entry";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
@@ -25,14 +26,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  
   const { reloadCurrentUser } = useAuth();
-
-  const [currentCreateRoute, setCurrentCreateRoute] =
-    React.useState<CreateRoute>(createRoutes[0]);
-  const [currentCreateRouteIdx, setCurrentCreateRouteIdx] =
-    React.useState<number>(0);
-
-  const [savingContent, setSavingContent] = React.useState<Entry | null>(null);
 
   const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
