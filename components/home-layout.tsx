@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React, { Children, useEffect } from "react";
 import NavigationBar from "./navigation-bar";
 import { useAppSelector } from "@/redux-store/hooks";
 import clsx from "clsx";
@@ -14,6 +14,7 @@ import {
   FiSidebar,
 } from "react-icons/fi";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // redux
@@ -27,6 +28,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     setShowFullSidebar(!showFullSidebar);
   };
 
+  const pathName = usePathname();
+
+  const isCreateRoute = pathName?.split("/")[1] === "create";
+
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center h-screen w-screen">
       <div
@@ -35,17 +40,22 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           { "flex flex-col": !auth?.currentUser }, // unauthenticated
           {
             "grid grid-cols-[80px_auto] duration-300":
-              auth?.currentUser && !showFullSidebar,
+              auth?.currentUser && !showFullSidebar && !isCreateRoute,
           }, // authenticated, hide sidebar
           {
             "grid grid-cols-[250px_auto] duration-300":
-              auth?.currentUser && showFullSidebar,
+              auth?.currentUser && showFullSidebar && !isCreateRoute,
           } // authenticated, show sidebar
         )}
       >
         {/* left side bar */}
         {auth?.currentUser && (
-          <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r-light-divider dark:border-dark-divider max-sm:hidden">
+          <div
+            className={clsx(
+              "flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r-light-divider dark:border-dark-divider max-sm:hidden",
+              { "hidden": isCreateRoute }
+            )}
+          >
             {/* sidebar show toggle button */}
             <div
               className={clsx(
@@ -104,14 +114,20 @@ const SidebarMenuButton: React.FC<{
   href: string;
   isFull: boolean;
   variant?: "normal" | "solid";
-}> = ({ icon, label, href, isFull, variant="normal" }) => {
+}> = ({ icon, label, href, isFull, variant = "normal" }) => {
   return (
-    <Link href={href} className="flex w-full h-full items-center justify-center">
+    <Link
+      href={href}
+      className="flex w-full h-full items-center justify-center"
+    >
       <button
         className={clsx(
           "flex items-center gap-3 w-full transition-all rounded-xl",
           { "bg-accent hover:bg-emerald-600": variant === "solid" },
-          { "hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary": variant === "normal" },
+          {
+            "hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary":
+              variant === "normal",
+          },
           { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
           { "flex-row justify-start px-6 h-12": isFull }
         )}

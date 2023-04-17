@@ -21,7 +21,6 @@ export async function POST(request: NextRequest) {
   try {
 
     await dbConnect();
-    
     const body = await request.json();
 
     const newEntry = new MDBEntry({
@@ -34,6 +33,9 @@ export async function POST(request: NextRequest) {
       cover: {
         image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaCdoBj4sMKAneZ35yzHHceTTZWXaQly7e46eVsJ1oGD29RKEz71w6KG7jyvXw47uDMnQ&usqp=CAU",
       },
+      scenes: body.scenes,
+      created_at: new Date(),
+      updated_at: new Date(),
     });
 
     const savedEntry = await newEntry.save();
@@ -41,6 +43,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(savedEntry, { status: 200 });
   } catch (error: any) {
     console.log(error);
+    console.log(error?.message);
     return NextResponse.json({ error: error?.message }, { status: 500 });
   }
 }

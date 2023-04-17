@@ -14,7 +14,8 @@ const initialState: Entry = {
   characters: [],
   scenes: [],
   cover: null,
-  review: null,
+  created_at: new Date(),
+  updated_at: new Date(),
 }
 
 const entrySlice = createSlice({
@@ -32,8 +33,6 @@ const entrySlice = createSlice({
     },
     removeCharacter: (state: Entry, action: PayloadAction<Character>) => {
       // filter out the character with the given id
-      console.log("this is payload")
-      console.log(action.payload)
       state.characters = state.characters.filter(character => character?._id !== action.payload._id)
     },
     updateCharacter: (state: Entry, action) => {

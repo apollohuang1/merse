@@ -292,7 +292,7 @@ const Storyboard = (props: Props) => {
                   </div>
 
                   <img
-                    src={scene.image_url}
+                    src={"data:image/png;base64," + scene.image_base64 }
                     alt="comic book cover"
                     className="object-cover aspect-[4/3]"
                   />

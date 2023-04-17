@@ -2,7 +2,7 @@
 
 "use client";
 
-import LeftSideBar from "@/components/create/left-side-bar";
+import CreateLeftSideBar from "@/components/create/create-left-sidebar";
 import useAuth from "@/hooks/useAuth";
 import { Entry } from "@/models/entry";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
@@ -55,7 +55,7 @@ export default function RootLayout({
     <div className="grid grid-cols-[250px_auto] max-lg:grid-cols-[175px_auto] max-sm:flex max-sm:flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary max-h-screen">
       {/* left side bar */}
       <div className="flex max-sm:hidden">
-        <LeftSideBar />
+        <CreateLeftSideBar />
       </div>
 
       {children}

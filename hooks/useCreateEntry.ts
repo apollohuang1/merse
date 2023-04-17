@@ -28,8 +28,11 @@ const useCreateEntry = () => {
 
   const saveEntry = async () => {
     console.log("Saving entry...");
-
     try {
+
+      // var string = "data:image/png;base64,long-String"
+      // var bindata = new Buffer(string.split(",")[1],"base64");
+
       const response = await axios({
         method: "POST",
         url: "/api/entries",
@@ -137,13 +140,13 @@ const useCreateEntry = () => {
         .map((line) => line.substring("Scene: ".length).trim());
 
       // comment this out to generate only 1 image
-      // createImageFromText(splittedSceneText[0]);
+      createImageFromText(splittedSceneText[0]);
 
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       // iterate through splitedSceneText array
-      for (let i = 0; i < splittedSceneText.length; i++) {
-        createImageFromText(splittedSceneText[i]);
-      }
+      // for (let i = 0; i < splittedSceneText.length; i++) {
+      //   createImageFromText(splittedSceneText[i]);
+      // }
 
       return sceneText;
     } catch (error: any) {
@@ -157,11 +160,13 @@ const useCreateEntry = () => {
 
 
   const createImageFromText = async (input: string) => {
-    let base_64 = "";
-    let dataUrl = "";
+
     try {
+
       // stable diffusion
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
+
+      //SDXL
       const engineId = "stable-diffusion-v1-5";
       const apiHost = process.env.API_HOST ?? "https://api.stability.ai";
       const apiKey = process.env.STABILITY_API_KEY;
@@ -203,27 +208,28 @@ const useCreateEntry = () => {
           Authorization: `Bearer ${apiKey}`,
         },
       });
+      
       const artifactsResponse: GenerationResponse = sdxlResponse?.data?.artifacts;
-      if (artifactsResponse) {
-        const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
-        // Check if artifacts is not null or undefined
-        if (artifacts) {
-          const length = artifacts.length; 
-          for (let i = 0; i < length + 1; i++) {
-            const image = artifacts[i];
-          }
-        }
-      }
+      // if (artifactsResponse) {
+      //   const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
+      //   // Check if artifacts is not null or undefined
+      //   if (artifacts) {
+      //     const length = artifacts.length; 
+      //     for (let i = 0; i < length + 1; i++) {
+      //       const image = artifacts[i];
+      //     }
+      //   }
+      // }
+      
       console.log("SDXL RESPONSE:");
       console.log(sdxlResponse.data);
 
-      base_64 = sdxlResponse?.data?.artifacts[0].base64;
-      const image_data = Buffer.from(base_64, 'base64');      
-      dataUrl = `data:image/png;base64,${image_data.toString('base64')}`;
+      const base64String = sdxlResponse?.data?.artifacts[0].base64;
+      // const imageDataURL = base64ToImageURL(base64String);
 
       const newScene: Scene = {
         text: input,
-        image_url: dataUrl,
+        image_base64: base64String,
       }
 
       dispatch(addScene(newScene));
@@ -245,6 +251,20 @@ const useCreateEntry = () => {
     }
   };
 
+  const getImageURLFromBase64 = (base64: string) => {
+    // const buff = Buffer.from(base64, "base64");
+    // const dataURL = `data:image/png;base64,${buff.toString("base64")}`;
+    const dataURL = `data:image/png;base64,${base64}`;
+    return dataURL;
+  };
+
+  const imageURLToBase64 = (dataURL: string): string => {
+    const buffer = Buffer.from(dataURL.split(",")[1], "base64");
+    const base64 = buffer.toString("base64");
+    return base64;
+  };
+
+
 
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
@@ -262,6 +282,8 @@ const useCreateEntry = () => {
     });
     return text;
   };
+
+
   const stripText = (input: string) => {
     const regex = /\(([^)]+)\)/g;
     const paragraphs = input.split(/\r?\n/);
@@ -282,6 +304,8 @@ const useCreateEntry = () => {
     }
     return matches.join("\n");
   };
+
+
   return {
     isGeneratingStoryboard,
     generateStoryboard,

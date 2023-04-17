@@ -11,7 +11,9 @@ export interface Entry {
   // storyboard: object | null;
   scenes: Scene[];
   cover: object | null;
-  review: object | null;
+  created_at: Date;
+  updated_at: Date;
+  // review: object | null;
 }
 
 interface StyleReference {
@@ -23,6 +25,6 @@ interface StyleReference {
 
 // scene model
 export interface Scene {
-  image_url: string;
+  image_base64: string;
   text: string;
 }
