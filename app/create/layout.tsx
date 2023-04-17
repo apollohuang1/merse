@@ -27,24 +27,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   
-  const { reloadCurrentUser } = useAuth();
+  // const { reloadCurrentUser } = useAuth();
 
   const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    reloadCurrentUser()
-      .then((user: any) => {
-        // console.log("reloadCurrentUser");
-        dispatch(setUserId(user?._id));
-      })
-      .catch((err) => {
-        console.log("reloadCurrentUser", err);
-        // redirect to home/authentication page
-        // alert("Please log in to continue");
-        // window.location.href = "/";
-      });
-  }, []);
+  // useEffect(() => {
+  //   reloadCurrentUser()
+  //     .then((user: any) => {
+  //       // console.log("reloadCurrentUser");
+  //       dispatch(setUserId(user?._id));
+  //     })
+  //     .catch((err) => {
+  //       console.log("reloadCurrentUser", err);
+  //       // redirect to home/authentication page
+  //       // alert("Please log in to continue");
+  //       // window.location.href = "/";
+  //     });
+  // }, []);
 
   return (
     <div className="grid grid-cols-[250px_auto] max-lg:grid-cols-[175px_auto] max-sm:flex max-sm:flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary max-h-screen">

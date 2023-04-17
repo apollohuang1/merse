@@ -28,6 +28,13 @@ const useAuth = () => {
       })
       .catch((error) => {
         console.log("No authenticated user found");
+
+        // redirect to login page
+        // if current route or path name is not /, then redirect to pathname and don't use router
+        if (window.location.pathname !== "/") {
+          window.location.pathname = "/";
+        }
+
       })
   }, []);
 

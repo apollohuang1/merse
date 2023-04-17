@@ -40,6 +40,7 @@
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "framer-motion": "^10.10.0",
+    "html-react-parser": "^3.0.15",
     "mongodb": "^5.2.0",
     "mongodb-client-encryption": "^2.7.1",
     "mongoose": "^7.0.3",

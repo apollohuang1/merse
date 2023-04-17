@@ -40,12 +40,29 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const { reloadCurrentUser } = useAuth();
 
+  useEffect(() => {
+    reloadCurrentUser()
+      .then((user) => {
+        console.log("User reloaded");
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log("No authenticated user found");
+
+        // redirect to login page
+        // if current route or path name is not /, then redirect to pathname and don't use router
+        if (window.location.pathname !== "/") {
+          window.location.pathname = "/";
+        }
+      });
+  }, []);
+
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center h-screen w-screen">
       <div
         className={clsx(
           "w-full h-full max-sm:flex max-sm:flex-col",
-          { "flex flex-col": !auth?.currentUser }, // unauthenticated
+          { "flex flex-col bg-indigo-500": !auth?.currentUser }, // unauthenticated
           {
             "grid grid-cols-[80px_auto] duration-300":
               auth?.currentUser && !showFullSidebar && !isCreateRoute,
@@ -110,9 +127,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         )}
         <div className="flex flex-col h-screen w-full overflow-auto">
-
           {/* top navigation bar */}
-          { auth?.currentUser && !isCreateRoute && (
+          {auth?.currentUser && !isCreateRoute && (
             <>
               <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary dark:bg-opacity-80 backdrop-blur-xl z-50">
                 {/* arrow left and right */}
@@ -170,7 +186,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     </div>
                   </ProfileMenu>
                 </div>
-                
               </div>
             </>
           )}
