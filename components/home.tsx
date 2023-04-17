@@ -147,7 +147,7 @@ const Home = (props: Props) => {
                     <span className="text-light-text-primary dark:text-dark-text-primary text-xl font-bold">
                       Episode {index + 1}
                     </span>
-                    <span className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-2 w-4/6">
+                    <span className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-2 w-5/6">
                       {artist.description}
                     </span>
                   </div>

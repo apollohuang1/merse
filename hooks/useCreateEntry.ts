@@ -12,6 +12,15 @@ import * as fs from 'fs';
 
 // Hook for creating new entries
 const useCreateEntry = () => {
+
+  // scene model
+  interface Scene {
+    image_url: string;
+    text: string;
+  }
+
+  const [generatedScenes, setGeneratedScenes] = React.useState<Scene[]>([]);
+
   const [isGeneratingStoryboard, setIsGeneratingStoryboard] =
     React.useState<boolean>(false);
 
@@ -150,6 +159,8 @@ const useCreateEntry = () => {
       return null;
     }
   };
+
+
   const createImageFromText = async (input: string) => {
     let base_64 = "";
     let dataUrl = "";
@@ -159,6 +170,8 @@ const useCreateEntry = () => {
       const engineId = "stable-diffusion-v1-5";
       const apiHost = process.env.API_HOST ?? "https://api.stability.ai";
       const apiKey = process.env.STABILITY_API_KEY;
+
+      console.log("api key: " + apiKey)
 
       if (!apiKey) {
         throw new Error("Missing Stability API key.");
@@ -212,8 +225,15 @@ const useCreateEntry = () => {
       base_64 = sdxlResponse?.data?.artifacts[0].base64;
       const image_data = Buffer.from(base_64, 'base64');      
       dataUrl = `data:image/png;base64,${image_data.toString('base64')}`;
-      //console.log(dataUrl);
-      return dataUrl;
+      console.log(dataUrl);
+      // return dataUrl;
+
+      const newScene: Scene = {
+        text: input,
+        image_url: dataUrl,
+      }
+
+      appendGeneratedScene(newScene);
 
       interface GenerationResponse {
         artifacts: Array<{
@@ -227,6 +247,13 @@ const useCreateEntry = () => {
       console.log("Failed to generate image:", error?.message);
     }
   };
+
+
+  const appendGeneratedScene = (scene: Scene) => {
+    setGeneratedScenes((prev) => [...prev, scene]);
+  }
+
+
   const convertTiptapJSONToText = (tiptapJSON: JSONContent): string => {
     const { content } = tiptapJSON;
     let text = "";
@@ -266,7 +293,7 @@ const useCreateEntry = () => {
   return {
     isGeneratingStoryboard,
     generateStoryboard,
-    dataUrl: '' as string,
+    generatedScenes,
     createImageFromText,
     saveEntry,
   };

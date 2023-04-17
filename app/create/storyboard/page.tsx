@@ -62,7 +62,7 @@ type Props = {};
 
 const Storyboard = (props: Props) => {
   // hooks
-  const { generateStoryboard, isGeneratingStoryboard, createImageFromText } =
+  const { generateStoryboard, isGeneratingStoryboard, createImageFromText, generatedScenes } =
     useCreateEntry();
 
   // redux states
@@ -284,8 +284,9 @@ const Storyboard = (props: Props) => {
             )}
           >
             <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">
-              {storyboardSamples.map((style, index) => (
-                <div
+              {
+                generatedScenes.map((scene, index) => (
+                  <div
                   key={index}
                   className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
                 >
@@ -295,7 +296,7 @@ const Storyboard = (props: Props) => {
                   </div>
 
                   <img
-                    src={style?.artwork?.url}
+                    src={scene.image_url}
                     alt="comic book cover"
                     className="object-cover aspect-[4/3]"
                   />
@@ -303,11 +304,12 @@ const Storyboard = (props: Props) => {
                   {/* story line in storyboard */}
                   <div className="flex p-4">
                     <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                      {style?.description}
+                      {scene.text}
                     </p>
                   </div>
                 </div>
-              ))}
+                ))
+              }
             </div>
           </div>
         </div>
