@@ -28,65 +28,6 @@ const Home = (props: Props) => {
 
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
-      {/* top navigation bar */}
-      <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary dark:bg-opacity-80 backdrop-blur-xl z-50">
-        {/* arrow left and right */}
-        <div className="flex flex-row gap-3 items-center">
-          <button
-            onClick={() => {
-              router.back();
-            }}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
-          >
-            <FiChevronLeft className="w-5 h-5" />
-          </button>
-
-          <button
-            onClick={() => {
-              router.forward();
-            }}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
-          >
-            <FiChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-
-        <div className="flex flex-row gap-3 items-center justify-center">
-          {/* search bar */}
-          <div className="group flex flex-row gap-3 px-4 items-center w-80 h-8 border border-light-divider dark:border-dark-divider rounded-full bg-light-background-secondary dark:bg-dark-background-secondary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden">
-            <FiSearch className="text-light-text-secondary dark:text-dark-text-secondary group-focus-within:text-accent" />
-            <input
-              type="text"
-              placeholder="Enter the work, artist, or genre"
-              className="w-full bg-transparent outline-none placeholder:text-light-text-tertiary placeholder:dark:text-dark-text-tertiary"
-            />
-          </div>
-
-          <button
-            onClick={() => {
-              toggleColorScheme();
-            }}
-            className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-8 h-8 items-center justify-center rounded-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
-          >
-            <FiSun className="w-5 h-5" />
-          </button>
-
-          {/* <FiBell /> */}
-          <ProfileMenu>
-            <button className="flex items-center justify-center aspect-square">
-              <img
-                src={auth?.currentUser?.profile_image_url}
-                className={"h-8 w-8 aspect-square rounded-full"}
-                alt="user profile image"
-                onError={(e) => {
-                  e.currentTarget.src =
-                    "https://media.discordapp.net/attachments/1090027780525273153/1095187382095061085/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_fe116faf-39b2-46d2-8dbe-b46f9b0b4ef1.png?width=686&height=686";
-                }}
-              />
-            </button>
-          </ProfileMenu>
-        </div>
-      </div>
 
       {/* main content */}
       <div className="flex flex-col w-full h-full gap-6 max-sm:gap-3 items-center">

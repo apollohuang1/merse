@@ -76,7 +76,7 @@ const CreateLeftSideBar = (props: Props) => {
           >
             {isSaving && <Spinner className="w-4 h-4" />}
             <span className="font-semibold text-light-text-primary dark:text-dark-text-primary">
-              {isSaving ? "Saving..." : "Save"}
+              {isSaving ? "Saving..." : "Save Draft"}
             </span>
           </button>
         </div>
