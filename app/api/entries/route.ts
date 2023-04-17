@@ -7,7 +7,15 @@ import MDBEntry from "@/server/models/MDBEntry";
 export async function GET(request: NextRequest) {
   try {
     const db = await dbConnect();
-    const data = await MDBEntry.find({});
+
+    // const get params from fullURL
+    const url = new URL(request.url);
+    const id = url.searchParams.get("id");
+
+    const data = await MDBEntry.findOne({
+      _id: id,
+    })
+
     return NextResponse.json({ data: data }, { status: 200 });
   } catch (error: any) {
     // return new Response(error, { status: 500 })
