@@ -3,6 +3,7 @@
 import Modal from "@/components/modal";
 import SlideOver from "@/components/slide-over";
 import { Entry } from "@/models/entry";
+import { useAppSelector } from "@/redux-store/hooks";
 import { getImageURLfromBase64 } from "@/util/helper";
 import { genders } from "@/util/select";
 import { Menu, Transition } from "@headlessui/react";
@@ -23,6 +24,8 @@ const ProfilePage = (props: Props) => {
   }, []);
 
   const router = useRouter();
+
+  const auth = useAppSelector((state) => state.auth);
 
   const [user, setUser] = useState<any>(null);
   const [allEntries, setAllEntries] = useState<Entry[]>([]);
@@ -59,6 +62,26 @@ const ProfilePage = (props: Props) => {
     }
   };
 
+  const updateProfile = async () => {
+    try {
+      const response = await axios({
+        method: "PUT",
+        url: `/api/users`,
+        data: {
+          _id: user._id,
+          banner_image_url: editingBannerURL,
+          profile_image_url: editingProfileURL,
+          name: editingName,
+          bio: editingBio,
+        },
+      });
+      setUser(response.data);
+      setShowProfileEditModal(false);
+    } catch (error: any) {
+      console.log("Failed to update profile, message: ", error.message);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col w-full items-center overflow-auto">
@@ -66,9 +89,7 @@ const ProfilePage = (props: Props) => {
         <div className="flex w-full h-[30vh] bg-light-background-secondary dark:bg-dark-background-secondary flex-shrink-0">
           {user?.banner_image_url ? (
             <img
-              src={
-                "https://pbs.twimg.com/profile_banners/727846811713437696/1670934193/1500x500"
-              }
+              src={user?.banner_image_url}
               className="w-full h-full object-cover"
             />
           ) : (
@@ -86,18 +107,20 @@ const ProfilePage = (props: Props) => {
                   className="w-32 h-32 rounded-full object-cover"
                 />
 
-                <button
-                  onClick={() => {
-                    setEditingProfileURL(user?.profile_image_url);
-                    setEditingBannerURL(user?.banner_image_url);
-                    setEditingName(user?.name);
-                    setEditingBio(user?.bio);
-                    setShowProfileEditModal(true);
-                  }}
-                  className="bg-light-background-tertiary dark:bg-dark-background-tertiary h-10 px-4 rounded-full"
-                >
-                  Edit Profile
-                </button>
+                {auth?.currentUser?._id === user?._id && (
+                  <button
+                    onClick={() => {
+                      setEditingProfileURL(user?.profile_image_url);
+                      setEditingBannerURL(user?.banner_image_url);
+                      setEditingName(user?.name);
+                      setEditingBio(user?.bio);
+                      setShowProfileEditModal(true);
+                    }}
+                    className="bg-light-background-tertiary dark:bg-dark-background-tertiary h-10 px-4 rounded-full"
+                  >
+                    Edit Profile
+                  </button>
+                )}
               </div>
 
               <div className="flex flex-col gap-2">
@@ -165,7 +188,7 @@ const ProfilePage = (props: Props) => {
               </button>
 
               <button
-                onClick={() => {}}
+                onClick={() => updateProfile()}
                 type="submit"
                 className="bg-accent w-24 h-10 text-white rounded-full"
               >
@@ -176,114 +199,45 @@ const ProfilePage = (props: Props) => {
         }
       >
         {/* create/edit character slideover content */}
-        <div className="flex flex-col gap-7">
-          {/* face image container */}
-          <div className="flex flex-row w-full justify-center">
-            {/* circle image input */}
-            <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
-              {/* {characterImageData || characterImageURL !== "" ? ( */}
-              {user?.profile_image_url !== "" ? (
-                <Menu as="div" className="flex">
-                  <Menu.Button>
-                    <div className="flex w-full h-full">
-                      {/* image */}
+        <div className="flex flex-col gap-7 items-center">
+          <div className="flex flex-col w-full h-36 items-center justify-center">
+            {editingBannerURL ? (
+              <img
+                src={editingBannerURL}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary" />
+            )}
+          </div>
 
-                      {editingProfileURL ? (
-                        <img
-                          src={editingProfileURL}
-                          className="absolute w-full h-full object-cover rounded-full"
-                          alt="character face"
-                        />
-                      ) : (
-                        <></>
-                      )}
-
-                      {/* overlay  */}
-                      <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-20 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 rounded-full group-active:opacity-50 transition-all">
-                        <FiEdit2 className="w-7 h-7 text-white" />
-                      </div>
-                    </div>
-                  </Menu.Button>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute z-10 w-56 origin-bottom-left bg-light-background-secondary dark:bg-dark-background-secondary focus:outline-none rounded-lg">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <div
-                            className={clsx(
-                              "flex flex-row items-center px-4 relative text-sm h-12 border-b border-b-light-divider dark:border-b-dark-divider cursor-pointer rounded-t-lg",
-                              {
-                                "bg-light-background-tertiary dark:bg-dark-background-tertiary":
-                                  active,
-                              }
-                            )}
-                          >
-                            <div>Upload Photo</div>
-
-                            <input
-                              type="file"
-                              className="group absolute w-full h-full opacity-0 hover:cursor-pointer"
-                              accept="image/*"
-                              onChange={(e) => {
-                                // set selected photo to null
-                                e.preventDefault();
-                                // setCharacterImageData(null);
-                              }}
-                            />
-                          </div>
-                        )}
-                      </Menu.Item>
-
-                      <Menu.Item>
-                        {({ active }) => (
-                          <div
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setEditingProfileURL("");
-                            }}
-                            className={clsx(
-                              "flex flex-row items-center px-4 text-sm text-light-red dark:text-dark-red cursor-pointer h-12 rounded-b-lg",
-                              {
-                                "bg-light-background-tertiary dark:bg-dark-background-tertiary":
-                                  active,
-                              }
-                            )}
-                          >
-                            Remove Current Photo
-                          </div>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              ) : (
-                <div className="flex absolute w-full h-full items-center justify-center aspect-square bg-light-background-secondary dark:bg-dark-background-secondary rounded-full group-hover:bg-light-background-tertiary dark:group-hover:bg-dark-background-tertiary transition-all group-active:opacity-50">
-                  <FiPlus className="w-7 h-7 text-light-text-tertiary  dark:text-dark-text-secondary" />
-                  <input
-                    type="file"
-                    className="group absolute w-full h-full opacity-0 rounded-full hover:cursor-pointer"
-                    accept="image/*"
-                    onChange={(e) => {
-                      e.preventDefault();
-                      // if (e.target.files && e.target.files[0]) {
-                      //   setCharacterImageData(e.target.files[0]);
-                      //   setCharacterImageURL(
-                      //     URL.createObjectURL(e.target.files[0])
-                      //   );
-                      // }
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+          {/* circle image input */}
+          <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
+            {editingProfileURL && editingProfileURL !== "" ? (
+              <img
+                src={editingProfileURL}
+                className="absolute w-full h-full object-cover rounded-full"
+                alt="character face"
+              />
+            ) : (
+              <div className="flex absolute w-full h-full items-center justify-center aspect-square bg-light-background-secondary dark:bg-dark-background-secondary rounded-full group-hover:bg-light-background-tertiary dark:group-hover:bg-dark-background-tertiary transition-all group-active:opacity-50">
+                <FiPlus className="w-7 h-7 text-light-text-tertiary  dark:text-dark-text-secondary" />
+                <input
+                  type="file"
+                  className="group absolute w-full h-full opacity-0 rounded-full hover:cursor-pointer"
+                  accept="image/*"
+                  onChange={(e) => {
+                    e.preventDefault();
+                    // if (e.target.files && e.target.files[0]) {
+                    //   setCharacterImageData(e.target.files[0]);
+                    //   setCharacterImageURL(
+                    //     URL.createObjectURL(e.target.files[0])
+                    //   );
+                    // }
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           <form

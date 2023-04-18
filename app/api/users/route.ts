@@ -54,3 +54,31 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+
+// update
+export async function PUT(request: NextRequest) {
+  try {
+    const db = await dbConnect();
+    const body = await request.json();
+
+    const filter = { _id: body._id }
+    const update = body;
+
+    const testFilter = { _id: "6436f3032b67ae01b9c884bb" }
+    const testUpdate = { 
+      name: "Mark Rachapoom",
+      bio: "20, building this app you're using",
+      profile_image_url: "https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg",
+      banner_image_url: "https://pbs.twimg.com/profile_banners/727846811713437696/1670934193/1500x500"
+    }
+
+
+    const updatedUser = await MDBUser.findOneAndUpdate(filter, body);
+
+    return NextResponse.json(updatedUser, { status: 200 });
+
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
