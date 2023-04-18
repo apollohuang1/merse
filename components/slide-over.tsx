@@ -8,7 +8,7 @@ import { FiX } from "react-icons/fi";
 
 const SlideOver: React.FC<{
   children: React.ReactNode;
-  onOpen: () => void;
+  onOpen?: () => void;
   onClose: () => void;
   isOpen: boolean;
   title?: string;

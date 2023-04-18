@@ -137,7 +137,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             {/* create */}
           </div>
         )}
-        <div className="flex flex-col h-screen w-full overflow-auto">
+        <div className="flex flex-col h-full w-full overflow-auto">
           {/* top navigation bar */}
           {auth?.currentUser && !isCreateRoute && (
             <>
