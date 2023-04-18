@@ -1,6 +1,8 @@
 import useAuth from "@/hooks/useAuth";
+import { useAppSelector } from "@/redux-store/hooks";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { FiBookOpen, FiChevronRight, FiLogOut, FiUser } from "react-icons/fi";
 
@@ -9,13 +11,18 @@ type Props = { children: React.ReactNode };
 const ProfileMenu = (props: Props) => {
 
   const { logOut } = useAuth();
+  const router = useRouter();
+
+  const auth = useAppSelector((state) => state.auth);
 
   const menuItems = [
     {
       icon: <FiUser />,
       label: "Profile",
       onClick: () => {
-        console.log("Profile");
+        if (auth?.currentUser) {
+          router.push(`/${auth.currentUser._id}`);
+        }
       },
     },
     {

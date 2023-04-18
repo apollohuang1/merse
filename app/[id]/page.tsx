@@ -3,7 +3,7 @@
 import { Entry } from "@/models/entry";
 import { getImageURLfromBase64 } from "@/util/helper";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
 
@@ -11,57 +11,71 @@ type Props = {};
 
 const ProfilePage = (props: Props) => {
   useEffect(() => {
-    fetchAllEntries();
+    // fetchAllEntries();
+
+    // fetch user
+    fetchUser();
   }, []);
 
   const router = useRouter();
 
+  const [user, setUser] = useState<any>(null);
   const [allEntries, setAllEntries] = useState<Entry[]>([]);
 
-  const fetchAllEntries = async () => {
-    try {
-      const response = await axios.get(
-        `/api/entries?userId=6436f3032b67ae01b9c884bb`
-      );
-      setAllEntries(response.data);
+  const pathname = usePathname();
 
-      console.log("All entries");
-      console.log(response.data);
+  const fetchUser = async () => {
+    try {
+      const id = pathname;
+      if (!id) return;
+      const userId = id.split("/")[1];
+      const response = await axios.get(`/api/users/${userId}`);
+      setUser(response.data);
+      fetchAllEntries(response.data._id);
     } catch (error: any) {
-      console.log(error);
-      console.log(error.message);
+      console.log("Failed to fetch user, message: ", error.message);
+    }
+  };
+
+  const fetchAllEntries = async (user_id: string) => {
+    try {
+      const response = await axios.get(`/api/entries?userId=${user_id}`);
+      setAllEntries(response.data);
+    } catch (error: any) {
+      console.log("Failed to fetch entries, message: ", error.message);
     }
   };
 
   return (
     <div className="flex flex-col w-full h-full items-center">
       {/* banner */}
-      <img
-        src={
-          "https://pbs.twimg.com/profile_banners/727846811713437696/1670934193/1500x500"
-        }
-        className="w-full h-[30vh] object-cover"
-      />
+
+      {user?.banner_image_url ? (
+        <img
+          src={
+            "https://pbs.twimg.com/profile_banners/727846811713437696/1670934193/1500x500"
+          }
+          className="w-full h-[30vh] object-cover"
+        />
+      ) : (
+        <div className="w-full h-[30vh] bg-light-background-secondary dark:bg-dark-background-secondary" />
+      )}
 
       <div className="flex flex-col px-6 w-full h-full items-center -translate-y-[64px]">
         <div className="flex flex-col w-full h-full max-w-5xl gap-6">
           <div className="flex flex-col w-full gap-3">
             {/* profile image */}
             <img
-              src={
-                "https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg"
-              }
+              src={user?.profile_image_url}
               className="w-32 h-32 rounded-full object-cover"
             />
 
-            <div>
+            <div className="flex flex-col gap-2">
               {/* name */}
-              <span className="text-2xl font-bold">{"Mark"}</span>
+              <span className="text-2xl font-bold">{user?.name ?? "Unknown"}</span>
 
               <p className="max-w-sm font-normal">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                convallis lectus magna, ut rutrum justo interdum sed. Aliquam
-                erat elit.
+                { user?.bio ?? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis lectus magna, ut rutrum justo interdum sed. Aliquam erat elit." }
               </p>
             </div>
           </div>

@@ -1,6 +1,7 @@
 
 
 interface SampleArtist {
+  _id?: string;
   name: string;
   username?: string;
   profile_image_url: string;
@@ -38,7 +39,20 @@ export const sampleArtists: SampleArtist[] = [
   {
     name: "Mark",
     username: "mark",
+    _id: "6436f3032b67ae01b9c884bb",
     profile_image_url: "https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg",
+  },
+  {
+    name: "Emily",
+    username: "emily",
+    _id: "643824151cb80eec2f543e85",
+    profile_image_url: "https://pbs.twimg.com/profile_images/1640925202162020352/W718YHZ0_400x400.jpg",
+  },
+  {
+    name: "Jyoti",
+    username: "jyoti",
+    _id: "643ae2a7b5cf0cd55b8f4393",
+    profile_image_url: "https://pbs.twimg.com/profile_images/1512137188988710912/1p11Xf_Y_400x400.jpg",
   }
 ]
 

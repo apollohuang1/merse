@@ -10,9 +10,9 @@ export async function GET(request: NextRequest) {
     const { pathname } = new URL(request.url);
 
     // get the final route from pathname
-    const email = pathname.split("/").pop(); // userId
+    const userId = pathname.split("/").pop(); // userId
 
-    const userData = await MDBUser.findOne({ email: email });
+    const userData = await MDBUser.findById(userId);
 
     return NextResponse.json(userData, { status: 200 });
   } catch (error: any) {
