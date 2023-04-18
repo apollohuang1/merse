@@ -19,17 +19,21 @@ export async function GET(request: NextRequest) {
     const id = url.searchParams.get("id");
     const userId = url.searchParams.get("userId");
 
+
     if (id) {
       const oneEntry = await MDBEntry.findOne({
         _id: id,
       })
-      return NextResponse.json({ oneEntry }, { status: 200, headers: headers });
-    } else {
+      return NextResponse.json(oneEntry, { status: 200, headers: headers });
+    } 
+    
+    
+    if (userId) {
       // fetch all
       const allEntriesFromUser = await MDBEntry.find({
         user_id: userId,
       });
-      return NextResponse.json({ allEntriesFromUser }, { status: 200, headers: headers });
+      return NextResponse.json(allEntriesFromUser, { status: 200, headers: headers });
     }
 
   } catch (error: any) {

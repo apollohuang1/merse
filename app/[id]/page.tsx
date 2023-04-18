@@ -15,11 +15,16 @@ const ProfilePage = (props: Props) => {
   const [allEntries, setAllEntries] = useState<Entry[]>([]);
 
   const fetchAllEntries = async () => {
-    const response = await axios.get(`https://comic.merse.co/api/entries?userId=6436f3032b67ae01b9c884bb`);
-    setAllEntries(response.data);
-    
-    console.log("All entries")
-    console.log(response.data)
+    try {
+      const response = await axios.get(`/api/entries?userId=6436f3032b67ae01b9c884bb`);
+      setAllEntries(response.data);
+      
+      console.log("All entries")
+      console.log(response.data)
+    } catch (error: any) {
+      console.log(error);
+      console.log(error.message);
+    }
   }
 
   return (

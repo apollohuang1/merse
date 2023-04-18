@@ -27,5 +27,4 @@ const EntrySchema = new mongoose.Schema<Entry>({
   // is_private: { type: Boolean, required: true },
 });
 
-
-export default mongoose.model('Entry', EntrySchema);
+export default mongoose.models.Entry || mongoose.model('Entry', EntrySchema);

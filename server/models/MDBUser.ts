@@ -14,4 +14,4 @@ const UserSchema = new mongoose.Schema<IUser>({
   profile_image_url: { type: String, required: false },
 });
 
-export default mongoose.model<IUser>('User', UserSchema);
+export default mongoose.models.User || mongoose.model('User', UserSchema);

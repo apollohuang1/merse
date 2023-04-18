@@ -8,6 +8,7 @@ import { JSONContent, generateHTML } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 import parse from "html-react-parser";
+import { Entry } from '@/models/entry';
 
 type Props = {}
 
@@ -25,13 +26,13 @@ const ReadPage = (props: Props) => {
     try {
       const id = searchParams?.get('id');
   
-      const response = await axios({
+      const response = await axios<Entry>({
         method: 'GET',
-        url: `https://comic.merse.co/api/entries?id=${id}`,
+        url: `/api/entries?id=${id}`,
       })
 
-      console.log(response.data.data);
-      setTiptapJSON(response.data.data.content);
+      console.log(response.data);
+      setTiptapJSON(response.data.content);
 
 
     } catch (error: any) {
