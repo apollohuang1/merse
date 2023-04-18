@@ -100,7 +100,7 @@ const LayoutPage = (props: Props) => {
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
-        <CreateHeader currentRoute={createRoutes[2]} />
+        <CreateHeader currentRoute={createRoutes[3]} />
 
         {/* main content (left and right panels columns) */}
         <div

@@ -13,7 +13,7 @@ const Cover = (props: Props) => {
     <div className="grid grid-rows-[100px_auto] overflow-auto">
 
       {/* top of grid */}
-      <CreateHeader currentRoute={createRoutes[3]} />
+      <CreateHeader currentRoute={createRoutes[4]} />
 
       <div className="flex flex-col w-full h-full justify-center items-center">
   
