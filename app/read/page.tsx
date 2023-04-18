@@ -16,7 +16,8 @@ const ReadPage = (props: Props) => {
 
   const searchParams = useSearchParams();
 
-  const [tiptapJSON, setTiptapJSON] = React.useState<JSONContent | null>(null);
+  // states
+  const [entryData, setEntryData] = React.useState<Entry | null>(null);
 
   useEffect(() => {
     fetchEntry();
@@ -32,8 +33,7 @@ const ReadPage = (props: Props) => {
       })
 
       console.log(response.data);
-      setTiptapJSON(response.data.content);
-
+      setEntryData(response.data);
 
     } catch (error: any) {
       console.log("Failed to fetch entry, message: ", error.message);
@@ -41,9 +41,9 @@ const ReadPage = (props: Props) => {
   }
 
   const output = useMemo(() => {
-    if (!tiptapJSON) return null
-    return generateHTML(tiptapJSON, [StarterKit]);
-  }, [tiptapJSON])
+    if (!entryData?.content) return null
+    return generateHTML(entryData.content, [StarterKit]);
+  }, [entryData])
 
   return (
     <div className="flex flex-col w-full h-full items-center p-6">
@@ -53,6 +53,19 @@ const ReadPage = (props: Props) => {
             { parse(output)}
           </div>
         }
+        
+        { entryData?.scenes?.map((scene, index) => {
+          return (
+            <div key={index} className='flex flex-col items-center'>
+              <img 
+                // base64 image url source
+                src={"data:image/png;base64," + scene.image_base64}
+                alt='scene'
+                className='w-full h-full object-cover'
+              />
+            </div>
+          )
+        })}
       </div>
     </div>
   )
