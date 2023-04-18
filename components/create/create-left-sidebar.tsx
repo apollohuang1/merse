@@ -10,15 +10,17 @@ import { allCreateRoutes } from "@/util/create-constants";
 import useColorScheme from "@/hooks/useColorScheme";
 import { Spinner } from "@chakra-ui/react";
 import Alert from "../alert";
+import useCreateEntry from "@/hooks/useCreateEntry";
 
 type Props = {};
 
 const CreateLeftSideBar = (props: Props) => {
   const pathName = usePathname();
 
+  const { saveEntry } = useCreateEntry();
+
   const [isSaving, setIsSaving] = React.useState(false);
-  const [showDiscardAlert, setShowDiscardAlert] =
-    React.useState<boolean>(false);
+  const [showDiscardAlert, setShowDiscardAlert] = React.useState<boolean>(false);
 
   return (
     <>
@@ -64,13 +66,15 @@ const CreateLeftSideBar = (props: Props) => {
           <button
             onClick={() => {
               // window.location.href = "/";
-              setIsSaving(true);
+              // setIsSaving(true);
 
-              setTimeout(() => {
-                setIsSaving(false);
-                window.location.href =
-                  "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-              }, 2000);
+              saveEntry();
+
+              // setTimeout(() => {
+              //   setIsSaving(false);
+              //   window.location.href =
+              //     "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+              // }, 2000);
             }}
             className="flex flex-row h-16 w-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2"
           >

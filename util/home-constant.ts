@@ -2,8 +2,10 @@
 
 interface SampleArtist {
   name: string;
+  username?: string;
   profile_image_url: string;
 }
+
 export const sampleArtists: SampleArtist[] = [
   {
     name: "Yuri",
@@ -32,6 +34,11 @@ export const sampleArtists: SampleArtist[] = [
   {
     name: "Stable Difffusion",
     profile_image_url: "https://pbs.twimg.com/profile_images/1634515185300807682/FTOEZDkp_400x400.jpg",
+  },
+  {
+    name: "Mark",
+    username: "mark",
+    profile_image_url: "https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg",
   }
 ]
 

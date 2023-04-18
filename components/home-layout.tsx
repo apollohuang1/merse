@@ -63,7 +63,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div
         className={clsx(
           "w-full h-full max-sm:flex max-sm:flex-col",
-          { "flex flex-col bg-indigo-500": !auth?.currentUser }, // unauthenticated
+          { "flex flex-col": !auth?.currentUser }, // unauthenticated
           {
             "grid grid-cols-[80px_auto] duration-300":
               auth?.currentUser && !showFullSidebar && !isCreateRoute,
