@@ -23,7 +23,7 @@ const Review = (props: Props) => {
 
   return (
     <div className="grid grid-rows-[100px_auto] overflow-auto">
-      <CreateHeader currentRoute={createRoutes[4]} />
+      <CreateHeader currentRoute={createRoutes[5]} />
       <div className="flex flex-col w-full justify-center items-center overflow-auto">
         {/* main content */}
         <div className="flex flex-col gap-7 w-full h-full max-w-3xl">
