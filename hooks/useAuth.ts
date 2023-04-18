@@ -24,7 +24,6 @@ const useAuth = () => {
     reloadCurrentUser()
       .then((user) => {
         console.log("User reloaded");
-        console.log(user);
       })
       .catch((error) => {
         console.log("No authenticated user found");
