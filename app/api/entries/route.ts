@@ -8,12 +8,6 @@ export async function GET(request: NextRequest) {
   try {
     const db = await dbConnect();
 
-    // access-coltrol-allow-origin
-    const headers = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-    };
-
     // const get params from fullURL
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
@@ -24,14 +18,14 @@ export async function GET(request: NextRequest) {
       const allEntriesFromUser = await MDBEntry.find({
         user_id: userId,
       });
-      return NextResponse.json(allEntriesFromUser, { status: 200, headers: headers });
+      return NextResponse.json(allEntriesFromUser, { status: 200 });
     }
 
     if (id) {
       const oneEntry = await MDBEntry.findOne({
         _id: id,
       })
-      return NextResponse.json(oneEntry, { status: 200, headers: headers });
+      return NextResponse.json(oneEntry, { status: 200 });
     } 
 
   } catch (error: any) {
