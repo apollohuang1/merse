@@ -102,10 +102,17 @@ const ProfilePage = (props: Props) => {
             <div className="flex flex-col w-full gap-3">
               <div className="flex flex-row justify-between items-end">
                 {/* profile image */}
-                <img
-                  src={user?.profile_image_url}
-                  className="w-32 h-32 rounded-full object-cover"
-                />
+
+                <div className="w-32 h-32 bg-light-background-secondary dark:bg-dark-background-secondary rounded-full overflow-clip">
+                  { user?.profile_image_url ? (
+                    <img
+                      src={user?.profile_image_url}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary" />
+                  )}
+                </div>
 
                 {auth?.currentUser?._id === user?._id && (
                   <button
@@ -126,7 +133,7 @@ const ProfilePage = (props: Props) => {
               <div className="flex flex-col gap-2">
                 {/* name */}
                 <span className="text-2xl font-bold">
-                  {user?.name ?? "Unknown"}
+                  {user?.name }
                 </span>
 
                 <p className="max-w-sm font-normal">
@@ -199,8 +206,9 @@ const ProfilePage = (props: Props) => {
         }
       >
         {/* create/edit character slideover content */}
-        <div className="flex flex-col gap-7 items-center">
-          <div className="flex flex-col w-full h-36 items-center justify-center">
+        <div className="flex flex-col items-center">
+
+          <div className="flex flex-col w-full h-40 items-center justify-center">
             {editingBannerURL ? (
               <img
                 src={editingBannerURL}
@@ -211,125 +219,128 @@ const ProfilePage = (props: Props) => {
             )}
           </div>
 
-          {/* circle image input */}
-          <div className="group relative w-40 h-40 border border-light-divider dark:border-dark-divider rounded-full">
-            {editingProfileURL && editingProfileURL !== "" ? (
-              <img
-                src={editingProfileURL}
-                className="absolute w-full h-full object-cover rounded-full"
-                alt="character face"
-              />
-            ) : (
-              <div className="flex absolute w-full h-full items-center justify-center aspect-square bg-light-background-secondary dark:bg-dark-background-secondary rounded-full group-hover:bg-light-background-tertiary dark:group-hover:bg-dark-background-tertiary transition-all group-active:opacity-50">
-                <FiPlus className="w-7 h-7 text-light-text-tertiary  dark:text-dark-text-secondary" />
+          <div className="flex flex-col w-full -translate-y-[56px] gap-7">
+            {/* circle image input */}
+            <div className="group relative w-28 h-28 border border-light-divider dark:border-dark-divider rounded-full mx-4">
+              {editingProfileURL && editingProfileURL !== "" ? (
+                <img
+                  src={editingProfileURL}
+                  className="absolute w-full h-full object-cover rounded-full"
+                  alt="character face"
+                />
+              ) : (
+                <div className="flex absolute w-full h-full items-center justify-center aspect-square bg-light-background-secondary dark:bg-dark-background-secondary rounded-full group-hover:bg-light-background-tertiary dark:group-hover:bg-dark-background-tertiary transition-all group-active:opacity-50">
+                  <FiPlus className="w-7 h-7 text-light-text-tertiary  dark:text-dark-text-secondary" />
+                  <input
+                    type="file"
+                    className="group absolute w-full h-full opacity-0 rounded-full hover:cursor-pointer"
+                    accept="image/*"
+                    onChange={(e) => {
+                      e.preventDefault();
+                      // if (e.target.files && e.target.files[0]) {
+                      //   setCharacterImageData(e.target.files[0]);
+                      //   setCharacterImageURL(
+                      //     URL.createObjectURL(e.target.files[0])
+                      //   );
+                      // }
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            <form
+              className="flex flex-col w-full gap-7"
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="Banner Image URL"
+                  className="flex text-sm font-medium leading-6"
+                >
+                  Banner Image URL
+                </label>
+
                 <input
-                  type="file"
-                  className="group absolute w-full h-full opacity-0 rounded-full hover:cursor-pointer"
-                  accept="image/*"
+                  type="text"
+                  name="imageURL"
+                  id="imageURL"
+                  enterKeyHint="next"
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                  value={editingBannerURL ?? ""}
+                  placeholder="Enter banner image URL"
                   onChange={(e) => {
-                    e.preventDefault();
-                    // if (e.target.files && e.target.files[0]) {
-                    //   setCharacterImageData(e.target.files[0]);
-                    //   setCharacterImageURL(
-                    //     URL.createObjectURL(e.target.files[0])
-                    //   );
-                    // }
+                    setEditingBannerURL(e.target.value);
                   }}
                 />
               </div>
-            )}
+
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="Image URL"
+                  className="flex text-sm font-medium leading-6"
+                >
+                  Profile Image URL
+                </label>
+
+                <input
+                  type="text"
+                  name="imageURL"
+                  id="imageURL"
+                  enterKeyHint="next"
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                  value={editingProfileURL ?? ""}
+                  placeholder="Enter profile image URL"
+                  onChange={(e) => {
+                    setEditingProfileURL(e.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="name"
+                  className="flex text-sm font-medium leading-6"
+                >
+                  Name
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  enterKeyHint="next"
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                  value={editingName ?? ""}
+                  placeholder="Enter your name"
+                  onChange={(e) => {
+                    setEditingName(e.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor="description" className="flex text-sm font-medium">
+                  Bio
+                </label>
+
+                <textarea
+                  name="description"
+                  id="description"
+                  rows={4}
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md min-h-[100px] border border-light-divider dark:border-dark-divider bg-transparent"
+                  value={editingBio ?? ""}
+                  placeholder="Enter your bio"
+                  onChange={(e) => {
+                    setEditingBio(e.target.value);
+                  }}
+                />
+              </div>
+            </form>
           </div>
 
-          <form
-            className="flex flex-col w-full gap-7"
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="Banner Image URL"
-                className="flex text-sm font-medium leading-6"
-              >
-                Banner Image URL
-              </label>
-
-              <input
-                type="text"
-                name="imageURL"
-                id="imageURL"
-                enterKeyHint="next"
-                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                value={editingBannerURL ?? ""}
-                placeholder="Enter banner image URL"
-                onChange={(e) => {
-                  setEditingBannerURL(e.target.value);
-                }}
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="Image URL"
-                className="flex text-sm font-medium leading-6"
-              >
-                Profile Image URL
-              </label>
-
-              <input
-                type="text"
-                name="imageURL"
-                id="imageURL"
-                enterKeyHint="next"
-                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                value={editingProfileURL ?? ""}
-                placeholder="Enter profile image URL"
-                onChange={(e) => {
-                  setEditingProfileURL(e.target.value);
-                }}
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="name"
-                className="flex text-sm font-medium leading-6"
-              >
-                Name
-              </label>
-
-              <input
-                type="text"
-                name="name"
-                id="name"
-                enterKeyHint="next"
-                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                value={editingName ?? ""}
-                placeholder="Enter your name"
-                onChange={(e) => {
-                  setEditingName(e.target.value);
-                }}
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label htmlFor="description" className="flex text-sm font-medium">
-                Bio
-              </label>
-
-              <textarea
-                name="description"
-                id="description"
-                rows={4}
-                className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md min-h-[100px] border border-light-divider dark:border-dark-divider bg-transparent"
-                value={editingBio ?? ""}
-                placeholder="Enter your bio"
-                onChange={(e) => {
-                  setEditingBio(e.target.value);
-                }}
-              />
-            </div>
-          </form>
         </div>
       </SlideOver>
     </>
