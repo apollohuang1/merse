@@ -176,8 +176,8 @@ const useCreateEntry = () => {
       }
 
       // final input prompt
-      // const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
-      const formattedPromptWithStyle = `${input} in Studio Ghibli artstyle`;
+      const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
+      // const formattedPromptWithStyle = `${input} in Studio Ghibli artstyle`;
       // Response of NEW Stable Diffusion XL
       const sdxlResponse = await axios({
         method: "POST",

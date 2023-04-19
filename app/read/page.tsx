@@ -10,6 +10,8 @@ import StarterKit from "@tiptap/starter-kit";
 import parse from "html-react-parser";
 import { Entry } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
+import Image from "@tiptap/extension-image";
+import HardBreak from "@tiptap/extension-hard-break";
 
 type Props = {};
 
@@ -39,7 +41,7 @@ const ReadPage = (props: Props) => {
 
   const output = useMemo(() => {
     if (!entryData?.content) return null;
-    const generatedHTML = generateHTML(entryData.content, [StarterKit, Spotify]);
+    const generatedHTML = generateHTML(entryData.content, [StarterKit, Image, HardBreak, Spotify]);
     return generatedHTML;
   }, [entryData]);
 
