@@ -46,18 +46,18 @@ import { Scene } from "@/models/entry";
 
 type Props = {};
 
-type SetSpotifyPlaylistOptions = { src: string }
+type SetSpotifyPlaylistOptions = { src: string };
 
-  declare module '@tiptap/core' {
-    interface Commands<ReturnType> {
-      spotify: {
-        /**
-         * Insert a youtube video
-         */
-        setYoutubeVideo: (options: SetSpotifyPlaylistOptions) => ReturnType,
-      }
-    }
+declare module "@tiptap/core" {
+  interface Commands<ReturnType> {
+    spotify: {
+      /**
+       * Insert a youtube video
+       */
+      setYoutubeVideo: (options: SetSpotifyPlaylistOptions) => ReturnType;
+    };
   }
+}
 
 const Storyboard = (props: Props) => {
   // hooks
@@ -80,7 +80,7 @@ const Storyboard = (props: Props) => {
     draggable: true,
 
     inline() {
-      return this.options.inline
+      return this.options.inline;
     },
 
     addAttributes() {
@@ -94,40 +94,41 @@ const Storyboard = (props: Props) => {
     parseHTML() {
       return [
         {
-          tag: 'div[data-spotify-video] iframe',
+          tag: "div[data-spotify-video] iframe",
         },
-      ]
+      ];
     },
 
     // @ts-ignore
     addCommands() {
       return {
         // @ts-ignore
-        setSpotifyPlaylist: (options: any) => ({ commands }) => {
+        setSpotifyPlaylist:
+          (options: any) =>
+          // @ts-ignore
+          ({ commands }) => {
+            // check spotify link validity
+            // if (!isValidYoutubeUrl(options.src)) {
+            //   return false
+            // }
 
-          // check spotify link validity
-          // if (!isValidYoutubeUrl(options.src)) {
-          //   return false
-          // }
-
-          return commands.insertContent({
-            type: this.name,
-            attrs: options,
-          })
-        },
-      }
+            return commands.insertContent({
+              type: this.name,
+              attrs: options,
+            });
+          },
+      };
     },
-
 
     addNodeView() {
       return ({ editor, node }) => {
         const div = document.createElement("div");
         const iframe = document.createElement("iframe");
         // div.className = "w-full h-auto aspect-video",
-          iframe.width = "100%";
-          iframe.height = "360";
-          // iframe.frameborder = "0";
-          // iframe.allowfullscreen = "";
+        iframe.width = "100%";
+        iframe.height = "360";
+        // iframe.frameborder = "0";
+        // iframe.allowfullscreen = "";
         iframe.src = node.attrs.src;
         div.append(iframe);
         return {
@@ -138,12 +139,12 @@ const Storyboard = (props: Props) => {
 
     renderHTML({ HTMLAttributes }) {
       // return ["iframe", mergeAttributes(HTMLAttributes)];
-      const spotifyEmbedURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M";
-      HTMLAttributes.src = spotifyEmbedURL
+      const spotifyEmbedURL =
+        "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M";
+      HTMLAttributes.src = spotifyEmbedURL;
 
       return ["div", mergeAttributes(HTMLAttributes)];
     },
-
   });
 
   const editor = useEditor({
@@ -170,7 +171,7 @@ const Storyboard = (props: Props) => {
             "bg-light-background-secondary dark:bg-dark-background-secondary rounded-none p-4 border-l-2 border-emerald-500",
         },
       }),
-      Spotify
+      Spotify,
     ],
     editorProps: {
       attributes: {
@@ -230,14 +231,26 @@ const Storyboard = (props: Props) => {
                 <button
                   className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                   onClick={() => {
-
                     // window prompt to fill spotify embed url
-                    const spotifyEmbedURL = window.prompt("Enter Spotify Embed URL");
-                    if (spotifyEmbedURL) {
-                      // @ts-ignore
-                      editor?.commands.setSpotifyPlaylist({ src: spotifyEmbedURL });
+                    const inputSpotifyLink = window.prompt(
+                      "Enter Spotify Embed URL"
+                    );
+
+                    if (!inputSpotifyLink) {
+                      return;
                     }
 
+                    const spotifyLinkRegex = /^https:\/\/open\.spotify\.com\/(playlist|track)\/[a-zA-Z0-9?=._-]+$/;
+
+                    if (spotifyLinkRegex.test(inputSpotifyLink)) {
+                      const embedLink = inputSpotifyLink
+                        .replace("open.spotify.com", "open.spotify.com/embed")
+                        .replace("?", "?utm_source=generator&");
+                      // @ts-ignore
+                      editor?.commands.setSpotifyPlaylist({ src: embedLink });
+                    } else {
+                      alert("Invalid Spotify Embed URL");
+                    }
                   }}
                 >
                   Embed Spotify
