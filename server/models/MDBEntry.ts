@@ -19,6 +19,7 @@ const EntrySchema = new mongoose.Schema<Entry>({
   characters: { type: [Object] , required: true },
   scenes: { type: [SceneSchema], required: true },
   cover: { type: Object, required: true },
+  spotify_playlist_id: { type: String, required: false },
   created_at: { type: Date, required: false },
   updated_at: { type: Date, required: false },
   // published_at: { type: Date, required: true },

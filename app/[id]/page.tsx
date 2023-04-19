@@ -163,7 +163,7 @@ const ProfilePage = (props: Props) => {
                     <div className="w-full h-full bg-emerald-300 dark:bg-emerald-800"></div>
                   )}
 
-                  <div className="flex flex-row p-6 items-center justify-start w-full">
+                  <div className="flex flex-row px-6 py-4 items-center justify-start w-full">
                     <span>{entry.title}</span>
                   </div>
                 </button>

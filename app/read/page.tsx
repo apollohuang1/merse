@@ -46,7 +46,6 @@ const ReadPage = (props: Props) => {
   return (
     <div className="flex flex-col w-full h-full items-center p-6">
       <div className="flex flex-col w-full h-full items-center max-w-3xl gap-6">
-        
         {output && (
           <div className="flex flex-col bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
             <h1 className="text-4xl font-bold">{entryData?.title}</h1>
@@ -54,6 +53,19 @@ const ReadPage = (props: Props) => {
             <div className="text-left">{parse(output)}</div>
           </div>
         )}
+
+        { entryData?.spotify_playlist_id &&
+          <iframe
+            // style="border-radius:12px"
+            className="rounded-xl w-full h-[352px] min-h-[352px]"
+            src={`https://open.spotify.com/embed/playlist/${entryData.spotify_playlist_id}?utm_source=generator`}
+            // width="100%"
+            // height="352"
+            allowFullScreen
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          ></iframe>
+        }
 
         {entryData?.scenes?.map((scene, index) => {
           return (
