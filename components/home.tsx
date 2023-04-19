@@ -34,7 +34,8 @@ const Home = (props: Props) => {
         {/* promoted banner */}
         <div className="flex relative w-full h-[60vh] overflow-clip">
           <img
-            src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
+            // src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
+            src={"https://media0.giphy.com/media/9TYOxSLqBIrK0/giphy.gif?cid=ecf05e47p45pde7ml1g8p3obnzfdntbvv7l85zr0t8l2ykiu&rid=giphy.gif&ct=g"}
             className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
           />
 
@@ -81,12 +82,10 @@ const Home = (props: Props) => {
           <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.6)] to-transparent w-full items-end justify-end p-6">
             <div className="flex flex-row gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
               <img
-                src={
-                  "https://helios-i.mashable.com/imagery/articles/01c9yrWTh1c0xeucePXOaZF/hero-image.fill.size_1200x900.v1623390103.jpg"
-                }
+                src={"https://cdn.myanimelist.net/images/company/21.png"}
                 className="w-6 h-6 object-cover rounded-full border border-light-divider dark:border-dark-divider"
               />
-              <span className="text-white">The Last Of Us</span>
+              <span className="text-white">Spirited Away</span>
             </div>
           </div>
         </div>

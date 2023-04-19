@@ -123,7 +123,7 @@ const ProfilePage = (props: Props) => {
                       setEditingBio(user?.bio);
                       setShowProfileEditModal(true);
                     }}
-                    className="bg-light-background-tertiary dark:bg-dark-background-tertiary h-10 px-4 rounded-full"
+                    className="h-10 px-4 font-medium rounded-full border border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
                   >
                     Edit Profile
                   </button>

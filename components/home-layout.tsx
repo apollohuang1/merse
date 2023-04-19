@@ -148,7 +148,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     onClick={() => {
                       router.back();
                     }}
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                    className="flex h-8 w-8 items-center justify-center rounded-full hover:rounded-lg bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
                   >
                     <FiChevronLeft className="w-5 h-5" />
                   </button>
@@ -157,7 +157,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     onClick={() => {
                       router.forward();
                     }}
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                    className="flex h-8 w-8 items-center justify-center rounded-full hover:rounded-lg bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
                   >
                     <FiChevronRight className="w-5 h-5" />
                   </button>
@@ -178,7 +178,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     onClick={() => {
                       toggleColorScheme();
                     }}
-                    className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-8 h-8 items-center justify-center rounded-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                    className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-8 h-8 items-center justify-center rounded-full hover:rounded-md hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
                   >
                     <FiSun className="w-5 h-5" />
                   </button>
