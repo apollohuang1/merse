@@ -6,7 +6,11 @@ import {
   CreateChatCompletionResponse,
 } from "openai";
 import React from "react";
-import { addScene, setIsGeneratingStoryboard, setShowGeneratedStoryboard } from "@/redux-store/store";
+import {
+  addScene,
+  setIsGeneratingStoryboard,
+  setShowGeneratedStoryboard,
+} from "@/redux-store/store";
 import { Scene } from "@/models/entry";
 import mongoose from "mongoose";
 
@@ -136,7 +140,7 @@ const useCreateEntry = () => {
         .map((line) => line.substring("Scene: ".length).trim());
 
       // comment this out to generate only 1 image
-      // createImageFromText(splittedSceneText[0]);
+      createImageFromText(splittedSceneText[0]);
 
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       // iterate through splitedSceneText array
@@ -160,7 +164,8 @@ const useCreateEntry = () => {
       const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
 
       //SDXL
-      const engineId = "stable-diffusion-v1-5";
+      // const engineId = "stable-diffusion-v1-5";
+      const engineId = "stable-diffusion-xl-beta-v2-2-2";
       const apiHost = process.env.API_HOST ?? "https://api.stability.ai";
       const apiKey = process.env.STABILITY_API_KEY;
 
@@ -176,7 +181,13 @@ const useCreateEntry = () => {
       }
 
       // final input prompt
-      const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
+      // const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
+      // const genericPrompt = "Create a dynamic and visually striking scene that tells a compelling story. Use the principles of dynamic symmetry and the Golden Ratio to guide the composition. Focus on the main subjects, with secondary elements supporting the central narrative. Utilize the Rule of Thirds to balance the composition and reinforce focal points. Integrate the power of triangles and groups of three to add stability and interest. Use color strategically to create contrast and guide the viewer's eye. Consider the angle and point of view to create drama and enhance the story. Ensure that the silhouette of the main subjects is clear and distinct, and experiment with varying degrees of symmetry or asymmetry to create visual tension. Think ahead to the final product and the overall impact of the image on the viewer.";
+      const genericPrompt = "Create a dynamic and visually striking scene that tells a compelling story. Use the principles of dynamic symmetry and the Golden Ratio to guide the composition. Focus on the main subjects, with secondary elements supporting the central narrative. Utilize the Rule of Thirds to balance the composition and reinforce focal points. Integrate the power of triangles and groups of three to add stability and interest. Use color strategically to create contrast and guide the viewer's eye. Consider the angle and point of view to create drama and enhance the story. Ensure that the silhouette of the main subjects is clear and distinct, and experiment with varying degrees of symmetry or asymmetry to create visual tension. Think ahead to the final product and the overall impact of the image on the viewer."
+      const improveHumanPrompt = "Ensure that the human figures in the scene are accurately and realistically depicted, taking into consideration proportions, anatomy, and natural poses. Pay special attention to facial expressions and body language to convey emotions and interactions between the characters effectively."
+      // const formattedPromptWithStyle = `${input} by ${entry?.style_reference?.artist}. ${genericPrompt}`;
+      // const formattedPromptWithStyle = `${input} by Hayao Miyazaki. ${genericPrompt}. `;
+      const formattedPromptWithStyle = `${input}. ${genericPrompt}. ${improveHumanPrompt}`;
       // const formattedPromptWithStyle = `${input} in Studio Ghibli artstyle`;
       // Response of NEW Stable Diffusion XL
       const sdxlResponse = await axios({
@@ -193,6 +204,7 @@ const useCreateEntry = () => {
           clip_guidance_preset: "FAST_BLUE",
           height: 512,
           width: 512,
+          style_preset: "comic-book",
           samples: 1,
           steps: 30,
         },

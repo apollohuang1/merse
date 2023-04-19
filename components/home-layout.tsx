@@ -127,7 +127,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <SidebarMenuButton
                 icon={<FiBookOpen />}
                 label="Read Sample"
-                href="/read?id=643e9241c4a0a96f04846428"
+                href="/6436f3032b67ae01b9c884bb"
                 isFull={showFullSidebar}
                 isNew={true}
               />

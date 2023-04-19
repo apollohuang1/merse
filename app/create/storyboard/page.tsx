@@ -290,9 +290,9 @@ const Storyboard = (props: Props) => {
                   className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
                 >
                   {/* overlay  */}
-                  <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
+                  {/* <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
                     <FiEdit2 className="w-9 h-9 text-white" />
-                  </div>
+                  </div> */}
 
                   <img
                     src={"data:image/png;base64," + scene.image_base64}

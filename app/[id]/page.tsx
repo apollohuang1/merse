@@ -6,6 +6,7 @@ import { Entry } from "@/models/entry";
 import { useAppSelector } from "@/redux-store/hooks";
 import { getImageURLfromBase64 } from "@/util/helper";
 import { genders } from "@/util/select";
+import { Spinner } from "@chakra-ui/react";
 import { Menu, Transition } from "@headlessui/react";
 import axios from "axios";
 import clsx from "clsx";
@@ -35,6 +36,8 @@ const ProfilePage = (props: Props) => {
   const [editingName, setEditingName] = useState<string>("");
   const [editingBio, setEditingBio] = useState<string>("");
 
+  const [isFetchingEntries, setIsFetchingEntries] = useState<boolean>(false);
+
   const [showProfileEditModal, setShowProfileEditModal] =
     useState<boolean>(false);
 
@@ -55,8 +58,10 @@ const ProfilePage = (props: Props) => {
 
   const fetchAllEntries = async (user_id: string) => {
     try {
+      setIsFetchingEntries(true);
       const response = await axios.get(`/api/entries?userId=${user_id}`);
       setAllEntries(response.data);
+      setIsFetchingEntries(false);
     } catch (error: any) {
       console.log("Failed to fetch entries, message: ", error.message);
     }
@@ -104,7 +109,7 @@ const ProfilePage = (props: Props) => {
                 {/* profile image */}
 
                 <div className="w-32 h-32 bg-light-background-secondary dark:bg-dark-background-secondary rounded-full overflow-clip">
-                  { user?.profile_image_url ? (
+                  {user?.profile_image_url ? (
                     <img
                       src={user?.profile_image_url}
                       className="w-full h-full object-cover"
@@ -132,9 +137,7 @@ const ProfilePage = (props: Props) => {
 
               <div className="flex flex-col gap-2">
                 {/* name */}
-                <span className="text-2xl font-bold">
-                  {user?.name }
-                </span>
+                <span className="text-2xl font-bold">{user?.name}</span>
 
                 <p className="max-w-sm font-normal">
                   {user?.bio ??
@@ -143,32 +146,41 @@ const ProfilePage = (props: Props) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 max-lg:grid-cols-2">
-              {allEntries.map((entry: Entry, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    router.push(`/read?id=${entry._id}`);
-                  }}
-                  className="flex flex-col w-full items-center justify-between bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
-                >
-                  {entry?.scenes[0]?.image_base64 ? (
-                    <img
-                      src={getImageURLfromBase64(
-                        entry?.scenes[0]?.image_base64
-                      )}
-                      className="w-full h-full aspect-square object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-emerald-300 dark:bg-emerald-800"></div>
-                  )}
+            {isFetchingEntries ? (
+              <div className="flex flex-row w-full items-center justify-center pt-28">
+                <div className="flex flex-row gap-3">
+                  <Spinner className="w-6 h-6 text-accent"/>
+                  <span>Loading entries...</span>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-3 gap-6 max-lg:grid-cols-2">
+                {allEntries.map((entry: Entry, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      router.push(`/read?id=${entry._id}`);
+                    }}
+                    className="flex flex-col w-full items-center justify-between bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                  >
+                    {entry?.scenes[0]?.image_base64 ? (
+                      <img
+                        src={getImageURLfromBase64(
+                          entry?.scenes[0]?.image_base64
+                        )}
+                        className="w-full h-full aspect-square object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-emerald-300 dark:bg-emerald-800"></div>
+                    )}
 
-                  <div className="flex flex-row px-6 py-4 items-center justify-start w-full">
-                    <span>{entry.title}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
+                    <div className="flex flex-row px-6 py-4 items-center justify-start w-full">
+                      <span>{entry.title}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -207,7 +219,6 @@ const ProfilePage = (props: Props) => {
       >
         {/* create/edit character slideover content */}
         <div className="flex flex-col items-center">
-
           <div className="flex flex-col w-full h-40 items-center justify-center">
             {editingBannerURL ? (
               <img
@@ -322,7 +333,10 @@ const ProfilePage = (props: Props) => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="description" className="flex text-sm font-medium">
+                <label
+                  htmlFor="description"
+                  className="flex text-sm font-medium"
+                >
                   Bio
                 </label>
 
@@ -340,7 +354,6 @@ const ProfilePage = (props: Props) => {
               </div>
             </form>
           </div>
-
         </div>
       </SlideOver>
     </>
