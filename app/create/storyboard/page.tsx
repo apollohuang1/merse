@@ -17,9 +17,10 @@ import {
   useEditor,
   EditorContent,
   FloatingMenu,
-  JSONContent,
   BubbleMenu,
   Editor,
+  Node,
+  mergeAttributes,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -45,8 +46,20 @@ import { Scene } from "@/models/entry";
 
 type Props = {};
 
-const Storyboard = (props: Props) => {
+type SetSpotifyPlaylistOptions = { src: string }
 
+  declare module '@tiptap/core' {
+    interface Commands<ReturnType> {
+      spotify: {
+        /**
+         * Insert a youtube video
+         */
+        setYoutubeVideo: (options: SetSpotifyPlaylistOptions) => ReturnType,
+      }
+    }
+  }
+
+const Storyboard = (props: Props) => {
   // hooks
   const { generateStoryboard } = useCreateEntry();
 
@@ -55,8 +68,83 @@ const Storyboard = (props: Props) => {
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const dispatch = useAppDispatch();
 
-  const [showAddingImageModal, setShowAddingImageModal] = React.useState<boolean>(false);
+  const [showAddingImageModal, setShowAddingImageModal] =
+    React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
+
+  const Spotify = Node.create({
+    name: "spotify",
+    group: "block",
+    atom: true,
+    selectable: true,
+    draggable: true,
+
+    inline() {
+      return this.options.inline
+    },
+
+    addAttributes() {
+      return {
+        src: {
+          default: null,
+        },
+      };
+    },
+
+    parseHTML() {
+      return [
+        {
+          tag: 'div[data-spotify-video] iframe',
+        },
+      ]
+    },
+
+    // @ts-ignore
+    addCommands() {
+      return {
+        // @ts-ignore
+        setSpotifyPlaylist: (options: any) => ({ commands }) => {
+
+          // check spotify link validity
+          // if (!isValidYoutubeUrl(options.src)) {
+          //   return false
+          // }
+
+          return commands.insertContent({
+            type: this.name,
+            attrs: options,
+          })
+        },
+      }
+    },
+
+
+    addNodeView() {
+      return ({ editor, node }) => {
+        const div = document.createElement("div");
+        const iframe = document.createElement("iframe");
+        // div.className = "w-full h-auto aspect-video",
+          iframe.width = "100%";
+          iframe.height = "360";
+          // iframe.frameborder = "0";
+          // iframe.allowfullscreen = "";
+        iframe.src = node.attrs.src;
+        div.append(iframe);
+        return {
+          dom: div,
+        };
+      };
+    },
+
+    renderHTML({ HTMLAttributes }) {
+      // return ["iframe", mergeAttributes(HTMLAttributes)];
+      const spotifyEmbedURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M";
+      HTMLAttributes.src = spotifyEmbedURL
+
+      return ["div", mergeAttributes(HTMLAttributes)];
+    },
+
+  });
 
   const editor = useEditor({
     extensions: [
@@ -82,6 +170,7 @@ const Storyboard = (props: Props) => {
             "bg-light-background-secondary dark:bg-dark-background-secondary rounded-none p-4 border-l-2 border-emerald-500",
         },
       }),
+      Spotify
     ],
     editorProps: {
       attributes: {
@@ -89,7 +178,6 @@ const Storyboard = (props: Props) => {
           "outline-none w-full h-full bg-transparent min-h-[calc(100vh-300px)] highlight selection:bg-[#3cc9a3] selection:bg-opacity-25",
       },
     },
-    // content: "<h1>Hello World! 🌎️</h1>",
   });
 
   editor?.on("update", (updatedEditor: any) => {
@@ -121,8 +209,7 @@ const Storyboard = (props: Props) => {
             <div className="flex flex-col w-full h-[calc(100vh-100px)] max-w-3xl gap-6">
               {/* tools bar */}
               <div className="flex flex-row w-full items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider pb-3">
-
-                { entry?.scenes?.length > 0 ? (
+                {entry?.scenes?.length > 0 ? (
                   <button
                     className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                     onClick={() => {
@@ -140,14 +227,21 @@ const Storyboard = (props: Props) => {
                   <div className="h-10"></div>
                 )}
 
-                {/* <button
+                <button
                   className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                   onClick={() => {
-                    createImageFromText("input");
+
+                    // window prompt to fill spotify embed url
+                    const spotifyEmbedURL = window.prompt("Enter Spotify Embed URL");
+                    if (spotifyEmbedURL) {
+                      // @ts-ignore
+                      editor?.commands.setSpotifyPlaylist({ src: spotifyEmbedURL });
+                    }
+
                   }}
                 >
-                  Test SDXL
-                </button> */}
+                  Embed Spotify
+                </button>
 
                 {entryHelper.isGeneratingStoryboard ? (
                   <div className="flex flex-row gap-2 items-center h-8">
@@ -266,9 +360,8 @@ const Storyboard = (props: Props) => {
             )}
           >
             <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">
-              {
-                entry?.scenes.map((scene: Scene, index: number) => (
-                  <div
+              {entry?.scenes.map((scene: Scene, index: number) => (
+                <div
                   key={index}
                   className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
                 >
@@ -278,7 +371,7 @@ const Storyboard = (props: Props) => {
                   </div>
 
                   <img
-                    src={"data:image/png;base64," + scene.image_base64 }
+                    src={"data:image/png;base64," + scene.image_base64}
                     alt="comic book cover"
                     className="object-cover aspect-[4/3]"
                   />
@@ -290,8 +383,7 @@ const Storyboard = (props: Props) => {
                     </p>
                   </div>
                 </div>
-                ))
-              }
+              ))}
             </div>
           </div>
         </div>
