@@ -64,11 +64,17 @@ const CreateLeftSideBar = (props: Props) => {
           </button>
 
           <button
-            onClick={() => {
-              // window.location.href = "/";
-              // setIsSaving(true);
+            onClick={async () => {
 
-              saveEntry();
+              setIsSaving(true);
+
+              await saveEntry();
+
+              setIsSaving(false);
+
+              // window.location.href = "/";
+
+
 
               // setTimeout(() => {
               //   setIsSaving(false);

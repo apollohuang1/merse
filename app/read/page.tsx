@@ -9,6 +9,7 @@ import StarterKit from "@tiptap/starter-kit";
 
 import parse from "html-react-parser";
 import { Entry } from "@/models/entry";
+import { Spotify } from "../create/storyboard/page";
 
 type Props = {};
 
@@ -30,8 +31,6 @@ const ReadPage = (props: Props) => {
         method: "GET",
         url: `/api/entries?id=${id}`,
       });
-
-      console.log(response.data);
       setEntryData(response.data);
     } catch (error: any) {
       console.log("Failed to fetch entry, message: ", error.message);
@@ -40,21 +39,23 @@ const ReadPage = (props: Props) => {
 
   const output = useMemo(() => {
     if (!entryData?.content) return null;
-    return generateHTML(entryData.content, [StarterKit]);
+    const generatedHTML = generateHTML(entryData.content, [StarterKit, Spotify]);
+    return generatedHTML;
   }, [entryData]);
 
   return (
     <div className="flex flex-col w-full h-full items-center p-6">
       <div className="flex flex-col w-full h-full items-center max-w-3xl gap-6">
+
         {output && (
-          <div className="flex flex-col bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
+          <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
             <h1 className="text-4xl font-bold">{entryData?.title}</h1>
             <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" />
             <div className="text-left">{parse(output)}</div>
           </div>
         )}
 
-        { entryData?.spotify_playlist_id &&
+        {/* { entryData?.spotify_playlist_id &&
           <iframe
             // style="border-radius:12px"
             className="rounded-xl w-full h-[352px] min-h-[352px]"
@@ -65,7 +66,7 @@ const ReadPage = (props: Props) => {
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy"
           ></iframe>
-        }
+        } */}
 
         {entryData?.scenes?.map((scene, index) => {
           return (

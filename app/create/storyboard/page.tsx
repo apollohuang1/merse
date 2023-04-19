@@ -10,7 +10,7 @@ import {
   FiItalic,
   FiList,
 } from "react-icons/fi";
-import { BsQuote } from "react-icons/bs";
+import { BsQuote, BsSpotify } from "react-icons/bs";
 import { IoText } from "react-icons/io5";
 
 import {
@@ -23,6 +23,7 @@ import {
   mergeAttributes,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import HardBreak from "@tiptap/extension-hard-break";
 import Image from "@tiptap/extension-image";
 
 // ChakraUI
@@ -59,6 +60,79 @@ declare module "@tiptap/core" {
   }
 }
 
+export const Spotify = Node.create({
+  name: "spotify",
+  group: "block",
+  atom: true,
+  selectable: true,
+  draggable: true,
+
+  inline() {
+    return this.options.inline;
+  },
+
+  addAttributes() {
+    return {
+      src: {
+        default: null,
+      },
+      width: {
+        default: "100%",
+      },
+      height: {
+        default: "352px",
+      },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: "iframe",
+      },
+    ];
+  },
+
+  // @ts-ignore
+  addCommands() {
+    return {
+      // @ts-ignore
+      setSpotifyPlaylist:
+        (options: any) =>
+        // @ts-ignore
+        ({ commands }) => {
+          return commands.insertContent({
+            type: this.name,
+            attrs: options,
+          });
+        },
+    };
+  },
+
+  addNodeView() {
+    return ({ editor, node }) => {
+      // const div = document.createElement("div");
+      const iframe = document.createElement("iframe");
+      iframe.className = "w-full";
+      // div.className = "w-full ",
+      // iframe.width = "100%";
+      iframe.height = "360px";
+      iframe.width = node.attrs.width;
+      iframe.height = node.attrs.height;
+      // iframe.allowFullscreen = true;
+      iframe.src = node.attrs.src;
+      // div.append(iframe);
+      return {
+        dom: iframe,
+      };
+    };
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ["iframe", mergeAttributes(HTMLAttributes)];
+  },
+});
+
 const Storyboard = (props: Props) => {
   // hooks
   const { generateStoryboard } = useCreateEntry();
@@ -71,81 +145,6 @@ const Storyboard = (props: Props) => {
   const [showAddingImageModal, setShowAddingImageModal] =
     React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
-
-  const Spotify = Node.create({
-    name: "spotify",
-    group: "block",
-    atom: true,
-    selectable: true,
-    draggable: true,
-
-    inline() {
-      return this.options.inline;
-    },
-
-    addAttributes() {
-      return {
-        src: {
-          default: null,
-        },
-      };
-    },
-
-    parseHTML() {
-      return [
-        {
-          tag: "div[data-spotify-video] iframe",
-        },
-      ];
-    },
-
-    // @ts-ignore
-    addCommands() {
-      return {
-        // @ts-ignore
-        setSpotifyPlaylist:
-          (options: any) =>
-          // @ts-ignore
-          ({ commands }) => {
-            // check spotify link validity
-            // if (!isValidYoutubeUrl(options.src)) {
-            //   return false
-            // }
-
-            return commands.insertContent({
-              type: this.name,
-              attrs: options,
-            });
-          },
-      };
-    },
-
-    addNodeView() {
-      return ({ editor, node }) => {
-        const div = document.createElement("div");
-        const iframe = document.createElement("iframe");
-        // div.className = "w-full h-auto aspect-video",
-        iframe.width = "100%";
-        iframe.height = "360";
-        // iframe.frameborder = "0";
-        // iframe.allowfullscreen = "";
-        iframe.src = node.attrs.src;
-        div.append(iframe);
-        return {
-          dom: div,
-        };
-      };
-    },
-
-    renderHTML({ HTMLAttributes }) {
-      // return ["iframe", mergeAttributes(HTMLAttributes)];
-      const spotifyEmbedURL =
-        "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M";
-      HTMLAttributes.src = spotifyEmbedURL;
-
-      return ["div", mergeAttributes(HTMLAttributes)];
-    },
-  });
 
   const editor = useEditor({
     extensions: [
@@ -171,6 +170,7 @@ const Storyboard = (props: Props) => {
             "bg-light-background-secondary dark:bg-dark-background-secondary rounded-none p-4 border-l-2 border-emerald-500",
         },
       }),
+      HardBreak,
       Spotify,
     ],
     editorProps: {
@@ -228,33 +228,29 @@ const Storyboard = (props: Props) => {
                   <div className="h-10"></div>
                 )}
 
-                <button
+                {/* <button
                   className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                   onClick={() => {
-                    // window prompt to fill spotify embed url
-                    const inputSpotifyLink = window.prompt(
-                      "Enter Spotify Embed URL"
-                    );
-
-                    if (!inputSpotifyLink) {
-                      return;
-                    }
-
-                    const spotifyLinkRegex = /^https:\/\/open\.spotify\.com\/(playlist|track)\/[a-zA-Z0-9?=._-]+$/;
-
-                    if (spotifyLinkRegex.test(inputSpotifyLink)) {
-                      const embedLink = inputSpotifyLink
-                        .replace("open.spotify.com", "open.spotify.com/embed")
-                        .replace("?", "?utm_source=generator&");
-                      // @ts-ignore
-                      editor?.commands.setSpotifyPlaylist({ src: embedLink });
-                    } else {
-                      alert("Invalid Spotify Embed URL");
-                    }
+                    embedSpotify();
                   }}
                 >
                   Embed Spotify
-                </button>
+                </button> */}
+
+                {/* <button
+                  className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
+                  onClick={() => {
+                    try {
+                      if (!editor) return
+                      const html = editor.getHTML();
+                      console.log(html)
+                    } catch (error: any) {
+                      console.log("Failed html, message: " + error.message)
+                    }
+                  }}
+                >
+                  Check html
+                </button> */}
 
                 {entryHelper.isGeneratingStoryboard ? (
                   <div className="flex flex-row gap-2 items-center h-8">
@@ -539,6 +535,33 @@ const bubbleMenus = [
     onClick: (editor: Editor) =>
       editor?.chain().focus().toggleBlockquote().run(),
     isActive: (editor: Editor) => editor?.isActive("blockquote"),
+  },
+  {
+    type: "spotify",
+    label: "Spotify",
+    icon: <BsSpotify />,
+    onClick: (editor: Editor) => {
+      // window prompt to fill spotify embed url
+      const inputSpotifyLink = window.prompt("Enter Spotify Embed URL");
+
+      if (!inputSpotifyLink) {
+        return;
+      }
+
+      const spotifyLinkRegex =
+        /^https:\/\/open\.spotify\.com\/(playlist|track)\/[a-zA-Z0-9?=._-]+$/;
+
+      if (spotifyLinkRegex.test(inputSpotifyLink)) {
+        const embedLink = inputSpotifyLink
+          .replace("open.spotify.com", "open.spotify.com/embed")
+          .replace("?", "?utm_source=generator&");
+        // @ts-ignore
+        editor?.commands.setSpotifyPlaylist({ src: embedLink });
+      } else {
+        alert("Invalid Spotify Embed URL");
+      }
+    },
+    isActive: (editor: Editor) => editor?.isActive("spotify"),
   },
 ];
 

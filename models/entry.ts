@@ -11,7 +11,6 @@ export interface Entry {
   // storyboard: object | null;
   scenes: Scene[];
   cover: object | null;
-  spotify_playlist_id: string | null;
   created_at?: Date;
   updated_at?: Date;
 }

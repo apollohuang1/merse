@@ -29,9 +29,6 @@ const useCreateEntry = () => {
   const saveEntry = async () => {
     console.log("Saving entry...");
     try {
-      // var string = "data:image/png;base64,long-String"
-      // var bindata = new Buffer(string.split(",")[1],"base64");
-
       const response = await axios({
         method: "POST",
         url: "/api/entries",
@@ -139,13 +136,13 @@ const useCreateEntry = () => {
         .map((line) => line.substring("Scene: ".length).trim());
 
       // comment this out to generate only 1 image
-      createImageFromText(splittedSceneText[0]);
+      // createImageFromText(splittedSceneText[0]);
 
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       // iterate through splitedSceneText array
-      // for (let i = 0; i < splittedSceneText.length; i++) {
-      //   createImageFromText(splittedSceneText[i]);
-      // }
+      for (let i = 0; i < splittedSceneText.length; i++) {
+        createImageFromText(splittedSceneText[i]);
+      }
 
       return sceneText;
     } catch (error: any) {
@@ -179,7 +176,8 @@ const useCreateEntry = () => {
       }
 
       // final input prompt
-      const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
+      // const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
+      const formattedPromptWithStyle = `${input} in Studio Ghibli artstyle`;
       // Response of NEW Stable Diffusion XL
       const sdxlResponse = await axios({
         method: "POST",
