@@ -9,7 +9,7 @@ import StarterKit from "@tiptap/starter-kit";
 
 import parse from "html-react-parser";
 import { Entry } from "@/models/entry";
-import { Spotify } from "../create/storyboard/page";
+import Spotify from "@/tiptap/extensions/Spotify";
 
 type Props = {};
 
