@@ -5,12 +5,6 @@ import dbConnect from "@/server/utils/dbConnect";
 
 import mongoose from "mongoose";
 
-import Stripe from "stripe";
-const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`, {
-  apiVersion: "2022-11-15",
-  typescript: true,
-});
-
 export async function GET(request: Request) {
   try {
     const db = await dbConnect();
@@ -49,18 +43,11 @@ export async function POST(request: NextRequest) {
 
     console.log(process.env.STRIPE_SECRET_KEY);
 
-    // new user has been created
-    const newStripeCustomer = await stripe.customers.create({
-      email: body.email,
-      name: body.name,
-    });
-
     const newUser = new MDBUser({
       _id: new mongoose.Types.ObjectId(),
       name: body.name,
       email: body.email,
       profile_image_url: body.picture,
-      stripe_customer_id: newStripeCustomer.id,
     });
 
     const savedUser = await newUser.save();

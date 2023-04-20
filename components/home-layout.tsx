@@ -16,6 +16,7 @@ import {
   FiSearch,
   FiSidebar,
   FiSun,
+  FiZap,
 } from "react-icons/fi";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -119,8 +120,16 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               {/* subscription */}
               <SidebarMenuButton
                 icon={<FiFeather />}
-                label="Subscriptions"
-                href="/subscriptions"
+                label="Following"
+                href="/following"
+                isFull={showFullSidebar}
+              />
+
+              {/* subscription */}
+              <SidebarMenuButton
+                icon={<FiZap />}
+                label="Subscription"
+                href="/subscription"
                 isFull={showFullSidebar}
               />
 
