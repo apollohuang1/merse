@@ -26,7 +26,7 @@ const fulfillOrder = (lineItems) => {
   console.log("Fulfilling order", lineItems);
 }
 
-app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
+app.post('/webhook', express.raw({ type: 'application/json' }), async (request, response) => {
   const sig = request.headers['stripe-signature'];
 
   let event;
@@ -46,7 +46,17 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
     case 'checkout.session.completed':
       const checkoutSessionCompleted = event.data.object;
       // Then define and call a function to handle the event checkout.session.completed
-      console.log("👏 Checkout Session completed! lmao")
+      // Retrieve the session. If you require line items in the response, you may include them by expanding line_items.
+      const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
+        session.id,
+        {
+          expand: ['line_items'],
+        }
+      );
+      const lineItems = session.line_items;
+
+      // Fulfill the purchase...
+      fulfillOrder(lineItems);
       // fulfillOrder(checkoutSessionCompleted.line_items);
       break;
     // ... handle other event types
