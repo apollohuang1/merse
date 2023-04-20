@@ -23,6 +23,9 @@ const Subscription = (props: Props) => {
   const auth = useAppSelector((state) => state.auth);
 
   React.useEffect(() => {
+
+    retrieveCheckoutSession();
+
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
 
@@ -37,6 +40,17 @@ const Subscription = (props: Props) => {
       // alert('Order canceled -- continue to shop around and checkout when you’re ready.');
     }
   }, []);
+
+  const retrieveCheckoutSession = async () => {
+    try {
+      const session_id = "cs_test_a16OBxHXAx8UhV4kKps6Gy1eA66Xk9XHNao1bhzsVafuj88q86MZC6EDQd";
+      const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
+      console.log("Checkout session retrieved, message: ");
+      console.log(checkoutSession);
+    } catch (error: any) {
+      console.log("Failed to retrieve checkout session, message: ", error.message);
+    }
+  }
 
   const createCheckoutSession = async () => {
     try {
