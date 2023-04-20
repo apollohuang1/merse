@@ -29,7 +29,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const { setCurrentUser } = useAuth();
 
   useEffect(() => {
     if (

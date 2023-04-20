@@ -58,6 +58,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       });
   }, []);
 
+
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center h-screen w-screen">
       <div

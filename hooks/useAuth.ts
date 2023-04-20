@@ -12,13 +12,16 @@ const useAuth = () => {
 
   // const [currentUser, setCurrentUser] = React.useState<any>(null);
 
+  // stripe
+
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
   const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
   const [isLoadingCurrentUser, setIsLoadingCurrentUser] = React.useState<boolean>(false);
 
   const [showSplashScreen, setShowSplashScreen] = React.useState<boolean>(true);
 
-  const auth = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     reloadCurrentUser()
@@ -95,8 +98,26 @@ const useAuth = () => {
           // regularly login
         }
       }
-
       setIsLoadingCurrentUser(false);
+    }
+  }
+
+  // const retrieveStripeCustomer = async (stripeCustomerId: string) => {
+  //   try {
+  //     const customer = await stripe.customers.retrieve("cus_N1EIsJONu0VsIc");
+  //     // const customers = await stripe.customers.list();
+  //     console.log(customer);
+  //   } catch (error: any) {
+  //     console.log(error.message);
+  //   }
+  // }
+
+
+  const createNewStripeCustomer = async (email: string) => {
+    try {
+
+    } catch (error: any) {
+      console.log(error);
     }
   }
 
