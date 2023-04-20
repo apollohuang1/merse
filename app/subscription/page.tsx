@@ -29,10 +29,11 @@ const Subscription = (props: Props) => {
     if (query.get("success")) {
       // console.log('Order placed! You will receive an email confirmation.');
       // alert('Order placed! You will receive an email confirmation.');
+      console.log("Order placed! You will receive an email confirmation.");
     }
 
     if (query.get("canceled")) {
-      // console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
+      console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
       // alert('Order canceled -- continue to shop around and checkout when you’re ready.');
     }
   }, []);
@@ -71,8 +72,8 @@ const Subscription = (props: Props) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full items-center">
-      <div className="flex flex-col gap-3">
+    <div className="flex flex-col w-full h-full items-center p-6">
+      <div className="flex flex-col gap-6 w-full items-center">
         <h1>Subscription</h1>
 
         <button
@@ -81,11 +82,11 @@ const Subscription = (props: Props) => {
           }}
           className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded-full"
         >
-          Subscribe
+          Subscribe for $10/month
         </button>
 
-        <p>
-          Note: use <span className="text-accent">4242 4242 4242 4242</span> as a visa card number to test with any
+        <p className="text-center">
+          Note: this is test mode, use <span className="text-accent">4242 4242 4242 4242</span> as a visa card number to test with any
           expiration date and CVC
         </p>
       </div>

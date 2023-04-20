@@ -21,37 +21,37 @@ const app = express();
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-const fulfillOrder = async (lineItems: any) => {
-  try {
-    // TODO: fill me in
-    // console.log("Fulfilling order", lineItems);
+// const fulfillOrder = async (lineItems: any) => {
+//   try {
+//     // TODO: fill me in
+//     // console.log("Fulfilling order", lineItems);
 
-    const response = await axios({
-      method: "PUT",
-      url: "/api/users",
-      data: {
-        _id: "6436f3032b67ae01b9c884bb",
-        stripe_customer_id: "mark-is-testing-1234",
-      },
-    });
+//     const response = await axios({
+//       method: "PUT",
+//       url: "/api/users",
+//       data: {
+//         _id: "6436f3032b67ae01b9c884bb",
+//         stripe_customer_id: "mark-is-testing-1234",
+//       },
+//     });
 
-    console.log("response", response);
-  } catch (error: any) {
-    console.log("Failed to fulfill order, message: " + error.message);
-  }
-};
-
-// const fulfillOrder = (session: any) => {
-//   // TODO: fill me in
-//   console.log("Fulfilling order", session);
+//     console.log("response", response);
+//   } catch (error: any) {
+//     console.log("Failed to fulfill order, message: " + error.message);
+//   }
 // };
 
-const createOrder = (session: any) => {
+const fulfillOrder = (session) => {
+  // TODO: fill me in
+  console.log("Fulfilling order", session);
+};
+
+const createOrder = (session) => {
   // TODO: fill me in
   console.log("Creating order", session);
 };
 
-const emailCustomerAboutFailedPayment = (session: any) => {
+const emailCustomerAboutFailedPayment = (session) => {
   // TODO: fill me in
   console.log("Emailing customer", session);
 };
@@ -59,13 +59,13 @@ const emailCustomerAboutFailedPayment = (session: any) => {
 app.post(
   "/webhook",
   express.raw({ type: "application/json" }),
-  async (request: any, response: any) => {
+  async (request, response) => {
     const sig = request.headers["stripe-signature"];
     let event;
 
     try {
       event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-    } catch (err: any) {
+    } catch (err) {
       response.status(400).send(`Webhook Error: ${err.message}`);
       return;
     }
@@ -76,6 +76,8 @@ app.post(
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object;
+
+        console.log("session", session);
 
         // Save an order in your database, marked as 'awaiting payment'
         // createOrder(session);
@@ -92,11 +94,18 @@ app.post(
         break;
       }
 
+      case 'payment_intent.succeeded': {
+        const paymentIntentSucceeded = event.data.object;
+        // Then define and call a function to handle the event payment_intent.succeeded
+        break;
+        // ... handle other event types
+      }
+
       case "checkout.session.async_payment_succeeded": {
         const session = event.data.object;
 
         // Fulfill the purchase...
-        fulfillOrder(session);
+        // fulfillOrder(session);
 
         break;
       }
@@ -109,6 +118,12 @@ app.post(
 
         break;
       }
+
+      case "payment_intent.succeeded": {
+        const paymentIntent = event.data.object;
+
+        break;
+      }
     }
 
     // Return a 200 response to acknowledge receipt of the event
@@ -117,4 +132,4 @@ app.post(
   }
 );
 
-app.listen(3000, () => console.log("Running on port 3000"));
+app.listen(4242, () => console.log("Running on port 4242"));

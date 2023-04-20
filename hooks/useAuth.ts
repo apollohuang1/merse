@@ -133,6 +133,7 @@ const useAuth = () => {
     localStorage.removeItem('currentUser');
     setCurrentUser(null);
     dispatch(setCurrentUser(null));
+    window.location.href = "/";
   }
 
   // const continueWithGoogle = useGoogleLogin({
