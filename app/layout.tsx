@@ -10,18 +10,25 @@ import { SessionProvider } from "next-auth/react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import HomeLayout from "@/components/home-layout";
 
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 const metadata = {
   title: "Merse Comic",
   description:
     "Effortlessly transform journal entries into personalized comics using our intuitive app. Publish, share, and monetize your creations within a supportive community.",
 };
 
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY as string);
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
   // const { setCurrentUser } = useAuth();
 
   useEffect(() => {
@@ -36,6 +43,11 @@ export default function RootLayout({
     }
   }, []);
 
+  const stripeOptions = {
+    // passing the client secret obtained from the server
+    clientSecret: process.env.STRIPE_SECRET_KEY,
+  };
+
   return (
     <html lang="en">
       <head>
@@ -48,13 +60,13 @@ export default function RootLayout({
       </head>
 
       <body className="bg-light-background-primary dark:bg-dark-background-primary">
-      {/* <body className="bg-dark-background-primary"> */}
+        {/* <body className="bg-dark-background-primary"> */}
         <Provider store={store}>
           <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
             <SessionProvider>
-              <HomeLayout>
-                { children }
-              </HomeLayout>
+              <Elements stripe={stripePromise} options={stripeOptions}>
+                <HomeLayout>{children}</HomeLayout>
+              </Elements>
             </SessionProvider>
           </GoogleOAuthProvider>
         </Provider>
