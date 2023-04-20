@@ -131,6 +131,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 label="Subscription"
                 href="/subscription"
                 isFull={showFullSidebar}
+                isNew={true}
               />
 
               {/* read */}

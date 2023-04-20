@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "server/utils/mongodb.ts", "pages/api/users/route.js", "pages/api/posts/route.js", "server/utils/dbConnect.js", "server/utils/dbConnect.js", "pages/api/entries/route.ts", "server.js", "server.js", "server/routes/entries.js", "lib/mongodb.ts", "pages/api/entries/index.js", "app/api/auth/[...nextauth].js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "server/utils/mongodb.ts", "pages/api/users/route.js", "pages/api/posts/route.js", "server/utils/dbConnect.js", "server/utils/dbConnect.js", "pages/api/entries/route.ts", "server.ts", "server.ts", "server/routes/entries.js", "lib/mongodb.ts", "pages/api/entries/index.js", "app/api/auth/[...nextauth].js"],
   "exclude": ["node_modules"]
 }

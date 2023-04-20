@@ -29,7 +29,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   useEffect(() => {
     if (
       localStorage.theme === "dark" ||
@@ -50,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
+      <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content={metadata.description} />
         <title>{metadata.title}</title>
@@ -60,15 +59,15 @@ export default function RootLayout({
 
       <body className="bg-light-background-primary dark:bg-dark-background-primary">
         {/* <body className="bg-dark-background-primary"> */}
-        <Provider store={store}>
-          <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
-            <SessionProvider>
-              <Elements stripe={stripePromise} options={stripeOptions}>
+        <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
+          <SessionProvider>
+            <Elements stripe={stripePromise} options={stripeOptions}>
+              <Provider store={store}>
                 <HomeLayout>{children}</HomeLayout>
-              </Elements>
-            </SessionProvider>
-          </GoogleOAuthProvider>
-        </Provider>
+              </Provider>
+            </Elements>
+          </SessionProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );
