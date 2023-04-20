@@ -1,135 +1,129 @@
-// server.js
-//
-// Use this sample code to handle webhook events in your integration.
-//
-// 1) Paste this code into a new file (server.js)
-//
-// 2) Install dependencies
-//   npm install stripe
-//   npm install express
-//
-// 3) Run the server on http://localhost:4242
-//   node server.js
+// This is your test secret API key.
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-// The library needs to be configured with your account's secret key.
-// Ensure the key is kept out of any version control system you might be using.
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const { default: axios } = require("axios");
-const express = require("express");
+const express = require('express');
 const app = express();
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-// const fulfillOrder = async (lineItems: any) => {
-//   try {
-//     // TODO: fill me in
-//     // console.log("Fulfilling order", lineItems);
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-//     const response = await axios({
-//       method: "PUT",
-//       url: "/api/users",
-//       data: {
-//         _id: "6436f3032b67ae01b9c884bb",
-//         stripe_customer_id: "mark-is-testing-1234",
-//       },
-//     });
+app.post('/create-checkout-session', async (req, res) => {
+  const prices = await stripe.prices.list({
+    lookup_keys: [req.body.lookup_key],
+    expand: ['data.product'],
+  });
+  const session = await stripe.checkout.sessions.create({
+    billing_address_collection: 'auto',
+    line_items: [
+      {
+        price: prices.data[0].id,
+        // For metered billing, do not pass quantity
+        quantity: 1,
 
-//     console.log("response", response);
-//   } catch (error: any) {
-//     console.log("Failed to fulfill order, message: " + error.message);
-//   }
-// };
+      },
+    ],
+    mode: 'subscription',
+    success_url: `${BASE_URL}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${BASE_URL}?canceled=true`,
+  });
 
-const fulfillOrder = (session) => {
-  // TODO: fill me in
-  console.log("Fulfilling order", session);
-};
+  res.redirect(303, session.url);
+});
 
-const createOrder = (session) => {
-  // TODO: fill me in
-  console.log("Creating order", session);
-};
 
-const emailCustomerAboutFailedPayment = (session) => {
-  // TODO: fill me in
-  console.log("Emailing customer", session);
-};
+app.post('/create-portal-session', async (req, res) => {
+  // For demonstration purposes, we're using the Checkout session to retrieve the customer ID.
+  // Typically this is stored alongside the authenticated user in your database.
+  const { session_id } = req.body;
+  const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
+
+  // This is the url to which the customer will be redirected when they are done
+  // managing their billing with the portal.
+  const returnUrl = BASE_URL;
+
+  const portalSession = await stripe.billingPortal.sessions.create({
+    customer: checkoutSession.customer,
+    return_url: returnUrl,
+  });
+
+  res.redirect(303, portalSession.url);
+});
+
 
 app.post(
-  "/webhook",
-  express.raw({ type: "application/json" }),
-  async (request, response) => {
-    const sig = request.headers["stripe-signature"];
-    let event;
-
-    try {
-      event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-    } catch (err) {
-      response.status(400).send(`Webhook Error: ${err.message}`);
-      return;
+  '/webhook',
+  express.raw({ type: 'application/json' }),
+  (request, response) => {
+    let event = request.body;
+    // Replace this endpoint secret with your endpoint's unique secret
+    // If you are testing with the CLI, find the secret by running 'stripe listen'
+    // If you are using an endpoint defined with the API or dashboard, look in your webhook settings
+    // at https://dashboard.stripe.com/webhooks
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    // Only verify the event if you have an endpoint secret defined.
+    // Otherwise use the basic event deserialized with JSON.parse
+    if (endpointSecret) {
+      // Get the signature sent by Stripe
+      const signature = request.headers['stripe-signature'];
+      try {
+        event = stripe.webhooks.constructEvent(
+          request.body,
+          signature,
+          endpointSecret
+        );
+      } catch (err) {
+        console.log(`⚠️  Webhook signature verification failed.`, err.message);
+        return response.sendStatus(400);
+      }
     }
-
-    // Successfully constructed event.
-    console.log("✅ Success:", event.id);
-
+    let subscription;
+    let status;
+    // Handle the event
     switch (event.type) {
-      case "checkout.session.completed": {
+      case 'checkout.session.completed':
         const session = event.data.object;
-
-        console.log("session", session);
-
-        // Save an order in your database, marked as 'awaiting payment'
-        // createOrder(session);
-
-        // Check if the order is paid (for example, from a card payment)
-        //
-        // A delayed notification payment will have an `unpaid` status, as
-        // you're still waiting for funds to be transferred from the customer's
-        // account.
-        if (session.payment_status === "paid") {
-          fulfillOrder(session);
-        }
-
+        console.log(`Checkout session completed for ${session.id}.`);
+        // Then define and call a method to handle the successful checkout session.
+        // handleCheckoutSession(session);
         break;
-      }
-
-      case 'payment_intent.succeeded': {
-        const paymentIntentSucceeded = event.data.object;
-        // Then define and call a function to handle the event payment_intent.succeeded
+      case 'customer.subscription.trial_will_end':
+        subscription = event.data.object;
+        status = subscription.status;
+        console.log(`Subscription status is ${status}.`);
+        // Then define and call a method to handle the subscription trial ending.
+        // handleSubscriptionTrialEnding(subscription);
         break;
-        // ... handle other event types
-      }
-
-      case "checkout.session.async_payment_succeeded": {
-        const session = event.data.object;
-
-        // Fulfill the purchase...
-        // fulfillOrder(session);
-
+      case 'customer.subscription.deleted':
+        subscription = event.data.object;
+        status = subscription.status;
+        console.log(`Subscription status is ${status}.`);
+        // Then define and call a method to handle the subscription deleted.
+        // handleSubscriptionDeleted(subscriptionDeleted);
         break;
-      }
-
-      case "checkout.session.async_payment_failed": {
-        const session = event.data.object;
-
-        // Send an email to the customer asking them to retry their order
-        // emailCustomerAboutFailedPayment(session);
-
+      case 'customer.subscription.created':
+        subscription = event.data.object;
+        status = subscription.status;
+        console.log(`Subscription status is ${status}.`);
+        // Then define and call a method to handle the subscription created.
+        // handleSubscriptionCreated(subscription);
         break;
-      }
-
-      case "payment_intent.succeeded": {
-        const paymentIntent = event.data.object;
-
+      case 'customer.subscription.updated':
+        subscription = event.data.object;
+        status = subscription.status;
+        console.log(`Subscription status is ${status}.`);
+        // Then define and call a method to handle the subscription update.
+        // handleSubscriptionUpdated(subscription);
         break;
-      }
+      default:
+        // Unexpected event type
+        console.log(`Unhandled event type ${event.type}.`);
     }
-
     // Return a 200 response to acknowledge receipt of the event
-    // response.json({ received: true });
-    response.status(200).end();
+    response.send();
   }
 );
 
-app.listen(4242, () => console.log("Running on port 4242"));
+app.listen(4242, () => console.log('Running on port 4242'));
