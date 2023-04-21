@@ -155,12 +155,13 @@ const Subscription = (props: Props) => {
               <div className="flex flex-col w-full items-center">
                 <div>
                   <div className="flex flex-col gap-3">
-
                     <div className="flex flex-row items-center gap-3">
                       <span className="font-semibold">No UIs for now</span>
-                      <span className="text-center px-2 py-[5px] text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary bg-light-background-secondary dark:bg-dark-background-secondary rounded-md">
-                        Canceled
-                      </span>
+                      {subscription.cancel_at && (
+                        <span className="text-center px-2 py-[5px] text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary bg-light-background-secondary dark:bg-dark-background-secondary rounded-md">
+                          Canceled
+                        </span>
+                      )}
                     </div>
 
                     <div className="h-[1px] border-t border-t-light-divider dark:border-t-dark-divider" />
