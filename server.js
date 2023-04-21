@@ -93,18 +93,16 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (request, 
       const subscriptionId = session.subscription;
       const customerEmail = session.customer_email;
 
-      // const updatedUserResponse = await axios.put(`https://comic.merse.co/api/users`, {
-      //   _id: "6436f3032b67ae01b9c884bb",
-      //   stripe_customer_id: customerId,
-      //   stripe_subscription_id: subscriptionId,
-      //   stripe_customer_email: customerEmail,
-      // });
+      // find user with email
+      const userResponse = await axios.get(`https://comic.merse.co/api/users?email=${customerEmail}`);
 
-      // console.log('Completed updating user');
-      // console.log(updatedUserResponse.data);
-
-      console.log('Session');
-      console.log(session);
+      // update user with fetched _id
+      const updatedUserResponse = await axios.put(`https://comic.merse.co/api/users`, {
+        _id: userResponse.data._id,
+        stripe_customer_id: customerId,
+        stripe_subscription_id: subscriptionId,
+        stripe_customer_email: customerEmail,
+      });
 
       // Then define and call a method to handle the successful checkout session.
       // handleCheckoutSession(session);
@@ -146,4 +144,5 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (request, 
 }
 );
 
+// app.listen(3000, () => console.log('Running on port 3000'));
 app.listen(4242, () => console.log('Running on port 4242'));

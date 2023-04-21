@@ -17,9 +17,6 @@ export async function GET(request: Request) {
       email: searchingEmail,
     });
 
-    console.log("data after finding one")
-    console.log(data);
-
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
     // return new Response(error, { status: 500 })
@@ -40,8 +37,6 @@ export async function POST(request: NextRequest) {
       // return NextResponse.json({ error: "User already exists" }, { status: 400 });
       return NextResponse.json(existingUser, { status: 200 });
     }
-
-    console.log(process.env.STRIPE_SECRET_KEY);
 
     const newUser = new MDBUser({
       _id: new mongoose.Types.ObjectId(),
@@ -65,7 +60,6 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
 
     const filter = { _id: body._id }
-    const update = body;
 
     const updatedUser = await MDBUser.findOneAndUpdate(filter, body);
     
