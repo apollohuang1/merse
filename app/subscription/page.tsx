@@ -24,6 +24,9 @@ const Subscription = (props: Props) => {
 
   const { fetchCurrentUser, reloadCurrentLocalUser } = useAuth();
 
+  const [subscription, setSubscription] = React.useState<any>(null);
+  const [isRetrievingSubscription, setIsRetrievingSubscription] = React.useState<any>(false);
+
   React.useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
@@ -52,13 +55,29 @@ const Subscription = (props: Props) => {
     }
   }, []);
 
-  const retrieveSubscription = async () => {
+  React.useEffect(() => {
+    const localUser = localStorage.getItem("currentUser");
+
+    if (!localUser) return;
+
+    const localUserData = JSON.parse(localUser);
+    const userStripeSubscriptionId = localUserData?.stripe_subscription_id as string;
+    if (!userStripeSubscriptionId) return;
+
+    retrieveSubscription(userStripeSubscriptionId);
+
+  }, []);
+
+  const retrieveSubscription = async (subscriptionId: string) => {
     try {
-      const subscription = await stripe.subscriptions.retrieve(
-        auth?.currentUser.stripe_subscription_id as string
-      );
+      setIsRetrievingSubscription(true);
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      setSubscription(subscription);
+      console.log("###----------Retrieved Subscription----------###");
       console.log(subscription);
+      setIsRetrievingSubscription(false);
     } catch (error: any) {
+      setIsRetrievingSubscription(false);
       console.log("Failed to retrieve subscription, message: ", error.message);
     }
   };
@@ -103,40 +122,46 @@ const Subscription = (props: Props) => {
       <div className="flex flex-col gap-6 w-full items-center">
         <h1>Subscription</h1>
 
-        <button
+        {/* <button
           className="text-accent"
           onClick={() => {
             retrieveSubscription();
           }}
         >
           Retrieve Subscription
-        </button>
+        </button> */}
 
-        {auth?.currentUser?.stripe_customer_id ? (
-          <button
-            className="text-accent"
-            onClick={() => {
-              createStripePortalSession();
-            }}
-          >
-            Manage Subscription
-          </button>
+        {isRetrievingSubscription ? (
+          <div className="flex w-full h-44 animate-pulse bg-light-background-secondary dark:bg-dark-background-secondary" />
         ) : (
           <>
-            <button
-              onClick={() => {
-                createCheckoutSession();
-              }}
-              className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded-full"
-            >
-              Subscribe for $10/month
-            </button>
+            { subscription ? (
+              <button
+                className="text-accent"
+                onClick={() => {
+                  createStripePortalSession();
+                }}
+              >
+                Manage Subscription
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    createCheckoutSession();
+                  }}
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded-full"
+                >
+                  Subscribe for $10/month
+                </button>
 
-            <p className="text-center">
-              Note: this is test mode, use{" "}
-              <span className="text-accent">4242 4242 4242 4242</span> as a visa
-              card number to test with any expiration date and CVC
-            </p>
+                <p className="text-center">
+                  Note: this is test mode, use{" "}
+                  <span className="text-accent">4242 4242 4242 4242</span> as a
+                  visa card number to test with any expiration date and CVC
+                </p>
+              </>
+            )}
           </>
         )}
       </div>
