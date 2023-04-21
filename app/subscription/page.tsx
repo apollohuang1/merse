@@ -22,6 +22,8 @@ const Subscription = (props: Props) => {
   const router = useRouter();
   const auth = useAppSelector((state) => state.auth);
 
+  const { fetchCurrentUser } = useAuth();
+
   React.useEffect(() => {
 
     // Check to see if this is a redirect back from Checkout
@@ -31,6 +33,10 @@ const Subscription = (props: Props) => {
       // console.log('Order placed! You will receive an email confirmation.');
       // alert('Order placed! You will receive an email confirmation.');
       console.log("Order placed! You will receive an email confirmation.");
+
+      const localUser = localStorage.getItem("currentUser");
+      const localUserJson = JSON.parse(localUser as string);
+      fetchCurrentUser(localUserJson?._id);
     }
 
     if (query.get("canceled")) {
@@ -45,11 +51,9 @@ const Subscription = (props: Props) => {
 
   const retrieveSubscription = async () => {
     try {
-
       const subscription = await stripe.subscriptions.retrieve(
         auth?.currentUser.stripe_subscription_id as string
       );
-  
       console.log(subscription);
     } catch (error: any) {
       console.log("Failed to retrieve subscription, message: ", error.message);

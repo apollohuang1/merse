@@ -58,14 +58,9 @@ const useAuth = () => {
     });
   };
 
-  const fetchCurrentUser = async () => {
+  const fetchCurrentUser = async (userId: string) => {
     try {
-
-      const currentUserId = auth?.currentUser._id;
-      // guard
-      if (!currentUserId) throw new Error("No user id found");
-      
-      const userResponse = await axios.get(`/api/users/${currentUserId}`);
+      const userResponse = await axios.get(`/api/users/${userId}`);
       // setCurrentUser(userResponse.data);
       // remove one from localStorage
       localStorage.removeItem("currentUser");
@@ -225,6 +220,7 @@ const useAuth = () => {
     showSplashScreen,
     reloadCurrentLocalUser,
     logOut,
+    fetchCurrentUser,
   };
 };
 

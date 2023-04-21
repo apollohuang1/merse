@@ -10,7 +10,6 @@ export interface IUser {
   stripe_customer_id: string;
   stripe_subscription_id: string;
   stripe_customer_email: string;
-  stripe_portal_session_url: string;
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
@@ -23,7 +22,6 @@ const UserSchema = new mongoose.Schema<IUser>({
   stripe_customer_id: { type: String, required: false },
   stripe_subscription_id: { type: String, required: false },
   stripe_customer_email: { type: String, required: false },
-  stripe_portal_session_url: { type: String, required: false },
 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);
