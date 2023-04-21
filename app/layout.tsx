@@ -10,7 +10,6 @@ import { SessionProvider } from "next-auth/react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import HomeLayout from "@/components/home-layout";
 
-import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 const metadata = {
@@ -53,7 +52,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content={metadata.description} />
         <title>{metadata.title}</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="merse icon" href="/merse-logo.png" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
       </head>
 
@@ -61,11 +60,11 @@ export default function RootLayout({
         {/* <body className="bg-dark-background-primary"> */}
         <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
           <SessionProvider>
-            <Elements stripe={stripePromise} options={stripeOptions}>
+            {/* <Elements stripe={stripePromise} options={stripeOptions}> */}
               <Provider store={store}>
                 <HomeLayout>{children}</HomeLayout>
               </Provider>
-            </Elements>
+            {/* </Elements> */}
           </SessionProvider>
         </GoogleOAuthProvider>
       </body>
