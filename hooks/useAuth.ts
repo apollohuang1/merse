@@ -18,10 +18,10 @@ const useAuth = () => {
   const dispatch = useAppDispatch();
 
   const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
-  const [isLoadingCurrentUser, setIsLoadingCurrentUser] = React.useState<boolean>(false);
+  const [isLoadingCurrentUser, setIsLoadingCurrentUser] =
+    React.useState<boolean>(false);
 
   const [showSplashScreen, setShowSplashScreen] = React.useState<boolean>(true);
-
 
   useEffect(() => {
     reloadCurrentLocalUser()
@@ -36,8 +36,7 @@ const useAuth = () => {
         if (window.location.pathname !== "/") {
           window.location.pathname = "/";
         }
-
-      })
+      });
   }, []);
 
   // reload current user promise
@@ -56,51 +55,77 @@ const useAuth = () => {
         reject("No user found");
         // redirect to login page
       }
-    })
-  }
+    });
+  };
 
+  const fetchCurrentUser = async () => {
+    try {
+
+      const currentUserId = auth?.currentUser._id;
+      // guard
+      if (!currentUserId) throw new Error("No user id found");
+      
+      const userResponse = await axios.get(`/api/users/${currentUserId}`);
+      // setCurrentUser(userResponse.data);
+      // remove one from localStorage
+      localStorage.removeItem("currentUser");
+      
+      dispatch(setCurrentUser(userResponse.data));
+      localStorage.setItem("currentUser", JSON.stringify(userResponse.data));
+    } catch (error: AxiosError | any) {
+      if (error.response) {
+        if (error.response.status === 401) {
+          // redirect to login page
+        }
+      }
+    }
+  };
 
   // google signin trigger
   const continueWithGoogle = useGoogleLogin({
     onSuccess: (tokenResponse: any) => onGoogleLoginSuccess(tokenResponse),
     onError: (error: any) => onGoogleLoginError(error),
-  })
-
+  });
 
   // google signin success handler
   const onGoogleLoginSuccess = async (tokenResponse: any) => {
     try {
-
       setIsLoadingCurrentUser(true);
 
       const accessToken = tokenResponse.access_token;
       const googleURL = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`;
-  
+
       const googleUserReponse = await axios.get(googleURL);
-  
+
       // create new user if not exists in db
       const googleUserData = googleUserReponse.data;
       const createUserReponse = await axios.post("/api/users", googleUserData);
 
       // if user exists, return fetched user data
       setCurrentUser(createUserReponse.data);
-      dispatch(setCurrentUser(createUserReponse.data))
+      dispatch(setCurrentUser(createUserReponse.data));
 
-      localStorage.setItem('currentUser', JSON.stringify(createUserReponse.data))
-  
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify(createUserReponse.data)
+      );
+
       // alert("Please try again, we're fixing this issue.")
       setIsLoadingCurrentUser(false);
       setShowLoginModal(false);
     } catch (error: AxiosError | any) {
       if (error.response) {
-        if (error.response.status === 400 && error.response.data.error === "User already exists") {
+        if (
+          error.response.status === 400 &&
+          error.response.data.error === "User already exists"
+        ) {
           // user exists handler
           // regularly login
         }
       }
       setIsLoadingCurrentUser(false);
     }
-  }
+  };
 
   // const retrieveStripeCustomer = async (stripeCustomerId: string) => {
   //   try {
@@ -112,35 +137,32 @@ const useAuth = () => {
   //   }
   // }
 
-
   const createNewStripeCustomer = async (email: string) => {
     try {
-
     } catch (error: any) {
       console.log(error);
     }
-  }
-
+  };
 
   // google signin failure handler
   const onGoogleLoginError = (error: any) => {
     console.log("onGoogleLoginError");
-    alert("Please try again, we're fixing this issue.")
+    alert("Please try again, we're fixing this issue.");
     setShowLoginModal(false);
-  }
+  };
 
   const logOut = () => {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem("currentUser");
     dispatch(setCurrentUser(null));
     window.location.href = "/";
-  }
+  };
 
   // const continueWithGoogle = useGoogleLogin({
   //   onSuccess: async (tokenResponse) => {
   //     try {
   //       const accessToken = tokenResponse.access_token;
   //       const googleURL = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`;
-  
+
   //       const googleUserReponse = await axios.get(googleURL);
   //       const googleUserData = googleUserReponse.data;
 
@@ -195,7 +217,15 @@ const useAuth = () => {
   //   },
   // });
 
-  return { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, showSplashScreen, reloadCurrentLocalUser, logOut };
+  return {
+    continueWithGoogle,
+    showLoginModal,
+    setShowLoginModal,
+    isLoadingCurrentUser,
+    showSplashScreen,
+    reloadCurrentLocalUser,
+    logOut,
+  };
 };
 
 export default useAuth;

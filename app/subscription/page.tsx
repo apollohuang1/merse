@@ -1,5 +1,6 @@
 "use client";
 
+import useAuth from "@/hooks/useAuth";
 import { useAppSelector } from "@/redux-store/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -22,6 +23,7 @@ const Subscription = (props: Props) => {
   const auth = useAppSelector((state) => state.auth);
 
   React.useEffect(() => {
+
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
 
@@ -37,18 +39,22 @@ const Subscription = (props: Props) => {
       );
       // alert('Order canceled -- continue to shop around and checkout when you’re ready.');
     }
+
   }, []);
 
-  // const retrieveCheckoutSession = async () => {
-  //   try {
-  //     const session_id = "cs_test_a16OBxHXAx8UhV4kKps6Gy1eA66Xk9XHNao1bhzsVafuj88q86MZC6EDQd";
-  //     const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
-  //     console.log("Checkout session retrieved, message: ");
-  //     console.log(checkoutSession);
-  //   } catch (error: any) {
-  //     console.log("Failed to retrieve checkout session, message: ", error.message);
-  //   }
-  // }
+
+  const retrieveSubscription = async () => {
+    try {
+
+      const subscription = await stripe.subscriptions.retrieve(
+        auth?.currentUser.stripe_subscription_id as string
+      );
+  
+      console.log(subscription);
+    } catch (error: any) {
+      console.log("Failed to retrieve subscription, message: ", error.message);
+    }
+  }
 
   const createStripePortalSession = async () => {
     const portalSession = await stripe.billingPortal.sessions.create({
@@ -89,6 +95,15 @@ const Subscription = (props: Props) => {
     <div className="flex flex-col w-full h-full items-center p-6">
       <div className="flex flex-col gap-6 w-full items-center">
         <h1>Subscription</h1>
+
+        <button
+            className="text-accent"
+            onClick={() => {
+              retrieveSubscription();
+            }}
+          >
+            Retrieve Subscription
+          </button>
 
         {auth?.currentUser?.stripe_customer_id ? (
           <button
