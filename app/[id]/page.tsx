@@ -154,7 +154,7 @@ const ProfilePage = (props: Props) => {
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-6 max-lg:grid-cols-2">
+              <div className="grid grid-cols-3 gap-3 max-lg:grid-cols-2">
                 {allEntries.map((entry: Entry, index: number) => (
                   <button
                     key={index}

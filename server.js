@@ -107,13 +107,6 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (request, 
       // Then define and call a method to handle the successful checkout session.
       // handleCheckoutSession(session);
       break;
-    case 'customer.subscription.trial_will_end':
-      subscription = event.data.object;
-      status = subscription.status;
-      console.log(`Subscription status is ${status}.`);
-      // Then define and call a method to handle the subscription trial ending.
-      // handleSubscriptionTrialEnding(subscription);
-      break;
     case 'customer.subscription.deleted':
       subscription = event.data.object;
       status = subscription.status;

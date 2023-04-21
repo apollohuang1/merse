@@ -5,6 +5,7 @@ import clsx from "clsx";
 import useColorScheme from "@/hooks/useColorScheme";
 import {
   FiBookOpen,
+  FiCalendar,
   FiChevronLeft,
   FiChevronRight,
   FiChevronsLeft,
@@ -115,6 +116,15 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 label="Home"
                 href="/"
                 isFull={showFullSidebar}
+              />
+
+              {/* dashboard */}
+              <SidebarMenuButton
+                icon={<FiCalendar />}
+                label="Dashboard"
+                href="/dashboard"
+                isFull={showFullSidebar}
+                isNew={true}
               />
 
               {/* subscription */}
