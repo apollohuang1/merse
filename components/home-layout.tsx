@@ -259,7 +259,7 @@ const SidebarMenuButton: React.FC<{
           {isFull && <span className="flex flex-shrink-0">{label}</span>}
         </div>
 
-        {isNew && isFull && <span className="text-accent text-sm font-medium px-2 py-[2px] bg-emerald-500 bg-opacity-30 rounded-lg">New</span>}
+        {isNew && isFull && <span className="text-accent text-sm font-medium px-2 py-[2px] bg-emerald-500 bg-opacity-[0.15] dark:bg-opacity-30 rounded-lg">New</span>}
       </button>
     </Link>
   );

@@ -40,8 +40,8 @@ const Subscription = (props: Props) => {
       console.log("Order placed! You will receive an email confirmation.");
 
       reloadCurrentLocalUser()
-        .then((localuser: any) => {
-          fetchCurrentUser(localuser?._id);
+        .then((localUser: any) => {
+          fetchCurrentUser(localUser?._id);
         })
         .catch((error) => {
           // error handler. no local user found.
@@ -85,6 +85,7 @@ const Subscription = (props: Props) => {
     }
   };
 
+  // Redirect to manage billing/subscription
   const createStripePortalSession = async () => {
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: auth?.currentUser.stripe_customer_id,
@@ -93,6 +94,7 @@ const Subscription = (props: Props) => {
     window.location.href = portalSession.url as string;
   };
 
+  // Redirect to pay for subscription
   const createCheckoutSession = async () => {
     try {
       // Create Checkout Sessions from body params.
@@ -157,9 +159,15 @@ const Subscription = (props: Props) => {
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-row items-center gap-3">
                       <span className="font-semibold">No UIs for now</span>
-                      {subscription.cancel_at && (
-                        <span className="text-center px-2 py-[5px] text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary bg-light-background-secondary dark:bg-dark-background-secondary rounded-md">
+                      {subscription && subscription.cancel_at && (
+                        <span className="text-center px-2 py-[5px] text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary bg-light-background-secondary dark:bg-dark-background-secondary rounded-lg">
                           Canceled
+                        </span>
+                      )}
+
+                      {subscription && subscription.cancel_at === null && (
+                        <span className="text-center px-2 py-[3px] text-sm font-medium text-emerald-500 bg-emerald-500 bg-opacity-[0.15] dark:bg-opacity-30 rounded-lg">
+                          Active
                         </span>
                       )}
                     </div>
