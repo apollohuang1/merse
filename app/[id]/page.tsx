@@ -103,7 +103,7 @@ const ProfilePage = (props: Props) => {
         </div>
 
         <div className="flex flex-col px-6 w-full items-center -translate-y-[64px]">
-          <div className="flex flex-col w-full max-w-5xl gap-6">
+          <div className="flex flex-col w-full max-w-5xl gap-12">
             <div className="flex flex-col w-full gap-3">
               <div className="flex flex-row justify-between items-end">
                 {/* profile image */}
@@ -146,41 +146,45 @@ const ProfilePage = (props: Props) => {
               </div>
             </div>
 
-            {isFetchingEntries ? (
-              <div className="flex flex-row w-full items-center justify-center pt-28">
-                <div className="flex flex-row gap-3">
-                  <Spinner className="w-6 h-6 text-accent"/>
-                  <span>Loading entries...</span>
-                </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-3 gap-3 max-lg:grid-cols-2">
-                {allEntries.map((entry: Entry, index: number) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      router.push(`/read?id=${entry._id}`);
-                    }}
-                    className="flex flex-col w-full items-center justify-between bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
-                  >
-                    {entry?.scenes[0]?.image_base64 ? (
-                      <img
-                        src={getImageURLfromBase64(
-                          entry?.scenes[0]?.image_base64
-                        )}
-                        className="w-full h-full aspect-square object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-emerald-300 dark:bg-emerald-800"></div>
-                    )}
+            <div className="grid grid-cols-3 gap-3 max-lg:grid-cols-2 w-full">
+              {isFetchingEntries ? (
+                <>
+                  {[...Array(6)].map((_, index) => (
+                    <div
+                      key={index}
+                      className="w-full h-full animate-pulse aspect-square bg-light bg-light-background-secondary dark:bg-dark-background-secondary rounded-md"
+                    />
+                  ))}
+                </>
+              ) : (
+                <>
+                  {allEntries.map((entry: Entry, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        router.push(`/read?id=${entry._id}`);
+                      }}
+                      className="flex flex-col w-full items-center justify-between bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-md overflow-clip"
+                    >
+                      {entry?.scenes[0]?.image_base64 ? (
+                        <img
+                          src={getImageURLfromBase64(
+                            entry?.scenes[0]?.image_base64
+                          )}
+                          className="w-full h-full aspect-square object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-emerald-300 dark:bg-emerald-800"></div>
+                      )}
 
-                    <div className="flex flex-row px-6 py-4 items-center justify-start w-full text-left">
-                      <span className="line-clamp-1">{entry.title}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
+                      <div className="flex flex-row px-6 py-4 items-center justify-start w-full text-left">
+                        <span className="line-clamp-1">{entry.title}</span>
+                      </div>
+                    </button>
+                  ))}
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
