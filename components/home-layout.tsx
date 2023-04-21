@@ -41,16 +41,16 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const isCreateRoute = pathName?.split("/")[1] === "create";
 
-  const { reloadCurrentUser } = useAuth();
+  const { reloadCurrentLocalUser } = useAuth();
 
   useEffect(() => {
-    reloadCurrentUser()
+    reloadCurrentLocalUser()
       .then((user) => {
         console.log("User reloaded");
         console.log(user);
       })
-      .catch((error) => {
-        console.log("No authenticated user found");
+      .catch((error:any) => {
+        console.log("No authenticated user found, message: " + error.message);
 
         // redirect to login page
         // if current route or path name is not /, then redirect to pathname and don't use router

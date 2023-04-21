@@ -79,7 +79,6 @@ const handleCheckoutSession = async (session) => {
       stripe_customer_id: customerId,
       stripe_subscription_id: subscriptionId,
       stripe_customer_email: customerEmail,
-      stripe_portal_session_url: portalSession.url,
     });
 
     console.log("Updated user: ");
@@ -120,6 +119,7 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (request, 
   // Handle the event
 
   switch (event.type) {
+    // Doc reference: https://stripe.com/docs/billing/subscriptions/webhooks
     case 'checkout.session.completed':
       const session = event.data.object;
       console.log(`🔔  Payment received!`);

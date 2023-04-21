@@ -1,6 +1,7 @@
 
 import { Character } from '@/models/character'
 import { Entry, Scene } from '@/models/entry'
+import { IUser } from '@/server/models/MDBUser'
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
 import mongoose from 'mongoose'
@@ -78,10 +79,10 @@ const entryHelperSlice = createSlice({
 const authenticationSlice = createSlice({
   name: 'auth',
   initialState: {
-    currentUser: null,
+    currentUser: null
   },
   reducers: {
-    setCurrentUser: (state, action) => {
+    setCurrentUser: (state: any, action: PayloadAction<IUser | null>) => {
       state.currentUser = action.payload
     }
   }

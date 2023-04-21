@@ -27,19 +27,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   
-  const { reloadCurrentUser } = useAuth();
+  const { reloadCurrentLocalUser } = useAuth();
 
   const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    reloadCurrentUser()
+    reloadCurrentLocalUser()
       .then((user: any) => {
-        // console.log("reloadCurrentUser");
         dispatch(setUserId(user?._id));
       })
       .catch((err) => {
-        console.log("reloadCurrentUser", err);
+        console.log("reloadCurrentLocalUser", err.message);
         // redirect to home/authentication page
         // alert("Please log in to continue");
         // window.location.href = "/";

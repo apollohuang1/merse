@@ -24,7 +24,7 @@ const useAuth = () => {
 
 
   useEffect(() => {
-    reloadCurrentUser()
+    reloadCurrentLocalUser()
       .then((user) => {
         console.log("User reloaded");
       })
@@ -41,7 +41,7 @@ const useAuth = () => {
   }, []);
 
   // reload current user promise
-  const reloadCurrentUser = async () => {
+  const reloadCurrentLocalUser = async () => {
     return new Promise((resolve, reject) => {
       setShowSplashScreen(true);
       const loggedInUser = localStorage.getItem("currentUser");
@@ -131,7 +131,6 @@ const useAuth = () => {
 
   const logOut = () => {
     localStorage.removeItem('currentUser');
-    setCurrentUser(null);
     dispatch(setCurrentUser(null));
     window.location.href = "/";
   }
@@ -196,7 +195,7 @@ const useAuth = () => {
   //   },
   // });
 
-  return { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, showSplashScreen, reloadCurrentUser, logOut };
+  return { continueWithGoogle, showLoginModal, setShowLoginModal, isLoadingCurrentUser, showSplashScreen, reloadCurrentLocalUser, logOut };
 };
 
 export default useAuth;
