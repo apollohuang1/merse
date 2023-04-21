@@ -58,6 +58,7 @@ app.post('/create-portal-session', async (req, res) => {
   res.redirect(303, portalSession.url);
 });
 
+
 const handleCheckoutSession = async (session) => {
   try {
     const customerId = session.customer;
@@ -66,12 +67,6 @@ const handleCheckoutSession = async (session) => {
   
     // find user with email
     const userResponse = await axios.get(`https://comic.merse.co/api/users?email=${customerEmail}`);
-    // const userResponse = await axios.get(`http://locahost:3000/api/users?email=${customerEmail}`);
-
-    const portalSession = await stripe.billingPortal.sessions.create({
-      customer: customerId,
-      return_url: 'https://comic.merse.co',
-    });
 
     // update user with fetched _id
     const updatedUserResponse = await axios.put(`https://comic.merse.co/api/users`, {
@@ -80,9 +75,6 @@ const handleCheckoutSession = async (session) => {
       stripe_subscription_id: subscriptionId,
       stripe_customer_email: customerEmail,
     });
-
-    console.log("Updated user: ");
-    console.log(updatedUserResponse.data);
 
   } catch (error) {
     console.log("Failed to handle checkout session, message: ", error.message)
