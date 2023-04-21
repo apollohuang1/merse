@@ -1,5 +1,8 @@
 // This is your test secret API key.
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+const Stripe = require('stripe');
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const { default: axios } = require('axios');
 const express = require('express');
@@ -53,6 +56,39 @@ app.post('/create-portal-session', async (req, res) => {
   res.redirect(303, portalSession.url);
 });
 
+const handleCheckoutSession = async (session) => {
+  try {
+    const customerId = session.customer;
+    const subscriptionId = session.subscription;
+    const customerEmail = session.customer_email;
+  
+    // find user with email
+    const userResponse = await axios.get(`https://comic.merse.co/api/users?email=${customerEmail}`);
+
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: 'http://localhost:3000/subscription',
+    }, {
+      apiKey: process.env.STRIPE_SECRET_KEY,
+    });
+
+    // update user with fetched _id
+    const updatedUserResponse = await axios.put(`https://comic.merse.co/api/users`, {
+      _id: userResponse.data._id,
+      stripe_customer_id: customerId,
+      stripe_subscription_id: subscriptionId,
+      stripe_customer_email: customerEmail,
+      stripe_portal_session_url: portalSession.url,
+    });
+
+    console.log("Updated user: ");
+    console.log(updatedUserResponse.data);
+
+  } catch (error) {
+    console.log("Failed to handle checkout session, message: ", error.message)
+  }
+}
+
 
 app.post('/webhook', express.raw({ type: 'application/json' }), async (request, response) => {
   let event = request.body;
@@ -87,25 +123,9 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (request, 
       console.log(`🔔  Payment received!`);
       console.log(`Checkout session completed for ${session.id}.`);
 
-      console.log(JSON.stringify(session, null, 2));
-
-      const customerId = session.customer;
-      const subscriptionId = session.subscription;
-      const customerEmail = session.customer_email;
-
-      // find user with email
-      const userResponse = await axios.get(`https://comic.merse.co/api/users?email=${customerEmail}`);
-
-      // update user with fetched _id
-      const updatedUserResponse = await axios.put(`https://comic.merse.co/api/users`, {
-        _id: userResponse.data._id,
-        stripe_customer_id: customerId,
-        stripe_subscription_id: subscriptionId,
-        stripe_customer_email: customerEmail,
-      });
-
       // Then define and call a method to handle the successful checkout session.
-      // handleCheckoutSession(session);
+      await handleCheckoutSession(session);
+
       break;
     case 'customer.subscription.deleted':
       subscription = event.data.object;

@@ -1,18 +1,13 @@
 "use client";
 
-import Modal from "@/components/modal";
 import SlideOver from "@/components/slide-over";
 import { Entry } from "@/models/entry";
 import { useAppSelector } from "@/redux-store/hooks";
 import { getImageURLfromBase64 } from "@/util/helper";
-import { genders } from "@/util/select";
-import { Spinner } from "@chakra-ui/react";
-import { Menu, Transition } from "@headlessui/react";
 import axios from "axios";
-import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
-import { FiChevronRight, FiEdit2, FiPlus } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 
 type Props = {};
 
