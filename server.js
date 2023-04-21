@@ -1,8 +1,11 @@
 // This is your test secret API key.
 // const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+// dotenv
+// require('dotenv').config();
+
 const Stripe = require('stripe');
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe("sk_test_51Myu9uKt5zOcNNbDe3kXKjRp5fsd8X2GSZvlW7ToVC8pN4tFpUtR88S4tnRVLtQ5JjjzKhw2GMlN0iuIO3xKlzb300LH9eqGi0");
 
 const { default: axios } = require('axios');
 const express = require('express');
@@ -10,7 +13,6 @@ const app = express();
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -64,12 +66,11 @@ const handleCheckoutSession = async (session) => {
   
     // find user with email
     const userResponse = await axios.get(`https://comic.merse.co/api/users?email=${customerEmail}`);
+    // const userResponse = await axios.get(`http://locahost:3000/api/users?email=${customerEmail}`);
 
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      return_url: 'http://localhost:3000/subscription',
-    }, {
-      apiKey: process.env.STRIPE_SECRET_KEY,
+      return_url: 'https://comic.merse.co',
     });
 
     // update user with fetched _id
@@ -88,6 +89,7 @@ const handleCheckoutSession = async (session) => {
     console.log("Failed to handle checkout session, message: ", error.message)
   }
 }
+
 
 
 app.post('/webhook', express.raw({ type: 'application/json' }), async (request, response) => {
