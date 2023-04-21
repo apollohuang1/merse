@@ -119,13 +119,13 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               />
 
               {/* dashboard */}
-              <SidebarMenuButton
+              {/* <SidebarMenuButton
                 icon={<FiCalendar />}
                 label="Dashboard"
                 href="/dashboard"
                 isFull={showFullSidebar}
                 isNew={true}
-              />
+              /> */}
 
               {/* subscription */}
               <SidebarMenuButton

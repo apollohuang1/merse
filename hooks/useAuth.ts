@@ -61,10 +61,6 @@ const useAuth = () => {
   const fetchCurrentUser = async (userId: string) => {
     try {
       const userResponse = await axios.get(`/api/users/${userId}`);
-      // setCurrentUser(userResponse.data);
-      // remove one from localStorage
-      localStorage.removeItem("currentUser");
-      
       dispatch(setCurrentUser(userResponse.data));
       localStorage.setItem("currentUser", JSON.stringify(userResponse.data));
     } catch (error: AxiosError | any) {

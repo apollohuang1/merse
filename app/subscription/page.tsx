@@ -22,10 +22,9 @@ const Subscription = (props: Props) => {
   const router = useRouter();
   const auth = useAppSelector((state) => state.auth);
 
-  const { fetchCurrentUser } = useAuth();
+  const { fetchCurrentUser, reloadCurrentLocalUser } = useAuth();
 
   React.useEffect(() => {
-
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
 
@@ -34,9 +33,15 @@ const Subscription = (props: Props) => {
       // alert('Order placed! You will receive an email confirmation.');
       console.log("Order placed! You will receive an email confirmation.");
 
-      const localUser = localStorage.getItem("currentUser");
-      const localUserJson = JSON.parse(localUser as string);
-      fetchCurrentUser(localUserJson?._id);
+      reloadCurrentLocalUser()
+        .then((localuser: any) => {
+          fetchCurrentUser(localuser?._id);
+        })
+        .catch((error) => {
+          // error handler. no local user found.
+        });
+
+      // router.push("/subscription");
     }
 
     if (query.get("canceled")) {
@@ -45,9 +50,7 @@ const Subscription = (props: Props) => {
       );
       // alert('Order canceled -- continue to shop around and checkout when you’re ready.');
     }
-
   }, []);
-
 
   const retrieveSubscription = async () => {
     try {
@@ -58,7 +61,7 @@ const Subscription = (props: Props) => {
     } catch (error: any) {
       console.log("Failed to retrieve subscription, message: ", error.message);
     }
-  }
+  };
 
   const createStripePortalSession = async () => {
     const portalSession = await stripe.billingPortal.sessions.create({
@@ -101,13 +104,13 @@ const Subscription = (props: Props) => {
         <h1>Subscription</h1>
 
         <button
-            className="text-accent"
-            onClick={() => {
-              retrieveSubscription();
-            }}
-          >
-            Retrieve Subscription
-          </button>
+          className="text-accent"
+          onClick={() => {
+            retrieveSubscription();
+          }}
+        >
+          Retrieve Subscription
+        </button>
 
         {auth?.currentUser?.stripe_customer_id ? (
           <button
