@@ -2,6 +2,7 @@
 
 import useAuth from "@/hooks/useAuth";
 import { useAppSelector } from "@/redux-store/hooks";
+import { getFormattedDate } from "@/util/helper";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -24,8 +25,10 @@ const Subscription = (props: Props) => {
 
   const { fetchCurrentUser, reloadCurrentLocalUser } = useAuth();
 
-  const [subscription, setSubscription] = React.useState<any>(null);
-  const [isRetrievingSubscription, setIsRetrievingSubscription] = React.useState<any>(false);
+  const [subscription, setSubscription] =
+    React.useState<Stripe.Subscription | null>(null);
+  const [isRetrievingSubscription, setIsRetrievingSubscription] =
+    React.useState<any>(false);
 
   React.useEffect(() => {
     // Check to see if this is a redirect back from Checkout
@@ -61,11 +64,11 @@ const Subscription = (props: Props) => {
     if (!localUser) return;
 
     const localUserData = JSON.parse(localUser);
-    const userStripeSubscriptionId = localUserData?.stripe_subscription_id as string;
+    const userStripeSubscriptionId =
+      localUserData?.stripe_subscription_id as string;
     if (!userStripeSubscriptionId) return;
 
     retrieveSubscription(userStripeSubscriptionId);
-
   }, []);
 
   const retrieveSubscription = async (subscriptionId: string) => {
@@ -117,6 +120,19 @@ const Subscription = (props: Props) => {
     }
   };
 
+  // What we need to display on this page dashboard to track active subscription.
+
+  // Subscription ID (id): "sub_1MzOVxCiQSLSNSsflUODaKm8"
+  // Status (status): "active"
+  // Creation Date (created): 1682101017 (formatted as a human-readable date)
+  // Start Date (start_date): 1682101017 (formatted as a human-readable date)
+  // Current Period Start (current_period_start): 1682101017 (formatted as a human-readable date)
+  // Current Period End (current_period_end): 1684693017 (formatted as a human-readable date)
+  // Plan Name (items.data[0].price.nickname): "Metered Basic"
+  // Price (items.data[0].price.unit_amount): 1000 (formatted as currency with the "currency" field)
+  // Billing Interval (items.data[0].price.recurring.interval): "month"
+  // Currency (currency): "thb"
+
   return (
     <div className="flex flex-col w-full h-full items-center p-6">
       <div className="flex flex-col gap-6 w-full items-center">
@@ -135,15 +151,64 @@ const Subscription = (props: Props) => {
           <div className="flex w-full h-44 animate-pulse bg-light-background-secondary dark:bg-dark-background-secondary" />
         ) : (
           <>
-            { subscription ? (
-              <button
-                className="text-accent"
-                onClick={() => {
-                  createStripePortalSession();
-                }}
-              >
-                Manage Subscription
-              </button>
+            {subscription ? (
+              <div className="flex flex-col w-full items-center">
+                <div>
+                  <div className="flex flex-col gap-3">
+
+                    <span className="font-semibold">No UIs for now</span>
+
+                    <div className="h-[1px] border-t border-t-light-divider dark:border-t-dark-divider" />
+
+                    <div>
+                      <span>Subscription ID: {subscription?.id}</span>
+                      <br />
+                      <span>Status: {subscription.status}</span>
+                      <br />
+                      <span>
+                        Created: {getFormattedDate(subscription.created)}
+                      </span>
+                      <br />
+                      <span>
+                        Start Date: {getFormattedDate(subscription.start_date)}
+                      </span>
+                      <br />
+                      <span>
+                        Current Period Start:{" "}
+                        {getFormattedDate(subscription.current_period_start)}
+                      </span>
+                      <br />
+                      {/* convert start day date to display for user in October 19, 2002 format */}
+                      <span className="text-center">
+                        Current Period Start:{" "}
+                        {getFormattedDate(subscription.current_period_start)}
+                      </span>
+                      <br />
+                      <span>
+                        Current Period End:{" "}
+                        {getFormattedDate(subscription.current_period_end)}
+                      </span>
+                      <br />
+                      <span>
+                        Price:{" "}
+                        {(subscription?.items.data[0]?.price
+                          .unit_amount as number) / 100}{" "}
+                        {subscription.currency}
+                      </span>
+                      <br />
+                      <br />
+                      <button
+                        className="text-accent hover:text-emerald-600"
+                        onClick={() => {
+                          createStripePortalSession();
+                        }}
+                      >
+                        Manage Subscription
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             ) : (
               <>
                 <button
