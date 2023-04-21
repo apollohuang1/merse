@@ -156,26 +156,26 @@ const Subscription = (props: Props) => {
                 <div>
                   <div className="flex flex-col gap-3">
 
-                    <span className="font-semibold">No UIs for now</span>
+                    <div className="flex flex-row items-center gap-3">
+                      <span className="font-semibold">No UIs for now</span>
+                      <span className="text-center px-2 py-[5px] text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary bg-light-background-secondary dark:bg-dark-background-secondary rounded-md">
+                        Canceled
+                      </span>
+                    </div>
 
                     <div className="h-[1px] border-t border-t-light-divider dark:border-t-dark-divider" />
 
                     <div>
                       <span>Subscription ID: {subscription?.id}</span>
                       <br />
-                      <span>Status: {subscription.status}</span>
-                      <br />
+                      {/* <span>Status: {subscription.status}</span> */}
+                      {/* <br /> */}
                       <span>
                         Created: {getFormattedDate(subscription.created)}
                       </span>
                       <br />
                       <span>
                         Start Date: {getFormattedDate(subscription.start_date)}
-                      </span>
-                      <br />
-                      <span>
-                        Current Period Start:{" "}
-                        {getFormattedDate(subscription.current_period_start)}
                       </span>
                       <br />
                       {/* convert start day date to display for user in October 19, 2002 format */}
