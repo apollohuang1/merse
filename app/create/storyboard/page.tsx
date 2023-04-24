@@ -97,7 +97,7 @@ const Storyboard = (props: Props) => {
   });
 
   editor?.on("update", (updatedEditor: any) => {
-    const updatedContent = updatedEditor?.editor?.getJSON();
+    const updatedContent = updatedEditor?.editor?.getHTML();
     dispatch(setContent(updatedContent));
   });
 

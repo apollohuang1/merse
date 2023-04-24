@@ -41,8 +41,9 @@ const ReadPage = (props: Props) => {
 
   const output = useMemo(() => {
     if (!entryData?.content) return null;
-    const generatedHTML = generateHTML(entryData.content, [StarterKit, Image, HardBreak, Spotify]);
-    return generatedHTML;
+    // const generatedHTML = generateHTML(entryData.content, [StarterKit, Image, HardBreak, Spotify]);
+    // return generatedHTML;
+    return parse(entryData.content);
   }, [entryData]);
 
   return (
@@ -53,7 +54,7 @@ const ReadPage = (props: Props) => {
           <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
             <h1 className="text-4xl font-bold">{entryData?.title}</h1>
             <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" />
-            <div className="text-left">{parse(output)}</div>
+            {output}
           </div>
         )}
 

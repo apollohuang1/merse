@@ -250,7 +250,7 @@ const SidebarMenuButton: React.FC<{
   isNew?: boolean;
 }> = ({ icon, label, href, isFull, variant = "normal", isNew = false }) => {
   return (
-    <Link href={href} className="flex w-full items-center justify-center">
+    <Link href={href} className="flex w-full items-center justify-center cursor-pointer">
       <button
         className={clsx(
           "flex flex-row items-center gap-3 w-full transition-all rounded-xl",

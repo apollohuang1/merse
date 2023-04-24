@@ -2,8 +2,10 @@ import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { JSONContent } from "@tiptap/react";
 import axios, { AxiosResponse } from "axios";
 import {
+  Configuration,
   CreateChatCompletionRequest,
   CreateChatCompletionResponse,
+  OpenAIApi,
 } from "openai";
 import React from "react";
 import {
@@ -100,22 +102,24 @@ const useCreateEntry = () => {
       const control_prompt =
         'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
         input;
-      const requestData: CreateChatCompletionRequest = {
+
+      const configuration = new Configuration({
+        apiKey: openaiApiKey,
+      })
+      const openai = new OpenAIApi(configuration);
+
+      const completion = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: control_prompt }],
         temperature: 0.7,
-      };
-      const openAIResponse: AxiosResponse<CreateChatCompletionResponse> =
-        await axios({
-          method: "POST",
-          url: "https://api.openai.com/v1/chat/completions",
-          data: requestData,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${openaiApiKey}`,
-          },
-        });
-      const generatedText = openAIResponse?.data?.choices[0]?.message?.content;
+        // max_tokens: 150,
+        // topP: 1,
+        // frequencyPenalty: 0,
+        // presencePenalty: 0,
+        // stop: ["\n"],
+      });
+
+      const generatedText = completion?.data?.choices[0]?.message?.content;
 
       // guard if generated text is null
       if (!generatedText || generatedText === "") {
@@ -126,7 +130,7 @@ const useCreateEntry = () => {
         throw new Error("Entry style reference is null");
       }
 
-      console.log("🎉 We did it!");
+      console.log("###--------------------GENERATED TEXT--------------------###");
       console.log(generatedText);
 
       const sceneText = stripText(generatedText);
@@ -144,9 +148,9 @@ const useCreateEntry = () => {
 
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       // iterate through splitedSceneText array
-      for (let i = 0; i < splittedSceneText.length; i++) {
-        createImageFromText(splittedSceneText[i]);
-      }
+      // for (let i = 0; i < splittedSceneText.length; i++) {
+      //   createImageFromText(splittedSceneText[i]);
+      // }
 
       return sceneText;
     } catch (error: any) {

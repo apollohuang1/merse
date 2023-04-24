@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     if (id) {
       const oneEntry = await MDBEntry.findOne({
         _id: id,
-      })
+      }).limit(3)
       return NextResponse.json(oneEntry, { status: 200 });
     } 
 

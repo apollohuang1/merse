@@ -6,7 +6,6 @@ import { Provider } from "react-redux";
 import { store } from "@/redux-store/store";
 
 // Login Provider
-import { SessionProvider } from "next-auth/react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import HomeLayout from "@/components/home-layout";
 
@@ -60,11 +59,9 @@ export default function RootLayout({
         {/* <body className="bg-dark-background-primary"> */}
         <Provider store={store}>
           <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
-            <SessionProvider>
-              {/* <Elements stripe={stripePromise} options={stripeOptions}> */}
-              <HomeLayout>{children}</HomeLayout>
-              {/* </Elements> */}
-            </SessionProvider>
+            {/* <Elements stripe={stripePromise} options={stripeOptions}> */}
+            <HomeLayout>{children}</HomeLayout>
+            {/* </Elements> */}
           </GoogleOAuthProvider>
         </Provider>
       </body>

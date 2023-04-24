@@ -74,16 +74,16 @@ module.exports = {
           },
           background: {
             // primary: '#000000', // black
-            primary: "#0E100E", // green satoshi fontshare
+            // primary: "#0E100E", // green satoshi fontshare
+            primary: "#0D0D0D", // 13 13 13 rgb
             // primary: "#0E1010", // blue satoshi fontshare
-            secondary: "#161816", // green satoshi secondary
+            // secondary: "#161816", // green satoshi secondary
+            secondary: "#151515",
             // secondary: "#121212",
             tertiary: "#2C2C2C",
             justalittlebitdarkerthan1c1c1e: "#1D1D1F",
           },
-          elevated: {
-
-          },
+          elevated: {},
           text: {
             primary: '#FFFFFF', // white
             // secondary: '#8D8D92',

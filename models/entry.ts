@@ -6,7 +6,8 @@ export interface Entry {
   user_id: string;
   title: string;
   style_reference: StyleReference | null;
-  content: object | null;
+  // content: object | null;
+  content: string | null;
   characters: Character[];
   // storyboard: object | null;
   scenes: Scene[];
