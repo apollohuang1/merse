@@ -45,7 +45,7 @@ const ProfilePage = (props: Props) => {
       const userId = id.split("/")[1];
       const response = await axios.get(`/api/users/${userId}`);
       setUser(response.data);
-      fetchAllEntries(response.data._id);
+      await fetchAllEntries(response.data._id);
     } catch (error: any) {
       console.log("Failed to fetch user, message: ", error.message);
     }

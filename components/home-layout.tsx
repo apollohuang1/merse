@@ -35,6 +35,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const toggleSidebar = () => {
     setShowFullSidebar(!showFullSidebar);
+    localStorage.setItem("showFullSidebar", JSON.stringify(!showFullSidebar));
   };
 
   const pathName = usePathname();
@@ -44,12 +45,19 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { reloadCurrentLocalUser } = useAuth();
 
   useEffect(() => {
+    const showFullSidebar = localStorage.getItem("showFullSidebar");
+    if (showFullSidebar) {
+      setShowFullSidebar(JSON.parse(showFullSidebar));
+    }
+  }, []);
+
+  useEffect(() => {
     reloadCurrentLocalUser()
       .then((user) => {
         console.log("User reloaded");
         console.log(user);
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         console.log("No authenticated user found, message: " + error.message);
 
         // redirect to login page
@@ -59,7 +67,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         }
       });
   }, []);
-
 
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center h-screen w-screen">
@@ -97,7 +104,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 onClick={() => {
                   toggleSidebar();
                 }}
-                className="flex w-10 h-10 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary items-center justify-center rounded-xl"
+                className="flex w-10 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center justify-center rounded-xl"
               >
                 {showFullSidebar ? (
                   <FiChevronsLeft className="text-light-text-secondary dark:text-dark-text-secondary w-5 h-5" />
@@ -108,11 +115,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
 
             {/* side menus */}
-
-            <div className="flex flex-col w-full p-3 gap-2 items-center">
+            <div className="flex flex-col w-full gap-2 items-center p-3">
               {/* home */}
               <SidebarMenuButton
-                icon={<FiHome />}
+                icon={<FiHome className="h-5 w-5" />}
                 label="Home"
                 href="/"
                 isFull={showFullSidebar}
@@ -120,16 +126,16 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
               {/* dashboard */}
               {/* <SidebarMenuButton
-                icon={<FiCalendar />}
-                label="Dashboard"
-                href="/dashboard"
-                isFull={showFullSidebar}
-                isNew={true}
-              /> */}
+                  icon={<FiCalendar />}
+                  label="Dashboard"
+                  href="/dashboard"
+                  isFull={showFullSidebar}
+                  isNew={true}
+                /> */}
 
               {/* subscription */}
               <SidebarMenuButton
-                icon={<FiFeather />}
+                icon={<FiFeather className="h-5 w-5" />}
                 label="Following"
                 href="/following"
                 isFull={showFullSidebar}
@@ -137,7 +143,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
               {/* subscription */}
               <SidebarMenuButton
-                icon={<FiZap />}
+                icon={<FiZap className="h-5 w-5" />}
                 label="Subscription"
                 href="/subscription"
                 isFull={showFullSidebar}
@@ -146,16 +152,22 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
               {/* read */}
               <SidebarMenuButton
-                icon={<FiBookOpen />}
+                icon={<FiBookOpen className="h-5 w-5" />}
                 label="Read Sample"
                 href="/6436f3032b67ae01b9c884bb"
                 isFull={showFullSidebar}
                 isNew={true}
               />
 
+              {/* create */}
+              <SidebarMenuButton
+                icon={<FiPlus className="h-5 w-5" />}
+                label="Create"
+                href="/create/styles"
+                isFull={showFullSidebar}
+                // isNew={true}
+              />
             </div>
-
-            {/* create */}
           </div>
         )}
         <div className="flex flex-col h-full w-full overflow-auto">
@@ -236,18 +248,15 @@ const SidebarMenuButton: React.FC<{
   isFull: boolean;
   variant?: "normal" | "solid";
   isNew?: boolean;
-}> = ({ icon, label, href, isFull, variant = "normal", isNew=false }) => {
+}> = ({ icon, label, href, isFull, variant = "normal", isNew = false }) => {
   return (
-    <Link
-      href={href}
-      className="flex w-full h-full items-center justify-center"
-    >
+    <Link href={href} className="flex w-full items-center justify-center">
       <button
         className={clsx(
           "flex flex-row items-center gap-3 w-full transition-all rounded-xl",
-          // { "bg-accent hover:bg-emerald-600": variant === "solid" },
+          { "bg-accent hover:bg-emerald-600": variant === "solid" },
           {
-            "hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary":
+            "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary":
               variant === "normal",
           },
           { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
@@ -259,7 +268,11 @@ const SidebarMenuButton: React.FC<{
           {isFull && <span className="flex flex-shrink-0">{label}</span>}
         </div>
 
-        {isNew && isFull && <span className="text-accent text-sm font-medium px-2 py-[2px] bg-emerald-500 bg-opacity-[0.15] dark:bg-opacity-30 rounded-lg">New</span>}
+        {isNew && isFull && (
+          <span className="text-accent text-sm font-medium px-2 py-[2px] bg-emerald-500 bg-opacity-[0.15] dark:bg-opacity-30 rounded-lg">
+            New
+          </span>
+        )}
       </button>
     </Link>
   );
