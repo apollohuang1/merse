@@ -116,12 +116,40 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
             {/* side menus */}
             <div className="flex flex-col w-full gap-2 items-center p-3">
+              {/* create */}
+              <Link
+                href={"/create"}
+                className="flex w-full items-center justify-center cursor-pointer pb-3"
+              >
+                <button
+                  className={clsx(
+                    "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
+                    {
+                      "flex-col justify-center h-12 w-12 aspect-square":
+                        !showFullSidebar,
+                    },
+                    {
+                      "flex-row justify-between pl-6 pr-3 h-12":
+                        showFullSidebar,
+                    }
+                  )}
+                >
+                  <div className="flex flex-row items-center gap-3">
+                    <FiPlus className="h-5 w-5" />
+                    {showFullSidebar && (
+                      <span className="flex flex-shrink-0">Create</span>
+                    )}
+                  </div>
+                </button>
+              </Link>
+
               {/* home */}
               <SidebarMenuButton
                 icon={<FiHome className="h-5 w-5" />}
                 label="Home"
                 href="/"
                 isFull={showFullSidebar}
+                isCurrentRoute={pathName === "/"}
               />
 
               {/* dashboard */}
@@ -139,6 +167,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 label="Following"
                 href="/following"
                 isFull={showFullSidebar}
+                isCurrentRoute={pathName === "/following"}
               />
 
               {/* subscription */}
@@ -148,6 +177,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 href="/subscription"
                 isFull={showFullSidebar}
                 isNew={true}
+                isCurrentRoute={pathName === "/subscription"}
               />
 
               {/* read */}
@@ -157,16 +187,17 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 href="/6436f3032b67ae01b9c884bb"
                 isFull={showFullSidebar}
                 isNew={true}
+                isCurrentRoute={pathName === "/6436f3032b67ae01b9c884bb"}
               />
 
               {/* create */}
-              <SidebarMenuButton
+              {/* <SidebarMenuButton
                 icon={<FiPlus className="h-5 w-5" />}
                 label="Create"
                 href="/create/styles"
                 isFull={showFullSidebar}
                 // isNew={true}
-              />
+              /> */}
             </div>
           </div>
         )}
@@ -248,22 +279,40 @@ const SidebarMenuButton: React.FC<{
   isFull: boolean;
   variant?: "normal" | "solid";
   isNew?: boolean;
-}> = ({ icon, label, href, isFull, variant = "normal", isNew = false }) => {
+  isCurrentRoute?: boolean;
+}> = ({
+  icon,
+  label,
+  href,
+  isFull,
+  variant = "normal",
+  isNew = false,
+  isCurrentRoute,
+}) => {
   return (
-    <Link href={href} className="flex w-full items-center justify-center cursor-pointer">
+    <Link
+      href={href}
+      className="group flex w-full items-center justify-center cursor-pointer"
+    >
       <button
         className={clsx(
           "flex flex-row items-center gap-3 w-full transition-all rounded-xl",
           { "bg-accent hover:bg-emerald-600": variant === "solid" },
-          {
-            "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary":
-              variant === "normal",
-          },
+          // {
+          // "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary":
+          // variant === "normal",
+          // },
           { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
           { "flex-row justify-between pl-6 pr-3 h-12": isFull }
         )}
       >
-        <div className="flex flex-row items-center gap-3">
+        <div
+          className={clsx(
+            "flex flex-row items-center gap-3 font-medium text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100",
+            { "text-opacity-100 dark:text-opacity-100": isCurrentRoute },
+            { "text-opacity-50 dark:text-opacity-50": !isCurrentRoute },
+          )}
+        >
           {icon}
           {isFull && <span className="flex flex-shrink-0">{label}</span>}
         </div>
