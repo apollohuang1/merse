@@ -53,6 +53,7 @@ const LayoutPage = (props: Props) => {
 
   const [showAddingImageModal, setShowAddingImageModal] = React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
+  const [expandedStoryboardIndex, setExpandedStoryboardIndex] = React.useState<number | null>(null);
 
   const editor = useEditor({
     extensions: [
@@ -96,12 +97,20 @@ const LayoutPage = (props: Props) => {
     createdEditor?.editor.commands.setContent(entry?.content);
   });
 
+  const createFadeTopStyle = (): React.CSSProperties => {
+    return {
+      backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))`,
+      backgroundSize: "100% 25%",
+      backgroundRepeat: "no-repeat"
+    };
+  };  
+
   return (
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
         <CreateHeader currentRoute={createRoutes[3]} />
-
+  
         {/* main content (left and right panels columns) */}
         <div
           className={clsx(
@@ -118,30 +127,37 @@ const LayoutPage = (props: Props) => {
               { "w-[400px]": entryHelper.showGeneratedStoryboard }
             )}
           >
-            <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">
+            <div className="flex flex-col w-full gap-4">
               {
                 entry?.scenes.map((scene: Scene, index: number) => (
                   <div
                   key={index}
-                  className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
-                >
+                  className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px] mb-4 fade-top">
+                  
+  
                   {/* overlay  */}
-                  <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
+                  <div
+                    className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer"
+                    onClick={() => setExpandedStoryboardIndex(expandedStoryboardIndex === index ? null : index)}
+                  >
                     <FiEdit2 className="w-9 h-9 text-white" />
                   </div>
-
+  
                   <img
                     src={"data:image/png;base64," + scene.image_base64 }
                     alt="comic book cover"
-                    className="object-cover aspect-[4/3]"
+                    className="object-cover aspect-[4/3] relative fade-top"
+                    style={createFadeTopStyle()}
                   />
-
+  
                   {/* story line in storyboard */}
-                  <div className="flex p-4">
-                    <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                      {scene.text}
-                    </p>
-                  </div>
+                  {expandedStoryboardIndex === index && (
+                    <div className="flex p-4">
+                      <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
+                        {scene.text}
+                      </p>
+                    </div>
+                  )}
                 </div>
                 ))
               }
@@ -149,6 +165,19 @@ const LayoutPage = (props: Props) => {
           </div>
         </div>
       </div>
+  
+      <style jsx>{`
+        .fade-top::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 25%;
+          background-image: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+          z-index: 1;
+        }`
+        }</style>
 
       <Modal
         isOpen={showAddingImageModal}
