@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.319.0",
     "@chakra-ui/react": "^2.5.5",
     "@chakra-ui/theme": "^3.0.1",
     "@emotion/react": "^11.10.6",

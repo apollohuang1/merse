@@ -13,8 +13,15 @@ import {
   setIsGeneratingStoryboard,
   setShowGeneratedStoryboard,
 } from "@/redux-store/store";
+
 import { Scene } from "@/models/entry";
 import mongoose from "mongoose";
+import {
+  PutObjectCommand,
+  PutObjectCommandInput,
+  PutObjectCommandOutput,
+  S3Client,
+} from "@aws-sdk/client-s3";
 
 // Hook for creating new entries
 const useCreateEntry = () => {
@@ -105,7 +112,7 @@ const useCreateEntry = () => {
 
       const configuration = new Configuration({
         apiKey: openaiApiKey,
-      })
+      });
       const openai = new OpenAIApi(configuration);
 
       const completion = await openai.createChatCompletion({
@@ -130,7 +137,9 @@ const useCreateEntry = () => {
         throw new Error("Entry style reference is null");
       }
 
-      console.log("###--------------------GENERATED TEXT--------------------###");
+      console.log(
+        "###--------------------GENERATED TEXT--------------------###"
+      );
       console.log(generatedText);
 
       const sceneText = stripText(generatedText);
@@ -144,13 +153,13 @@ const useCreateEntry = () => {
         .map((line) => line.substring("Scene: ".length).trim());
 
       // comment this out to generate only 1 image
-      //createImageFromText(splittedSceneText[0]);
+      createImageFromText(splittedSceneText[1]);
 
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       //iterate through splitedSceneText array
-      for (let i = 0; i < splittedSceneText.length; i++) {
-        createImageFromText(splittedSceneText[i]);
-      }
+      // for (let i = 0; i < splittedSceneText.length; i++) {
+      //   createImageFromText(splittedSceneText[i]);
+      // }
 
       return sceneText;
     } catch (error: any) {
@@ -187,8 +196,10 @@ const useCreateEntry = () => {
       // final input prompt
       // const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
       // const genericPrompt = "Create a dynamic and visually striking scene that tells a compelling story. Use the principles of dynamic symmetry and the Golden Ratio to guide the composition. Focus on the main subjects, with secondary elements supporting the central narrative. Utilize the Rule of Thirds to balance the composition and reinforce focal points. Integrate the power of triangles and groups of three to add stability and interest. Use color strategically to create contrast and guide the viewer's eye. Consider the angle and point of view to create drama and enhance the story. Ensure that the silhouette of the main subjects is clear and distinct, and experiment with varying degrees of symmetry or asymmetry to create visual tension. Think ahead to the final product and the overall impact of the image on the viewer.";
-      const genericPrompt = "Create a dynamic and visually striking scene that tells a compelling story. Use the principles of dynamic symmetry and the Golden Ratio to guide the composition. Focus on the main subjects, with secondary elements supporting the central narrative. Utilize the Rule of Thirds to balance the composition and reinforce focal points. Integrate the power of triangles and groups of three to add stability and interest. Use color strategically to create contrast and guide the viewer's eye. Consider the angle and point of view to create drama and enhance the story. Ensure that the silhouette of the main subjects is clear and distinct, and experiment with varying degrees of symmetry or asymmetry to create visual tension. Think ahead to the final product and the overall impact of the image on the viewer."
-      const improveHumanPrompt = "Ensure that the human figures in the scene are accurately and realistically depicted, taking into consideration proportions, anatomy, and natural poses. Pay special attention to facial expressions and body language to convey emotions and interactions between the characters effectively."
+      const genericPrompt =
+        "Create a dynamic and visually striking scene that tells a compelling story. Use the principles of dynamic symmetry and the Golden Ratio to guide the composition. Focus on the main subjects, with secondary elements supporting the central narrative. Utilize the Rule of Thirds to balance the composition and reinforce focal points. Integrate the power of triangles and groups of three to add stability and interest. Use color strategically to create contrast and guide the viewer's eye. Consider the angle and point of view to create drama and enhance the story. Ensure that the silhouette of the main subjects is clear and distinct, and experiment with varying degrees of symmetry or asymmetry to create visual tension. Think ahead to the final product and the overall impact of the image on the viewer.";
+      const improveHumanPrompt =
+        "Ensure that the human figures in the scene are accurately and realistically depicted, taking into consideration proportions, anatomy, and natural poses. Pay special attention to facial expressions and body language to convey emotions and interactions between the characters effectively.";
       // const formattedPromptWithStyle = `${input} by ${entry?.style_reference?.artist}. ${genericPrompt}`;
       // const formattedPromptWithStyle = `${input} by Hayao Miyazaki. ${genericPrompt}. `;
       const formattedPromptWithStyle = `${input}. ${genericPrompt}. ${improveHumanPrompt}`;
@@ -265,6 +276,44 @@ const useCreateEntry = () => {
     }
   };
 
+  const handleFileUpload = async (file: File) => {
+    try {
+
+      // error guards
+      if (!file) throw new Error("Missing file.");
+      
+      if ( !process.env.AMAZON_S3_ACCESS_KEY_ID || !process.env.AMAZON_S3_SECRET_ACCESS_KEY) {
+        throw new Error("Missing Amazon S3 credentials.");
+      }
+
+      if (!process.env.AMAZON_S3_BUCKET_NAME) {
+        throw new Error("Missing Amazon S3 bucket name.");
+      }
+
+      const s3 = new S3Client({
+        region: "us-east-1",
+        credentials: {
+          accessKeyId: process.env.AMAZON_S3_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
+        },
+      });
+
+      const params: PutObjectCommandInput = {
+        Bucket: process.env.AMAZON_S3_BUCKET_NAME,
+        Key: `images/${file.name}`,
+        Body: file,
+        ContentType: file.type,
+        ACL: "public-read",
+      };
+
+      const command = new PutObjectCommand(params);
+      const response = await s3.send(command);
+      // console.log(response.Location);
+    } catch (error: any) {
+      console.error("Failed to upload file, message: ", error.message);
+    }
+  };
+
   const getImageURLFromBase64 = (base64: string) => {
     // const buff = Buffer.from(base64, "base64");
     // const dataURL = `data:image/png;base64,${buff.toString("base64")}`;
@@ -323,88 +372,3 @@ const useCreateEntry = () => {
 };
 
 export default useCreateEntry;
-
-// ❤️ Hiii Emily! Would you kindly add the code to handle the response from the API here please?
-// It'd be so lovely! Thank you so much! :)))) <3
-
-// Sample of Stable Diffusion API Response (response.data) after POST request to /api/text2image:
-// you can see there's ETA for posting request to fetch_result too  :))))
-// the post request should use that fetch_result as a POST request url and {key: [api_key] } object as data payload
-
-// {
-//   "status": "processing",
-//   "tip": "for faster speed, keep resolution upto 512x512",
-//   "eta": 35.941116006399994,
-//   "messege": "Try to fetch request after given estimated time",
-//   "fetch_result": "https://stablediffusionapi.com/api/v3/fetch/10684517",
-//   "id": 10684517,
-//   "output": [],
-//   "meta": {
-//       "H": 512,
-//       "W": 512,
-//       "enable_attention_slicing": "true",
-//       "file_prefix": "7da15755-b94b-4347-a195-ac8725a7ee97",
-//       "guidance_scale": 7,
-//       "model": "runwayml/stable-diffusion-v1-5",
-//       "n_samples": 1,
-//       "negative_prompt": "((out of frame)), ((extra fingers)), mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), (((tiling))), ((naked)), ((tile)), ((fleshpile)), ((ugly)), (((abstract))), blurry, ((bad anatomy)), ((bad proportions)), ((extra limbs)), cloned face, glitchy, ((extra breasts)), ((double torso)), ((extra arms)), ((extra hands)), ((mangled fingers)), ((missing breasts)), (missing lips), ((ugly face)), ((fat)), ((extra legs))",
-//       "outdir": "out",
-//       "prompt": "A dark alleyway at night with trash cans overflowing and rats scurrying about. In the foreground, we see the silhouette of a figure approaching. in Hergé artstyle",
-//       "revision": "fp16",
-//       "safetychecker": "no",
-//       "seed": 3525930829,
-//       "steps": 20,
-//       "vae": "stabilityai/sd-vae-ft-mse"
-//   }
-// }
-
-// Stable Diffision XL API Response example
-
-//   {
-//     "data": {
-//         "artifacts": [
-//             {
-//                 "base64": {super base64 string is returnded here},
-//                 "seed": 288735596,
-//                 "finishReason": "SUCCESS"
-//             }
-//         ]
-//     },
-//     "status": 200,
-//     "statusText": "",
-//     "headers": {
-//         "content-type": "application/json"
-//     },
-//     "config": {
-//         "transitional": {
-//             "silentJSONParsing": true,
-//             "forcedJSONParsing": true,
-//             "clarifyTimeoutError": false
-//         },
-//         "adapter": [
-//             "xhr",
-//             "http"
-//         ],
-//         "transformRequest": [
-//             null
-//         ],
-//         "transformResponse": [
-//             null
-//         ],
-//         "timeout": 0,
-//         "xsrfCookieName": "XSRF-TOKEN",
-//         "xsrfHeaderName": "X-XSRF-TOKEN",
-//         "maxContentLength": -1,
-//         "maxBodyLength": -1,
-//         "env": {},
-//         "headers": {
-//             "Accept": "application/json",
-//             "Content-Type": "application/json",
-//             "Authorization": "Bearer {STABILITY_API_KEY}"
-//         },
-//         "method": "post",
-//         "url": "https://api.stability.ai/v1/generation/stable-diffusion-v1-5/text-to-image",
-//         "data": "{\"text_prompts\":[{\"text\":\"A lighthouse on a cliff\"}],\"cfg_scale\":7,\"clip_guidance_preset\":\"FAST_BLUE\",\"height\":512,\"width\":512,\"samples\":1,\"steps\":30}"
-//     },
-//     "request": {}
-// }

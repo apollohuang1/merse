@@ -308,7 +308,7 @@ const SidebarMenuButton: React.FC<{
       >
         <div
           className={clsx(
-            "flex flex-row items-center gap-3 font-medium text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100",
+            "flex flex-row items-center gap-3 font-medium text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100 transition-all duration-300",
             { "text-opacity-100 dark:text-opacity-100": isCurrentRoute },
             { "text-opacity-50 dark:text-opacity-50": !isCurrentRoute },
           )}
