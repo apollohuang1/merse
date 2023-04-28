@@ -9,7 +9,6 @@ export async function GET(request: Request) {
   try {
     const db = await dbConnect();
 
-    // console.log("hey");
     const searchParams = new URLSearchParams(request.url.split("?")[1]);
     const searchingEmail = searchParams.get("email");
 

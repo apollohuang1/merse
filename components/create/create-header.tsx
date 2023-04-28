@@ -42,7 +42,7 @@ const CreateHeader: React.FC<{
             >
               <span>{currentRoute?.nextConfig?.title ?? "Finish"}</span>
               {currentRoute?.nextConfig && (
-                <FiArrowRight className="text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[-2px] transition-all hover:duration-300" />
+                <FiArrowRight className="text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[2px] transition-all hover:duration-300" />
               )}
             </Link>
           ) : (

@@ -32,6 +32,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
 
   const [showFullSidebar, setShowFullSidebar] = React.useState(true);
+  const [searchText, setSearchText] = React.useState<string>("");
 
   const toggleSidebar = () => {
     setShowFullSidebar(!showFullSidebar);
@@ -53,10 +54,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     reloadCurrentLocalUser()
-      .then((user) => {
-        console.log("User reloaded");
-        console.log(user);
-      })
+      .then((user) => {})
       .catch((error: any) => {
         console.log("No authenticated user found, message: " + error.message);
 
@@ -104,7 +102,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 onClick={() => {
                   toggleSidebar();
                 }}
-                className="flex w-10 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center justify-center rounded-xl"
+                className="flex w-9 h-9 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary items-center justify-center rounded-xl"
               >
                 {showFullSidebar ? (
                   <FiChevronsLeft className="text-light-text-secondary dark:text-dark-text-secondary w-5 h-5" />
@@ -118,12 +116,12 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <div className="flex flex-col w-full gap-2 items-center p-3">
               {/* create */}
               <Link
-                href={"/create"}
+                href={"/create/styles"}
                 className="flex w-full items-center justify-center cursor-pointer pb-3"
               >
                 <button
                   className={clsx(
-                    "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
+                    "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary hover:scale-[1.025] active:scale-100",
                     {
                       "flex-col justify-center h-12 w-12 aspect-square":
                         !showFullSidebar,
@@ -137,7 +135,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <div className="flex flex-row items-center gap-3">
                     <FiPlus className="h-5 w-5" />
                     {showFullSidebar && (
-                      <span className="flex flex-shrink-0">Create</span>
+                      <span className="flex flex-shrink-0 font-medium">
+                        Create
+                      </span>
                     )}
                   </div>
                 </button>
@@ -205,14 +205,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           {/* top navigation bar */}
           {auth?.currentUser && !isCreateRoute && (
             <>
-              <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary dark:bg-opacity-80 backdrop-blur-xl z-50">
+              <div className="flex flex-row w-full px-6 py-[10px] items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary dark:bg-opacity-80 backdrop-blur-xl z-50">
                 {/* arrow left and right */}
                 <div className="flex flex-row gap-3 items-center">
                   <button
                     onClick={() => {
                       router.back();
                     }}
-                    className="flex h-8 w-8 items-center justify-center rounded-full hover:rounded-lg bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
                   >
                     <FiChevronLeft className="w-5 h-5" />
                   </button>
@@ -221,7 +221,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     onClick={() => {
                       router.forward();
                     }}
-                    className="flex h-8 w-8 items-center justify-center rounded-full hover:rounded-lg bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
                   >
                     <FiChevronRight className="w-5 h-5" />
                   </button>
@@ -229,12 +229,22 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                 <div className="flex flex-row gap-3 items-center justify-center">
                   {/* search bar */}
-                  <div className="group flex flex-row gap-3 px-4 items-center w-80 h-8 border border-light-divider dark:border-dark-divider rounded-full bg-light-background-secondary dark:bg-dark-background-secondary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden">
-                    <FiSearch className="text-light-text-secondary dark:text-dark-text-secondary group-focus-within:text-accent" />
+                  <div
+                    className={clsx(
+                      "group flex flex-row gap-3 px-4 items-center focus-within:w-96 duration-300 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
+                      { "w-96" : searchText.length > 0},
+                      { "w-80" : searchText.length === 0}
+                    )}
+                  >
+                    <FiSearch className=" w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-focus-within:text-accent" />
                     <input
                       type="text"
+                      value={searchText}
                       placeholder="Enter the work, artist, or genre"
-                      className="w-full bg-transparent outline-none placeholder:text-light-text-tertiary placeholder:dark:text-dark-text-tertiary"
+                      className="w-full bg-transparent outline-none placeholder:text-light-text-primary placeholder:dark:text-dark-text-primary placeholder:text-opacity-40 dark:placeholder:text-opacity-40"
+                      onChange={(e) => {
+                        setSearchText(e.target.value);
+                      }}
                     />
                   </div>
 
@@ -242,7 +252,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     onClick={() => {
                       toggleColorScheme();
                     }}
-                    className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-8 h-8 items-center justify-center rounded-full hover:rounded-md hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                    className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-9 h-9 items-center justify-center rounded-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
                   >
                     <FiSun className="w-5 h-5" />
                   </button>
@@ -308,9 +318,13 @@ const SidebarMenuButton: React.FC<{
       >
         <div
           className={clsx(
-            "flex flex-row items-center gap-3 font-medium text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100 transition-all duration-300",
+            "flex flex-row items-center gap-3 font-medium text-base text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100 transition-all duration-200",
             { "text-opacity-100 dark:text-opacity-100": isCurrentRoute },
-            { "text-opacity-50 dark:text-opacity-50": !isCurrentRoute },
+            // { "text-opacity-50 dark:text-opacity-50": !isCurrentRoute },
+            {
+              "text-light-text-secondary dark:text-dark-text-secondary group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary":
+                !isCurrentRoute,
+            }
           )}
         >
           {icon}
