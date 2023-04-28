@@ -27,8 +27,13 @@ import MerseLogo from "./svgs/merse-logo";
 import Divider from "./divider";
 import { Combobox } from "@headlessui/react";
 import { sampleArtists } from "@/util/home-constant";
+import { HiXCircle } from "react-icons/hi";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+
+  // input ref
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+
   // redux
   const auth = useAppSelector((state) => state.auth);
 
@@ -52,13 +57,17 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   ];
 
   const [selectedPerson, setSelectedPerson] = useState(people[0]);
+  const [selectedSearchResult, setSelectedSearchResult] = useState<any>(null);
   const [query, setQuery] = useState("");
 
   const filteredSearchResults =
     searchText === ""
       ? sampleArtists
       : sampleArtists.filter((artist) => {
-          return artist.name.trim().toLowerCase().includes(searchText.toLowerCase().trim());
+          return artist.name
+            .trim()
+            .toLowerCase()
+            .includes(searchText.toLowerCase().trim());
         });
 
   const pathName = usePathname();
@@ -176,6 +185,15 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 isCurrentRoute={pathName === "/"}
               />
 
+              {/* search */}
+              <SidebarMenuButton
+                icon={<FiSearch className="h-5 w-5" />}
+                label="Search"
+                href="/search"
+                isFull={showFullSidebar}
+                isCurrentRoute={pathName === "/search"}
+              />
+
               {/* dashboard */}
               {/* <SidebarMenuButton
                   icon={<FiCalendar />}
@@ -255,68 +273,90 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                 <div className="flex flex-row gap-3 items-center justify-center">
                   {/* search bar */}
-
-                  <Combobox>
-                    <div
-                      className={clsx(
-                        "relative group flex flex-row gap-3 px-4 items-center focus-within:w-96 duration-300 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
-                        { "w-96": searchText.length > 0 },
-                        { "w-80": searchText.length === 0 }
-                      )}
+                  { pathName !== "/search" && 
+                    <Combobox 
+                      value={selectedSearchResult}
+                      onChange={(result: any) => {
+                        if (result._id) {
+                          router.push(`/${result._id}`)
+                        }
+                        searchInputRef.current?.blur() // unfocus the text input
+                        setSearchText("") // clear the search text
+                      }}
                     >
-                      <FiSearch className=" w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-focus-within:text-accent" />
-                      <input
-                        type="text"
-                        value={searchText}
-                        placeholder="Enter the work, artist, or genre"
-                        className="w-full bg-transparent outline-none placeholder:text-light-text-primary placeholder:dark:text-dark-text-primary placeholder:text-opacity-40 dark:placeholder:text-opacity-40"
-                        onChange={(e) => {
-                          setSearchText(e.target.value);
-                        }}
-                      />
+                      <div
+                        className={clsx(
+                          "relative group flex flex-row gap-3 px-4 items-center justify-between duration-300 focus-within:w-96 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
+                          { "w-96": searchText.length > 0 },
+                          { "w-80": searchText.length === 0 }
+                        )}
+                      >
+                        <FiSearch className=" w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0" width={10}/>
+                        <Combobox.Input
+                          ref={searchInputRef}
+                          as="input"
+                          type="text"
+                          value={searchText}
+                          // displayValue={(result: any) => result?.name}
+                          placeholder="Enter the work, artist, or genre"
+                          className="w-full bg-transparent outline-none placeholder:text-light-text-primary placeholder:dark:text-dark-text-primary placeholder:text-opacity-40 dark:placeholder:text-opacity-40"
+                          autoComplete="off"
+                          onChange={(event) => {
+                            setSearchText(event.target.value);
+                          }}
+                        />
 
-                      {searchText.length > 0 && (
-                        <Combobox.Options
-                          static
-                          className={
-                            "flex flex-col absolute top-[calc(100%+8px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-xl overflow-clip border border-light-divider dark:border-dark-divider"
-                          }
-                        >
-                          {filteredSearchResults.map((person, index) => (
-                            <Combobox.Option
-                              as="button"
-                              key={index}
-                              value={person}
-                              onClick={() => {
-                                if (person._id) {
-                                  router.push(`/${person._id}`);
-                                  setSearchText("");
-                                }
-                              }}
-                              className={({ active }) =>
-                                clsx(
-                                  "flex select-none items-center rounded-md px-4 py-2 h-20 w-96 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all",
-                                  {
-                                    "bg-light-background-secondary dark:bg-dark-background-secondary bg-opacity-5":
-                                      active,
+                        { searchText.length > 0 && 
+                          <button
+                            onClick={() => {
+                              setSearchText("");
+                            }}
+                          >
+                            <HiXCircle className="w-5 h-5 text-accent" />
+                          </button>
+                        }
+
+                        
+                        {/* floating element */}
+                          <Combobox.Options
+                            // static
+                            className={
+                              "flex flex-col absolute top-[calc(100%+5px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-xl overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-2xl"
+                            }
+                          >
+                            {filteredSearchResults.map((result: any, index) => (
+                              <Combobox.Option
+                                // as="button"
+                                key={index}
+                                value={result}
+                                onClick={() => {
+                                  if (result._id) {
+                                    router.push(`/${result._id}`);
+                                    setSearchText("");
                                   }
-                                )
-                              }
-                            >
-                              <div className="flex flex-row gap-3 items-center">
-                                <img
-                                  src={person.profile_image_url}
-                                  className="h-10 w-10 rounded-full"
-                                  alt="user profile image"
-                                />
-                                <span>{person.name}</span>
-                              </div>
-                            </Combobox.Option>
-                          ))}
-                        </Combobox.Options>
-                      )}
-                    </div>
-                  </Combobox>
+                                }}
+                                className={({ active, selected }) =>
+                                  clsx(
+                                    "flex select-none cursor-pointer items-center rounded-md px-4 h-[72px] w-96 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all",
+                                    { "bg-light-background-secondary dark:bg-dark-background-secondary": active },
+                                    // { "border-b border-b-light-divider dark:border-dark-divider" : index !== filteredSearchResults.length - 1}
+                                  )
+                                }
+                              >
+                                <div className="flex flex-row gap-3 items-center">
+                                  <img
+                                    src={result.profile_image_url}
+                                    className="h-10 w-10 rounded-full"
+                                    alt="user profile image"
+                                  />
+                                  <span>{result.name}</span>
+                                </div>
+                              </Combobox.Option>
+                            ))}
+                          </Combobox.Options>
+                      </div>
+                    </Combobox>
+                  }
 
                   <button
                     onClick={() => {
