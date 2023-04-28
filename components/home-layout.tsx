@@ -33,7 +33,6 @@ import axios from "axios";
 import { IUser } from "@/server/models/MDBUser";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-
   // input ref
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -76,17 +75,18 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     setSearchText(queryText);
     debouncedHandleInputChange(queryText);
     // console.log("search result response :)))");
-  }
+  };
 
-  const debouncedHandleInputChange = debounce( async (query: string) => {
-    axios.get(`/api/search?query=${query}`)
+  const debouncedHandleInputChange = debounce(async (query: string) => {
+    axios
+      .get(`/api/search?query=${query}`)
       .then((response) => {
         // console.log("search result response :)))", response);
         setSearchResults(response.data);
       })
       .catch((error) => {
         console.log("search result error :)))", error);
-      })
+      });
   }, 250);
 
   useEffect(() => {
@@ -286,17 +286,16 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                 <div className="flex flex-row gap-3 items-center justify-center">
                   {/* search bar */}
-                  { pathName !== "/search" && 
-                    <Combobox 
+                  {pathName !== "/search" && (
+                    <Combobox
                       value={selectedSearchResult}
                       onChange={(result: IUser) => {
-
                         if (result.username || result._id) {
                           router.push(`/${result.username || result._id}`);
                         }
-                        
-                        searchInputRef.current?.blur() // unfocus the text input
-                        setSearchText("") // clear the search text
+
+                        searchInputRef.current?.blur(); // unfocus the text input
+                        setSearchText(""); // clear the search text
                       }}
                     >
                       <div
@@ -306,7 +305,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           { "w-80": searchText.length === 0 }
                         )}
                       >
-                        <FiSearch className=" w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0" width={10}/>
+                        <FiSearch
+                          className=" w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0"
+                          width={10}
+                        />
                         <Combobox.Input
                           ref={searchInputRef}
                           as="input"
@@ -319,7 +321,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           onChange={(e: any) => handleInputChange(e)}
                         />
 
-                        { searchText.length > 0 && 
+                        {searchText.length > 0 && (
                           <button
                             onClick={() => {
                               setSearchText("");
@@ -327,52 +329,61 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           >
                             <HiXCircle className="w-5 h-5 text-accent" />
                           </button>
-                        }
+                        )}
 
-                        
                         {/* floating element */}
-                          <Combobox.Options
-                            // static
-                            className={
-                              "flex flex-col absolute top-[calc(100%+5px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-xl overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-2xl"
-                            }
-                          >
-                            {searchResults.map((result: any, index) => (
-                              <Combobox.Option
-                                // as="button"
-                                key={index}
-                                value={result}
-                                onClick={() => {
-                                  if (result._id) {
-                                    router.push(`/${result._id}`);
-                                    setSearchText("");
-                                  }
-                                }}
-                                className={({ active, selected }) =>
-                                  clsx(
-                                    "flex select-none cursor-pointer items-center rounded-md px-4 h-[72px] w-96 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all",
-                                    { "bg-light-background-secondary dark:bg-dark-background-secondary": active },
-                                    // { "border-b border-b-light-divider dark:border-dark-divider" : index !== filteredSearchResults.length - 1}
-                                  )
+                        <Combobox.Options
+                          // static
+                          className={
+                            "flex flex-col absolute top-[calc(100%+5px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-xl overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-2xl"
+                          }
+                        >
+                          {searchResults.map((result: any, index) => (
+                            <Combobox.Option
+                              // as="button"
+                              key={index}
+                              value={result}
+                              onClick={() => {
+                                if (result._id) {
+                                  router.push(`/${result._id}`);
+                                  setSearchText("");
                                 }
-                              >
-                                <div className="flex flex-row gap-3 items-center">
-                                  <img
-                                    src={result.profile_image_url}
-                                    className="h-10 w-10 rounded-full"
-                                    alt="user profile image"
-                                    onError={(e) => {
-                                      e.currentTarget.src = "/merse-logo.png";
-                                    }}
-                                  />
-                                  <span>{result.name}</span>
+                              }}
+                              className={({ active, selected }) =>
+                                clsx(
+                                  "flex select-none cursor-pointer items-center rounded-md px-4 h-[72px] w-96 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all",
+                                  {
+                                    "bg-light-background-secondary dark:bg-dark-background-secondary":
+                                      active,
+                                  }
+                                  // { "border-b border-b-light-divider dark:border-dark-divider" : index !== filteredSearchResults.length - 1}
+                                )
+                              }
+                            >
+                              <div className="flex flex-row gap-3 items-center">
+                                <img
+                                  src={result.profile_image_url}
+                                  className="h-10 w-10 rounded-full"
+                                  alt="user profile image"
+                                  onError={(e) => {
+                                    e.currentTarget.src = "/merse-logo.png";
+                                  }}
+                                />
+                                <div className="flex flex-col items-start">
+                                  <span className="leading-tight font-medium">{result.name}</span>
+                                  {result.username && (
+                                    <span className="text-light-text-secondary dark:text-dark-text-secondary leading-tight">
+                                      @{result.username}
+                                    </span>
+                                  )}
                                 </div>
-                              </Combobox.Option>
-                            ))}
-                          </Combobox.Options>
+                              </div>
+                            </Combobox.Option>
+                          ))}
+                        </Combobox.Options>
                       </div>
                     </Combobox>
-                  }
+                  )}
 
                   <button
                     onClick={() => {

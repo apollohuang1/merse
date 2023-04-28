@@ -60,6 +60,13 @@ export async function PUT(request: NextRequest) {
 
     const filter = { _id: body._id }
 
+    // check username
+    const isUserExisted = await MDBUser.findOne({ username: body.username });
+
+    if (isUserExisted) {
+      return NextResponse.json({ error: "Username already exists" }, { status: 400 });
+    }
+
     const updatedUser = await MDBUser.findOneAndUpdate(filter, body);
     
     return NextResponse.json(updatedUser, { status: 200 });

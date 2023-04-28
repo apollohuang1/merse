@@ -81,6 +81,12 @@ const ProfilePage = (props: Props) => {
       setUser(response.data);
       setShowProfileEditModal(false);
     } catch (error: any) {
+
+      if (error.response.data.error === "Username already exists") {
+        alert("Username already exists");
+        return;
+      }
+
       console.log("Failed to update profile, message: ", error.message);
     }
   };
