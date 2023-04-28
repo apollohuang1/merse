@@ -1,4 +1,4 @@
-import React, { Children, useEffect } from "react";
+import React, { Children, useEffect, useState } from "react";
 import NavigationBar from "./navigation-bar";
 import { useAppSelector } from "@/redux-store/hooks";
 import clsx from "clsx";
@@ -25,6 +25,8 @@ import useAuth from "@/hooks/useAuth";
 import ProfileMenu from "./wrapper/profile-menu";
 import MerseLogo from "./svgs/merse-logo";
 import Divider from "./divider";
+import { Combobox } from "@headlessui/react";
+import { sampleArtists } from "@/util/home-constant";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // redux
@@ -40,6 +42,24 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     setShowFullSidebar(!showFullSidebar);
     localStorage.setItem("showFullSidebar", JSON.stringify(!showFullSidebar));
   };
+
+  const people = [
+    "Durward Reynolds",
+    "Kenton Towne",
+    "Therese Wunsch",
+    "Benedict Kessler",
+    "Katelyn Rohan",
+  ];
+
+  const [selectedPerson, setSelectedPerson] = useState(people[0]);
+  const [query, setQuery] = useState("");
+
+  const filteredPeople =
+    searchText === ""
+      ? people
+      : people.filter((person) => {
+          return person.toLowerCase().includes(searchText.toLowerCase());
+        });
 
   const pathName = usePathname();
 
@@ -202,9 +222,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 isFull={showFullSidebar}
                 // isNew={true}
               /> */}
-              
+
               {/* <Divider /> */}
-              
             </div>
           </div>
         )}
@@ -236,24 +255,57 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                 <div className="flex flex-row gap-3 items-center justify-center">
                   {/* search bar */}
-                  <div
-                    className={clsx(
-                      "group flex flex-row gap-3 px-4 items-center focus-within:w-96 duration-300 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
-                      { "w-96": searchText.length > 0 },
-                      { "w-80": searchText.length === 0 }
+
+                  <Combobox>
+
+                    <div
+                      className={clsx(
+                        "group flex flex-row gap-3 px-4 items-center focus-within:w-96 duration-300 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
+                        { "w-96": searchText.length > 0 },
+                        { "w-80": searchText.length === 0 }
+                      )}
+                    >
+                      <FiSearch className=" w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-focus-within:text-accent" />
+                      <input
+                        type="text"
+                        value={searchText}
+                        placeholder="Enter the work, artist, or genre"
+                        className="w-full bg-transparent outline-none placeholder:text-light-text-primary placeholder:dark:text-dark-text-primary placeholder:text-opacity-40 dark:placeholder:text-opacity-40"
+                        onChange={(e) => {
+                          setSearchText(e.target.value);
+                        }}
+                      />
+                    </div>
+
+                    {searchText.length > 0 && (
+                      <Combobox.Options
+                        static
+                        className={
+                          "absolute top-full right-auto bg-light-background-primary dark:bg-dark-background-primary"
+                        }
+                      >
+                        {filteredPeople.map((person, index) => (
+                          <Combobox.Option
+                            key={index}
+                            value={person}
+                            className={({ active }) =>
+                              clsx(
+                                "flex cursor-default select-none items-center rounded-md px-3 py-2 h-20 w-96",
+                                {
+                                  "bg-light-background-secondary dark:bg-dark-background-secondary bg-opacity-5":
+                                    active,
+                                }
+                              )
+                            }
+                          >
+                            <div className="flex flex-row gap-3 items-center">
+                              <span>{person}</span>
+                            </div>
+                          </Combobox.Option>
+                        ))}
+                      </Combobox.Options>
                     )}
-                  >
-                    <FiSearch className=" w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-focus-within:text-accent" />
-                    <input
-                      type="text"
-                      value={searchText}
-                      placeholder="Enter the work, artist, or genre"
-                      className="w-full bg-transparent outline-none placeholder:text-light-text-primary placeholder:dark:text-dark-text-primary placeholder:text-opacity-40 dark:placeholder:text-opacity-40"
-                      onChange={(e) => {
-                        setSearchText(e.target.value);
-                      }}
-                    />
-                  </div>
+                  </Combobox>
 
                   <button
                     onClick={() => {

@@ -80,10 +80,10 @@ const Home = (props: Props) => {
           </div>
 
           <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.6)] to-transparent w-full items-end justify-end p-6">
-            <div className="flex flex-row gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
+            <div className="flex flex-row gap-2 items-center backdrop-blur-xl pl-3 pr-4 py-2 rounded-full">
               <img
                 src={"https://cdn.myanimelist.net/images/company/21.png"}
-                className="w-6 h-6 object-cover rounded-full border border-light-divider dark:border-dark-divider"
+                className="w-6 h-6 object-cover rounded-full"
               />
               <span className="text-white">Spirited Away</span>
             </div>
