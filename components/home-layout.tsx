@@ -31,7 +31,7 @@ import { sampleArtists } from "@/util/home-constant";
 import { HiXCircle } from "react-icons/hi";
 import { debounce } from "lodash";
 import axios from "axios";
-import { IUser } from "@/server/models/MDBUser";
+import { IUser } from "@/models/user";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref

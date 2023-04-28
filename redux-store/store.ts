@@ -1,14 +1,14 @@
 
 import { Character } from '@/models/character'
 import { Entry, Scene } from '@/models/entry'
-import { IUser } from '@/server/models/MDBUser'
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
+import { ObjectId } from 'mongoose'
 
 const initialState: Entry = {
   _id: "",
-  user_id: "",
+  author: new Types.ObjectId(),
   title: "",
   style_reference: null,
   content: null,
@@ -21,8 +21,8 @@ const entrySlice = createSlice({
   name: 'entry',
   initialState: initialState,
   reducers: {
-    setUserId: (state: Entry, action: PayloadAction<string>) => {
-      state.user_id = action.payload
+    setAuthor: (state: Entry, action: PayloadAction<Types.ObjectId>) => {
+      state.author = action.payload
     },
     setStyle: (state: Entry, action) => {
       state.style_reference = action.payload
@@ -99,7 +99,7 @@ export const store: ToolkitStore = configureStore({
 
 // actions
 export const { setCurrentUser } = authenticationSlice.actions;
-export const { setUserId, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, addScene } = entrySlice.actions;
+export const { setAuthor, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, addScene } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard, setIsGeneratingStoryboard } = entryHelperSlice.actions;
 
 

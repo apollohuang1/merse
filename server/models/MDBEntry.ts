@@ -12,7 +12,11 @@ const SceneSchema = new mongoose.Schema<Scene>({
 
 const EntrySchema = new mongoose.Schema<Entry>({
   _id: { type: String, required: true },
-  user_id: { type: String, required: true },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   title: { type: String, required: true },
   style_reference: { type: Object, required: true },
   // content: { type: Object, required: true }, // tiptap content

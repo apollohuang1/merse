@@ -27,12 +27,14 @@ const ReadPage = (props: Props) => {
 
   const fetchEntry = async () => {
     try {
-      const id = searchParams?.get("id");
+      const entryId = searchParams?.get("id");
 
       const response = await axios<Entry>({
         method: "GET",
-        url: `/api/entries?id=${id}`,
+        url: `/api/entries?id=${entryId}`,
       });
+      console.log("response: ");
+      console.log(response);
       setEntryData(response.data);
     } catch (error: any) {
       console.log("Failed to fetch entry, message: ", error.message);
