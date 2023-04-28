@@ -4,7 +4,8 @@ import { IUser } from "./user";
 
 export interface Entry {
   _id: string;
-  author: mongoose.Types.ObjectId;
+  author: IUser;
+  // author: mongoose.Types.ObjectId;
   title: string;
   style_reference: StyleReference | null;
   // content: object | null;

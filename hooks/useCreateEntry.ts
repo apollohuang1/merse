@@ -136,14 +136,14 @@ const useCreateEntry = () => {
       }
 
       console.log(
-        "###--------------------GENERATED TEXT--------------------###"
+        // "###--------------------GENERATED TEXT--------------------###"
       );
       // SENSITIVE
       // console.log(generatedText);
 
       const sceneText = stripText(generatedText);
 
-      console.log("###--------------------SCENES--------------------###");
+      // console.log("###--------------------SCENES--------------------###");
       // SENSITIVE
       // console.log(sceneText);
 

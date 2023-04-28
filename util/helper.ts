@@ -12,3 +12,13 @@ export const getFormattedDate = (dateNumber: number) => {
     day: "numeric",
   });
 }
+
+// convert 2023-04-28T19:18:03.259Z string to the same above
+export const getFormattedDateFromMongoDBDate = (date: Date | undefined) => {
+  if (!date) return "";
+  return new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}

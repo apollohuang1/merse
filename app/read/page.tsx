@@ -12,6 +12,7 @@ import { Entry } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
 import Image from "@tiptap/extension-image";
 import HardBreak from "@tiptap/extension-hard-break";
+import { getFormattedDateFromMongoDBDate } from "@/util/helper";
 
 type Props = {};
 
@@ -28,13 +29,10 @@ const ReadPage = (props: Props) => {
   const fetchEntry = async () => {
     try {
       const entryId = searchParams?.get("id");
-
-      const response = await axios<Entry>({
+      const response = await axios({
         method: "GET",
         url: `/api/entries?id=${entryId}`,
       });
-      console.log("response: ");
-      console.log(response);
       setEntryData(response.data);
     } catch (error: any) {
       console.log("Failed to fetch entry, message: ", error.message);
@@ -52,8 +50,30 @@ const ReadPage = (props: Props) => {
     <div className="flex flex-col w-full h-full items-center p-6">
       <div className="flex flex-col w-full h-full items-center max-w-3xl gap-6">
 
+        {/* author profile */}
+
+        { entryData?.author &&
+          <div className="flex flex-row gap-4 w-full justify-start">
+
+            <img 
+              src={entryData?.author?.profile_image_url}
+              alt="author profile image"
+              className="w-12 h-12 rounded-full object-cover"
+            />
+
+            <div className="flex flex-col">
+              <span className="font-medium">{entryData?.author?.name}</span>
+              <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">{`Created at ${getFormattedDateFromMongoDBDate(entryData?.created_at)}`}</span>
+
+
+            </div>
+
+          </div>
+        }
+
         {output && (
-          <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
+          // <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
+          <div className="flex flex-col w-full rounded-xl gap-4">
             <h1 className="text-4xl font-bold">{entryData?.title}</h1>
             <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" />
             {output}
