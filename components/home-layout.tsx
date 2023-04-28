@@ -50,6 +50,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     localStorage.setItem("showFullSidebar", JSON.stringify(!showFullSidebar));
   };
 
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [selectedSearchResult, setSelectedSearchResult] = useState<any>(null);
   const [query, setQuery] = useState("");
 
@@ -77,13 +78,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }
 
   const debouncedHandleInputChange = debounce( async (query: string) => {
-    // axios.get(`/api/search?query=${query}`)
-    //   .then((response) => {
-    //     console.log("search result response :)))", response);
-    //   })
-    //   .catch((error) => {
-    //     console.log("search result error :)))", error);
-    //   })
+    axios.get(`/api/search?query=${query}`)
+      .then((response) => {
+        // console.log("search result response :)))", response);
+        setSearchResults(response.data);
+      })
+      .catch((error) => {
+        console.log("search result error :)))", error);
+      })
   }, 250);
 
   useEffect(() => {
@@ -332,7 +334,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                               "flex flex-col absolute top-[calc(100%+5px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-xl overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-2xl"
                             }
                           >
-                            {filteredSearchResults.map((result: any, index) => (
+                            {searchResults.map((result: any, index) => (
                               <Combobox.Option
                                 // as="button"
                                 key={index}
@@ -356,6 +358,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                     src={result.profile_image_url}
                                     className="h-10 w-10 rounded-full"
                                     alt="user profile image"
+                                    onError={(e) => {
+                                      e.currentTarget.src = "/merse-logo.png";
+                                    }}
                                   />
                                   <span>{result.name}</span>
                                 </div>
