@@ -108,6 +108,9 @@ const ProfilePage = (props: Props) => {
                     <img
                       src={user?.profile_image_url}
                       className="w-full h-full object-cover"
+                      onError={(e: any) => {
+                        e.currentTarget.src = "/merse-logo.png";
+                      }}
                     />
                   ) : (
                     <div className="w-32 h-32 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary" />

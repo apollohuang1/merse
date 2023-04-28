@@ -198,13 +198,13 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               />
 
               {/* search */}
-              <SidebarMenuButton
+              {/* <SidebarMenuButton
                 icon={<FiSearch className="h-5 w-5" />}
                 label="Search"
                 href="/search"
                 isFull={showFullSidebar}
                 isCurrentRoute={pathName === "/search"}
-              />
+              /> */}
 
               {/* dashboard */}
               {/* <SidebarMenuButton
