@@ -98,7 +98,6 @@ const CreateCharacterPage = (props: Props) => {
                       onEditClick={() => {
                         setEditData(character);
                         setIsEditingCharacter(true);
-                        // console.log(character);
                       }}
                     />
                   ))}

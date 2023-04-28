@@ -56,7 +56,7 @@ const Home = (props: Props) => {
               return (
                 <button
                   key={index}
-                  className="flex flex-col items-center gap-2 w-20 min-w-[80px] max-sm:min-w-[64px] max-sm:w-16"
+                  className="flex flex-col items-center gap-2 w-20 min-w-[80px]"
                   onClick={() => {
                     if (artist._id) {
                       router.push(`/${artist._id}`);
@@ -66,7 +66,7 @@ const Home = (props: Props) => {
                   <img
                     src={artist?.profile_image_url}
                     className={
-                      "w-20 h-20 max-sm:w-16 max-sm:h-16 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"
+                      "w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"
                     }
                     alt="profile image"
                   />

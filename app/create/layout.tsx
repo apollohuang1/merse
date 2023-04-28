@@ -38,7 +38,6 @@ export default function RootLayout({
         dispatch(setUserId(user?._id));
       })
       .catch((err) => {
-        console.log("reloadCurrentLocalUser", err.message);
         // redirect to home/authentication page
         // alert("Please log in to continue");
         // window.location.href = "/";

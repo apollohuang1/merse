@@ -40,7 +40,7 @@ const useCreateEntry = () => {
   };
 
   const saveEntry = async () => {
-    console.log("Saving entry...");
+    // console.log("Saving entry...");
     try {
       const response = await axios({
         method: "POST",
@@ -51,8 +51,6 @@ const useCreateEntry = () => {
         },
       });
       console.log("Successfully saved entry");
-
-      console.log(response);
     } catch (error: any) {
       console.log(`Failed to save entry, message: ${error?.message}`);
     }
@@ -87,8 +85,8 @@ const useCreateEntry = () => {
         const textContent = convertTiptapJSONToText(editorJSON);
         await createChatCompletion(textContent);
         // const prompt = await generatePromptFromChatGPT(textContent);
-        console.log("🎉");
-        console.log(textContent);
+        // console.log("🎉");
+        // console.log(textContent);
         return;
       } else {
         // handle blank editor
@@ -140,12 +138,14 @@ const useCreateEntry = () => {
       console.log(
         "###--------------------GENERATED TEXT--------------------###"
       );
-      console.log(generatedText);
+      // SENSITIVE
+      // console.log(generatedText);
 
       const sceneText = stripText(generatedText);
 
       console.log("###--------------------SCENES--------------------###");
-      console.log(sceneText);
+      // SENSITIVE
+      // console.log(sceneText);
 
       let splittedSceneText = sceneText
         .split("\n")
@@ -243,8 +243,10 @@ const useCreateEntry = () => {
       //   }
       // }
 
-      console.log("SDXL RESPONSE:");
-      console.log(sdxlResponse.data);
+      
+      // SENSITIVE
+      // console.log("SDXL RESPONSE:");
+      // console.log(sdxlResponse.data);
 
       const base64String = sdxlResponse?.data?.artifacts[0].base64;
       const newImageURL = getImageURLFromBase64(base64String);

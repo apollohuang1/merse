@@ -23,6 +23,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import ProfileMenu from "./wrapper/profile-menu";
+import MerseLogo from "./svgs/merse-logo";
+import Divider from "./divider";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // redux
@@ -143,6 +145,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 </button>
               </Link>
 
+              {/* <Divider /> */}
+
               {/* home */}
               <SidebarMenuButton
                 icon={<FiHome className="h-5 w-5" />}
@@ -198,6 +202,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 isFull={showFullSidebar}
                 // isNew={true}
               /> */}
+              
+              {/* <Divider /> */}
+              
             </div>
           </div>
         )}
@@ -232,8 +239,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <div
                     className={clsx(
                       "group flex flex-row gap-3 px-4 items-center focus-within:w-96 duration-300 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
-                      { "w-96" : searchText.length > 0},
-                      { "w-80" : searchText.length === 0}
+                      { "w-96": searchText.length > 0 },
+                      { "w-80": searchText.length === 0 }
                     )}
                   >
                     <FiSearch className=" w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-focus-within:text-accent" />
