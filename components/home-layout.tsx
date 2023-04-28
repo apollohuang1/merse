@@ -30,6 +30,7 @@ import { sampleArtists } from "@/util/home-constant";
 import { HiXCircle } from "react-icons/hi";
 import { debounce } from "lodash";
 import axios from "axios";
+import { IUser } from "@/server/models/MDBUser";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
@@ -288,10 +289,12 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   { pathName !== "/search" && 
                     <Combobox 
                       value={selectedSearchResult}
-                      onChange={(result: any) => {
-                        if (result._id) {
-                          router.push(`/${result._id}`)
+                      onChange={(result: IUser) => {
+
+                        if (result.username || result._id) {
+                          router.push(`/${result.username || result._id}`);
                         }
+                        
                         searchInputRef.current?.blur() // unfocus the text input
                         setSearchText("") // clear the search text
                       }}

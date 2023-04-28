@@ -41,14 +41,15 @@ const ProfilePage = (props: Props) => {
 
   const fetchUser = async () => {
     try {
-      const id = pathname;
-      if (!id) return;
-      const userId = id.split("/")[1];
-      const response = await axios.get(`/api/users/${userId}`);
+      // const id = pathname;
+      if (!pathname) return;
+      const usernameOrId = pathname.split("/")[1];
+      const response = await axios.get(`/api/users/${usernameOrId}`);
       setUser(response.data);
       await fetchAllEntries(response.data._id);
     } catch (error: any) {
       console.log("Failed to fetch user, message: ", error.message);
+      window.location.href = "/";
     }
   };
 
