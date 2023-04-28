@@ -1,5 +1,6 @@
 "use client";
 
+import Divider from "@/components/divider";
 import SlideOver from "@/components/slide-over";
 import { Entry } from "@/models/entry";
 import { useAppSelector } from "@/redux-store/hooks";
@@ -144,8 +145,14 @@ const ProfilePage = (props: Props) => {
               </div>
 
               <div className="flex flex-col gap-2">
-                {/* name */}
-                <span className="text-2xl font-bold">{user?.name}</span>
+
+                <div className="flex flex-col">
+                  {/* name */}
+                  <span className="text-2xl font-bold leading-tight">{user?.name}</span>
+
+                  { /* username */}
+                  { user?.username && <span className="text-light-text-secondary dark:text-dark-text-secondary leading-tight">@{user?.username}</span> }
+                </div>
 
                 <p className="max-w-sm font-normal">
                   {user?.bio ??
@@ -153,6 +160,8 @@ const ProfilePage = (props: Props) => {
                 </p>
               </div>
             </div>
+
+            <Divider />
 
             <div className="grid grid-cols-3 gap-3 max-lg:grid-cols-2 w-full">
               {isFetchingEntries ? (

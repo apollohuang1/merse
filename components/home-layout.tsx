@@ -352,10 +352,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                               className={({ active, selected }) =>
                                 clsx(
                                   "flex select-none cursor-pointer items-center rounded-md px-4 h-[72px] w-96 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all",
-                                  {
-                                    "bg-light-background-secondary dark:bg-dark-background-secondary":
-                                      active,
-                                  }
+                                  { "bg-light-background-tertiary dark:bg-dark-background-tertiary": active }
                                   // { "border-b border-b-light-divider dark:border-dark-divider" : index !== filteredSearchResults.length - 1}
                                 )
                               }

@@ -63,7 +63,7 @@ export async function PUT(request: NextRequest) {
     // check username
     const isUserExisted = await MDBUser.findOne({ username: body.username });
 
-    if (isUserExisted) {
+    if (isUserExisted && isUserExisted._id.toString() !== body._id) {
       return NextResponse.json({ error: "Username already exists" }, { status: 400 });
     }
 
