@@ -28,6 +28,8 @@ import Divider from "./divider";
 import { Combobox } from "@headlessui/react";
 import { sampleArtists } from "@/util/home-constant";
 import { HiXCircle } from "react-icons/hi";
+import { debounce } from "lodash";
+import axios from "axios";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
@@ -48,15 +50,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     localStorage.setItem("showFullSidebar", JSON.stringify(!showFullSidebar));
   };
 
-  const people = [
-    "Durward Reynolds",
-    "Kenton Towne",
-    "Therese Wunsch",
-    "Benedict Kessler",
-    "Katelyn Rohan",
-  ];
-
-  const [selectedPerson, setSelectedPerson] = useState(people[0]);
   const [selectedSearchResult, setSelectedSearchResult] = useState<any>(null);
   const [query, setQuery] = useState("");
 
@@ -75,6 +68,23 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isCreateRoute = pathName?.split("/")[1] === "create";
 
   const { reloadCurrentLocalUser } = useAuth();
+
+  const handleInputChange = (e: any) => {
+    const queryText = e.target.value;
+    setSearchText(queryText);
+    debouncedHandleInputChange(queryText);
+    // console.log("search result response :)))");
+  }
+
+  const debouncedHandleInputChange = debounce( async (query: string) => {
+    // axios.get(`/api/search?query=${query}`)
+    //   .then((response) => {
+    //     console.log("search result response :)))", response);
+    //   })
+    //   .catch((error) => {
+    //     console.log("search result error :)))", error);
+    //   })
+  }, 250);
 
   useEffect(() => {
     const showFullSidebar = localStorage.getItem("showFullSidebar");
@@ -152,7 +162,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               >
                 <button
                   className={clsx(
-                    "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary hover:scale-[1.025] active:scale-100",
+                    "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
                     {
                       "flex-col justify-center h-12 w-12 aspect-square":
                         !showFullSidebar,
@@ -301,9 +311,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           placeholder="Enter the work, artist, or genre"
                           className="w-full bg-transparent outline-none placeholder:text-light-text-primary placeholder:dark:text-dark-text-primary placeholder:text-opacity-40 dark:placeholder:text-opacity-40"
                           autoComplete="off"
-                          onChange={(event) => {
-                            setSearchText(event.target.value);
-                          }}
+                          onChange={(e: any) => handleInputChange(e)}
                         />
 
                         { searchText.length > 0 && 

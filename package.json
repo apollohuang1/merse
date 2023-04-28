@@ -47,6 +47,7 @@
     "express": "^4.18.2",
     "framer-motion": "^10.10.0",
     "html-react-parser": "^3.0.15",
+    "lodash": "^4.17.21",
     "micro": "^10.0.1",
     "micro-cors": "^0.1.1",
     "mongodb": "^5.2.0",
