@@ -54,11 +54,11 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [selectedPerson, setSelectedPerson] = useState(people[0]);
   const [query, setQuery] = useState("");
 
-  const filteredPeople =
+  const filteredSearchResults =
     searchText === ""
       ? sampleArtists
       : sampleArtists.filter((artist) => {
-          return artist.name.toLowerCase().includes(searchText.toLowerCase());
+          return artist.name.trim().toLowerCase().includes(searchText.toLowerCase().trim());
         });
 
   const pathName = usePathname();
@@ -259,7 +259,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <Combobox>
                     <div
                       className={clsx(
-                        "relative group flex flex-row gap-3 px-4 items-center focus-within:w-96 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
+                        "relative group flex flex-row gap-3 px-4 items-center focus-within:w-96 duration-300 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
                         { "w-96": searchText.length > 0 },
                         { "w-80": searchText.length === 0 }
                       )}
@@ -279,10 +279,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         <Combobox.Options
                           static
                           className={
-                            "absolute top-[calc(100%+8px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary bg-opacity-95 dark:bg-opacity-95 backdrop-blur-3xl rounded-xl overflow-clip drop-shadow-2xl border border-light-divider dark:border-dark-divider"
+                            "flex flex-col absolute top-[calc(100%+8px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-xl overflow-clip border border-light-divider dark:border-dark-divider"
                           }
                         >
-                          {filteredPeople.map((person, index) => (
+                          {filteredSearchResults.map((person, index) => (
                             <Combobox.Option
                               as="button"
                               key={index}
@@ -290,6 +290,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                               onClick={() => {
                                 if (person._id) {
                                   router.push(`/${person._id}`);
+                                  setSearchText("");
                                 }
                               }}
                               className={({ active }) =>
