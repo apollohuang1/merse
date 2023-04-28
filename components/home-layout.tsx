@@ -56,9 +56,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const filteredPeople =
     searchText === ""
-      ? people
-      : people.filter((person) => {
-          return person.toLowerCase().includes(searchText.toLowerCase());
+      ? sampleArtists
+      : sampleArtists.filter((artist) => {
+          return artist.name.toLowerCase().includes(searchText.toLowerCase());
         });
 
   const pathName = usePathname();
@@ -257,10 +257,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   {/* search bar */}
 
                   <Combobox>
-
                     <div
                       className={clsx(
-                        "group flex flex-row gap-3 px-4 items-center focus-within:w-96 duration-300 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
+                        "relative group flex flex-row gap-3 px-4 items-center focus-within:w-96 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
                         { "w-96": searchText.length > 0 },
                         { "w-80": searchText.length === 0 }
                       )}
@@ -275,36 +274,47 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           setSearchText(e.target.value);
                         }}
                       />
-                    </div>
 
-                    {searchText.length > 0 && (
-                      <Combobox.Options
-                        static
-                        className={
-                          "absolute top-full right-auto bg-light-background-primary dark:bg-dark-background-primary"
-                        }
-                      >
-                        {filteredPeople.map((person, index) => (
-                          <Combobox.Option
-                            key={index}
-                            value={person}
-                            className={({ active }) =>
-                              clsx(
-                                "flex cursor-default select-none items-center rounded-md px-3 py-2 h-20 w-96",
-                                {
-                                  "bg-light-background-secondary dark:bg-dark-background-secondary bg-opacity-5":
-                                    active,
+                      {searchText.length > 0 && (
+                        <Combobox.Options
+                          static
+                          className={
+                            "absolute top-[calc(100%+8px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary bg-opacity-95 dark:bg-opacity-95 backdrop-blur-3xl rounded-xl overflow-clip drop-shadow-2xl border border-light-divider dark:border-dark-divider"
+                          }
+                        >
+                          {filteredPeople.map((person, index) => (
+                            <Combobox.Option
+                              as="button"
+                              key={index}
+                              value={person}
+                              onClick={() => {
+                                if (person._id) {
+                                  router.push(`/${person._id}`);
                                 }
-                              )
-                            }
-                          >
-                            <div className="flex flex-row gap-3 items-center">
-                              <span>{person}</span>
-                            </div>
-                          </Combobox.Option>
-                        ))}
-                      </Combobox.Options>
-                    )}
+                              }}
+                              className={({ active }) =>
+                                clsx(
+                                  "flex select-none items-center rounded-md px-4 py-2 h-20 w-96 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all",
+                                  {
+                                    "bg-light-background-secondary dark:bg-dark-background-secondary bg-opacity-5":
+                                      active,
+                                  }
+                                )
+                              }
+                            >
+                              <div className="flex flex-row gap-3 items-center">
+                                <img
+                                  src={person.profile_image_url}
+                                  className="h-10 w-10 rounded-full"
+                                  alt="user profile image"
+                                />
+                                <span>{person.name}</span>
+                              </div>
+                            </Combobox.Option>
+                          ))}
+                        </Combobox.Options>
+                      )}
+                    </div>
                   </Combobox>
 
                   <button
