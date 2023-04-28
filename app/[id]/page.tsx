@@ -6,6 +6,7 @@ import { Entry } from "@/models/entry";
 import { useAppSelector } from "@/redux-store/hooks";
 import { getImageURLfromBase64 } from "@/util/helper";
 import axios from "axios";
+import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
@@ -82,7 +83,6 @@ const ProfilePage = (props: Props) => {
       setUser(response.data);
       setShowProfileEditModal(false);
     } catch (error: any) {
-
       if (error.response.data.error === "Username already exists") {
         alert("Username already exists");
         return;
@@ -94,7 +94,7 @@ const ProfilePage = (props: Props) => {
 
   return (
     <>
-      <div className="flex flex-col w-full items-center overflow-auto">
+      <div className="flex flex-col w-full items-center">
         {/* banner */}
         <div className="flex w-full h-[30vh] bg-light-background-secondary dark:bg-dark-background-secondary flex-shrink-0">
           {user?.banner_image_url ? (
@@ -127,31 +127,47 @@ const ProfilePage = (props: Props) => {
                   )}
                 </div>
 
-                {auth?.currentUser?._id === user?._id && (
+
+                { user &&
                   <button
                     onClick={() => {
-                      setEditingProfileURL(user?.profile_image_url);
-                      setEditingBannerURL(user?.banner_image_url);
-                      setEditingUsername(user?.username);
-                      setEditingName(user?.name);
-                      setEditingBio(user?.bio);
-                      setShowProfileEditModal(true);
+                      if (auth?.currentUser?._id !== user?._id) {
+                        // follow
+                        alert("//to do: follow");
+                      } else {
+                        setEditingProfileURL(user?.profile_image_url);
+                        setEditingBannerURL(user?.banner_image_url);
+                        setEditingUsername(user?.username);
+                        setEditingName(user?.name);
+                        setEditingBio(user?.bio);
+                        setShowProfileEditModal(true);
+                      }
+
                     }}
-                    className="h-10 px-4 font-medium rounded-full border border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                    className={clsx(
+                      "h-10 w-28 font-medium rounded-full border border-light-divider dark:border-dark-divider",
+                      { "text-dark-text-primary dark:text-light-text-primary bg-light-text-primary dark:bg-dark-text-primary": auth?.currentUser?._id !== user?._id },
+                      { "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary": auth?.currentUser?._id === user?._id }
+                    )}
                   >
-                    Edit Profile
+                    { auth?.currentUser?._id === user?._id ? "Edit Profile" : "Follow"}
                   </button>
-                )}
+                }
               </div>
 
               <div className="flex flex-col gap-2">
-
                 <div className="flex flex-col">
                   {/* name */}
-                  <span className="text-2xl font-bold leading-tight">{user?.name}</span>
+                  <span className="text-2xl font-bold leading-tight">
+                    {user?.name}
+                  </span>
 
-                  { /* username */}
-                  { user?.username && <span className="text-light-text-secondary dark:text-dark-text-secondary leading-tight">@{user?.username}</span> }
+                  {/* username */}
+                  {user?.username && (
+                    <span className="text-light-text-secondary dark:text-dark-text-secondary leading-tight">
+                      @{user?.username}
+                    </span>
+                  )}
                 </div>
 
                 <p className="max-w-sm font-normal">

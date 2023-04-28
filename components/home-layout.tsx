@@ -4,6 +4,7 @@ import { useAppSelector } from "@/redux-store/hooks";
 import clsx from "clsx";
 import useColorScheme from "@/hooks/useColorScheme";
 import {
+  FiBell,
   FiBookOpen,
   FiCalendar,
   FiChevronLeft,
@@ -207,6 +208,15 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 isCurrentRoute={pathName === "/search"}
               /> */}
 
+              {/* notifications */}
+              <SidebarMenuButton
+                icon={<FiBell className="h-5 w-5" />}
+                label="Notifications"
+                href="/notifications"
+                isFull={showFullSidebar}
+                isCurrentRoute={pathName === "/notifications"}
+              />
+
               {/* dashboard */}
               {/* <SidebarMenuButton
                   icon={<FiCalendar />}
@@ -254,7 +264,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 // isNew={true}
               /> */}
 
-              {/* <Divider /> */}
+              <Divider />
             </div>
           </div>
         )}
