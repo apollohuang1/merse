@@ -214,6 +214,7 @@ const useAuth = () => {
     setShowLoginModal,
     isLoadingCurrentUser,
     showSplashScreen,
+    setShowSplashScreen,
     reloadCurrentLocalUser,
     logOut,
     fetchCurrentUser,

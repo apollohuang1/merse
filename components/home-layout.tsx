@@ -158,11 +158,12 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
 
             {/* side menus */}
-            <div className="flex flex-col w-full gap-2 items-center p-3">
+            <div className="flex flex-col w-full gap-5 items-center p-3">
+
               {/* create */}
               <Link
                 href={"/create/styles"}
-                className="flex w-full items-center justify-center cursor-pointer pb-3"
+                className="flex w-full items-center justify-center cursor-pointer"
               >
                 <button
                   className={clsx(
@@ -188,81 +189,82 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 </button>
               </Link>
 
-              {/* <Divider /> */}
 
-              {/* home */}
-              <SidebarMenuButton
-                icon={<FiHome className="h-5 w-5" />}
-                label="Home"
-                href="/"
-                isFull={showFullSidebar}
-                isCurrentRoute={pathName === "/"}
-              />
-
-              {/* search */}
-              {/* <SidebarMenuButton
-                icon={<FiSearch className="h-5 w-5" />}
-                label="Search"
-                href="/search"
-                isFull={showFullSidebar}
-                isCurrentRoute={pathName === "/search"}
-              /> */}
-
-              {/* notifications */}
-              <SidebarMenuButton
-                icon={<FiBell className="h-5 w-5" />}
-                label="Notifications"
-                href="/notifications"
-                isFull={showFullSidebar}
-                isCurrentRoute={pathName === "/notifications"}
-              />
-
-              {/* dashboard */}
-              {/* <SidebarMenuButton
-                  icon={<FiCalendar />}
-                  label="Dashboard"
-                  href="/dashboard"
+              <div className="flex flex-col gap-2">
+                {/* home */}
+                <SidebarMenuButton
+                  icon={<FiHome className="h-5 w-5" />}
+                  label="Home"
+                  href="/"
                   isFull={showFullSidebar}
-                  isNew={true}
+                  isCurrentRoute={pathName === "/"}
+                />
+
+                {/* search */}
+                {/* <SidebarMenuButton
+                  icon={<FiSearch className="h-5 w-5" />}
+                  label="Search"
+                  href="/search"
+                  isFull={showFullSidebar}
+                  isCurrentRoute={pathName === "/search"}
                 /> */}
 
-              {/* subscription */}
-              <SidebarMenuButton
-                icon={<FiFeather className="h-5 w-5" />}
-                label="Following"
-                href="/following"
-                isFull={showFullSidebar}
-                isCurrentRoute={pathName === "/following"}
-              />
+                {/* notifications */}
+                <SidebarMenuButton
+                  icon={<FiBell className="h-5 w-5" />}
+                  label="Notifications"
+                  href="/notifications"
+                  isFull={showFullSidebar}
+                  isCurrentRoute={pathName === "/notifications"}
+                />
 
-              {/* subscription */}
-              <SidebarMenuButton
-                icon={<FiZap className="h-5 w-5" />}
-                label="Subscription"
-                href="/subscription"
-                isFull={showFullSidebar}
-                isNew={true}
-                isCurrentRoute={pathName === "/subscription"}
-              />
+                {/* dashboard */}
+                {/* <SidebarMenuButton
+                    icon={<FiCalendar />}
+                    label="Dashboard"
+                    href="/dashboard"
+                    isFull={showFullSidebar}
+                    isNew={true}
+                  /> */}
 
-              {/* read */}
-              <SidebarMenuButton
-                icon={<FiBookOpen className="h-5 w-5" />}
-                label="Read Sample"
-                href="/6436f3032b67ae01b9c884bb"
-                isFull={showFullSidebar}
-                isNew={true}
-                isCurrentRoute={pathName === "/6436f3032b67ae01b9c884bb"}
-              />
+                {/* subscription */}
+                <SidebarMenuButton
+                  icon={<FiFeather className="h-5 w-5" />}
+                  label="Following"
+                  href="/following"
+                  isFull={showFullSidebar}
+                  isCurrentRoute={pathName === "/following"}
+                />
 
-              {/* create */}
-              {/* <SidebarMenuButton
-                icon={<FiPlus className="h-5 w-5" />}
-                label="Create"
-                href="/create/styles"
-                isFull={showFullSidebar}
-                // isNew={true}
-              /> */}
+                {/* subscription */}
+                <SidebarMenuButton
+                  icon={<FiZap className="h-5 w-5" />}
+                  label="Subscription"
+                  href="/subscription"
+                  isFull={showFullSidebar}
+                  isNew={true}
+                  isCurrentRoute={pathName === "/subscription"}
+                />
+
+                {/* read */}
+                <SidebarMenuButton
+                  icon={<FiBookOpen className="h-5 w-5" />}
+                  label="Read Sample"
+                  href="/6436f3032b67ae01b9c884bb"
+                  isFull={showFullSidebar}
+                  isNew={true}
+                  isCurrentRoute={pathName === "/6436f3032b67ae01b9c884bb"}
+                />
+
+                {/* create */}
+                {/* <SidebarMenuButton
+                  icon={<FiPlus className="h-5 w-5" />}
+                  label="Create"
+                  href="/create/styles"
+                  isFull={showFullSidebar}
+                  // isNew={true}
+                /> */}
+              </div>
 
               <Divider />
             </div>

@@ -18,7 +18,13 @@ const ProfilePage = (props: Props) => {
     // fetchAllEntries();
 
     // fetch user
-    fetchUser();
+    fetchUser()
+    .then((user: any) => {
+      fetchAllEntries(user._id);
+    })
+    .catch((error: any) => {
+      // console.log("Failed to fetch user, message: ", error.message);
+    });
   }, []);
 
   const router = useRouter();
@@ -42,17 +48,20 @@ const ProfilePage = (props: Props) => {
   const pathname = usePathname();
 
   const fetchUser = async () => {
-    try {
-      // const id = pathname;
-      if (!pathname) return;
-      const usernameOrId = pathname.split("/")[1];
-      const response = await axios.get(`/api/users/${usernameOrId}`);
-      setUser(response.data);
-      await fetchAllEntries(response.data._id);
-    } catch (error: any) {
-      console.log("Failed to fetch user, message: ", error.message);
-      window.location.href = "/";
-    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        // const id = pathname;
+        if (!pathname) return;
+        const usernameOrId = pathname.split("/")[1];
+        const response = await axios.get(`/api/users/${usernameOrId}`);
+        setUser(response.data);
+        // await fetchAllEntries(response.data._id);
+        resolve(response.data);
+      } catch (error: any) {
+        console.log("Failed to fetch user, message: ", error.message);
+        window.location.href = "/";
+      }
+    })
   };
 
   const fetchAllEntries = async (user_id: string) => {
@@ -80,7 +89,8 @@ const ProfilePage = (props: Props) => {
           bio: editingBio,
         },
       });
-      setUser(response.data);
+      await fetchUser();
+      // setUser(response.data);
       setShowProfileEditModal(false);
     } catch (error: any) {
       if (error.response.data.error === "Username already exists") {
