@@ -28,6 +28,7 @@ const ProfilePage = (props: Props) => {
 
   const [editingBannerURL, setEditingBannerURL] = useState<string>("");
   const [editingProfileURL, setEditingProfileURL] = useState<string>("");
+  const [editingUsername, setEditingUsername] = useState<string>("");
   const [editingName, setEditingName] = useState<string>("");
   const [editingBio, setEditingBio] = useState<string>("");
 
@@ -71,6 +72,7 @@ const ProfilePage = (props: Props) => {
           _id: user._id,
           banner_image_url: editingBannerURL,
           profile_image_url: editingProfileURL,
+          username: editingUsername,
           name: editingName,
           bio: editingBio,
         },
@@ -122,6 +124,7 @@ const ProfilePage = (props: Props) => {
                     onClick={() => {
                       setEditingProfileURL(user?.profile_image_url);
                       setEditingBannerURL(user?.banner_image_url);
+                      setEditingUsername(user?.username);
                       setEditingName(user?.name);
                       setEditingBio(user?.bio);
                       setShowProfileEditModal(true);
@@ -308,6 +311,28 @@ const ProfilePage = (props: Props) => {
                   placeholder="Enter profile image URL"
                   onChange={(e) => {
                     setEditingProfileURL(e.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="name"
+                  className="flex text-sm font-medium leading-6"
+                >
+                  Username
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  enterKeyHint="next"
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                  value={editingUsername ?? ""}
+                  placeholder="Enter your name"
+                  onChange={(e) => {
+                    setEditingUsername(e.target.value);
                   }}
                 />
               </div>
