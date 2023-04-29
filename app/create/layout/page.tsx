@@ -105,6 +105,10 @@ const LayoutPage = (props: Props) => {
     };
   };  
 
+  const handleToggleStoryboard = (index: number) => {
+    setExpandedStoryboardIndex(expandedStoryboardIndex === index ? null : index);
+  };
+
   return (
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
@@ -114,9 +118,9 @@ const LayoutPage = (props: Props) => {
         {/* main content (left and right panels columns) */}
         <div
           className={clsx(
-            "flex flex-row w-full h-full overflow-hidden px-7",
-            { "gap-0": !entryHelper.showGeneratedStoryboard },
-            { "gap-7": entryHelper.showGeneratedStoryboard }
+            "flex flex-col h-full items-center duration-300 overflow-auto gap-4 flex-shrink-0",
+            { "w-0 opacity-0": !entryHelper.showGeneratedStoryboard },
+            { "w-[400px]": entryHelper.showGeneratedStoryboard }
           )}
         >
           {/* right panel */}
@@ -127,22 +131,17 @@ const LayoutPage = (props: Props) => {
               { "w-[400px]": entryHelper.showGeneratedStoryboard }
             )}
           >
-            <div className="flex flex-col w-full gap-4">
+          <div className="flex flex-col w-full h-full justify-start">
+
+            <div className="flex flex-col w-full gap-4 items-center">
               {
                 entry?.scenes.map((scene: Scene, index: number) => (
+                  <div className="w-full flex justify-center">
                   <div
-                  key={index}
-                  className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px] mb-4 fade-top">
-                  
-  
-                  {/* overlay  */}
-                  <div
-                    className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer"
-                    onClick={() => setExpandedStoryboardIndex(expandedStoryboardIndex === index ? null : index)}
+                    key={index}
+                    className="group relative flex flex-col w-full max-w-[400px] mx-auto bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto mb-4 fade-top cursor-pointer"
+                    onClick={() => handleToggleStoryboard(index)}
                   >
-                    <FiEdit2 className="w-9 h-9 text-white" />
-                  </div>
-  
                   <img
                     src={"data:image/png;base64," + scene.image_base64 }
                     alt="comic book cover"
@@ -159,8 +158,10 @@ const LayoutPage = (props: Props) => {
                     </div>
                   )}
                 </div>
+                </div>
                 ))
               }
+            </div>
             </div>
           </div>
         </div>
