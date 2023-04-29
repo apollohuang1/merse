@@ -1,9 +1,10 @@
-import React, { Children, useEffect } from "react";
+import React, { Children, useEffect, useState } from "react";
 import NavigationBar from "./navigation-bar";
 import { useAppSelector } from "@/redux-store/hooks";
 import clsx from "clsx";
 import useColorScheme from "@/hooks/useColorScheme";
 import {
+  FiBell,
   FiBookOpen,
   FiCalendar,
   FiChevronLeft,
@@ -23,8 +24,19 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import ProfileMenu from "./wrapper/profile-menu";
+import MerseLogo from "./svgs/merse-logo";
+import Divider from "./divider";
+import { Combobox } from "@headlessui/react";
+import { sampleArtists } from "@/util/home-constant";
+import { HiXCircle } from "react-icons/hi";
+import { debounce } from "lodash";
+import axios from "axios";
+import { IUser } from "@/models/user";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // input ref
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+
   // redux
   const auth = useAppSelector((state) => state.auth);
 
@@ -32,17 +44,51 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
 
   const [showFullSidebar, setShowFullSidebar] = React.useState(true);
+  const [searchText, setSearchText] = React.useState<string>("");
 
   const toggleSidebar = () => {
     setShowFullSidebar(!showFullSidebar);
     localStorage.setItem("showFullSidebar", JSON.stringify(!showFullSidebar));
   };
 
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [selectedSearchResult, setSelectedSearchResult] = useState<any>(null);
+  const [query, setQuery] = useState("");
+
+  const filteredSearchResults =
+    searchText === ""
+      ? sampleArtists
+      : sampleArtists.filter((artist) => {
+          return artist.name
+            .trim()
+            .toLowerCase()
+            .includes(searchText.toLowerCase().trim());
+        });
+
   const pathName = usePathname();
 
   const isCreateRoute = pathName?.split("/")[1] === "create";
 
   const { reloadCurrentLocalUser } = useAuth();
+
+  const handleInputChange = (e: any) => {
+    const queryText = e.target.value;
+    setSearchText(queryText);
+    debouncedHandleInputChange(queryText);
+    // console.log("search result response :)))");
+  };
+
+  const debouncedHandleInputChange = debounce(async (query: string) => {
+    axios
+      .get(`/api/search?query=${query}`)
+      .then((response) => {
+        // console.log("search result response :)))", response);
+        setSearchResults(response.data);
+      })
+      .catch((error) => {
+        console.log("search result error :)))", error);
+      });
+  }, 250);
 
   useEffect(() => {
     const showFullSidebar = localStorage.getItem("showFullSidebar");
@@ -53,10 +99,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     reloadCurrentLocalUser()
-      .then((user) => {
-        console.log("User reloaded");
-        console.log(user);
-      })
+      .then((user) => {})
       .catch((error: any) => {
         console.log("No authenticated user found, message: " + error.message);
 
@@ -104,7 +147,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 onClick={() => {
                   toggleSidebar();
                 }}
-                className="flex w-10 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center justify-center rounded-xl"
+                className="flex w-9 h-9 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary items-center justify-center rounded-xl"
               >
                 {showFullSidebar ? (
                   <FiChevronsLeft className="text-light-text-secondary dark:text-dark-text-secondary w-5 h-5" />
@@ -115,11 +158,12 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
 
             {/* side menus */}
-            <div className="flex flex-col w-full gap-2 items-center p-3">
+            <div className="flex flex-col w-full gap-5 items-center p-3">
+
               {/* create */}
               <Link
-                href={"/create"}
-                className="flex w-full items-center justify-center cursor-pointer pb-3"
+                href={"/create/styles"}
+                className="flex w-full items-center justify-center cursor-pointer"
               >
                 <button
                   className={clsx(
@@ -137,67 +181,92 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <div className="flex flex-row items-center gap-3">
                     <FiPlus className="h-5 w-5" />
                     {showFullSidebar && (
-                      <span className="flex flex-shrink-0">Create</span>
+                      <span className="flex flex-shrink-0 font-medium">
+                        Create
+                      </span>
                     )}
                   </div>
                 </button>
               </Link>
 
-              {/* home */}
-              <SidebarMenuButton
-                icon={<FiHome className="h-5 w-5" />}
-                label="Home"
-                href="/"
-                isFull={showFullSidebar}
-                isCurrentRoute={pathName === "/"}
-              />
 
-              {/* dashboard */}
-              {/* <SidebarMenuButton
-                  icon={<FiCalendar />}
-                  label="Dashboard"
-                  href="/dashboard"
+              <div className="flex flex-col gap-2">
+                {/* home */}
+                <SidebarMenuButton
+                  icon={<FiHome className="h-5 w-5" />}
+                  label="Home"
+                  href="/"
                   isFull={showFullSidebar}
-                  isNew={true}
+                  isCurrentRoute={pathName === "/"}
+                />
+
+                {/* search */}
+                {/* <SidebarMenuButton
+                  icon={<FiSearch className="h-5 w-5" />}
+                  label="Search"
+                  href="/search"
+                  isFull={showFullSidebar}
+                  isCurrentRoute={pathName === "/search"}
                 /> */}
 
-              {/* subscription */}
-              <SidebarMenuButton
-                icon={<FiFeather className="h-5 w-5" />}
-                label="Following"
-                href="/following"
-                isFull={showFullSidebar}
-                isCurrentRoute={pathName === "/following"}
-              />
+                {/* notifications */}
+                <SidebarMenuButton
+                  icon={<FiBell className="h-5 w-5" />}
+                  label="Notifications"
+                  href="/notifications"
+                  isFull={showFullSidebar}
+                  isCurrentRoute={pathName === "/notifications"}
+                />
 
-              {/* subscription */}
-              <SidebarMenuButton
-                icon={<FiZap className="h-5 w-5" />}
-                label="Subscription"
-                href="/subscription"
-                isFull={showFullSidebar}
-                isNew={true}
-                isCurrentRoute={pathName === "/subscription"}
-              />
+                {/* dashboard */}
+                {/* <SidebarMenuButton
+                    icon={<FiCalendar />}
+                    label="Dashboard"
+                    href="/dashboard"
+                    isFull={showFullSidebar}
+                    isNew={true}
+                  /> */}
 
-              {/* read */}
-              <SidebarMenuButton
-                icon={<FiBookOpen className="h-5 w-5" />}
-                label="Read Sample"
-                href="/6436f3032b67ae01b9c884bb"
-                isFull={showFullSidebar}
-                isNew={true}
-                isCurrentRoute={pathName === "/6436f3032b67ae01b9c884bb"}
-              />
+                {/* subscription */}
+                <SidebarMenuButton
+                  icon={<FiFeather className="h-5 w-5" />}
+                  label="Following"
+                  href="/following"
+                  isFull={showFullSidebar}
+                  isCurrentRoute={pathName === "/following"}
+                />
 
-              {/* create */}
-              {/* <SidebarMenuButton
-                icon={<FiPlus className="h-5 w-5" />}
-                label="Create"
-                href="/create/styles"
-                isFull={showFullSidebar}
-                // isNew={true}
-              /> */}
+                {/* subscription */}
+                <SidebarMenuButton
+                  icon={<FiZap className="h-5 w-5" />}
+                  label="Subscription"
+                  href="/subscription"
+                  isFull={showFullSidebar}
+                  isNew={true}
+                  isCurrentRoute={pathName === "/subscription"}
+                />
+
+                {/* read */}
+                <SidebarMenuButton
+                  icon={<FiBookOpen className="h-5 w-5" />}
+                  label="Read Sample"
+                  href="/read?id=644c1bebdcb40d15e68ca258"
+                  isFull={showFullSidebar}
+                  isNew={true}
+                  isCurrentRoute={pathName === "/read"}
+                />
+
+                {/* create */}
+                {/* <SidebarMenuButton
+                  icon={<FiPlus className="h-5 w-5" />}
+                  label="Create"
+                  href="/create/styles"
+                  isFull={showFullSidebar}
+                  // isNew={true}
+                /> */}
+              </div>
+
+              <Divider />
             </div>
           </div>
         )}
@@ -205,14 +274,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           {/* top navigation bar */}
           {auth?.currentUser && !isCreateRoute && (
             <>
-              <div className="flex flex-row w-full px-6 py-3 items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary dark:bg-opacity-80 backdrop-blur-xl z-50">
+              <div className="flex flex-row w-full px-6 py-[10px] items-center justify-between sticky top-0 bg-light-background-primary dark:bg-dark-background-primary dark:bg-opacity-80 backdrop-blur-xl z-50">
                 {/* arrow left and right */}
                 <div className="flex flex-row gap-3 items-center">
                   <button
                     onClick={() => {
                       router.back();
                     }}
-                    className="flex h-8 w-8 items-center justify-center rounded-full hover:rounded-lg bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
                   >
                     <FiChevronLeft className="w-5 h-5" />
                   </button>
@@ -221,7 +290,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     onClick={() => {
                       router.forward();
                     }}
-                    className="flex h-8 w-8 items-center justify-center rounded-full hover:rounded-lg bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
                   >
                     <FiChevronRight className="w-5 h-5" />
                   </button>
@@ -229,20 +298,107 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                 <div className="flex flex-row gap-3 items-center justify-center">
                   {/* search bar */}
-                  <div className="group flex flex-row gap-3 px-4 items-center w-80 h-8 border border-light-divider dark:border-dark-divider rounded-full bg-light-background-secondary dark:bg-dark-background-secondary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden">
-                    <FiSearch className="text-light-text-secondary dark:text-dark-text-secondary group-focus-within:text-accent" />
-                    <input
-                      type="text"
-                      placeholder="Enter the work, artist, or genre"
-                      className="w-full bg-transparent outline-none placeholder:text-light-text-tertiary placeholder:dark:text-dark-text-tertiary"
-                    />
-                  </div>
+                  {pathName !== "/search" && (
+                    <Combobox
+                      value={selectedSearchResult}
+                      onChange={(result: IUser) => {
+                        if (result.username || result._id) {
+                          router.push(`/${result.username || result._id}`);
+                        }
+
+                        searchInputRef.current?.blur(); // unfocus the text input
+                        setSearchText(""); // clear the search text
+                      }}
+                    >
+                      <div
+                        className={clsx(
+                          "relative group flex flex-row gap-3 px-4 items-center justify-between duration-300 focus-within:w-96 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
+                          { "w-96": searchText.length > 0 },
+                          { "w-80": searchText.length === 0 }
+                        )}
+                      >
+                        <FiSearch
+                          className=" w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0"
+                          width={10}
+                        />
+                        <Combobox.Input
+                          ref={searchInputRef}
+                          as="input"
+                          type="text"
+                          value={searchText}
+                          // displayValue={(result: any) => result?.name}
+                          placeholder="Enter the work, artist, or genre"
+                          className="w-full bg-transparent outline-none placeholder:text-light-text-primary placeholder:dark:text-dark-text-primary placeholder:text-opacity-40 dark:placeholder:text-opacity-40"
+                          autoComplete="off"
+                          onChange={(e: any) => handleInputChange(e)}
+                        />
+
+                        {searchText.length > 0 && (
+                          <button
+                            onClick={() => {
+                              setSearchText("");
+                            }}
+                          >
+                            <HiXCircle className="w-5 h-5 text-accent" />
+                          </button>
+                        )}
+
+                        {/* floating element */}
+                        <Combobox.Options
+                          // static
+                          className={
+                            "flex flex-col absolute top-[calc(100%+5px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-xl overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-2xl"
+                          }
+                        >
+                          {searchResults.map((result: any, index) => (
+                            <Combobox.Option
+                              // as="button"
+                              key={index}
+                              value={result}
+                              onClick={() => {
+                                if (result._id) {
+                                  router.push(`/${result._id}`);
+                                  setSearchText("");
+                                }
+                              }}
+                              className={({ active, selected }) =>
+                                clsx(
+                                  "flex select-none cursor-pointer items-center rounded-md px-4 h-[72px] w-96 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all",
+                                  { "bg-light-background-tertiary dark:bg-dark-background-tertiary": active }
+                                  // { "border-b border-b-light-divider dark:border-dark-divider" : index !== filteredSearchResults.length - 1}
+                                )
+                              }
+                            >
+                              <div className="flex flex-row gap-3 items-center">
+                                <img
+                                  src={result.profile_image_url}
+                                  className="h-10 w-10 rounded-full"
+                                  alt="user profile image"
+                                  onError={(e) => {
+                                    e.currentTarget.src = "/merse-logo.png";
+                                  }}
+                                />
+                                <div className="flex flex-col items-start">
+                                  <span className="leading-tight font-medium">{result.name}</span>
+                                  {result.username && (
+                                    <span className="text-light-text-secondary dark:text-dark-text-secondary leading-tight">
+                                      @{result.username}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </Combobox.Option>
+                          ))}
+                        </Combobox.Options>
+                      </div>
+                    </Combobox>
+                  )}
 
                   <button
                     onClick={() => {
                       toggleColorScheme();
                     }}
-                    className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-8 h-8 items-center justify-center rounded-full hover:rounded-md hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
+                    className="flex flex-row gap-2 text-light-text-primary dark:text-dark-text-primary w-9 h-9 items-center justify-center rounded-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary"
                   >
                     <FiSun className="w-5 h-5" />
                   </button>
@@ -308,9 +464,13 @@ const SidebarMenuButton: React.FC<{
       >
         <div
           className={clsx(
-            "flex flex-row items-center gap-3 font-medium text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100 transition-all duration-300",
+            "flex flex-row items-center gap-3 font-medium text-base text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100 transition-all duration-200",
             { "text-opacity-100 dark:text-opacity-100": isCurrentRoute },
-            { "text-opacity-50 dark:text-opacity-50": !isCurrentRoute },
+            // { "text-opacity-50 dark:text-opacity-50": !isCurrentRoute },
+            {
+              "text-light-text-secondary dark:text-dark-text-secondary group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary":
+                !isCurrentRoute,
+            }
           )}
         >
           {icon}

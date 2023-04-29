@@ -1,9 +1,11 @@
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId, Types } from "mongoose";
 import { Character } from "./character";
+import { IUser } from "./user";
 
 export interface Entry {
   _id: string;
-  user_id: string;
+  author: IUser;
+  // author: mongoose.Types.ObjectId;
   title: string;
   style_reference: StyleReference | null;
   // content: object | null;

@@ -33,7 +33,8 @@ const Spotify = Node.create({
         default: "100%",
       },
       height: {
-        default: "352px",
+        // default: "352px",
+        default: "152px",
       },
     };
   },
@@ -69,7 +70,8 @@ const Spotify = Node.create({
       iframe.className = "w-full";
       // div.className = "w-full ",
       // iframe.width = "100%";
-      iframe.height = "360px";
+      // iframe.height = "360px";
+      iframe.height = "152px";
       iframe.width = node.attrs.width;
       iframe.height = node.attrs.height;
       // iframe.allowFullscreen = true;

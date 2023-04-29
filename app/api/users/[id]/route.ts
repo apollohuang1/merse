@@ -10,9 +10,26 @@ export async function GET(request: NextRequest) {
     const { pathname } = new URL(request.url);
 
     // get the final route from pathname
-    const userId = pathname.split("/").pop(); // userId
+    const usernameOrId = pathname.split("/").pop(); // userId
 
-    const userData = await MDBUser.findById(userId);
+    const query = {
+      $or: [
+        { username: usernameOrId },
+        { _id: usernameOrId }
+      ],
+    };
+
+    const userData = await MDBUser.findOne(query);
+
+    // find user by username or id
+    // const userData = await MDBUser.find({
+    //   $or: [
+    //     { username: usernameOrId },
+    //     { _id: usernameOrId }
+    //   ]
+    // })
+
+    // const userData = await MDBUser.findById(userId);
 
     return NextResponse.json(userData, { status: 200 });
   } catch (error: any) {

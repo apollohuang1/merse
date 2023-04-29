@@ -35,7 +35,8 @@ const Home = (props: Props) => {
         <div className="flex relative w-full h-[60vh] overflow-clip">
           <img
             // src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
-            src={"https://media2.giphy.com/media/l1KVaDmsxFkSfSOSA/giphy.gif?cid=ecf05e473fqbn80ec6al5d6ke8462qs8pgqrmzwv153jlf5k&rid=giphy.gif&ct=g"}
+            // src={"https://media2.giphy.com/media/l1KVaDmsxFkSfSOSA/giphy.gif?cid=ecf05e473fqbn80ec6al5d6ke8462qs8pgqrmzwv153jlf5k&rid=giphy.gif&ct=g"}
+            src={"https://media1.giphy.com/media/110pOfMhZcYRUs/giphy.gif?cid=ecf05e47zm9qc6xnol7dxscitvv53x47c5v3ubi9o69fh345&ep=v1_gifs_related&rid=giphy.gif&ct=g"}
             className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
           />
 
@@ -56,7 +57,7 @@ const Home = (props: Props) => {
               return (
                 <button
                   key={index}
-                  className="flex flex-col items-center gap-2 w-20 min-w-[80px] max-sm:min-w-[64px] max-sm:w-16"
+                  className="group flex flex-col items-center gap-2 w-20 min-w-[80px]"
                   onClick={() => {
                     if (artist._id) {
                       router.push(`/${artist._id}`);
@@ -66,7 +67,7 @@ const Home = (props: Props) => {
                   <img
                     src={artist?.profile_image_url}
                     className={
-                      "w-20 h-20 max-sm:w-16 max-sm:h-16 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full"
+                      "w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full group-hover:scale-105 transition-all duration-300 group-active:scale-100"
                     }
                     alt="profile image"
                   />
@@ -80,12 +81,12 @@ const Home = (props: Props) => {
           </div>
 
           <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.6)] to-transparent w-full items-end justify-end p-6">
-            <div className="flex flex-row gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
+            <div className="flex flex-row gap-2 items-center backdrop-blur-xl pl-3 pr-4 py-2 rounded-full">
               <img
                 src={"https://cdn.myanimelist.net/images/company/21.png"}
-                className="w-6 h-6 object-cover rounded-full border border-light-divider dark:border-dark-divider"
+                className="w-6 h-6 object-cover rounded-full"
               />
-              <span className="text-white">Spirited Away</span>
+              <span className="text-white">The Garden of Words</span>
             </div>
           </div>
         </div>

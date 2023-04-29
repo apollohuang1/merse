@@ -14,7 +14,8 @@ module.exports = {
       // tailwind height
       height: {
         'landingNavigationBar': '42px',
-        'navigationBar': '56px',
+        // 'navigationBar': '56px',
+        'navigationBar': '64px',
         'withoutNavigationBarLanding': 'calc(100vh - 42px)', // change number manually if navigation bar height changes
         'withoutNavigationBar': 'calc(100vh - 56px)', // change number manually if navigation bar height changes
       },
@@ -74,20 +75,22 @@ module.exports = {
           },
           background: {
             // primary: '#000000', // black
-            // primary: "#0E100E", // green satoshi fontshare
-            primary: "#0D0D0D", // 13 13 13 rgb
+            primary: "#0E100E", // green satoshi fontshare
+            // primary: "#0D0D0D", // 13 13 13 rgb
             // primary: "#0E1010", // blue satoshi fontshare
-            // secondary: "#161816", // green satoshi secondary
-            secondary: "#151515",
+            secondary: "#161816", // green satoshi secondary
+            // secondary: "#151515",
+            // secondary: "#171A17", // test
             // secondary: "#121212",
-            tertiary: "#2C2C2C",
+            // tertiary: "#2C2C2C",
+            tertiary: "#232723", // test
             justalittlebitdarkerthan1c1c1e: "#1D1D1F",
           },
           elevated: {},
           text: {
             primary: '#FFFFFF', // white
-            // secondary: '#8D8D92',
-            secondary: '#575F58', // satoshi
+            secondary: '#8D8D92',
+            // secondary: '#575F58', // satoshi
             tertiary: '#47474A',
           },
         }

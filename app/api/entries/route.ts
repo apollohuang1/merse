@@ -10,21 +10,20 @@ export async function GET(request: NextRequest) {
 
     // const get params from fullURL
     const url = new URL(request.url);
-    const id = url.searchParams.get("id");
+    const entryId = url.searchParams.get("id");
     const userId = url.searchParams.get("userId");
 
     if (userId) {
       // fetch all
       const allEntriesFromUser = await MDBEntry.find({
-        user_id: userId,
+        author: userId,
       });
       return NextResponse.json(allEntriesFromUser, { status: 200 });
     }
 
-    if (id) {
-      const oneEntry = await MDBEntry.findOne({
-        _id: id,
-      }).limit(3)
+    if (entryId) {
+      const oneEntry = await MDBEntry.findById(entryId).populate("author");
+
       return NextResponse.json(oneEntry, { status: 200 });
     } 
 
@@ -44,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     const newEntry = new MDBEntry({
       _id: new mongoose.Types.ObjectId(),
-      user_id: body.user_id,
+      author: body.author,
       title: body.title,
       style_reference: body.style_reference,
       content: body.content,
@@ -61,8 +60,6 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(savedEntry, { status: 200 });
   } catch (error: any) {
-    console.log(error);
-    console.log(error?.message);
     return NextResponse.json({ error: error?.message }, { status: 500 });
   }
 }

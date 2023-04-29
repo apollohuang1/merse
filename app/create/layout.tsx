@@ -7,7 +7,7 @@ import Modal from "@/components/modal";
 import useAuth from "@/hooks/useAuth";
 import { Entry } from "@/models/entry";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setUserId } from "@/redux-store/store";
+import { setAuthor } from "@/redux-store/store";
 import { CreateRoute, createRoutes } from "@/util/create-constants";
 import React, { useEffect } from "react";
 
@@ -35,10 +35,11 @@ export default function RootLayout({
   useEffect(() => {
     reloadCurrentLocalUser()
       .then((user: any) => {
-        dispatch(setUserId(user?._id));
+        if (user) {
+          dispatch(setAuthor(user?._id));
+        }
       })
       .catch((err) => {
-        console.log("reloadCurrentLocalUser", err.message);
         // redirect to home/authentication page
         // alert("Please log in to continue");
         // window.location.href = "/";

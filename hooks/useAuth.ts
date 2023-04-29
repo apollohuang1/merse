@@ -26,10 +26,10 @@ const useAuth = () => {
   useEffect(() => {
     reloadCurrentLocalUser()
       .then((user) => {
-        console.log("User reloaded");
+        // console.log("User reloaded");
       })
       .catch((error) => {
-        console.log("No authenticated user found");
+        // console.log("No authenticated user found");
 
         // redirect to login page
         // if current route or path name is not /, then redirect to pathname and don't use router
@@ -214,6 +214,7 @@ const useAuth = () => {
     setShowLoginModal,
     isLoadingCurrentUser,
     showSplashScreen,
+    setShowSplashScreen,
     reloadCurrentLocalUser,
     logOut,
     fetchCurrentUser,

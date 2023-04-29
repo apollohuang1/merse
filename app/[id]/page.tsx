@@ -1,10 +1,12 @@
 "use client";
 
+import Divider from "@/components/divider";
 import SlideOver from "@/components/slide-over";
 import { Entry } from "@/models/entry";
 import { useAppSelector } from "@/redux-store/hooks";
 import { getImageURLfromBase64 } from "@/util/helper";
 import axios from "axios";
+import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
@@ -16,7 +18,13 @@ const ProfilePage = (props: Props) => {
     // fetchAllEntries();
 
     // fetch user
-    fetchUser();
+    fetchUser()
+    .then((user: any) => {
+      fetchAllEntries(user._id);
+    })
+    .catch((error: any) => {
+      // console.log("Failed to fetch user, message: ", error.message);
+    });
   }, []);
 
   const router = useRouter();
@@ -28,6 +36,7 @@ const ProfilePage = (props: Props) => {
 
   const [editingBannerURL, setEditingBannerURL] = useState<string>("");
   const [editingProfileURL, setEditingProfileURL] = useState<string>("");
+  const [editingUsername, setEditingUsername] = useState<string>("");
   const [editingName, setEditingName] = useState<string>("");
   const [editingBio, setEditingBio] = useState<string>("");
 
@@ -39,16 +48,20 @@ const ProfilePage = (props: Props) => {
   const pathname = usePathname();
 
   const fetchUser = async () => {
-    try {
-      const id = pathname;
-      if (!id) return;
-      const userId = id.split("/")[1];
-      const response = await axios.get(`/api/users/${userId}`);
-      setUser(response.data);
-      await fetchAllEntries(response.data._id);
-    } catch (error: any) {
-      console.log("Failed to fetch user, message: ", error.message);
-    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        // const id = pathname;
+        if (!pathname) return;
+        const usernameOrId = pathname.split("/")[1];
+        const response = await axios.get(`/api/users/${usernameOrId}`);
+        setUser(response.data);
+        // await fetchAllEntries(response.data._id);
+        resolve(response.data);
+      } catch (error: any) {
+        console.log("Failed to fetch user, message: ", error.message);
+        window.location.href = "/";
+      }
+    })
   };
 
   const fetchAllEntries = async (user_id: string) => {
@@ -71,20 +84,27 @@ const ProfilePage = (props: Props) => {
           _id: user._id,
           banner_image_url: editingBannerURL,
           profile_image_url: editingProfileURL,
+          username: editingUsername,
           name: editingName,
           bio: editingBio,
         },
       });
-      setUser(response.data);
+      await fetchUser();
+      // setUser(response.data);
       setShowProfileEditModal(false);
     } catch (error: any) {
+      if (error.response.data.error === "Username already exists") {
+        alert("Username already exists");
+        return;
+      }
+
       console.log("Failed to update profile, message: ", error.message);
     }
   };
 
   return (
     <>
-      <div className="flex flex-col w-full items-center overflow-auto">
+      <div className="flex flex-col w-full items-center">
         {/* banner */}
         <div className="flex w-full h-[30vh] bg-light-background-secondary dark:bg-dark-background-secondary flex-shrink-0">
           {user?.banner_image_url ? (
@@ -108,31 +128,57 @@ const ProfilePage = (props: Props) => {
                     <img
                       src={user?.profile_image_url}
                       className="w-full h-full object-cover"
+                      onError={(e: any) => {
+                        e.currentTarget.src = "/merse-logo.png";
+                      }}
                     />
                   ) : (
                     <div className="w-32 h-32 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary" />
                   )}
                 </div>
 
-                {auth?.currentUser?._id === user?._id && (
+
+                { user &&
                   <button
                     onClick={() => {
-                      setEditingProfileURL(user?.profile_image_url);
-                      setEditingBannerURL(user?.banner_image_url);
-                      setEditingName(user?.name);
-                      setEditingBio(user?.bio);
-                      setShowProfileEditModal(true);
+                      if (auth?.currentUser?._id !== user?._id) {
+                        // follow
+                        alert("//to do: follow");
+                      } else {
+                        setEditingProfileURL(user?.profile_image_url);
+                        setEditingBannerURL(user?.banner_image_url);
+                        setEditingUsername(user?.username);
+                        setEditingName(user?.name);
+                        setEditingBio(user?.bio);
+                        setShowProfileEditModal(true);
+                      }
+
                     }}
-                    className="h-10 px-4 font-medium rounded-full border border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                    className={clsx(
+                      "h-10 w-28 font-medium rounded-full border border-light-divider dark:border-dark-divider",
+                      { "text-dark-text-primary dark:text-light-text-primary bg-light-text-primary dark:bg-dark-text-primary": auth?.currentUser?._id !== user?._id },
+                      { "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary": auth?.currentUser?._id === user?._id }
+                    )}
                   >
-                    Edit Profile
+                    { auth?.currentUser?._id === user?._id ? "Edit Profile" : "Follow"}
                   </button>
-                )}
+                }
               </div>
 
               <div className="flex flex-col gap-2">
-                {/* name */}
-                <span className="text-2xl font-bold">{user?.name}</span>
+                <div className="flex flex-col">
+                  {/* name */}
+                  <span className="text-2xl font-bold leading-tight">
+                    {user?.name}
+                  </span>
+
+                  {/* username */}
+                  {user?.username && (
+                    <span className="text-light-text-secondary dark:text-dark-text-secondary leading-tight">
+                      @{user?.username}
+                    </span>
+                  )}
+                </div>
 
                 <p className="max-w-sm font-normal">
                   {user?.bio ??
@@ -140,6 +186,8 @@ const ProfilePage = (props: Props) => {
                 </p>
               </div>
             </div>
+
+            <Divider />
 
             <div className="grid grid-cols-3 gap-3 max-lg:grid-cols-2 w-full">
               {isFetchingEntries ? (
@@ -305,6 +353,28 @@ const ProfilePage = (props: Props) => {
                   placeholder="Enter profile image URL"
                   onChange={(e) => {
                     setEditingProfileURL(e.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="name"
+                  className="flex text-sm font-medium leading-6"
+                >
+                  Username
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  enterKeyHint="next"
+                  className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                  value={editingUsername ?? ""}
+                  placeholder="Enter your name"
+                  onChange={(e) => {
+                    setEditingUsername(e.target.value);
                   }}
                 />
               </div>
