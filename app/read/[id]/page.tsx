@@ -3,7 +3,7 @@
 import axios from "axios";
 import React, { useEffect, useMemo } from "react";
 
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { JSONContent, generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -22,6 +22,9 @@ const ReadPage = (props: Props) => {
   // states
   const [entryData, setEntryData] = React.useState<Entry | null>(null);
 
+  const pathname = usePathname();
+
+
   useEffect(() => {
     fetchEntry();
   }, []);
@@ -29,7 +32,11 @@ const ReadPage = (props: Props) => {
   const fetchEntry = async () => {
     try {
 
-      const entryId = getLastIdFromUrl(window.location.href);
+      if (!pathname) {
+        throw new Error("Failed to get pathname");
+      };
+
+      const entryId = pathname.split("/")[2];
 
       console.log("entryId: ", entryId);
       const response = await axios({

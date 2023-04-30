@@ -293,12 +293,12 @@ const ProfilePage = (props: Props) => {
                       Followers
                     </span>
                   </span>
-                  <span>
+                  {/* <span>
                     {user?.followings?.length}{" "}
                     <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">
                       Following
                     </span>
-                  </span>
+                  </span> */}
                 </div>
 
                 <p className="max-w-sm font-normal">
