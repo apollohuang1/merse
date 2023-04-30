@@ -12,7 +12,7 @@ import { Entry } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
 import Image from "@tiptap/extension-image";
 import HardBreak from "@tiptap/extension-hard-break";
-import { getFormattedDateFromMongoDBDate } from "@/util/helper";
+import { getFormattedDateFromMongoDBDate, getLastIdFromUrl } from "@/util/helper";
 
 type Props = {};
 
@@ -28,7 +28,9 @@ const ReadPage = (props: Props) => {
 
   const fetchEntry = async () => {
     try {
-      const entryId = searchParams?.get("id");
+      const entryId = getLastIdFromUrl(window.location.href);
+
+      console.log("entryId: ", entryId);
       const response = await axios({
         method: "GET",
         url: `/api/entries?id=${entryId}`,

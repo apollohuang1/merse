@@ -255,8 +255,6 @@ const ProfilePage = (props: Props) => {
                 )}
               </div>
 
-              <span>{followingState}</span>
-
               <div className="flex flex-col gap-3">
                 <div className="flex flex-col">
                   {/* name */}
@@ -312,7 +310,7 @@ const ProfilePage = (props: Props) => {
                     <button
                       key={index}
                       onClick={() => {
-                        router.push(`/read?id=${entry._id}`);
+                        router.push(`/read/${entry._id}`);
                       }}
                       className="flex flex-col w-full items-center justify-between bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-md overflow-clip"
                     >
