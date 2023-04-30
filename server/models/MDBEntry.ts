@@ -26,6 +26,7 @@ const EntrySchema = new mongoose.Schema({
   cover: { type: Object, required: true },
   created_at: { type: Date, required: false },
   updated_at: { type: Date, required: false },
+  likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   // published_at: { type: Date, required: true },
   // is_published: { type: Boolean, required: true },
   // is_deleted: { type: Boolean, required: true },

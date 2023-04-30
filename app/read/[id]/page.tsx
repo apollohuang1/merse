@@ -12,7 +12,12 @@ import { Entry } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
 import Image from "@tiptap/extension-image";
 import HardBreak from "@tiptap/extension-hard-break";
-import { getFormattedDateFromMongoDBDate, getLastIdFromUrl } from "@/util/helper";
+import {
+  getFormattedDateFromMongoDBDate,
+  getLastIdFromUrl,
+} from "@/util/helper";
+import { FiHeart } from "react-icons/fi";
+import clsx from "clsx";
 
 type Props = {};
 
@@ -21,20 +26,20 @@ const ReadPage = (props: Props) => {
 
   // states
   const [entryData, setEntryData] = React.useState<Entry | null>(null);
+  const [isLiked, setIsLiked] = React.useState<boolean>(false);
 
   const pathname = usePathname();
-
 
   useEffect(() => {
     fetchEntry();
   }, []);
 
+
   const fetchEntry = async () => {
     try {
-
       if (!pathname) {
         throw new Error("Failed to get pathname");
-      };
+      }
 
       const entryId = pathname.split("/")[2];
 
@@ -59,25 +64,43 @@ const ReadPage = (props: Props) => {
   return (
     <div className="flex flex-col w-full h-full items-center p-6">
       <div className="flex flex-col w-full h-full items-center max-w-3xl gap-6">
-
         {/* author profile */}
 
-        { entryData?.author &&
-          <div className="flex flex-row gap-4 w-full justify-start">
+        {entryData?.author && (
+          <div className="flex flex-row items-center justify-between w-full">
+            <div className="flex flex-row gap-4 w-full justify-start">
+              <img
+                src={entryData?.author?.profile_image_url}
+                alt="author profile image"
+                className="w-12 h-12 rounded-full object-cover"
+              />
 
-            <img 
-              src={entryData?.author?.profile_image_url}
-              alt="author profile image"
-              className="w-12 h-12 rounded-full object-cover"
-            />
-
-            <div className="flex flex-col">
-              <span className="font-medium">{entryData?.author?.name as string}</span>
-              <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">{`Created at ${getFormattedDateFromMongoDBDate(entryData?.created_at)}`}</span>
+              <div className="flex flex-col">
+                <span className="font-medium">
+                  {entryData?.author?.name as string}
+                </span>
+                <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">{`Created at ${getFormattedDateFromMongoDBDate(
+                  entryData?.created_at
+                )}`}</span>
+              </div>
             </div>
 
+            <button
+              onClick={() => {
+                console.log("clicked");
+                setIsLiked(!isLiked);
+              }}
+            >
+              <FiHeart
+                className={clsx(
+                  "w-6 h-6 transition-all hover:scale-105 active:scale-100",
+                  { "text-light-text-secondary dark:text-dark-text-secondary fill-transparent": !isLiked },
+                  { "fill-light-red dark:fill-dark-red text-light-red dark:text-dark-red": isLiked }
+                )}
+              />
+            </button>
           </div>
-        }
+        )}
 
         {output && (
           // <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
