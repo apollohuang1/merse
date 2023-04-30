@@ -9,7 +9,7 @@ export interface Entry {
   // author: mongoose.Types.ObjectId;
   title: string;
   style_reference: StyleReference | null;
-  // content: object | null;
+// content: object | null;
   content: string | null;
   characters: Character[];
   // storyboard: object | null;

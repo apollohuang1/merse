@@ -3,6 +3,7 @@
 import Divider from "@/components/divider";
 import SlideOver from "@/components/slide-over";
 import { Entry } from "@/models/entry";
+import { User } from "@/models/user";
 import { useAppSelector } from "@/redux-store/hooks";
 import { getImageURLfromBase64 } from "@/util/helper";
 import axios from "axios";
@@ -19,19 +20,19 @@ const ProfilePage = (props: Props) => {
 
     // fetch user
     fetchUser()
-    .then((user: any) => {
-      fetchAllEntries(user._id);
-    })
-    .catch((error: any) => {
-      // console.log("Failed to fetch user, message: ", error.message);
-    });
+      .then((user: any) => {
+        fetchAllEntries(user._id);
+      })
+      .catch((error: any) => {
+        // console.log("Failed to fetch user, message: ", error.message);
+      });
   }, []);
 
   const router = useRouter();
 
   const auth = useAppSelector((state) => state.auth);
 
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [allEntries, setAllEntries] = useState<Entry[]>([]);
 
   const [editingBannerURL, setEditingBannerURL] = useState<string>("");
@@ -40,12 +41,76 @@ const ProfilePage = (props: Props) => {
   const [editingName, setEditingName] = useState<string>("");
   const [editingBio, setEditingBio] = useState<string>("");
 
+  const enum FollowingState {
+    FOLLOWING = "following",
+    NOT_FOLLOWING = "not-following",
+    SELF = "self",
+    UNKNOWN = "unknown",
+  }
+
+  const [followingState, setFollowingState] = useState<FollowingState>(
+    FollowingState.UNKNOWN
+  );
+
   const [isFetchingEntries, setIsFetchingEntries] = useState<boolean>(false);
 
   const [showProfileEditModal, setShowProfileEditModal] =
     useState<boolean>(false);
 
   const pathname = usePathname();
+
+  // async function followUser(userId, targetUserId) {
+  //   const user = await User.findById(userId);
+  //   const targetUser = await User.findById(targetUserId);
+
+  //   if (!user.followings.includes(targetUserId)) {
+  //     user.followings.push(targetUserId);
+  //     targetUser.followers.push(userId);
+
+  //     await user.save();
+  //     await targetUser.save();
+  //   }
+  // }
+
+  async function followUser(targetUserId: string) {
+    try {
+      const response = await axios({
+        method: "POST",
+        url: `/api/users/follow`,
+        data: {
+          action: "follow",
+          userId: auth?.currentUser?._id,
+          targetUserId: targetUserId,
+        },
+      });
+
+      setFollowingState(FollowingState.FOLLOWING);
+
+      console.log("response: ", response.data);
+    } catch (error: any) {
+      console.log("Failed to follow user, message: ", error.message);
+    }
+  }
+
+  const unfollowUser = async (targetUserId: string) => {
+    try {
+      const response = await axios({
+        method: "POST",
+        url: `/api/users/follow`,
+        data: {
+          action: "unfollow",
+          userId: auth?.currentUser?._id,
+          targetUserId: targetUserId,
+        },
+      });
+
+      setFollowingState(FollowingState.NOT_FOLLOWING);
+
+      console.log("response: ", response.data);
+    } catch (error: any) {
+      console.log("Failed to unfollow user, message: ", error.message);
+    }
+  };
 
   const fetchUser = async () => {
     return new Promise(async (resolve, reject) => {
@@ -55,13 +120,25 @@ const ProfilePage = (props: Props) => {
         const usernameOrId = pathname.split("/")[1];
         const response = await axios.get(`/api/users/${usernameOrId}`);
         setUser(response.data);
+        console.log("user: ", response.data);
+
+        if (response.data._id === auth?.currentUser?._id) {
+          setFollowingState(FollowingState.SELF);
+        } else {
+          if (response.data.followers.includes(auth?.currentUser?._id)) {
+            setFollowingState(FollowingState.FOLLOWING);
+          } else {
+            setFollowingState(FollowingState.NOT_FOLLOWING);
+          }
+        }
+
         // await fetchAllEntries(response.data._id);
         resolve(response.data);
       } catch (error: any) {
         console.log("Failed to fetch user, message: ", error.message);
         window.location.href = "/";
       }
-    })
+    });
   };
 
   const fetchAllEntries = async (user_id: string) => {
@@ -81,7 +158,7 @@ const ProfilePage = (props: Props) => {
         method: "PUT",
         url: `/api/users`,
         data: {
-          _id: user._id,
+          _id: user?._id,
           banner_image_url: editingBannerURL,
           profile_image_url: editingProfileURL,
           username: editingUsername,
@@ -137,35 +214,50 @@ const ProfilePage = (props: Props) => {
                   )}
                 </div>
 
-
-                { user &&
+                {user && (
                   <button
                     onClick={() => {
-                      if (auth?.currentUser?._id !== user?._id) {
-                        // follow
-                        alert("//to do: follow");
-                      } else {
-                        setEditingProfileURL(user?.profile_image_url);
-                        setEditingBannerURL(user?.banner_image_url);
-                        setEditingUsername(user?.username);
-                        setEditingName(user?.name);
-                        setEditingBio(user?.bio);
-                        setShowProfileEditModal(true);
+                      switch (followingState) {
+                        case FollowingState.NOT_FOLLOWING:
+                          followUser(user?._id);
+                          break;
+                        case FollowingState.FOLLOWING:
+                          unfollowUser(user?._id);
+                          break;
+                        case FollowingState.SELF:
+                          setEditingProfileURL(user?.profile_image_url);
+                          setEditingBannerURL(user?.banner_image_url);
+                          setEditingUsername(user?.username);
+                          setEditingName(user?.name);
+                          setEditingBio(user?.bio);
+                          setShowProfileEditModal(true);
+                          break;
                       }
-
                     }}
                     className={clsx(
                       "h-10 w-28 font-medium rounded-full border border-light-divider dark:border-dark-divider",
-                      { "text-dark-text-primary dark:text-light-text-primary bg-light-text-primary dark:bg-dark-text-primary": auth?.currentUser?._id !== user?._id },
-                      { "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary": auth?.currentUser?._id === user?._id }
+                      {
+                        "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary":
+                          followingState === FollowingState.SELF,
+                      }, // self
+                      {
+                        "text-dark-text-primary dark:text-light-text-primary bg-light-text-primary dark:bg-dark-text-primary":
+                          followingState === FollowingState.NOT_FOLLOWING,
+                      }, // not self
+                      { "": followingState === FollowingState.FOLLOWING } // following
                     )}
                   >
-                    { auth?.currentUser?._id === user?._id ? "Edit Profile" : "Follow"}
+                    {followingState === FollowingState.FOLLOWING && "Following"}
+                    {followingState === FollowingState.NOT_FOLLOWING &&
+                      "Follow"}
+                    {followingState === FollowingState.SELF && "Edit Profile"}
                   </button>
-                }
+                )}
               </div>
 
-              <div className="flex flex-col gap-2">
+              <span>{followingState}</span>
+
+              <div className="flex flex-col gap-3">
                 <div className="flex flex-col">
                   {/* name */}
                   <span className="text-2xl font-bold leading-tight">
@@ -174,10 +266,25 @@ const ProfilePage = (props: Props) => {
 
                   {/* username */}
                   {user?.username && (
-                    <span className="text-light-text-secondary dark:text-dark-text-secondary leading-tight">
+                    <span className="text-light-text-secondary dark:text-dark-text-secondary leading-snug">
                       @{user?.username}
                     </span>
                   )}
+                </div>
+
+                <div className="flex flex-row gap-3">
+                  <span>
+                    {user?.followers?.length}{" "}
+                    <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">
+                      Followers
+                    </span>
+                  </span>
+                  <span>
+                    {user?.followings?.length}{" "}
+                    <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">
+                      Following
+                    </span>
+                  </span>
                 </div>
 
                 <p className="max-w-sm font-normal">

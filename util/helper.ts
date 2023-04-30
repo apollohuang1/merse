@@ -22,3 +22,7 @@ export const getFormattedDateFromMongoDBDate = (date: Date | undefined) => {
     day: "numeric",
   });
 }
+
+export const getLastIdFromUrl = (url: string) => {
+  return new URL(url).pathname.split("/").pop();
+}

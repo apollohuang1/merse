@@ -8,6 +8,8 @@ export interface User {
   bio: string;
   profile_image_url: string;
   banner_image_url: string;
+  followers: mongoose.Types.ObjectId[];
+  followings: mongoose.Types.ObjectId[];
   stripe_customer_id: string;
   stripe_subscription_id: string;
   stripe_customer_email: string;

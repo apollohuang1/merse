@@ -1,16 +1,15 @@
 import MDBUser from "@/server/models/MDBUser";
 import dbConnect from "@/server/utils/dbConnect";
+import { getLastIdFromUrl } from "@/util/helper";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
 
     await dbConnect();
-
-    const { pathname } = new URL(request.url);
-
+    
     // get the final route from pathname
-    const usernameOrId = pathname.split("/").pop(); // userId
+    const usernameOrId = getLastIdFromUrl(request.url);
 
     const query = {
       $or: [
