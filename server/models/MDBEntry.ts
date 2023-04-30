@@ -10,7 +10,7 @@ const SceneSchema = new mongoose.Schema<Scene>({
 });
 
 
-const EntrySchema = new mongoose.Schema<Entry>({
+const EntrySchema = new mongoose.Schema({
   _id: { type: String, required: true },
   author: {
     type: Schema.Types.ObjectId,

@@ -1,6 +1,7 @@
 
 import { Character } from '@/models/character'
 import { Entry, Scene } from '@/models/entry'
+import { User } from '@/models/user'
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
 import mongoose, { Types } from 'mongoose'
@@ -8,7 +9,7 @@ import { ObjectId } from 'mongoose'
 
 const initialState: Entry = {
   _id: "",
-  author: new Types.ObjectId(),
+  author: null,
   title: "",
   style_reference: null,
   content: null,
@@ -21,7 +22,7 @@ const entrySlice = createSlice({
   name: 'entry',
   initialState: initialState,
   reducers: {
-    setAuthor: (state: Entry, action: PayloadAction<Types.ObjectId>) => {
+    setAuthor: (state: Entry, action: PayloadAction<User>) => {
       state.author = action.payload
     },
     setStyle: (state: Entry, action) => {

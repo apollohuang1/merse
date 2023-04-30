@@ -1,7 +1,7 @@
-import { IUser } from "@/models/user";
+import { User } from "@/models/user";
 import mongoose, { Schema, SchemaType } from "mongoose";
 
-const UserSchema = new mongoose.Schema<IUser>({
+const UserSchema = new mongoose.Schema<User>({
   _id: { type: String, required: true },
   username: { type: String, required: false },
   name: { type: String, required: true },

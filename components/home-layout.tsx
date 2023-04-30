@@ -31,7 +31,7 @@ import { sampleArtists } from "@/util/home-constant";
 import { HiXCircle } from "react-icons/hi";
 import { debounce } from "lodash";
 import axios from "axios";
-import { IUser } from "@/models/user";
+import { User } from "@/models/user";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref
@@ -301,7 +301,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   {pathName !== "/search" && (
                     <Combobox
                       value={selectedSearchResult}
-                      onChange={(result: IUser) => {
+                      onChange={(result: User) => {
                         if (result.username || result._id) {
                           router.push(`/${result.username || result._id}`);
                         }

@@ -62,7 +62,7 @@ const ReadPage = (props: Props) => {
             />
 
             <div className="flex flex-col">
-              <span className="font-medium">{entryData?.author?.name}</span>
+              <span className="font-medium">{entryData?.author?.name as string}</span>
               <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">{`Created at ${getFormattedDateFromMongoDBDate(entryData?.created_at)}`}</span>
             </div>
 
