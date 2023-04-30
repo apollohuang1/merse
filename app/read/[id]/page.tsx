@@ -28,6 +28,7 @@ const ReadPage = (props: Props) => {
 
   const fetchEntry = async () => {
     try {
+
       const entryId = getLastIdFromUrl(window.location.href);
 
       console.log("entryId: ", entryId);

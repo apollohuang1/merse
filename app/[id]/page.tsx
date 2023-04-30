@@ -86,7 +86,14 @@ const ProfilePage = (props: Props) => {
 
       setFollowingState(FollowingState.FOLLOWING);
 
-      console.log("response: ", response.data);
+      // set displayed user follower count
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser;
+        return {
+          ...prevUser,
+          followers: [...prevUser.followers, auth?.currentUser?._id],
+        };
+      });
     } catch (error: any) {
       console.log("Failed to follow user, message: ", error.message);
     }
@@ -106,7 +113,16 @@ const ProfilePage = (props: Props) => {
 
       setFollowingState(FollowingState.NOT_FOLLOWING);
 
-      console.log("response: ", response.data);
+      // set displayed user follower count
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser;
+        return {
+          ...prevUser,
+          followers: prevUser.followers.filter(
+            (follower) => follower !== auth?.currentUser?._id
+          ),
+        };
+      });
     } catch (error: any) {
       console.log("Failed to unfollow user, message: ", error.message);
     }
