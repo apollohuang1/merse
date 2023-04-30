@@ -33,11 +33,12 @@ import { Spinner } from "@chakra-ui/react";
 import clsx from "clsx";
 import Modal from "@/components/modal";
 import Placeholder from "@tiptap/extension-placeholder";
-import { createRoutes, storyboardSamples } from "@/util/create-constants";
+import { StoryboardSample, createRoutes, storyboardSamples } from "@/util/create-constants";
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
   setContent,
+  setScenes,
   setShowGeneratedStoryboard,
   setTitle,
 } from "@/redux-store/store";
@@ -167,23 +168,38 @@ const Storyboard = (props: Props) => {
                   Check html
                 </button> */}
 
-                {entryHelper.isGeneratingStoryboard ? (
-                  <div className="flex flex-row gap-2 items-center h-8">
-                    <Spinner speed={"0.8s"} className="w-4 h-4" />
-                    <span className="text-sm">Generating...</span>
-                  </div>
-                ) : (
+                <div className="flex flex-row gap-2">
                   <div className="flex flex-row gap-2 items-center h-8">
                     <button
                       className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
                       onClick={() => {
-                        generateStoryboard(editor);
+                        // generateStoryboard(editor);
+                        dispatch(setScenes(storyboardSamples));
+                        dispatch(setShowGeneratedStoryboard(true));
                       }}
                     >
-                      Generate
+                      Puuung samples (test)
                     </button>
                   </div>
-                )}
+
+                  {entryHelper.isGeneratingStoryboard ? (
+                    <div className="flex flex-row gap-2 items-center h-8">
+                      <Spinner speed={"0.8s"} className="w-4 h-4" />
+                      <span className="text-sm">Generating...</span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-row gap-2 items-center h-8">
+                      <button
+                        className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
+                        onClick={() => {
+                          generateStoryboard(editor);
+                        }}
+                      >
+                        Generate
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* title and editor */}
@@ -284,7 +300,7 @@ const Storyboard = (props: Props) => {
             )}
           >
             <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">
-              {entry?.scenes.map((scene: Scene, index: number) => (
+              {entry?.scenes.map((scene: Scene & StoryboardSample, index: number) => (
                 <div
                   key={index}
                   className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
@@ -295,7 +311,7 @@ const Storyboard = (props: Props) => {
                   </div> */}
 
                   <img
-                    src={"data:image/png;base64," + scene.image_base64}
+                    src={scene?.image_base64 ?  ("data:image/png;base64," + scene.image_base64) : scene.artwork.url}
                     alt="comic book cover"
                     className="object-cover aspect-[4/3]"
                   />

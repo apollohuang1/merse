@@ -46,6 +46,9 @@ const entrySlice = createSlice({
     setContent: (state: Entry, action) => {
       state.content = action.payload
     },
+    setScenes: (state: Entry, action) => {
+      state.scenes = action.payload
+    },
     addScene: (state: Entry, action: PayloadAction<Scene>) => {
       // add scene to storyboard
       state.scenes.push(action.payload)
@@ -99,7 +102,7 @@ export const store: ToolkitStore = configureStore({
 
 // actions
 export const { setCurrentUser } = authenticationSlice.actions;
-export const { setAuthor, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, addScene } = entrySlice.actions;
+export const { setAuthor, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, setScenes, addScene } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard, setIsGeneratingStoryboard } = entryHelperSlice.actions;
 
 

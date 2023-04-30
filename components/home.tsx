@@ -12,7 +12,7 @@ import {
   FiSun,
 } from "react-icons/fi";
 import MerseLogo from "./svgs/merse-logo";
-import useColorScheme from "@/hooks/useColorScheme"
+import useColorScheme from "@/hooks/useColorScheme";
 import { sampleArtists } from "@/util/home-constant";
 import { storyboardSamples } from "@/util/create-constants";
 import { useRouter } from "next/navigation";
@@ -28,7 +28,6 @@ const Home = (props: Props) => {
 
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
-
       {/* main content */}
       <div className="flex flex-col w-full h-full gap-6 max-sm:gap-3 items-center">
         {/* promoted banner */}
@@ -36,7 +35,9 @@ const Home = (props: Props) => {
           <img
             // src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
             // src={"https://media2.giphy.com/media/l1KVaDmsxFkSfSOSA/giphy.gif?cid=ecf05e473fqbn80ec6al5d6ke8462qs8pgqrmzwv153jlf5k&rid=giphy.gif&ct=g"}
-            src={"https://media1.giphy.com/media/110pOfMhZcYRUs/giphy.gif?cid=ecf05e47zm9qc6xnol7dxscitvv53x47c5v3ubi9o69fh345&ep=v1_gifs_related&rid=giphy.gif&ct=g"}
+            src={
+              "https://media1.giphy.com/media/110pOfMhZcYRUs/giphy.gif?cid=ecf05e47zm9qc6xnol7dxscitvv53x47c5v3ubi9o69fh345&ep=v1_gifs_related&rid=giphy.gif&ct=g"
+            }
             className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
           />
 
@@ -92,12 +93,12 @@ const Home = (props: Props) => {
         </div>
 
         <div className="flex flex-row w-full gap-6 max-sm:gap-3 items-center justify-between overflow-auto max-sm:px-3 px-6">
-          {storyboardSamples.map((artist, index) => {
+          {storyboardSamples.map((scene: any, index: number) => {
             return (
               <div key={index}>
                 <button className="relative aspect-video min-w-[18vw] h-[24vh] max-lg:min-w-[15vw] max-lg:h-[20vh] max-md:min-w-[12vw] max-md:h-[16vh] rounded-lg overflow-clip">
                   <img
-                    src={artist?.artwork.url}
+                    src={scene?.artwork.url}
                     className="inset-0 w-full h-full object-cover"
                   />
 
@@ -111,7 +112,7 @@ const Home = (props: Props) => {
                       Episode {index + 1}
                     </span>
                     <span className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-2 w-5/6">
-                      {artist.description}
+                      {scene.text}
                     </span>
                   </div>
 

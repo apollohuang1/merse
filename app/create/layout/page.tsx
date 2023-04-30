@@ -31,7 +31,7 @@ import { Spinner } from "@chakra-ui/react";
 import clsx from "clsx";
 import Modal from "@/components/modal";
 import Placeholder from "@tiptap/extension-placeholder";
-import { createRoutes, storyboardSamples } from "@/util/create-constants";
+import { StoryboardSample, createRoutes, storyboardSamples } from "@/util/create-constants";
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
@@ -51,9 +51,12 @@ const LayoutPage = (props: Props) => {
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const dispatch = useAppDispatch();
 
-  const [showAddingImageModal, setShowAddingImageModal] = React.useState<boolean>(false);
+  const [showAddingImageModal, setShowAddingImageModal] =
+    React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
-  const [expandedStoryboardIndex, setExpandedStoryboardIndex] = React.useState<number | null>(null);
+  const [expandedStoryboardIndex, setExpandedStoryboardIndex] = React.useState<
+    number | null
+  >(null);
 
   const editor = useEditor({
     extensions: [
@@ -101,12 +104,14 @@ const LayoutPage = (props: Props) => {
     return {
       backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))`,
       backgroundSize: "100% 25%",
-      backgroundRepeat: "no-repeat"
+      backgroundRepeat: "no-repeat",
     };
-  };  
+  };
 
   const handleToggleStoryboard = (index: number) => {
-    setExpandedStoryboardIndex(expandedStoryboardIndex === index ? null : index);
+    setExpandedStoryboardIndex(
+      expandedStoryboardIndex === index ? null : index
+    );
   };
 
   return (
@@ -114,7 +119,7 @@ const LayoutPage = (props: Props) => {
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
         <CreateHeader currentRoute={createRoutes[3]} />
-  
+
         {/* main content (left and right panels columns) */}
         <div
           className={clsx(
@@ -131,42 +136,39 @@ const LayoutPage = (props: Props) => {
               { "w-[400px]": entryHelper.showGeneratedStoryboard }
             )}
           >
-          <div className="flex flex-col w-full h-full justify-start">
+            <div className="flex flex-col w-full h-full justify-start">
+              <div className="flex flex-col w-full gap-4 items-center">
+                {entry?.scenes.map((scene: Scene & StoryboardSample, index: number) => (
+                  <div key={index} className="w-full flex justify-center">
+                    <div
+                      key={index}
+                      className="group relative flex flex-col w-full max-w-[400px] mx-auto bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto mb-4 fade-top cursor-pointer"
+                      onClick={() => handleToggleStoryboard(index)}
+                    >
+                      <img
+                        src={scene?.image_base64 ? ("data:image/png;base64," + scene.image_base64) : scene.artwork.url}
+                        alt="comic book cover"
+                        className="object-cover aspect-[4/3] relative fade-top"
+                        style={createFadeTopStyle()}
+                      />
 
-            <div className="flex flex-col w-full gap-4 items-center">
-              {
-                entry?.scenes.map((scene: Scene, index: number) => (
-                  <div className="w-full flex justify-center">
-                  <div
-                    key={index}
-                    className="group relative flex flex-col w-full max-w-[400px] mx-auto bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto mb-4 fade-top cursor-pointer"
-                    onClick={() => handleToggleStoryboard(index)}
-                  >
-                  <img
-                    src={"data:image/png;base64," + scene.image_base64 }
-                    alt="comic book cover"
-                    className="object-cover aspect-[4/3] relative fade-top"
-                    style={createFadeTopStyle()}
-                  />
-  
-                  {/* story line in storyboard */}
-                  {expandedStoryboardIndex === index && (
-                    <div className="flex p-4">
-                      <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                        {scene.text}
-                      </p>
+                      {/* story line in storyboard */}
+                      {expandedStoryboardIndex === index && (
+                        <div className="flex p-4">
+                          <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
+                            {scene.text}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                </div>
-                ))
-              }
-            </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-  
+
       <style jsx>{`
         .fade-top::before {
           content: "";
@@ -175,10 +177,14 @@ const LayoutPage = (props: Props) => {
           left: 0;
           right: 0;
           height: 25%;
-          background-image: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+          background-image: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 1),
+            rgba(255, 255, 255, 0)
+          );
           z-index: 1;
-        }`
-        }</style>
+        }
+      `}</style>
 
       <Modal
         isOpen={showAddingImageModal}
