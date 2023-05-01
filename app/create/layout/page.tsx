@@ -43,7 +43,9 @@ import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 import { Scene } from "@/models/entry";
 
-type Props = {};
+type Props = {
+  diaryTexts: string[];
+};
 
 const LayoutPage = (props: Props) => {
   // redux states

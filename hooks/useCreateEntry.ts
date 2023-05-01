@@ -83,11 +83,19 @@ const useCreateEntry = () => {
         startGeneratingStoryboard();
         const editorJSON = editor.getJSON();
         const textContent = convertTiptapJSONToText(editorJSON);
-        await createChatCompletion(textContent);
-        // const prompt = await generatePromptFromChatGPT(textContent);
-        // console.log("🎉");
-        // console.log(textContent);
+        const sceneText = await createChatCompletion(textContent);
+        
+        if (sceneText) {
+          const splittedSceneText = sceneText?.split("\n").filter((line) => line.startsWith("Scene: ")).map((line) => line.substring("Scene: ".length).trim());
+
+          // const prompt = await generatePromptFromChatGPT(textContent);
+          // console.log("🎉");
+          // console.log(textContent);
+          const sceneDescriptions = splittedSceneText.join("\n");
+          await createDiaryFormatDescription(sceneDescriptions);
+
         return;
+        }
       } else {
         // handle blank editor
         stopGeneratingStoryboard();
@@ -277,6 +285,44 @@ const useCreateEntry = () => {
       stopGeneratingStoryboard();
     }
   };
+
+  //new 4/30 ----
+  const createDiaryFormatDescription = async (input: string) => {
+    try {
+      const openaiApiKey = process.env.OPENAI_API_KEY;
+      const control_prompt =
+        'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ' +
+        input;
+  
+      const configuration = new Configuration({
+        apiKey: openaiApiKey,
+      });
+      const openai = new OpenAIApi(configuration);
+  
+      const completion = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: control_prompt }],
+        temperature: 0.7,
+      });
+  
+      const diaryText = completion?.data?.choices[0]?.message?.content;
+  
+      if (!diaryText || diaryText === "") {
+        throw new Error("Generated diary text is null");
+      }
+  
+      console.log("###--------------------DIARY TEXT--------------------###");
+      console.log(diaryText);
+  
+      return diaryText;
+    } catch (error: any) {
+      console.log(
+        `Failed to create diary format description, message: ${error?.message}`
+      );
+      return null;
+    }
+  };
+  //new 4/30 -----  
 
   const handleFileUpload = async (file: File) => {
     try {
