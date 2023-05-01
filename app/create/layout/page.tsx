@@ -49,6 +49,7 @@ type Props = {
 
 const LayoutPage = (props: Props) => {
   // redux states
+  const { diaryTexts } = props;
   const entry = useAppSelector((state) => state.entry);
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const dispatch = useAppDispatch();
@@ -140,10 +141,17 @@ const LayoutPage = (props: Props) => {
           >
             <div className="flex flex-col w-full h-full justify-start">
               <div className="flex flex-col w-full gap-4 items-center">
-                {entry?.scenes.map((scene: Scene & StoryboardSample, index: number) => (
-                  <div key={index} className="w-full flex justify-center">
+              {entry?.scenes.map((scene: Scene & StoryboardSample, index: number) => (
+                <div key={index} className="w-full flex flex-col gap-4">
+                  {/* Display the diary text */}
+                  <div className="w-full text-center p-2">
+                    <p className="text-light-text-primary dark:text-dark-text-primary">
+                      {diaryTexts[index]}
+                    </p>
+                  </div>
+
+                  <div className="w-full flex justify-center">
                     <div
-                      key={index}
                       className="group relative flex flex-col w-full max-w-[400px] mx-auto bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto mb-4 fade-top cursor-pointer"
                       onClick={() => handleToggleStoryboard(index)}
                     >
@@ -164,7 +172,9 @@ const LayoutPage = (props: Props) => {
                       )}
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
+
               </div>
             </div>
           </div>
