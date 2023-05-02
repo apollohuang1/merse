@@ -47,13 +47,10 @@ import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 import { Scene } from "@/models/entry";
 
-type Props = {
-  diaryTexts: string[];
-};
+type Props = {};
 
 const LayoutPage = (props: Props) => {
   // redux states
-  const { diaryTexts } = props;
   const entry = useAppSelector((state) => state.entry);
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const dispatch = useAppDispatch();
