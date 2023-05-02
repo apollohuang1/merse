@@ -1,7 +1,7 @@
 "use client";
 
 import CreateHeader from "@/components/create/create-header";
-import React, { FormEventHandler, useState } from "react";
+import React, { FormEventHandler, useEffect, useState } from "react";
 import {
   FiBold,
   FiCode,
@@ -25,7 +25,8 @@ import {
 import StarterKit from "@tiptap/starter-kit";
 import HardBreak from "@tiptap/extension-hard-break";
 import Image from "@tiptap/extension-image";
-import Collaboration from '@tiptap/extension-collaboration';
+import Collaboration from "@tiptap/extension-collaboration";
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 
 // ChakraUI
 import { Spinner } from "@chakra-ui/react";
@@ -34,7 +35,11 @@ import { Spinner } from "@chakra-ui/react";
 import clsx from "clsx";
 import Modal from "@/components/modal";
 import Placeholder from "@tiptap/extension-placeholder";
-import { StoryboardSample, createRoutes, storyboardSamples } from "@/util/create-constants";
+import {
+  StoryboardSample,
+  createRoutes,
+  storyboardSamples,
+} from "@/util/create-constants";
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
@@ -49,12 +54,13 @@ import { Scene } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
 
 
-import { WebrtcProvider } from 'y-webrtc'
-import * as Y from 'yjs'
+// Collaborative editing
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import { WebrtcProvider } from "y-webrtc";
+import * as Y from "yjs";
 
-const ydoc = new Y.Doc()
-const provider = new WebrtcProvider('tiptap-collaboration-extension', ydoc)
-
+const ydoc = new Y.Doc();
+const provider = new WebrtcProvider("tiptap-collaboration-extension", ydoc);
 
 type Props = {};
 
@@ -63,6 +69,7 @@ const Storyboard = (props: Props) => {
   const { generateStoryboard } = useCreateEntry();
 
   // redux states
+  const auth = useAppSelector((state) => state.auth);
   const entry = useAppSelector((state) => state.entry);
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const dispatch = useAppDispatch();
@@ -70,6 +77,12 @@ const Storyboard = (props: Props) => {
   const [showAddingImageModal, setShowAddingImageModal] =
     React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
+
+  // Set up the Hocuspocus WebSocket provider
+  const provider = new HocuspocusProvider({
+    url: "ws://127.0.0.1:1234",
+    name: "example-document",
+  });
 
   const editor = useEditor({
     extensions: [
@@ -98,7 +111,14 @@ const Storyboard = (props: Props) => {
       HardBreak,
       Spotify,
       Collaboration.configure({
-        document: ydoc,
+        document: provider.document,
+      }),
+      CollaborationCursor.configure({
+        provider: provider,
+        // user: {
+        //   name: 'Cyndi Lauper',
+        //   color: '#f783ac',
+        // },
       }),
     ],
     editorProps: {
@@ -117,6 +137,17 @@ const Storyboard = (props: Props) => {
   editor?.on("create", (createdEditor: any) => {
     createdEditor?.editor.commands.setContent(entry?.content);
   });
+
+  useEffect(() => {
+
+    if (!editor) return;
+
+    editor.commands.updateUser({
+      name: auth?.currentUser?.name ?? "Anonymous",
+      color: '#10b981',
+      avatar: 'https://pbs.twimg.com/profile_images/1653106037262798848/xIwPY8Ws_400x400.jpg',
+    })
+  }, [editor])
 
   return (
     <>
@@ -320,30 +351,36 @@ const Storyboard = (props: Props) => {
             )}
           >
             <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">
-              {entry?.scenes.map((scene: Scene & StoryboardSample, index: number) => (
-                <div
-                  key={index}
-                  className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
-                >
-                  {/* overlay  */}
-                  {/* <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
+              {entry?.scenes.map(
+                (scene: Scene & StoryboardSample, index: number) => (
+                  <div
+                    key={index}
+                    className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
+                  >
+                    {/* overlay  */}
+                    {/* <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
                     <FiEdit2 className="w-9 h-9 text-white" />
                   </div> */}
 
-                  <img
-                    src={scene?.image_base64 ?  ("data:image/png;base64," + scene.image_base64) : scene.artwork.url}
-                    alt="comic book cover"
-                    className="object-cover aspect-[4/3]"
-                  />
+                    <img
+                      src={
+                        scene?.image_base64
+                          ? "data:image/png;base64," + scene.image_base64
+                          : scene.artwork.url
+                      }
+                      alt="comic book cover"
+                      className="object-cover aspect-[4/3]"
+                    />
 
-                  {/* story line in storyboard */}
-                  <div className="flex p-4">
-                    <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                      {scene.text}
-                    </p>
+                    {/* story line in storyboard */}
+                    <div className="flex p-4">
+                      <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
+                        {scene.text}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
           </div>
         </div>

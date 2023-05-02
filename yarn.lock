@@ -1939,6 +1939,23 @@
   dependencies:
     client-only "^0.0.1"
 
+"@hocuspocus/common@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@hocuspocus/common/-/common-2.0.6.tgz#ed004e2d6f438ae43ddada0ba96f21a66a49b13f"
+  integrity sha512-IutSEWCkpJc81nKJX9Yzeqg87NuExKv7C2ccVfld7P+cNAHDhOvmNX9Xdol04AGf/8wMH5/a6eqaKT/wafnNpw==
+  dependencies:
+    lib0 "^0.2.47"
+
+"@hocuspocus/provider@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@hocuspocus/provider/-/provider-2.0.6.tgz#62f0ed8ab174eca42d530c1630f05ae4f113e470"
+  integrity sha512-ANGZN2JUhUUNb/RJkUU3bwYWiqY/FmA8w06GbHe3iFnb4qQYAT+8UIpA9C+JnkgoSTgeEXDdJTBjEE3jVCgVtw==
+  dependencies:
+    "@hocuspocus/common" "^2.0.6"
+    "@lifeomic/attempt" "^3.0.2"
+    lib0 "^0.2.47"
+    ws "^7.5.9"
+
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.11.8.tgz"
@@ -1957,6 +1974,11 @@
   version "1.2.1"
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
+
+"@lifeomic/attempt@^3.0.2":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@lifeomic/attempt/-/attempt-3.0.3.tgz#e742a5b85eb673e2f1746b0f39cb932cbc6145bb"
+  integrity sha512-GlM2AbzrErd/TmLL3E8hAHmb5Q7VhDJp35vIbyPVA5Rz55LZuRr8pwL3qrwwkVNo05gMX1J44gURKb4MHQZo7w==
 
 "@linaria/core@3.0.0-beta.13":
   version "3.0.0-beta.13"
@@ -2183,6 +2205,11 @@
   version "2.0.1"
   resolved "https://registry.npmjs.org/@tiptap/extension-code/-/extension-code-2.0.1.tgz"
   integrity sha512-9Ygk2Ijfu89JFRwtId1x/u3yJUMfVSo6bkiUUmIFf04evgIgzBYMNl/KQerapmkcbkXWGCZ7/gcu+WUmU4c7lQ==
+
+"@tiptap/extension-collaboration-cursor@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-collaboration-cursor/-/extension-collaboration-cursor-2.0.3.tgz#2585d82fa684f0f94bdb26875e0c9bfff096ee74"
+  integrity sha512-pBcsk3ZkK8IQK6UP/a7Y4rjZRW/anhxFaTCcTxrUvn/azqRI+mcCsRwbc5lNLzcYq5JVOHGROjriNmGGkIr5jA==
 
 "@tiptap/extension-collaboration@^2.0.3":
   version "2.0.3"
@@ -4602,7 +4629,7 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-lib0@^0.2.31, lib0@^0.2.42, lib0@^0.2.52, lib0@^0.2.74:
+lib0@^0.2.31, lib0@^0.2.42, lib0@^0.2.47, lib0@^0.2.52, lib0@^0.2.74:
   version "0.2.74"
   resolved "https://registry.yarnpkg.com/lib0/-/lib0-0.2.74.tgz#7a4cc816a0420e76de85009423c8ab63655ff817"
   integrity sha512-roj9i46/JwG5ik5KNTkxP2IytlnrssAkD/OhlAVtE+GqectrdkfR+pttszVLrOzMDeXNs1MPt6yo66MUolWSiA==
@@ -6445,7 +6472,7 @@ ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^7.2.0:
+ws@^7.2.0, ws@^7.5.9:
   version "7.5.9"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.9.tgz#54fa7db29f4c7cec68b1ddd3a89de099942bb591"
   integrity sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==
