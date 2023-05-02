@@ -92,7 +92,7 @@ const useCreateEntry = () => {
           // console.log("🎉");
           // console.log(textContent);
           const sceneDescriptions = splittedSceneText.join("\n");
-          await createDiaryFormatDescription(sceneDescriptions);
+          const generatedDiaryText = await createDiaryFormatDescription(sceneDescriptions);
 
         return;
         }

@@ -25,6 +25,7 @@ import {
 import StarterKit from "@tiptap/starter-kit";
 import HardBreak from "@tiptap/extension-hard-break";
 import Image from "@tiptap/extension-image";
+import Collaboration from '@tiptap/extension-collaboration';
 
 // ChakraUI
 import { Spinner } from "@chakra-ui/react";
@@ -46,6 +47,14 @@ import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 import { Scene } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
+
+
+import { WebrtcProvider } from 'y-webrtc'
+import * as Y from 'yjs'
+
+const ydoc = new Y.Doc()
+const provider = new WebrtcProvider('tiptap-collaboration-extension', ydoc)
+
 
 type Props = {};
 
@@ -88,6 +97,9 @@ const Storyboard = (props: Props) => {
       }),
       HardBreak,
       Spotify,
+      Collaboration.configure({
+        document: ydoc,
+      }),
     ],
     editorProps: {
       attributes: {
