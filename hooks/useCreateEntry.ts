@@ -70,6 +70,7 @@ const useCreateEntry = () => {
         throw new Error("User not logged in");
       }
 
+      // people who are allowed to generate storyboards
       const manualWhitelistedEmails = [
         "markrachapoom@gmail.com",
         "emily.park@berkeley.edu",
@@ -83,89 +84,85 @@ const useCreateEntry = () => {
         throw new Error("User not whitelisted");
       }
 
-      if (editor) {
-        startGeneratingStoryboard();
-        const editorJSON = editor.getJSON();
-        const textContent = convertTiptapJSONToText(editorJSON);
-
-        // 7 given scenes text from gpt3.5
-        const scenesControlPrompt =
-          'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ';
-        const generatedText = await createGenericChatCompletion(
-          textContent,
-          scenesControlPrompt
-        );
-
-        console.log(
-          "###--------------------GENERATED TEXT--------------------###"
-        );
-        // SENSITIVE
-        // console.log(generatedText);
-
-        const sceneText: string = stripText(generatedText);
-
-        console.log("###--------------------SCENES--------------------###");
-        // SENSITIVE
-        // console.log(sceneText);
-
-        let splittedSceneTexts: string[] = sceneText
-          .split("\n")
-          .filter((line) => line.startsWith("Scene: "))
-          .map((line) => line.substring("Scene: ".length).trim());
-
-        console.log(
-          "###--------------------SPLITTED SCENES--------------------###"
-        );
-        // SENSITIVE
-        // console.log(splittedSceneTexts);
-
-        // comment this out to generate only 1 image
-        // createImageFromText(splittedSceneTexts[1]);
-
-        // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
-        //iterate through splitedSceneText array
-        // for (let i = 0; i < splittedSceneText.length; i++) {
-        //   createImageFromText(splittedSceneText[i]);
-        // }
-
-        if (sceneText) {
-          const splittedSceneText: string[] = sceneText
-            ?.split("\n")
-            .filter((line) => line.startsWith("Scene: "))
-            .map((line) => line.substring("Scene: ".length).trim());
-
-          // const prompt = await generatePromptFromChatGPT(textContent);
-          // console.log("🎉");
-          // console.log(textContent);
-
-          const sceneDescriptions: string = splittedSceneText.join("\n");
-
-          console.log(
-            "###--------------------SCENE DESCRIPTIONS--------------------###"
-          );
-          // SENSITIVE
-          // console.log(sceneDescriptions);
-
-          const diaryTextControlPrompt =
-            'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ';
-          const generatedDiaryText = await createGenericChatCompletion(
-            sceneDescriptions,
-            diaryTextControlPrompt
-          );
-
-          console.log(
-            "###--------------------GENERATED DIARY TEXT--------------------###"
-          );
-          // SENSITIVE
-          console.log(generatedDiaryText);
-
-          return;
-        }
-      } else {
-        // handle blank editor
-        stopGeneratingStoryboard();
-        console.log("editor is null");
+      if (!editor || editor?.getHTML() === "<p></p>") {
+        throw new Error("Editor is null");
       }
+
+      startGeneratingStoryboard();
+      const editorJSON = editor.getJSON();
+      const textContent: string = convertTiptapJSONToText(editorJSON);
+
+      // 7 given scenes text from gpt3.5
+      const scenesControlPrompt =
+        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ';
+      const generatedText = await createGenericChatCompletion(
+        textContent,
+        scenesControlPrompt
+      );
+
+      console.log(
+        "###--------------------GENERATED TEXT--------------------###"
+      );
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // console.log(generatedText);
+
+      const sceneText: string = getStripText(generatedText);
+
+      console.log("###--------------------SCENES--------------------###");
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // console.log(sceneText);
+
+      // array of scenes, each have a scene description but not for displaying. only for generating images.
+      let splittedSceneTexts: string[] = sceneText
+        .split("\n")
+        .filter((line) => line.startsWith("Scene: "))
+        .map((line) => line.substring("Scene: ".length).trim());
+
+      console.log(
+        "###--------------------SPLITTED SCENES--------------------###"
+      );
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // console.log(splittedSceneTexts);
+
+      // comment this out to generate only 1 image
+      // createImageFromText(splittedSceneTexts[1]);
+
+      // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
+      //iterate through splitedSceneText array
+      // for (let i = 0; i < splittedSceneText.length; i++) {
+      //   createImageFromText(splittedSceneText[i]);
+      // }
+
+      if (!sceneText) {
+        throw new Error("No scene text generated");
+      }
+
+      const splittedSceneText: string[] = sceneText
+        ?.split("\n")
+        .filter((line) => line.startsWith("Scene: "))
+        .map((line) => line.substring("Scene: ".length).trim());
+
+      const sceneDescriptions: string = splittedSceneText.join("\n");
+
+      console.log(
+        "###--------------------SCENE DESCRIPTIONS--------------------###"
+      );
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // console.log(sceneDescriptions);
+
+      const diaryTextControlPrompt =
+        'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ';
+      const generatedDiaryText = await createGenericChatCompletion(
+        sceneDescriptions,
+        diaryTextControlPrompt
+      );
+
+      console.log(
+        "###--------------------GENERATED DIARY TEXT--------------------###"
+      );
+      // SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // console.log(generatedDiaryText);
+      stopGeneratingStoryboard();
     } catch (error: any) {
       stopGeneratingStoryboard();
       console.log(`Failed to generate storyboard, message: ${error?.message}`);
@@ -355,7 +352,7 @@ const useCreateEntry = () => {
     return text;
   };
 
-  const stripText = (input: string) => {
+  const getStripText = (input: string) => {
     const regex = /\(([^)]+)\)/g;
     const paragraphs = input.split(/\r?\n/);
     let matches = [];
