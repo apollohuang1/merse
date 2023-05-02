@@ -171,7 +171,7 @@ const LayoutPage = (props: Props) => {
                           {expandedStoryboardIndex === index && (
                             <div className="flex p-4">
                               <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                                {scene.text}
+                                {scene?.displayed_text ?? ""}
                               </p>
                             </div>
                           )}
