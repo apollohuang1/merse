@@ -40,7 +40,7 @@ const CreateLeftSideBar = (props: Props) => {
                     },
                     {
                       "text-light-text-tertiary dark:text-dark-text-tertiary":
-                        pathName !== route.pathname,
+                      route.title.toLowerCase() !== pathName?.split("/")[3]?.toLowerCase()
                     }
                   )}
                 >

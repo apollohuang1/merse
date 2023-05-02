@@ -41,8 +41,17 @@ export async function POST(request: NextRequest) {
     await dbConnect();
     const body = await request.json();
 
+    // guards
+    if (!body) {
+      return NextResponse.json({ error: "No body provided" }, { status: 400 });
+    }
+
+    if (!body._id) {
+      return NextResponse.json({ error: "No _id provided" }, { status: 400 });
+    }
+
     const newEntry = new MDBEntry({
-      _id: new mongoose.Types.ObjectId(),
+      _id: body._id,
       author: body.author,
       title: body.title,
       style_reference: body.style_reference,

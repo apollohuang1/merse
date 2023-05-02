@@ -250,10 +250,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <SidebarMenuButton
                   icon={<FiBookOpen className="h-5 w-5" />}
                   label="Read Sample"
-                  href="/read/644c1bebdcb40d15e68ca258"
+                  href="/entry/644c1bebdcb40d15e68ca258"
                   isFull={showFullSidebar}
                   isNew={true}
-                  isCurrentRoute={pathName === "/read"}
+                  isCurrentRoute={pathName === "/entry"}
                 />
 
                 {/* create */}

@@ -11,32 +11,26 @@ export type CreateRoute = {
 export const allCreateRoutes: any[] = [
   // character, storyboard, cover, styles, review.
   {
-    pathname: "/create/styles",
     title: "Styles",
     description: "Add styles to your story.",
   },
   {
-    pathname: "/create/characters",
     title: "Characters",
     description: "Add characters to your story.",
   },
   {
-    pathname: "/create/storyboard",
     title: "Storyboard",
     description: "Add storyboard to your story.",
   },
   {
-    pathname: "/create/layout",
     title: "Layout",
     description: "Layout your story.",
   },
   {
-    pathname: "/create/cover",
     title: "Cover",
     description: "Add cover to your story.",
   },
   {
-    pathname: "/create/review",
     title: "Review",
     description: "Review your story.",
   },

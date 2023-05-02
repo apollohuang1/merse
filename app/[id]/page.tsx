@@ -326,7 +326,7 @@ const ProfilePage = (props: Props) => {
                     <button
                       key={index}
                       onClick={() => {
-                        router.push(`/read/${entry._id}`);
+                        router.push(`/entry/${entry._id}`);
                       }}
                       className="flex flex-col w-full items-center justify-between bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-md overflow-clip"
                     >
