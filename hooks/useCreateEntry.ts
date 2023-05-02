@@ -100,11 +100,11 @@ const useCreateEntry = () => {
         scenesControlPrompt
       );
 
-      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
-      // console.log(
-      //   "###--------------------GENERATED TEXT--------------------###"
-      // );
-      // console.log(generatedText);
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now.
+      console.log(
+        "###--------------------GENERATED TEXT--------------------###"
+      );
+      console.log(generatedText);
 
       const sceneText: string = getStripTextsArray(generatedText);
 
@@ -112,9 +112,9 @@ const useCreateEntry = () => {
         throw new Error("No scene text generated");
       }
 
-      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
-      // console.log("###--------------------SCENES--------------------###");
-      // console.log(sceneText);
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now :))
+      console.log("###--------------------SCENES--------------------###");
+      console.log(sceneText);
 
       // array of scenes, each have a scene description but not for displaying. only for generating images.
       let sceneTextsArray: string[] = sceneText
@@ -123,11 +123,11 @@ const useCreateEntry = () => {
         .map((line) => line.substring("Scene: ".length).trim());
 
 
-      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
-      // console.log(
-      //   "###--------------------SPLITTED SCENES--------------------###"
-      // );
-      // console.log(sceneTextsArray);
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now :))
+      console.log(
+        "###--------------------SPLITTED SCENES--------------------###"
+      );
+      console.log(sceneTextsArray);
 
       // comment this out to generate only 1 image
       const base64String = await createImageFromText(sceneTextsArray[0]);
@@ -139,11 +139,11 @@ const useCreateEntry = () => {
         .map((line) => line.substring("Scene: ".length).trim());
       const sceneDescriptions: string = splittedSceneText.join("\n");
 
-      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
-      // console.log(
-      //   "###--------------------SCENE DESCRIPTIONS--------------------###"
-      // );
-      // console.log(sceneDescriptions);
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now :))
+      console.log(
+        "###--------------------SCENE DESCRIPTIONS--------------------###"
+      );
+      console.log(sceneDescriptions);
 
       const diaryTextControlPrompt = 'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ';
       const generatedDiaryText: string = await createGenericChatCompletion(
@@ -151,7 +151,7 @@ const useCreateEntry = () => {
         diaryTextControlPrompt
       );
 
-      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now :))
       console.log(
         "###--------------------GENERATED DIARY TEXT--------------------###"
       );
