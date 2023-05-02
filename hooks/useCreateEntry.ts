@@ -92,7 +92,7 @@ const useCreateEntry = () => {
       const editorJSON = editor.getJSON();
       const textContent: string = convertTiptapJSONToText(editorJSON);
 
-      // 7 given scenes text from gpt3.5
+      // scenes text from gpt3.5 as generating prompts
       const scenesControlPrompt =
         'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ';
       const generatedText = await createGenericChatCompletion(
@@ -100,68 +100,87 @@ const useCreateEntry = () => {
         scenesControlPrompt
       );
 
-      console.log(
-        "###--------------------GENERATED TEXT--------------------###"
-      );
       // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // console.log(
+      //   "###--------------------GENERATED TEXT--------------------###"
+      // );
       // console.log(generatedText);
 
-      const sceneText: string = getStripText(generatedText);
-
-      console.log("###--------------------SCENES--------------------###");
-      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
-      // console.log(sceneText);
-
-      // array of scenes, each have a scene description but not for displaying. only for generating images.
-      let splittedSceneTexts: string[] = sceneText
-        .split("\n")
-        .filter((line) => line.startsWith("Scene: "))
-        .map((line) => line.substring("Scene: ".length).trim());
-
-      console.log(
-        "###--------------------SPLITTED SCENES--------------------###"
-      );
-      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
-      // console.log(splittedSceneTexts);
-
-      // comment this out to generate only 1 image
-      // createImageFromText(splittedSceneTexts[1]);
-
-      // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
-      //iterate through splitedSceneText array
-      // for (let i = 0; i < splittedSceneText.length; i++) {
-      //   createImageFromText(splittedSceneText[i]);
-      // }
+      const sceneText: string = getStripTextsArray(generatedText);
 
       if (!sceneText) {
         throw new Error("No scene text generated");
       }
 
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // console.log("###--------------------SCENES--------------------###");
+      // console.log(sceneText);
+
+      // array of scenes, each have a scene description but not for displaying. only for generating images.
+      let sceneTextsArray: string[] = sceneText
+        .split("\n")
+        .filter((line) => line.startsWith("Scene: "))
+        .map((line) => line.substring("Scene: ".length).trim());
+
+
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // console.log(
+      //   "###--------------------SPLITTED SCENES--------------------###"
+      // );
+      // console.log(sceneTextsArray);
+
+      // comment this out to generate only 1 image
+      const base64String = await createImageFromText(sceneTextsArray[0]);
+
+      // diary text
       const splittedSceneText: string[] = sceneText
         ?.split("\n")
         .filter((line) => line.startsWith("Scene: "))
         .map((line) => line.substring("Scene: ".length).trim());
-
       const sceneDescriptions: string = splittedSceneText.join("\n");
 
-      console.log(
-        "###--------------------SCENE DESCRIPTIONS--------------------###"
-      );
       // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
+      // console.log(
+      //   "###--------------------SCENE DESCRIPTIONS--------------------###"
+      // );
       // console.log(sceneDescriptions);
 
-      const diaryTextControlPrompt =
-        'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ';
-      const generatedDiaryText = await createGenericChatCompletion(
+      const diaryTextControlPrompt = 'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ';
+      const generatedDiaryText: string = await createGenericChatCompletion(
         sceneDescriptions,
         diaryTextControlPrompt
       );
 
+      // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING
       console.log(
         "###--------------------GENERATED DIARY TEXT--------------------###"
       );
-      // SENSITIVE, COMMENT OUT BEFORE COMMITTING
-      // console.log(generatedDiaryText);
+      console.log(generatedDiaryText);
+
+      // push ONLY 1 scene to storyboard UI
+      const newScene: Scene = {
+        _id: new mongoose.Types.ObjectId().toString(),
+        image_base64: base64String,
+        prompt: sceneTextsArray[0],
+        displayed_text: "Annyeong Emily❤️ Diary text should be here, check out the newScene: Scene interface in useCreateEntry hook :))",
+      };
+      dispatch(addScene(newScene));
+      dispatch(setShowGeneratedStoryboard(true));
+
+      // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
+      // iterate through splitedSceneText array
+      // for (let i = 0; i < sceneTextsArray.length; i++) {
+      //   const base64String = await createImageFromText(sceneTextsArray[i]);
+      //   const newScene: Scene = {
+      //     _id: new mongoose.Types.ObjectId().toString(),
+      //     image_base64: base64String,
+      //     prompt: sceneTextsArray[1],
+      //     displayed_text: "should be diary text here",
+      //   };
+      //   dispatch(addScene(newScene));
+      //   dispatch(setShowGeneratedStoryboard(true));
+      // }
+
       stopGeneratingStoryboard();
     } catch (error: any) {
       stopGeneratingStoryboard();
@@ -169,7 +188,6 @@ const useCreateEntry = () => {
     }
   };
 
-  //gpt3.5 API
   /**
    * Universal function for chatgpt response that returns a string promise (resolve and reject)
    * @param input text to be sent :)
@@ -209,6 +227,10 @@ const useCreateEntry = () => {
     return generatedText;
   };
 
+  /**
+   *
+   * @param input prompt text to be sent to stable diffusion
+   */
   const createImageFromText = async (input: string) => {
     // stable diffusion
     const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
@@ -238,8 +260,9 @@ const useCreateEntry = () => {
       "Ensure that the human figures in the scene are accurately and realistically depicted, taking into consideration proportions, anatomy, and natural poses. Pay special attention to facial expressions and body language to convey emotions and interactions between the characters effectively.";
     // const formattedPromptWithStyle = `${input} by ${entry?.style_reference?.artist}. ${genericPrompt}`;
     // const formattedPromptWithStyle = `${input} by Hayao Miyazaki. ${genericPrompt}. `;
-    const formattedPromptWithStyle = `${input}. ${genericPrompt}. ${improveHumanPrompt}`;
     // const formattedPromptWithStyle = `${input} in Studio Ghibli artstyle`;
+    const formattedPromptWithStyle = `${input}. ${genericPrompt}. ${improveHumanPrompt}`;
+
     // Response of NEW Stable Diffusion XL
     const sdxlResponse = await axios({
       method: "POST",
@@ -266,19 +289,20 @@ const useCreateEntry = () => {
       },
     });
 
-    const base64String = sdxlResponse?.data?.artifacts[0].base64;
+    interface GenerationResponse {
+      artifacts: Array<{
+        base64: string;
+        seed: number;
+        finishReason: string;
+      }>;
+    }
 
-    const newScene: Scene = {
-      _id: new mongoose.Types.ObjectId().toString(),
-      image_base64: base64String,
-      text: input,
-    };
+    const sdxlReponseData: GenerationResponse = sdxlResponse?.data;
 
-    // Entry validation failed: scenes.0.image: Path `image` is required., scenes.0._id: Path `_id` is required.
-    dispatch(addScene(newScene));
-    dispatch(setShowGeneratedStoryboard(true));
+    // const base64String = sdxlResponse?.data?.artifacts[0].base64;
+    const base64String = sdxlReponseData.artifacts[0].base64;
 
-    stopGeneratingStoryboard();
+    return base64String;
   };
 
   //new 4/30 -----
@@ -352,7 +376,7 @@ const useCreateEntry = () => {
     return text;
   };
 
-  const getStripText = (input: string) => {
+  const getStripTextsArray = (input: string): string => {
     const regex = /\(([^)]+)\)/g;
     const paragraphs = input.split(/\r?\n/);
     let matches = [];
@@ -370,6 +394,7 @@ const useCreateEntry = () => {
         }
       }
     }
+    // return matches;
     return matches.join("\n");
   };
 

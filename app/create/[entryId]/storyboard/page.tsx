@@ -368,7 +368,7 @@ const Storyboard = (props: Props) => {
                       src={
                         scene?.image_base64
                           ? "data:image/png;base64," + scene.image_base64
-                          : scene.artwork.url
+                          : scene?.artwork?.url ?? ""
                       }
                       alt="comic book cover"
                       className="object-cover aspect-[4/3]"
@@ -377,7 +377,7 @@ const Storyboard = (props: Props) => {
                     {/* story line in storyboard */}
                     <div className="flex p-4">
                       <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                        {scene.text}
+                        {scene?.displayed_text ?? ""}
                       </p>
                     </div>
                   </div>

@@ -30,5 +30,6 @@ interface StyleReference {
 export interface Scene {
   _id: string;
   image_base64: string;
-  text: string;
+  prompt: string;
+  displayed_text: string;
 }

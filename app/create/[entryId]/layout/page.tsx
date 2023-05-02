@@ -160,7 +160,7 @@ const LayoutPage = (props: Props) => {
                             src={
                               scene?.image_base64
                                 ? "data:image/png;base64," + scene.image_base64
-                                : scene.artwork.url
+                                : scene?.artwork?.url ?? ""
                             }
                             alt="comic book cover"
                             className="object-cover aspect-[4/3] relative fade-top"
