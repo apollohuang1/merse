@@ -6,7 +6,8 @@ import mongoose, { Schema } from 'mongoose';
 const SceneSchema = new mongoose.Schema<Scene>({
   _id: { type: String, required: true },
   image_base64: { type: String, required: true },
-  text: { type: String, required: true },
+  prompt: { type: String, required: true },
+  displayed_text: { type: String, required: true },
 });
 
 
