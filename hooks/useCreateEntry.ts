@@ -22,6 +22,7 @@ import {
   PutObjectCommandOutput,
   S3Client,
 } from "@aws-sdk/client-s3";
+import { useRouter } from "next/navigation";
 
 // Hook for creating new entries
 const useCreateEntry = () => {
@@ -39,6 +40,8 @@ const useCreateEntry = () => {
     dispatch(setIsGeneratingStoryboard(true));
   };
 
+  const router = useRouter();
+
   const saveEntry = async () => {
     // console.log("Saving entry...");
     try {
@@ -51,6 +54,7 @@ const useCreateEntry = () => {
         },
       });
       console.log("Successfully saved entry");
+      router.push(`/`);
     } catch (error: any) {
       console.log(`Failed to save entry, message: ${error?.message}`);
     }

@@ -8,7 +8,7 @@ import mongoose, { Types } from 'mongoose'
 import { ObjectId } from 'mongoose'
 
 const initialState: Entry = {
-  _id: new mongoose.Types.ObjectId().toString(),
+  _id: "",
   author: null,
   title: "",
   style_reference: null,

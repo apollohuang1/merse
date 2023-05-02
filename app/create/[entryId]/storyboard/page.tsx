@@ -52,8 +52,8 @@ import Spotify from "@/tiptap/extensions/Spotify";
 import { WebrtcProvider } from 'y-webrtc'
 import * as Y from 'yjs'
 
-// const ydoc = new Y.Doc()
-// const provider = new WebrtcProvider('tiptap-collaboration-extension', ydoc)
+const ydoc = new Y.Doc()
+const provider = new WebrtcProvider('tiptap-collaboration-extension', ydoc)
 
 
 type Props = {};
@@ -97,9 +97,9 @@ const Storyboard = (props: Props) => {
       }),
       HardBreak,
       Spotify,
-      // Collaboration.configure({
-      //   document: ydoc,
-      // }),
+      Collaboration.configure({
+        document: ydoc,
+      }),
     ],
     editorProps: {
       attributes: {

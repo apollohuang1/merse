@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setEntryAuthor, setEntryId } from "@/redux-store/store";
 import { CreateRoute, createRoutes } from "@/util/create-constants";
 import mongoose from "mongoose";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 
 const metadata = {
@@ -35,6 +35,8 @@ export default function RootLayout({
   const dispatch = useAppDispatch();
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   useEffect(() => {
     reloadCurrentLocalUser()
@@ -45,9 +47,27 @@ export default function RootLayout({
           // const newEntryId = new mongoose.Types.ObjectId().toString();
           // dispatch(setEntryId(newEntryId));
 
+          if (!pathname) {
+            throw new Error("pathname is undefined");
+          };
+
           // redirect to create page
-          // router.push(`/create/${newEntryId}/styles`)
-          router.push(`/create/${entry?._id}/styles`)
+
+          // /create/6450e38683b35bc751cbec60/styles
+
+          // if that id exist, don't redirect
+          const detectedId = pathname.split("/")[2];
+          if (detectedId) {
+            // console.log("Detected entry id: ", detectedId);
+            dispatch(setEntryId(detectedId));
+            return;
+          }
+
+          const newEntryId = new mongoose.Types.ObjectId().toString();
+
+          console.log("Redirecting to create page...")
+
+          router.push(`/create/${newEntryId}/styles`)
         }
       })
       .catch((err) => {
@@ -61,7 +81,7 @@ export default function RootLayout({
     <div className="grid grid-cols-[250px_auto] max-lg:grid-cols-[175px_auto] max-sm:flex max-sm:flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary max-h-screen">
       {/* left side bar */}
       <div className="flex max-sm:hidden">
-        <CreateLeftSideBar entryId={entry?._id} />
+        <CreateLeftSideBar entryId={pathname?.split("/")[2] ? pathname?.split("/")[2] : "123"} />
       </div>
 
       {children}

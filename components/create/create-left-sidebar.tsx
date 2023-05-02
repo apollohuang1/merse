@@ -30,7 +30,7 @@ const CreateLeftSideBar = (props: Props) => {
         <div className="flex flex-col gap-0">
           {allCreateRoutes.map((route: CreateRoute, index) => {
             return (
-              <Link key={index} href={`/create/${props.entryId}/${route?.title.toLowerCase()}`}>
+              <Link key={index} href={`/create/${props?.entryId}/${route?.title.toLowerCase()}`}>
                 <button
                   className={clsx(
                     "flex items-center justify-center w-full h-16 transition-all active:opacity-50 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
