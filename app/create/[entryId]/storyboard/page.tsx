@@ -55,16 +55,16 @@ import Spotify from "@/tiptap/extensions/Spotify";
 
 
 // Collaborative editing
-import { HocuspocusProvider } from '@hocuspocus/provider';
-import { WebrtcProvider } from "y-webrtc";
-import * as Y from "yjs";
-import { IndexeddbPersistence } from 'y-indexeddb'; // persistence
+// import { HocuspocusProvider } from '@hocuspocus/provider';
+// import { WebrtcProvider } from "y-webrtc";
+// import * as Y from "yjs";
+// import { IndexeddbPersistence } from 'y-indexeddb'; // persistence
 
-const ydoc = new Y.Doc();
-const provider = new WebrtcProvider("tiptap-collaboration-extension", ydoc);
+// const ydoc = new Y.Doc();
+// const provider = new WebrtcProvider("tiptap-collaboration-extension", ydoc);
 
 // Store the Y document in the browser
-new IndexeddbPersistence('example-document', ydoc)
+// new IndexeddbPersistence('example-document', ydoc)
 
 type Props = {};
 
@@ -83,11 +83,10 @@ const Storyboard = (props: Props) => {
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
 
   // Set up the Hocuspocus WebSocket provider
-  const provider = new HocuspocusProvider({
-    // url: "ws://127.0.0.1:1234",
-    url: process.env.WEBSOCKET_URL as string,
-    name: "example-document",
-  });
+  // const provider = new HocuspocusProvider({
+  //   url: "ws://127.0.0.1:1234",
+  //   name: "example-document",
+  // });
 
   const editor = useEditor({
     extensions: [
@@ -115,16 +114,16 @@ const Storyboard = (props: Props) => {
       }),
       HardBreak,
       Spotify,
-      Collaboration.configure({
-        document: provider.document,
-      }),
-      CollaborationCursor.configure({
-        provider: provider,
-        // user: {
-        //   name: 'Cyndi Lauper',
-        //   color: '#f783ac',
-        // },
-      }),
+      // Collaboration.configure({
+      //   document: provider.document,
+      // }),
+      // CollaborationCursor.configure({
+      //   provider: provider,
+      //   user: {
+      //     name: 'Cyndi Lauper',
+      //     color: '#f783ac',
+      //   },
+      // }),
     ],
     editorProps: {
       attributes: {
@@ -143,22 +142,20 @@ const Storyboard = (props: Props) => {
     createdEditor?.editor.commands.setContent(entry?.content);
   });
 
-  useEffect(() => {
-
-    if (!editor) return;
-
-    editor.commands.updateUser({
-      name: auth?.currentUser?.name ?? "Anonymous",
-      color: '#10b981',
-      avatar: 'https://pbs.twimg.com/profile_images/1653106037262798848/xIwPY8Ws_400x400.jpg',
-    })
-  }, [editor])
+  // useEffect(() => {
+  //   if (!editor) return;
+  //   editor.commands.updateUser({
+  //     name: auth?.currentUser?.name ?? "Anonymous",
+  //     color: '#10b981',
+  //     avatar: 'https://pbs.twimg.com/profile_images/1653106037262798848/xIwPY8Ws_400x400.jpg',
+  //   })
+  // }, [editor])
 
   return (
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
-        <CreateHeader currentRoute={createRoutes[2]} entryId={entry?._id} />
+        <CreateHeader currentRoute={createRoutes[2]} />
 
         {/* main content (left and right panels columns) */}
         <div

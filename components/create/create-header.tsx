@@ -7,7 +7,6 @@ import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 
 type Props = {
   currentRoute: CreateRoute;
-  entryId: string;
 };
 
 const CreateHeader = (props: Props) => {

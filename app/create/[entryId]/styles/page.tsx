@@ -43,7 +43,7 @@ const Styles = (props: Props) => {
   return (
     <div className="flex flex-col overflow-auto">
       {/* top of grid */}
-      <CreateHeader currentRoute={createRoutes[0]} entryId={entry?._id} />
+      <CreateHeader currentRoute={createRoutes[0]} />
 
       {/* second section of grid */}
       <div className="flex flex-col w-full h-full justify-center items-center px-6">
