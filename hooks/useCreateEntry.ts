@@ -43,7 +43,6 @@ const useCreateEntry = () => {
   const router = useRouter();
 
   const saveEntry = async () => {
-    // console.log("Saving entry...");
     try {
       const response = await axios({
         method: "POST",
@@ -60,6 +59,7 @@ const useCreateEntry = () => {
     }
   };
 
+  // Only use try catch block here. sub-functions should handle/throw their own errors to this like a dumb
   const generateStoryboard = async (editor: any) => {
     try {
       // guard log in to prevent anonymous users from burning our API credits
@@ -87,18 +87,79 @@ const useCreateEntry = () => {
         startGeneratingStoryboard();
         const editorJSON = editor.getJSON();
         const textContent = convertTiptapJSONToText(editorJSON);
-        const sceneText = await createChatCompletion(textContent);
-        
+
+        // 7 given scenes text from gpt3.5
+        const scenesControlPrompt =
+          'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ';
+        const generatedText = await createGenericChatCompletion(
+          textContent,
+          scenesControlPrompt
+        );
+
+        console.log(
+          "###--------------------GENERATED TEXT--------------------###"
+        );
+        // SENSITIVE
+        // console.log(generatedText);
+
+        const sceneText: string = stripText(generatedText);
+
+        console.log("###--------------------SCENES--------------------###");
+        // SENSITIVE
+        // console.log(sceneText);
+
+        let splittedSceneTexts: string[] = sceneText
+          .split("\n")
+          .filter((line) => line.startsWith("Scene: "))
+          .map((line) => line.substring("Scene: ".length).trim());
+
+        console.log(
+          "###--------------------SPLITTED SCENES--------------------###"
+        );
+        // SENSITIVE
+        // console.log(splittedSceneTexts);
+
+        // comment this out to generate only 1 image
+        // createImageFromText(splittedSceneTexts[1]);
+
+        // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
+        //iterate through splitedSceneText array
+        // for (let i = 0; i < splittedSceneText.length; i++) {
+        //   createImageFromText(splittedSceneText[i]);
+        // }
+
         if (sceneText) {
-          const splittedSceneText = sceneText?.split("\n").filter((line) => line.startsWith("Scene: ")).map((line) => line.substring("Scene: ".length).trim());
+          const splittedSceneText: string[] = sceneText
+            ?.split("\n")
+            .filter((line) => line.startsWith("Scene: "))
+            .map((line) => line.substring("Scene: ".length).trim());
 
           // const prompt = await generatePromptFromChatGPT(textContent);
           // console.log("🎉");
           // console.log(textContent);
-          const sceneDescriptions = splittedSceneText.join("\n");
-          const generatedDiaryText = await createDiaryFormatDescription(sceneDescriptions);
 
-        return;
+          const sceneDescriptions: string = splittedSceneText.join("\n");
+
+          console.log(
+            "###--------------------SCENE DESCRIPTIONS--------------------###"
+          );
+          // SENSITIVE
+          // console.log(sceneDescriptions);
+
+          const diaryTextControlPrompt =
+            'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ';
+          const generatedDiaryText = await createGenericChatCompletion(
+            sceneDescriptions,
+            diaryTextControlPrompt
+          );
+
+          console.log(
+            "###--------------------GENERATED DIARY TEXT--------------------###"
+          );
+          // SENSITIVE
+          console.log(generatedDiaryText);
+
+          return;
         }
       } else {
         // handle blank editor
@@ -112,229 +173,127 @@ const useCreateEntry = () => {
   };
 
   //gpt3.5 API
-  const createChatCompletion = async (input: string) => {
-    try {
-      const openaiApiKey = process.env.OPENAI_API_KEY;
-      //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
-      const control_prompt =
-        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' +
-        input;
+  /**
+   * Universal function for chatgpt response that returns a string promise (resolve and reject)
+   * @param input text to be sent :)
+   * @param control_prompt command to tell gpt3.5 what to do
+   * @returns promise of string
+   */
+  const createGenericChatCompletion = async (
+    input: string,
+    control_prompt: string
+  ): Promise<string> => {
+    const openaiApiKey = process.env.OPENAI_API_KEY;
+    //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
+    // const control_prompt = 'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' + input;
 
-      const configuration = new Configuration({
-        apiKey: openaiApiKey,
-      });
-      const openai = new OpenAIApi(configuration);
+    const configuration = new Configuration({
+      apiKey: openaiApiKey,
+    });
+    const openai = new OpenAIApi(configuration);
 
-      const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: control_prompt }],
-        temperature: 0.7,
-        // max_tokens: 150,
-        // topP: 1,
-        // frequencyPenalty: 0,
-        // presencePenalty: 0,
-        // stop: ["\n"],
-      });
+    const completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: control_prompt + input }],
+      temperature: 0.7,
+    });
 
-      const generatedText = completion?.data?.choices[0]?.message?.content;
+    const generatedText = completion?.data?.choices[0]?.message?.content;
 
-      // guard if generated text is null
-      if (!generatedText || generatedText === "") {
-        throw new Error("Generated text is null");
-      }
-
-      if (entry?.style_reference?.artist === null) {
-        throw new Error("Entry style reference is null");
-      }
-
-      console.log(
-        // "###--------------------GENERATED TEXT--------------------###"
-      );
-      // SENSITIVE
-      // console.log(generatedText);
-
-      const sceneText = stripText(generatedText);
-
-      // console.log("###--------------------SCENES--------------------###");
-      // SENSITIVE
-      // console.log(sceneText);
-
-      let splittedSceneText = sceneText
-        .split("\n")
-        .filter((line) => line.startsWith("Scene: "))
-        .map((line) => line.substring("Scene: ".length).trim());
-
-      // comment this out to generate only 1 image
-      createImageFromText(splittedSceneText[1]);
-
-      // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
-      //iterate through splitedSceneText array
-      // for (let i = 0; i < splittedSceneText.length; i++) {
-      //   createImageFromText(splittedSceneText[i]);
-      // }
-
-      return sceneText;
-    } catch (error: any) {
-      stopGeneratingStoryboard();
-      console.log(
-        `Failed to create chat completion from http request, message: ${error?.message}`
-      );
-      return null;
+    // guard if generated text is null
+    if (!generatedText || generatedText === "") {
+      throw new Error("Generated text is null");
     }
+
+    if (entry?.style_reference?.artist === null) {
+      throw new Error("Entry style reference is null");
+    }
+
+    return generatedText;
   };
 
   const createImageFromText = async (input: string) => {
-    try {
-      // stable diffusion
-      const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
+    // stable diffusion
+    const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
 
-      //SDXL
-      // const engineId = "stable-diffusion-v1-5";
-      const engineId = "stable-diffusion-xl-beta-v2-2-2";
-      const apiHost = process.env.API_HOST ?? "https://api.stability.ai";
-      const apiKey = process.env.STABILITY_API_KEY;
+    //SDXL
+    // const engineId = "stable-diffusion-v1-5";
+    const engineId = "stable-diffusion-xl-beta-v2-2-2";
+    const apiHost = process.env.API_HOST ?? "https://api.stability.ai";
+    const apiKey = process.env.STABILITY_API_KEY;
 
-      // guards
-      if (!apiKey) {
-        throw new Error("Missing Stability API key.");
-      }
-      if (!input || input === "") {
-        throw new Error("Input text is null");
-      }
-      if (entry?.style_reference?.artist === null) {
-        throw new Error("Entry style reference is null");
-      }
-
-      // final input prompt
-      // const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
-      // const genericPrompt = "Create a dynamic and visually striking scene that tells a compelling story. Use the principles of dynamic symmetry and the Golden Ratio to guide the composition. Focus on the main subjects, with secondary elements supporting the central narrative. Utilize the Rule of Thirds to balance the composition and reinforce focal points. Integrate the power of triangles and groups of three to add stability and interest. Use color strategically to create contrast and guide the viewer's eye. Consider the angle and point of view to create drama and enhance the story. Ensure that the silhouette of the main subjects is clear and distinct, and experiment with varying degrees of symmetry or asymmetry to create visual tension. Think ahead to the final product and the overall impact of the image on the viewer.";
-      const genericPrompt =
-        "Create a dynamic and visually striking scene that tells a compelling story. Use the principles of dynamic symmetry and the Golden Ratio to guide the composition. Focus on the main subjects, with secondary elements supporting the central narrative. Utilize the Rule of Thirds to balance the composition and reinforce focal points. Integrate the power of triangles and groups of three to add stability and interest. Use color strategically to create contrast and guide the viewer's eye. Consider the angle and point of view to create drama and enhance the story. Ensure that the silhouette of the main subjects is clear and distinct, and experiment with varying degrees of symmetry or asymmetry to create visual tension. Think ahead to the final product and the overall impact of the image on the viewer.";
-      const improveHumanPrompt =
-        "Ensure that the human figures in the scene are accurately and realistically depicted, taking into consideration proportions, anatomy, and natural poses. Pay special attention to facial expressions and body language to convey emotions and interactions between the characters effectively.";
-      // const formattedPromptWithStyle = `${input} by ${entry?.style_reference?.artist}. ${genericPrompt}`;
-      // const formattedPromptWithStyle = `${input} by Hayao Miyazaki. ${genericPrompt}. `;
-      const formattedPromptWithStyle = `${input}. ${genericPrompt}. ${improveHumanPrompt}`;
-      // const formattedPromptWithStyle = `${input} in Studio Ghibli artstyle`;
-      // Response of NEW Stable Diffusion XL
-      const sdxlResponse = await axios({
-        method: "POST",
-        url: `https://api.stability.ai/v1/generation/${engineId}/text-to-image`,
-        data: {
-          text_prompts: [
-            {
-              // text: "A lighthouse on a cliff",
-              text: formattedPromptWithStyle,
-            },
-          ],
-          cfg_scale: 7,
-          clip_guidance_preset: "FAST_BLUE",
-          height: 512,
-          width: 512,
-          style_preset: "comic-book",
-          samples: 1,
-          steps: 30,
-        },
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-      });
-
-      const artifactsResponse: GenerationResponse =
-        sdxlResponse?.data?.artifacts;
-      // if (artifactsResponse) {
-      //   const artifacts = artifactsResponse.artifacts; // Extract artifacts array from the response
-      //   // Check if artifacts is not null or undefined
-      //   if (artifacts) {
-      //     const length = artifacts.length;
-      //     for (let i = 0; i < length + 1; i++) {
-      //       const image = artifacts[i];
-      //     }
-      //   }
-      // }
-
-      
-      // SENSITIVE
-      // console.log("SDXL RESPONSE:");
-      // console.log(sdxlResponse.data);
-
-      const base64String = sdxlResponse?.data?.artifacts[0].base64;
-      const newImageURL = getImageURLFromBase64(base64String);
-      // const imageDataURL = base64ToImageURL(base64String);
-
-      const newScene: Scene = {
-        _id: new mongoose.Types.ObjectId().toString(),
-        image_base64: base64String,
-        text: input,
-      };
-
-      // Entry validation failed: scenes.0.image: Path `image` is required., scenes.0._id: Path `_id` is required.
-      dispatch(addScene(newScene));
-      dispatch(setShowGeneratedStoryboard(true));
-
-      stopGeneratingStoryboard();
-
-      interface GenerationResponse {
-        artifacts: Array<{
-          base64: string;
-          seed: number;
-          finishReason: string;
-        }>;
-      }
-    } catch (error: any) {
-      console.log(error);
-      console.log("Failed to generate image:", error?.message);
-      stopGeneratingStoryboard();
+    // guards
+    if (!apiKey) {
+      throw new Error("Missing Stability API key.");
     }
+    if (!input || input === "") {
+      throw new Error("Input text is null");
+    }
+    if (entry?.style_reference?.artist === null) {
+      throw new Error("Entry style reference is null");
+    }
+
+    // final input prompt
+    // const formattedPromptWithStyle = `${input} in ${entry?.style_reference?.artist} comic illustration artstyle`;
+    const genericPrompt =
+      "Create a dynamic and visually striking scene that tells a compelling story. Use the principles of dynamic symmetry and the Golden Ratio to guide the composition. Focus on the main subjects, with secondary elements supporting the central narrative. Utilize the Rule of Thirds to balance the composition and reinforce focal points. Integrate the power of triangles and groups of three to add stability and interest. Use color strategically to create contrast and guide the viewer's eye. Consider the angle and point of view to create drama and enhance the story. Ensure that the silhouette of the main subjects is clear and distinct, and experiment with varying degrees of symmetry or asymmetry to create visual tension. Think ahead to the final product and the overall impact of the image on the viewer.";
+    const improveHumanPrompt =
+      "Ensure that the human figures in the scene are accurately and realistically depicted, taking into consideration proportions, anatomy, and natural poses. Pay special attention to facial expressions and body language to convey emotions and interactions between the characters effectively.";
+    // const formattedPromptWithStyle = `${input} by ${entry?.style_reference?.artist}. ${genericPrompt}`;
+    // const formattedPromptWithStyle = `${input} by Hayao Miyazaki. ${genericPrompt}. `;
+    const formattedPromptWithStyle = `${input}. ${genericPrompt}. ${improveHumanPrompt}`;
+    // const formattedPromptWithStyle = `${input} in Studio Ghibli artstyle`;
+    // Response of NEW Stable Diffusion XL
+    const sdxlResponse = await axios({
+      method: "POST",
+      url: `https://api.stability.ai/v1/generation/${engineId}/text-to-image`,
+      data: {
+        text_prompts: [
+          {
+            // text: "A lighthouse on a cliff",
+            text: formattedPromptWithStyle,
+          },
+        ],
+        cfg_scale: 7,
+        clip_guidance_preset: "FAST_BLUE",
+        height: 512,
+        width: 512,
+        style_preset: "comic-book",
+        samples: 1,
+        steps: 30,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+    });
+
+    const base64String = sdxlResponse?.data?.artifacts[0].base64;
+
+    const newScene: Scene = {
+      _id: new mongoose.Types.ObjectId().toString(),
+      image_base64: base64String,
+      text: input,
+    };
+
+    // Entry validation failed: scenes.0.image: Path `image` is required., scenes.0._id: Path `_id` is required.
+    dispatch(addScene(newScene));
+    dispatch(setShowGeneratedStoryboard(true));
+
+    stopGeneratingStoryboard();
   };
 
-  //new 4/30 ----
-  const createDiaryFormatDescription = async (input: string) => {
-    try {
-      const openaiApiKey = process.env.OPENAI_API_KEY;
-      const control_prompt =
-        'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ' +
-        input;
-  
-      const configuration = new Configuration({
-        apiKey: openaiApiKey,
-      });
-      const openai = new OpenAIApi(configuration);
-  
-      const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: control_prompt }],
-        temperature: 0.7,
-      });
-  
-      const diaryText = completion?.data?.choices[0]?.message?.content;
-  
-      if (!diaryText || diaryText === "") {
-        throw new Error("Generated diary text is null");
-      }
-  
-      console.log("###--------------------DIARY TEXT--------------------###");
-      console.log(diaryText);
-  
-      return diaryText;
-    } catch (error: any) {
-      console.log(
-        `Failed to create diary format description, message: ${error?.message}`
-      );
-      return null;
-    }
-  };
-  //new 4/30 -----  
-
+  //new 4/30 -----
   const handleFileUpload = async (file: File) => {
     try {
-
       // error guards
       if (!file) throw new Error("Missing file.");
-      
-      if ( !process.env.AMAZON_S3_ACCESS_KEY_ID || !process.env.AMAZON_S3_SECRET_ACCESS_KEY) {
+
+      if (
+        !process.env.AMAZON_S3_ACCESS_KEY_ID ||
+        !process.env.AMAZON_S3_SECRET_ACCESS_KEY
+      ) {
         throw new Error("Missing Amazon S3 credentials.");
       }
 
