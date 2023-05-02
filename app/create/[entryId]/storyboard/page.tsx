@@ -58,9 +58,13 @@ import Spotify from "@/tiptap/extensions/Spotify";
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
+import { IndexeddbPersistence } from 'y-indexeddb'; // persistence
 
 const ydoc = new Y.Doc();
 const provider = new WebrtcProvider("tiptap-collaboration-extension", ydoc);
+
+// Store the Y document in the browser
+new IndexeddbPersistence('example-document', ydoc)
 
 type Props = {};
 
@@ -80,7 +84,8 @@ const Storyboard = (props: Props) => {
 
   // Set up the Hocuspocus WebSocket provider
   const provider = new HocuspocusProvider({
-    url: "ws://127.0.0.1:1234",
+    // url: "ws://127.0.0.1:1234",
+    url: process.env.WEBSOCKET_URL as string,
     name: "example-document",
   });
 
