@@ -122,7 +122,7 @@ const Storyboard = (props: Props) => {
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
-        <CreateHeader currentRoute={createRoutes[2]} />
+        <CreateHeader currentRoute={createRoutes[2]} entryId={entry?._id} />
 
         {/* main content (left and right panels columns) */}
         <div
@@ -224,6 +224,14 @@ const Storyboard = (props: Props) => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const updatedTitle = e.target.value;
                     dispatch(setTitle(updatedTitle));
+                  }}
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    // press enter, shife focus to editor
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      // push content down one block and focus on the first block
+                      editor?.commands.focus("start");
+                    }
                   }}
                   placeholder="Title"
                 />

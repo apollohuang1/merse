@@ -15,6 +15,7 @@ const Styles = (props: Props) => {
   // const [selectedStyle, setSelectedStyle] = React.useState<ComicStyle | null>(null);
 
   // style state
+  const entry = useAppSelector((state) => state.entry);
   const selectedStyle = useAppSelector((state) => state.entry.style_reference);
   const entryHelper = useAppSelector((state) => state.entryHelper);
 
@@ -42,7 +43,7 @@ const Styles = (props: Props) => {
   return (
     <div className="flex flex-col overflow-auto">
       {/* top of grid */}
-      <CreateHeader currentRoute={createRoutes[0]} />
+      <CreateHeader currentRoute={createRoutes[0]} entryId={entry?._id} />
 
       {/* second section of grid */}
       <div className="flex flex-col w-full h-full justify-center items-center px-6">

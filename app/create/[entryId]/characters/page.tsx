@@ -73,7 +73,7 @@ const CreateCharacterPage = (props: Props) => {
   return (
     <>
       <div className="grid grid-rows-[100px_auto] overflow-x-hidden overflow-y-scroll">
-        <CreateHeader currentRoute={createRoutes[1]} />
+        <CreateHeader currentRoute={createRoutes[1]} entryId={entry?._id} />
 
         <div className="flex flex-col w-full h-full items-center px-6">
           <div className={clsx("w-full h-full max-w-3xl py-6")}>

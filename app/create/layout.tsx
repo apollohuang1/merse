@@ -7,8 +7,10 @@ import Modal from "@/components/modal";
 import useAuth from "@/hooks/useAuth";
 import { Entry } from "@/models/entry";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setAuthor } from "@/redux-store/store";
+import { setEntryAuthor, setEntryId } from "@/redux-store/store";
 import { CreateRoute, createRoutes } from "@/util/create-constants";
+import mongoose from "mongoose";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 const metadata = {
@@ -32,11 +34,20 @@ export default function RootLayout({
   const entry = useAppSelector((state) => state.entry);
   const dispatch = useAppDispatch();
 
+  const router = useRouter();
+
   useEffect(() => {
     reloadCurrentLocalUser()
       .then((user: any) => {
         if (user) {
-          dispatch(setAuthor(user?._id));
+          dispatch(setEntryAuthor(user?._id));
+
+          // const newEntryId = new mongoose.Types.ObjectId().toString();
+          // dispatch(setEntryId(newEntryId));
+
+          // redirect to create page
+          // router.push(`/create/${newEntryId}/styles`)
+          router.push(`/create/${entry?._id}/styles`)
         }
       })
       .catch((err) => {
@@ -50,7 +61,7 @@ export default function RootLayout({
     <div className="grid grid-cols-[250px_auto] max-lg:grid-cols-[175px_auto] max-sm:flex max-sm:flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary max-h-screen">
       {/* left side bar */}
       <div className="flex max-sm:hidden">
-        <CreateLeftSideBar />
+        <CreateLeftSideBar entryId={entry?._id} />
       </div>
 
       {children}

@@ -8,7 +8,7 @@ import mongoose, { Types } from 'mongoose'
 import { ObjectId } from 'mongoose'
 
 const initialState: Entry = {
-  _id: "",
+  _id: new mongoose.Types.ObjectId().toString(),
   author: null,
   title: "",
   style_reference: null,
@@ -22,7 +22,10 @@ const entrySlice = createSlice({
   name: 'entry',
   initialState: initialState,
   reducers: {
-    setAuthor: (state: Entry, action: PayloadAction<User>) => {
+    setEntryId: (state: Entry, action: PayloadAction<string>) => {
+      state._id = action.payload
+    },
+    setEntryAuthor: (state: Entry, action: PayloadAction<User>) => {
       state.author = action.payload
     },
     setStyle: (state: Entry, action) => {
@@ -103,7 +106,7 @@ export const store: ToolkitStore = configureStore({
 
 // actions
 export const { setCurrentUser } = authenticationSlice.actions;
-export const { setAuthor, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, setScenes, addScene } = entrySlice.actions;
+export const { setEntryId, setEntryAuthor, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, setScenes, addScene } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard, setIsGeneratingStoryboard } = entryHelperSlice.actions;
 
 

@@ -2,6 +2,7 @@
 
 import CreateHeader from '@/components/create/create-header'
 import MaxWidthContainer from '@/components/create/max-width-container'
+import { useAppSelector } from '@/redux-store/hooks'
 import { createRoutes } from '@/util/create-constants'
 import React from 'react'
 import { FiArrowRight } from 'react-icons/fi'
@@ -9,11 +10,13 @@ import { FiArrowRight } from 'react-icons/fi'
 type Props = {}
 
 const Cover = (props: Props) => {
+
+  const entry = useAppSelector(state => state.entry)
   return (
     <div className="grid grid-rows-[100px_auto] overflow-auto">
 
       {/* top of grid */}
-      <CreateHeader currentRoute={createRoutes[4]} />
+      <CreateHeader currentRoute={createRoutes[4]} entryId={entry?._id} />
 
       <div className="flex flex-col w-full h-full justify-center items-center">
   

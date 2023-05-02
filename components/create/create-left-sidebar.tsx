@@ -6,13 +6,15 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
-import { allCreateRoutes } from "@/util/create-constants";
+import { CreateRoute, allCreateRoutes } from "@/util/create-constants";
 import useColorScheme from "@/hooks/useColorScheme";
 import { Spinner } from "@chakra-ui/react";
 import Alert from "../alert";
 import useCreateEntry from "@/hooks/useCreateEntry";
 
-type Props = {};
+type Props = {
+  entryId: string;
+};
 
 const CreateLeftSideBar = (props: Props) => {
   const pathName = usePathname();
@@ -26,15 +28,15 @@ const CreateLeftSideBar = (props: Props) => {
     <>
       <div className="flex flex-col justify-between w-full h-full border-x border-x-light-divider dark:border-x-dark-divider pt-16">
         <div className="flex flex-col gap-0">
-          {allCreateRoutes.map((route, index) => {
+          {allCreateRoutes.map((route: CreateRoute, index) => {
             return (
-              <Link key={index} href={route?.pathname}>
+              <Link key={index} href={`/create/${props.entryId}/${route?.title.toLowerCase()}`}>
                 <button
                   className={clsx(
                     "flex items-center justify-center w-full h-16 transition-all active:opacity-50 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
                     {
                       "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg border-r-2 border-r-accent":
-                        pathName === route.pathname,
+                        route.title.toLowerCase() === pathName?.split("/")[3]?.toLowerCase(),
                     },
                     {
                       "text-light-text-tertiary dark:text-dark-text-tertiary":

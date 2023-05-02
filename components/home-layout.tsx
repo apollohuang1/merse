@@ -162,7 +162,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
               {/* create */}
               <Link
-                href={"/create/styles"}
+                href={"/create"}
                 className="flex w-full items-center justify-center cursor-pointer"
               >
                 <button
