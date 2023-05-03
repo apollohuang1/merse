@@ -283,7 +283,7 @@ const Storyboard = (props: Props) => {
                       editor={editor}
                       tippyOptions={{ duration: 100 }}
                       className={clsx(
-                        "flex flex-col bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-xl translate-y-[calc(50%+21px)] -translate-x-3"
+                        "flex flex-col bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-lg translate-y-[calc(50%+21px)] -translate-x-3"
                       )}
                     >
                       {floatingMenus.map((floatingMenu, index) => (
@@ -326,7 +326,7 @@ const Storyboard = (props: Props) => {
                     <BubbleMenu
                       editor={editor}
                       tippyOptions={{ duration: 100 }}
-                      className="flex flex-row bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl border border-light-divider dark:border-dark-divider h-8"
+                      className="flex flex-row bg-light-background-primary dark:bg-dark-background-primary drop-shadow-md border border-light-divider dark:border-dark-divider h-8"
                     >
                       {bubbleMenus.map((bubbleMenu: any, index: number) => (
                         <button
@@ -363,7 +363,7 @@ const Storyboard = (props: Props) => {
                 (scene: Scene & StoryboardSample, index: number) => (
                   <div
                     key={index}
-                    className="group relative flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
+                    className="group relative flex flex-col w-full rounded-lg overflow-clip bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
                   >
                     {/* overlay  */}
                     {/* <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">

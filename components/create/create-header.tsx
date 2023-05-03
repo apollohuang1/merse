@@ -3,7 +3,7 @@ import { CreateRoute } from "@/util/create-constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 type Props = {
   currentRoute: CreateRoute;
@@ -31,9 +31,9 @@ const CreateHeader = (props: Props) => {
           {props.currentRoute?.backConfig && (
             <Link
               href={`/create/${pathname?.split("/")[2]}/${props.currentRoute?.backConfig?.title.toLowerCase()}`}
-              className="group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all hover:scale-105 active:scale-100 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
+              className="group inline-flex items-center justify-center rounded-2xl text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all hover:scale-105 active:scale-100 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
             >
-              <FiArrowLeft className="text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[-2px] transition-all hover:duration-300" />
+              <FiChevronLeft className="text-light-text-primary dark:text-dark-text-primary transition-all hover:duration-300" />
               <span>{props.currentRoute?.backConfig?.title ?? "Back"}</span>
             </Link>
           )}
@@ -41,11 +41,11 @@ const CreateHeader = (props: Props) => {
           {props.currentRoute?.nextConfig ? (
             <Link
               href={`/create/${pathname?.split("/")[2]}/${props.currentRoute?.nextConfig?.title.toLowerCase()}`}
-              className="group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all hover:scale-105 active:scale-100 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
+              className="group inline-flex items-center justify-center rounded-2xl text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all hover:scale-105 active:scale-100 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
             >
               <span>{props.currentRoute?.nextConfig?.title ?? "Finish"}</span>
               {props.currentRoute?.nextConfig && (
-                <FiArrowRight className="text-light-text-primary dark:text-dark-text-primary group-hover:translate-x-[2px] transition-all hover:duration-300" />
+                <FiChevronRight className="text-light-text-primary dark:text-dark-text-primary transition-all hover:duration-300" />
               )}
             </Link>
           ) : (

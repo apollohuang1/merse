@@ -26,7 +26,7 @@ const CreateLeftSideBar = (props: Props) => {
 
   return (
     <>
-      <div className="flex flex-col justify-between w-full h-full border-x border-x-light-divider dark:border-x-dark-divider pt-16">
+      <div className="flex flex-col justify-between w-full h-full border-r border-x-light-divider dark:border-x-dark-divider pt-16">
         <div className="flex flex-col gap-0">
           {allCreateRoutes.map((route: CreateRoute, index) => {
             return (
