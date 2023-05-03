@@ -377,7 +377,7 @@ const Storyboard = (props: Props) => {
                     {/* story line in storyboard */}
                     <div className="flex p-4">
                       <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                        {scene?.displayed_text ?? ""}
+                        {scene?.displayed_text || scene?.text || ""}
                       </p>
                     </div>
                   </div>

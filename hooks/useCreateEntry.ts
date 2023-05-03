@@ -1,13 +1,16 @@
+import React from "react";
+
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { JSONContent } from "@tiptap/react";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+
 import {
   Configuration,
   CreateChatCompletionRequest,
   CreateChatCompletionResponse,
   OpenAIApi,
 } from "openai";
-import React from "react";
+
 import {
   addScene,
   setIsGeneratingStoryboard,
@@ -16,12 +19,13 @@ import {
 
 import { Scene } from "@/models/entry";
 import mongoose from "mongoose";
+
 import {
   PutObjectCommand,
   PutObjectCommandInput,
-  PutObjectCommandOutput,
   S3Client,
 } from "@aws-sdk/client-s3";
+
 import { useRouter } from "next/navigation";
 
 // Hook for creating new entries
@@ -59,9 +63,11 @@ const useCreateEntry = () => {
     }
   };
 
+
   // Only use try catch block here. sub-functions should handle/throw their own errors to this like a dumb
   const generateStoryboard = async (editor: any) => {
     try {
+
       // guard log in to prevent anonymous users from burning our API credits
       if (auth?.currentUser === null) {
         alert(
@@ -78,9 +84,8 @@ const useCreateEntry = () => {
       ];
 
       if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
-        alert(
-          "🚨 Sorry, you're not whitelisted to use the AI yet. Please ping one of us to get access."
-        );
+        // alert to let people know we're still developing
+        alert("Sorry, we're still developing this feature. We will let you know when it's ready!")
         throw new Error("User not whitelisted");
       }
 
@@ -180,11 +185,10 @@ const useCreateEntry = () => {
       //   dispatch(addScene(newScene));
       //   dispatch(setShowGeneratedStoryboard(true));
       // }
-
-      stopGeneratingStoryboard();
     } catch (error: any) {
-      stopGeneratingStoryboard();
       console.log(`Failed to generate storyboard, message: ${error?.message}`);
+    } finally {
+      stopGeneratingStoryboard();
     }
   };
 
@@ -404,5 +408,6 @@ const useCreateEntry = () => {
     handleFileUpload,
   };
 };
+
 
 export default useCreateEntry;
