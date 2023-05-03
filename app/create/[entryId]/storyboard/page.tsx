@@ -252,6 +252,7 @@ const Storyboard = (props: Props) => {
                 {/* title */}
                 <input
                   type="text"
+                  id="title"
                   className="w-full py-5 bg-transparent outline-none text-6xl font-semibold text-[#0E100E] dark:text-[#E7FCE8] placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
                   value={entry?.title ?? ""}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -270,7 +271,12 @@ const Storyboard = (props: Props) => {
                 />
 
                 <>
-                  <EditorContent editor={editor} />
+                  <EditorContent editor={editor} onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    // if content is empty and user push backspace, focus on title
+                    if (e.key === "Backspace" && editor?.isEmpty) {
+                      document.getElementById("title")?.focus();
+                    }
+                  }}/>
 
                   {editor && (
                     <FloatingMenu

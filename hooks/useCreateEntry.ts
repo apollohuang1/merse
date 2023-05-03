@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { JSONContent } from "@tiptap/react";
+import { Editor, JSONContent } from "@tiptap/react";
 import axios from "axios";
 
 import {
@@ -65,7 +65,7 @@ const useCreateEntry = () => {
 
 
   // Only use try catch block here. sub-functions should handle/throw their own errors to this like a dumb
-  const generateStoryboard = async (editor: any) => {
+  const generateStoryboard = async (editor: Editor | null) => {
     try {
 
       // guard log in to prevent anonymous users from burning our API credits
@@ -89,7 +89,7 @@ const useCreateEntry = () => {
         throw new Error("User not whitelisted");
       }
 
-      if (!editor || editor?.getHTML() === "<p></p>") {
+      if (!editor || editor?.isEmpty) {
         throw new Error("Editor is null");
       }
 
