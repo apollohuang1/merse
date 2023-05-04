@@ -220,6 +220,27 @@ const LayoutPage = (props: Props) => {
     });
   };
 
+  const removeSelectedObject = () => {
+    const activeObject = fabricCanvas?.getActiveObject();
+    if (activeObject) {
+      fabricCanvas?.remove(activeObject);
+    }
+  }
+
+  // detect delete button and remove selected object
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      e.preventDefault();
+      if (e.key === "Backspace") {
+        removeSelectedObject();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
