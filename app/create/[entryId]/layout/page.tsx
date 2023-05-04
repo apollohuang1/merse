@@ -1,7 +1,12 @@
 "use client";
 
 import CreateHeader from "@/components/create/create-header";
-import React, { FormEventHandler, useCallback, useEffect, useState } from "react";
+import React, {
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   FiBold,
   FiCode,
@@ -11,9 +16,7 @@ import {
   FiList,
 } from "react-icons/fi";
 
-import {
-  BiText
-} from "react-icons/bi";
+import { BiText } from "react-icons/bi";
 
 import { BsQuote } from "react-icons/bs";
 import { IoText } from "react-icons/io5";
@@ -128,9 +131,9 @@ const LayoutPage = (props: Props) => {
 
   const canvasEl = React.useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<fabric.Canvas | null>(null);
+  const [clipboard, setClipboard] = useState(null);
 
   const onLoad = useCallback((canvas: fabric.Canvas) => {
-
     const isDarkMode = localStorage.getItem("theme") === "dark";
 
     // const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement);
@@ -150,6 +153,11 @@ const LayoutPage = (props: Props) => {
       height: innerHeight,
     });
 
+    // stylings
+
+    // customize selection style
+    canvas.selectionColor = "rgba(0,0,0,0.3)";
+
     // detect dark mode class and set background color
     if (isDarkMode) {
       canvas.backgroundColor = "#161816";
@@ -159,20 +167,20 @@ const LayoutPage = (props: Props) => {
 
     const gridSize = 32;
 
-    for (let i = 0; i < canvas.width; i += gridSize) {
-      for (let j = 0; j < canvas.height; j += gridSize) {
-        const circle = new fabric.Circle({
-          left: i,
-          top: j,
-          radius: 1.5,
-          fill: isDarkMode ? "#ffffff" : "#000000",
-          opacity: 0.1,
-          selectable: false,
-          evented: false
-        });
-        canvas.add(circle);
-      }
-    }
+    // for (let i = 0; i < canvas.width; i += gridSize) {
+    //   for (let j = 0; j < canvas.height; j += gridSize) {
+    //     const circle = new fabric.Circle({
+    //       left: i,
+    //       top: j,
+    //       radius: 1.5,
+    //       fill: isDarkMode ? "#ffffff" : "#000000",
+    //       opacity: 0.1,
+    //       selectable: false,
+    //       evented: false
+    //     });
+    //     canvas.add(circle);
+    //   }
+    // }
 
     // canvas.add(new fabric.Textbox("Hello world", { left: 50, top: 50 }));
     // canvas.add(new fabric.Textbox("Hello world", { left: 50, top: 150 }));
@@ -222,18 +230,19 @@ const LayoutPage = (props: Props) => {
 
   const removeSelectedObject = () => {
     const activeObject: any = fabricCanvas?.getActiveObject();
-    if (activeObject) {
-      const objectType = activeObject.get("type");
-      if (objectType === "i-text") {
-        console.log(activeObject)
-        if (!activeObject?.isEditing) {
-          fabricCanvas?.remove(activeObject);
-        }
-      } else {
+    if (!activeObject) return;
+
+    const objectType = activeObject.get("type");
+    
+    if (objectType === "i-text") {
+      console.log(activeObject);
+      if (!activeObject?.isEditing) {
         fabricCanvas?.remove(activeObject);
       }
+    } else {
+      fabricCanvas?.remove(activeObject);
     }
-  }
+  };
 
   // detect delete button and remove selected object
   useEffect(() => {
@@ -255,54 +264,46 @@ const LayoutPage = (props: Props) => {
         <CreateHeader currentRoute={createRoutes[3]} />
 
         <div className="grid grid-rows-[50px_auto] overflow-hidden">
-
           {/* tools bar */}
-          <div className="flex flex-row items-center w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider px-3">
+          <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider px-3">
+            <div className="flex flex-row gap-1">
+              <ToolbarButton
+                onClick={() => {
+                  const newText = new fabric.Textbox("Add Text", {
+                    left: 50,
+                    top: 50,
+                  });
+                  newText.backgroundColor = "white";
+                  fabricCanvas?.add(newText);
+                }}
+              >
+                <BiText />
+              </ToolbarButton>
 
-            <ToolbarButton
-              onClick={() => {
-                const newText = new fabric.Textbox("Add Text", {
-                  left: 50,
-                  top: 50,
-                });
-                newText.backgroundColor = "white";
-                fabricCanvas?.add(newText);
-              }}
-            >
-              <BiText />
-            </ToolbarButton>
+              <ToolbarButton
+                onClick={() => {
+                  addImageURLToCanvas();
+                }}
+              >
+                <FiImage />
+              </ToolbarButton>
 
-            <ToolbarButton
-              onClick={() => {
-                addPuuungStoryboardToCanvas();
-              }}
-            >
-              Add Puung
-            </ToolbarButton>
+              <ToolbarButton
+                onClick={() => {
+                  addPuuungStoryboardToCanvas();
+                }}
+              >
+                Add Puung
+              </ToolbarButton>
+            </div>
 
-            <ToolbarButton
-              onClick={() => {
-                addImageURLToCanvas();
-              }}
-            >
-              <FiImage />
-            </ToolbarButton>
-
-
-            <ToolbarButton
-              onClick={() => {
-              }}
-            >
-              Template
-            </ToolbarButton>
-
+            <ToolbarButton onClick={() => {}}>Template (soon)</ToolbarButton>
           </div>
 
           <div className="relative w-full h-full">
             {/* <canvas ref={canvasEl} width={"100%"} height={"100%"} /> */}
-            <Canvas onLoad={onLoad} saveState/>
+            <Canvas onLoad={onLoad} saveState />
           </div>
-
         </div>
 
         {/* main content (left and right panels columns) */}
@@ -448,21 +449,18 @@ const LayoutPage = (props: Props) => {
 const ToolbarButton: React.FC<{
   children: React.ReactNode;
   onClick: () => void;
-  isActive?: boolean
-}> = ({
-  children,
-  onClick,
-  isActive = false,
-}) => {
+  isActive?: boolean;
+}> = ({ children, onClick, isActive = false }) => {
   return (
     <button
       onClick={onClick}
-      className={"flex flex-row items-center justify-center h-8 px-3 rounded-md hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"}
+      className={
+        "flex flex-row items-center justify-center h-10 px-3 rounded-md hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+      }
     >
-      { children }
+      {children}
     </button>
   );
 };
-
 
 export default LayoutPage;
