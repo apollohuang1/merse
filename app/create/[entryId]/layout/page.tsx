@@ -134,6 +134,7 @@ const LayoutPage = (props: Props) => {
   const canvasEl = React.useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<fabric.Canvas | null>(null);
   const [clipboard, setClipboard] = useState(null);
+  const [currentActiveObject, setCurrentActiveObject] = useState<fabric.Object | null>(null);
 
   const onLoad = useCallback((canvas: fabric.Canvas) => {
     const isDarkMode = localStorage.getItem("theme") === "dark";
@@ -265,6 +266,12 @@ const LayoutPage = (props: Props) => {
     });
   };
 
+  const bringSelectedObjectToFront = () => {
+    const activeObject: any = fabricCanvas?.getActiveObject();
+    if (!activeObject) return;
+    fabricCanvas?.bringObjectToFront(activeObject);
+  }
+
   const removeSelectedObject = () => {
     const activeObject: any = fabricCanvas?.getActiveObject();
     if (!activeObject) return;
@@ -343,7 +350,16 @@ const LayoutPage = (props: Props) => {
               
             </div>
 
-            <ToolbarButton onClick={() => {}}>Template (soon)</ToolbarButton>
+            <div className="flex flex-row gap-1">
+
+              <ToolbarButton onClick={() => {
+                bringSelectedObjectToFront();
+              }}>
+                Bring to Front
+              </ToolbarButton>
+
+              <ToolbarButton onClick={() => {}}>Template (soon)</ToolbarButton>
+            </div>
           </div>
 
           <div className="relative w-full h-full overflow-auto">
