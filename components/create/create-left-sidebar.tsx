@@ -11,6 +11,7 @@ import useColorScheme from "@/hooks/useColorScheme";
 import { Spinner } from "@chakra-ui/react";
 import Alert from "../alert";
 import useCreateEntry from "@/hooks/useCreateEntry";
+import { FiSun } from "react-icons/fi";
 
 type Props = {
   entryId: string;
@@ -20,6 +21,7 @@ const CreateLeftSideBar = (props: Props) => {
   const pathName = usePathname();
 
   const { saveEntry } = useCreateEntry();
+  const { toggleColorScheme } = useColorScheme();
 
   const [isSaving, setIsSaving] = React.useState(false);
   const [showDiscardAlert, setShowDiscardAlert] = React.useState<boolean>(false);
@@ -50,6 +52,15 @@ const CreateLeftSideBar = (props: Props) => {
             );
           })}
         </div>
+
+        <button
+            onClick={() => {
+              toggleColorScheme();
+            }}
+            className="flex flex-row h-16 w-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2"
+          >
+            <FiSun />
+          </button>
 
         <div className="flex flex-row border-t border-t-light-divider dark:border-t-dark-divider">
           {/* discard button */}
