@@ -135,8 +135,7 @@ const LayoutPage = (props: Props) => {
   const canvasEl = React.useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<fabric.Canvas | null>(null);
   const [clipboard, setClipboard] = useState(null);
-  const [currentActiveObject, setCurrentActiveObject] =
-    useState<fabric.Object | null>(null);
+  const [currentActiveObject, setCurrentActiveObject] = useState<any | null>(null);
 
   const onLoad = useCallback((canvas: fabric.Canvas) => {
     const isDarkMode = localStorage.getItem("theme") === "dark";
@@ -154,6 +153,11 @@ const LayoutPage = (props: Props) => {
 
     // snap to grid
     canvas.on("object:moving", function (options) {
+      // check if object is image
+      if (options.target.get("type") !== "image") {
+        return;
+      }
+
       options.target.set({
         left: Math.round(options.target.left / gridSize) * gridSize,
         top: Math.round(options.target.top / gridSize) * gridSize,
@@ -163,6 +167,20 @@ const LayoutPage = (props: Props) => {
     canvas.setDimensions({
       width: innerWidth - 250,
       height: innerHeight * 4,
+    });
+
+    canvas.on("selection:created", function (options) {
+      // @ts-ignore
+      setCurrentActiveObject(options.selected);
+    });
+
+    canvas.on("selection:cleared", function (options) {
+      setCurrentActiveObject(null);
+    });
+
+    canvas.on("selection:updated", function (options) {
+      // @ts-ignore
+      setCurrentActiveObject(options.selected);
     });
 
     // stylings
@@ -194,6 +212,8 @@ const LayoutPage = (props: Props) => {
     //   }
     // }
 
+
+
     // canvas.add(new fabric.Textbox("Hello world", { left: 50, top: 50 }));
     // canvas.add(new fabric.Textbox("Hello world", { left: 50, top: 150 }));
 
@@ -211,10 +231,8 @@ const LayoutPage = (props: Props) => {
     };
   }, []);
 
-  const addImageURLToCanvas = () => {
-    const url = window.prompt("Enter image URL");
-
-    fabric.Image.fromURL(url as string)
+  const addImageURLToCanvas = (url: string) => {
+    fabric.Image.fromURL(url)
       .then((img) => {
         fabricCanvas?.add(img);
       })
@@ -252,9 +270,12 @@ const LayoutPage = (props: Props) => {
     });
 
     // add as a group
-    const bubbleGroup = new fabric.Group([bubblePath, bubbleText]);
-    bubbleGroup.bringObjectToFront(bubbleText);
-    fabricCanvas?.add(bubbleGroup);
+    // const bubbleGroup = new fabric.Group([bubblePath, bubbleText]);
+    // bubbleGroup.bringObjectToFront(bubbleText);
+    fabricCanvas?.add(bubblePath);
+    fabricCanvas?.add(bubbleText);
+
+    
   };
 
   const addPuuungStoryboardToCanvas = () => {
@@ -333,11 +354,12 @@ const LayoutPage = (props: Props) => {
             <div className="flex flex-row gap-1">
               <ToolbarButton
                 onClick={() => {
-                  const newText = new fabric.Textbox("Add Text", {
+                  const newText = new fabric.IText("Add Text", {
                     left: 50,
                     top: 50,
                   });
-                  newText.backgroundColor = "white";
+                  // newText.backgroundColor = "white";
+                  newText.set({ fill: "black"})
                   fabricCanvas?.add(newText);
                 }}
               >
@@ -346,7 +368,9 @@ const LayoutPage = (props: Props) => {
 
               <ToolbarButton
                 onClick={() => {
-                  addImageURLToCanvas();
+                  const imageURL = window.prompt("Enter image URL");
+                  if (!imageURL) return;
+                  addImageURLToCanvas(imageURL);
                 }}
               >
                 <FiImage />
@@ -370,6 +394,14 @@ const LayoutPage = (props: Props) => {
             </div>
 
             <div className="flex flex-row gap-1">
+            <ToolbarButton
+                onClick={() => {
+                  console.log(currentActiveObject);
+                }}
+              >
+                Test
+              </ToolbarButton>
+
               <ToolbarButton
                 onClick={() => {
                   bringSelectedObjectToFront();
