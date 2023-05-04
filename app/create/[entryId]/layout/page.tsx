@@ -135,10 +135,10 @@ const LayoutPage = (props: Props) => {
   const canvasEl = React.useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<fabric.Canvas | null>(null);
   const [clipboard, setClipboard] = useState(null);
-  const [currentActiveObject, setCurrentActiveObject] = useState<fabric.Object | null>(null);
+  const [currentActiveObject, setCurrentActiveObject] =
+    useState<fabric.Object | null>(null);
 
   const onLoad = useCallback((canvas: fabric.Canvas) => {
-
     const isDarkMode = localStorage.getItem("theme") === "dark";
 
     // load json if exist in entry?.canvas
@@ -152,7 +152,6 @@ const LayoutPage = (props: Props) => {
     // make the fabric.Canvas instance available to your app
     setFabricCanvas(canvas);
 
-
     // snap to grid
     canvas.on("object:moving", function (options) {
       options.target.set({
@@ -162,8 +161,8 @@ const LayoutPage = (props: Props) => {
     });
 
     canvas.setDimensions({
-      width: innerWidth * 2,
-      height: innerHeight * 2,
+      width: innerWidth - 250,
+      height: innerHeight * 4,
     });
 
     // stylings
@@ -225,67 +224,78 @@ const LayoutPage = (props: Props) => {
   };
 
   const addComicBubbleToCanvas = () => {
-
-    const ovalPathString = "M 0 0 C 0 -90 210 -90 210 0 C 210 90 0 90 0 0 Z"
+    const ovalPathString = "M 0 0 C 0 -90 210 -90 210 0 C 210 90 0 90 0 0 Z";
 
     const bubblePath = new fabric.Path(ovalPathString, {
       // left: fabricCanvas?.width as number / 2,
       // top: fabricCanvas?.height as number / 2,
       left: 150,
       top: 150,
-      fill: '#fff',
-      stroke: '#000',
+      fill: "#fff",
+      stroke: "#000",
       strokeWidth: 2,
-      originX: 'center',
-      originY: 'center',
+      originX: "center",
+      originY: "center",
       width: 1000,
       height: 1000,
     });
     const bubbleText = new fabric.Textbox("Add comic dialogue", {
       left: bubblePath.left,
       top: bubblePath.top,
-      fill: '#000',
+      fill: "#000",
       fontSize: 24,
       width: bubblePath.width / 2,
       height: bubblePath.height / 2,
-      textAlign: 'center',
-      originX: 'center',
-      originY: 'center',
+      textAlign: "center",
+      originX: "center",
+      originY: "center",
     });
 
     // add as a group
     const bubbleGroup = new fabric.Group([bubblePath, bubbleText]);
     bubbleGroup.bringObjectToFront(bubbleText);
     fabricCanvas?.add(bubbleGroup);
-  }
+  };
 
   const addPuuungStoryboardToCanvas = () => {
-    const scenes = entry?.scenes;
-    storyboardSamples?.forEach((scene: StoryboardSample) => {
+
+    if (!fabricCanvas) return;
+    // const scenes = entry?.scenes;
+    const scenes = storyboardSamples;
+  
+    const numRows = Math.ceil(scenes.length / 2);
+    const colWidth = fabricCanvas.width / 2;
+    const totalHeight = numRows * 500; // Assume all images have a width of 500
+  
+    let x = 0;
+    let y = 0;
+  
+    for (let i = 0; i < scenes.length; i++) {
+      const scene = scenes[i];
       fabric.Image.fromURL(scene.artwork.url)
         .then((img) => {
           img.scaleToWidth(500);
           img.preserveAspectRatio = "true";
-          fabricCanvas?.add(img);
+          fabricCanvas.add(img);
         })
         .catch((err) => {
           console.log(err);
         });
-    });
+    }
   };
 
   const bringSelectedObjectToFront = () => {
     const activeObject: any = fabricCanvas?.getActiveObject();
     if (!activeObject) return;
     fabricCanvas?.bringObjectToFront(activeObject);
-  }
+  };
 
   const removeSelectedObject = () => {
     const activeObject: any = fabricCanvas?.getActiveObject();
     if (!activeObject) return;
 
     const objectType = activeObject.get("type");
-    
+
     if (objectType === "i-text") {
       console.log(activeObject);
       if (!activeObject?.isEditing) {
@@ -296,18 +306,20 @@ const LayoutPage = (props: Props) => {
     }
   };
 
+  const removeSelectedObjects = () => {
+    const activeObjects: any = fabricCanvas?.getActiveObjects();
+    if (!activeObjects) return;
+    activeObjects.forEach((object: any) => {
+      fabricCanvas?.remove(object);
+    });
+  };
+
   // detect delete button and remove selected object
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Backspace") {
-        removeSelectedObject();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace") {
+      removeSelectedObject();
+    }
+  });
 
   return (
     <>
@@ -355,14 +367,14 @@ const LayoutPage = (props: Props) => {
               >
                 Add Puuung
               </ToolbarButton>
-              
             </div>
 
             <div className="flex flex-row gap-1">
-
-              <ToolbarButton onClick={() => {
-                bringSelectedObjectToFront();
-              }}>
+              <ToolbarButton
+                onClick={() => {
+                  bringSelectedObjectToFront();
+                }}
+              >
                 Bring to Front
               </ToolbarButton>
 
@@ -374,10 +386,10 @@ const LayoutPage = (props: Props) => {
             {/* <canvas ref={canvasEl} width={"100%"} height={"100%"} /> */}
             <Canvas onLoad={onLoad} saveState />
 
-            <button 
+            <button
               onClick={() => {
                 const canvasJSON = fabricCanvas?.toJSON();
-                dispatch(setCanvas(canvasJSON))
+                dispatch(setCanvas(canvasJSON));
               }}
               className="fixed bottom-0 right-0 m-4 py-2 px-4 rounded-md shadow-md bg-dark-background-tertiary text-white"
             >
