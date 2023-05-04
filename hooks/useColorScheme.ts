@@ -2,16 +2,19 @@ import React from "react";
 
 const useColorScheme = () => {
 
+  const [isDarkMode, setIsDarkMode] = React.useState<boolean>(false);
+
   const toggleColorSchemToLight = () => {
     document.documentElement.classList.remove("dark");
     // setIsDarkMode(false);
     localStorage.theme = "light";
+    setIsDarkMode(false);
   };
 
   const toggleColorSchemeToDark = () => {
     localStorage.theme = "dark";
     document.documentElement.classList.add("dark");
-    // setIsDarkMode(true);
+    setIsDarkMode(true);
   };
 
   const toggleColorScheme = () => {
@@ -22,7 +25,7 @@ const useColorScheme = () => {
     }
   };
 
-  return { toggleColorScheme }
+  return { isDarkMode, toggleColorScheme }
 }
 
 export default useColorScheme;

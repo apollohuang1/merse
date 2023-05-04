@@ -1,7 +1,7 @@
 "use client";
 
 import CreateHeader from "@/components/create/create-header";
-import React, { FormEventHandler, useEffect, useState } from "react";
+import React, { FormEventHandler, useCallback, useEffect, useState } from "react";
 import {
   FiBold,
   FiCode,
@@ -10,6 +10,11 @@ import {
   FiItalic,
   FiList,
 } from "react-icons/fi";
+
+import {
+  BiText
+} from "react-icons/bi";
+
 import { BsQuote } from "react-icons/bs";
 import { IoText } from "react-icons/io5";
 
@@ -48,6 +53,7 @@ import Blockquote from "@tiptap/extension-blockquote";
 import { Scene } from "@/models/entry";
 
 import * as fabric from "fabric";
+import { Canvas } from "@/components/canvas";
 
 type Props = {};
 
@@ -123,11 +129,11 @@ const LayoutPage = (props: Props) => {
   const canvasEl = React.useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<fabric.Canvas | null>(null);
 
-  useEffect(() => {
+  const onLoad = useCallback((canvas: fabric.Canvas) => {
 
     const isDarkMode = localStorage.getItem("theme") === "dark";
 
-    const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement);
+    // const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement);
     // make the fabric.Canvas instance available to your app
     setFabricCanvas(canvas);
 
@@ -160,7 +166,7 @@ const LayoutPage = (props: Props) => {
           top: j,
           radius: 1.5,
           fill: isDarkMode ? "#ffffff" : "#000000",
-          opacity: 0.15,
+          opacity: 0.1,
           selectable: false,
           evented: false
         });
@@ -227,7 +233,36 @@ const LayoutPage = (props: Props) => {
 
             <ToolbarButton
               onClick={() => {
-                alert("Not implemented yet");
+                const newText = new fabric.Textbox("Add Text", {
+                  left: 50,
+                  top: 50,
+                });
+                newText.backgroundColor = "white";
+                fabricCanvas?.add(newText);
+              }}
+            >
+              <BiText />
+            </ToolbarButton>
+
+            <ToolbarButton
+              onClick={() => {
+                addPuuungStoryboardToCanvas();
+              }}
+            >
+              Add Puung
+            </ToolbarButton>
+
+            <ToolbarButton
+              onClick={() => {
+                addImageURLToCanvas();
+              }}
+            >
+              <FiImage />
+            </ToolbarButton>
+
+
+            <ToolbarButton
+              onClick={() => {
               }}
             >
               Template
@@ -236,40 +271,8 @@ const LayoutPage = (props: Props) => {
           </div>
 
           <div className="relative w-full h-full">
-            <canvas ref={canvasEl} width={"100%"} height={"100%"} />
-            <div className="flex flex-row fixed bottom-0 right-0 m-3 gap-3 text-white">
-              <button
-                onClick={() => {
-                  const newText = new fabric.Textbox("Add Text", {
-                    left: 50,
-                    top: 50,
-                  });
-                  newText.backgroundColor = "white";
-                  fabricCanvas?.add(newText);
-                }}
-                className="bg-dark-background-secondary px-6 py-2"
-              >
-                Add Text
-              </button>
-
-              <button
-                onClick={() => {
-                  addPuuungStoryboardToCanvas();
-                }}
-                className="bg-dark-background-secondary px-6 py-2"
-              >
-                Add Puuung
-              </button>
-
-              <button
-                onClick={() => {
-                  addImageURLToCanvas();
-                }}
-                className="bg-dark-background-secondary px-6 py-2"
-              >
-                Add Image
-              </button>
-            </div>
+            {/* <canvas ref={canvasEl} width={"100%"} height={"100%"} /> */}
+            <Canvas onLoad={onLoad} saveState/>
           </div>
 
         </div>
