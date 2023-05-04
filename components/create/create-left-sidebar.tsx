@@ -24,7 +24,8 @@ const CreateLeftSideBar = (props: Props) => {
   const { toggleColorScheme } = useColorScheme();
 
   const [isSaving, setIsSaving] = React.useState(false);
-  const [showDiscardAlert, setShowDiscardAlert] = React.useState<boolean>(false);
+  const [showDiscardAlert, setShowDiscardAlert] =
+    React.useState<boolean>(false);
 
   return (
     <>
@@ -32,17 +33,22 @@ const CreateLeftSideBar = (props: Props) => {
         <div className="flex flex-col gap-0">
           {allCreateRoutes.map((route: CreateRoute, index) => {
             return (
-              <Link key={index} href={`/create/${props?.entryId}/${route?.title.toLowerCase()}`}>
+              <Link
+                key={index}
+                href={`/create/${props?.entryId}/${route?.title.toLowerCase()}`}
+              >
                 <button
                   className={clsx(
                     "flex items-center justify-center w-full h-16 transition-all active:opacity-50 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
                     {
                       "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg border-r-2 border-r-accent":
-                        route.title.toLowerCase() === pathName?.split("/")[3]?.toLowerCase(),
+                        route.title.toLowerCase() ===
+                        pathName?.split("/")[3]?.toLowerCase(),
                     },
                     {
                       "text-light-text-tertiary dark:text-dark-text-tertiary":
-                      route.title.toLowerCase() !== pathName?.split("/")[3]?.toLowerCase()
+                        route.title.toLowerCase() !==
+                        pathName?.split("/")[3]?.toLowerCase(),
                     }
                   )}
                 >
@@ -53,55 +59,54 @@ const CreateLeftSideBar = (props: Props) => {
           })}
         </div>
 
-        <button
+        <div className="flex flex-col gap-0">
+          <button
             onClick={() => {
               toggleColorScheme();
             }}
-            className="flex flex-row h-16 w-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2"
+            className="flex flex-row h-16 w-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2 border-t border-t-light-divider dark:border-t-dark-divider"
           >
             <FiSun />
           </button>
 
-        <div className="flex flex-row border-t border-t-light-divider dark:border-t-dark-divider">
-          {/* discard button */}
-          <button
-            onClick={() => {
-              // window.location.href = "/";
-              setShowDiscardAlert(true);
-            }}
-            className="group h-16 w-full hover:bg-light-red dark:hover:bg-dark-red hover:bg-opacity-30 dark:hover:bg-opacity-20"
-          >
-            <span className="font-semibold text-light-text-secondary dark:text-dark-text-secondary group-hover:text-light-red dark:group-hover:text-dark-red">
-              Discard
-            </span>
-          </button>
+          <div className="flex flex-row border-t border-t-light-divider dark:border-t-dark-divider">
+            {/* discard button */}
+            <button
+              onClick={() => {
+                // window.location.href = "/";
+                setShowDiscardAlert(true);
+              }}
+              className="group h-16 w-full hover:bg-light-red dark:hover:bg-dark-red hover:bg-opacity-30 dark:hover:bg-opacity-20"
+            >
+              <span className="font-semibold text-light-text-secondary dark:text-dark-text-secondary group-hover:text-light-red dark:group-hover:text-dark-red">
+                Discard
+              </span>
+            </button>
 
-          <button
-            onClick={async () => {
+            <button
+              onClick={async () => {
+                setIsSaving(true);
 
-              setIsSaving(true);
+                await saveEntry();
 
-              await saveEntry();
+                setIsSaving(false);
 
-              setIsSaving(false);
+                // window.location.href = "/";
 
-              // window.location.href = "/";
-
-
-
-              // setTimeout(() => {
-              //   setIsSaving(false);
-              //   window.location.href =
-              //     "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-              // }, 2000);
-            }}
-            className="flex flex-row h-16 w-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2"
-          >
-            {isSaving && <Spinner className="w-4 h-4" />}
-            <span className="font-semibold text-light-text-primary dark:text-dark-text-primary">
-              {isSaving ? "Saving..." : "Save Draft"}
-            </span>
-          </button>
+                // setTimeout(() => {
+                //   setIsSaving(false);
+                //   window.location.href =
+                //     "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+                // }, 2000);
+              }}
+              className="flex flex-row h-16 w-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2"
+            >
+              {isSaving && <Spinner className="w-4 h-4" />}
+              <span className="font-semibold text-light-text-primary dark:text-dark-text-primary">
+                {isSaving ? "Saving..." : "Save Draft"}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
