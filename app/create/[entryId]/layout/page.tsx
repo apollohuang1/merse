@@ -14,6 +14,8 @@ import {
   FiImage,
   FiItalic,
   FiList,
+  FiMessageCircle,
+  FiMessageSquare,
 } from "react-icons/fi";
 
 import { BiText } from "react-icons/bi";
@@ -149,8 +151,8 @@ const LayoutPage = (props: Props) => {
     });
 
     canvas.setDimensions({
-      width: innerWidth - 250,
-      height: innerHeight,
+      width: innerWidth * 2,
+      height: innerHeight * 2,
     });
 
     // stylings
@@ -212,6 +214,41 @@ const LayoutPage = (props: Props) => {
         console.log(err);
       });
   };
+
+  const addComicBubbleToCanvas = () => {
+
+    const ovalPathString = "M 0 0 C 0 -90 210 -90 210 0 C 210 90 0 90 0 0 Z"
+
+    const bubblePath = new fabric.Path(ovalPathString, {
+      // left: fabricCanvas?.width as number / 2,
+      // top: fabricCanvas?.height as number / 2,
+      left: 150,
+      top: 150,
+      fill: '#fff',
+      stroke: '#000',
+      strokeWidth: 2,
+      originX: 'center',
+      originY: 'center',
+      width: 1000,
+      height: 1000,
+    });
+    const bubbleText = new fabric.Textbox("Add comic dialogue", {
+      left: bubblePath.left,
+      top: bubblePath.top,
+      fill: '#000',
+      fontSize: 24,
+      width: bubblePath.width / 2,
+      height: bubblePath.height / 2,
+      textAlign: 'center',
+      originX: 'center',
+      originY: 'center',
+    });
+
+    // add as a group
+    const bubbleGroup = new fabric.Group([bubblePath, bubbleText]);
+    bubbleGroup.bringObjectToFront(bubbleText);
+    fabricCanvas?.add(bubbleGroup);
+  }
 
   const addPuuungStoryboardToCanvas = () => {
     const scenes = entry?.scenes;
@@ -290,17 +327,26 @@ const LayoutPage = (props: Props) => {
 
               <ToolbarButton
                 onClick={() => {
+                  addComicBubbleToCanvas();
+                }}
+              >
+                <FiMessageSquare />
+              </ToolbarButton>
+
+              <ToolbarButton
+                onClick={() => {
                   addPuuungStoryboardToCanvas();
                 }}
               >
-                Add Puung
+                Add Puuung
               </ToolbarButton>
+              
             </div>
 
             <ToolbarButton onClick={() => {}}>Template (soon)</ToolbarButton>
           </div>
 
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full overflow-auto">
             {/* <canvas ref={canvasEl} width={"100%"} height={"100%"} /> */}
             <Canvas onLoad={onLoad} saveState />
           </div>
