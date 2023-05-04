@@ -379,9 +379,9 @@ const LayoutPage = (props: Props) => {
                 const canvasJSON = fabricCanvas?.toJSON();
                 dispatch(setCanvas(canvasJSON))
               }}
-              className="fixed bottom-0 right-0 m-4 p-2 rounded-md shadow-md bg-dark-background-tertiary"
+              className="fixed bottom-0 right-0 m-4 py-2 px-4 rounded-md shadow-md bg-dark-background-tertiary text-white"
             >
-              Save JSON
+              Save
             </button>
           </div>
         </div>
