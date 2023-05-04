@@ -221,16 +221,23 @@ const LayoutPage = (props: Props) => {
   };
 
   const removeSelectedObject = () => {
-    const activeObject = fabricCanvas?.getActiveObject();
+    const activeObject: any = fabricCanvas?.getActiveObject();
     if (activeObject) {
-      fabricCanvas?.remove(activeObject);
+      const objectType = activeObject.get("type");
+      if (objectType === "i-text") {
+        console.log(activeObject)
+        if (!activeObject?.isEditing) {
+          fabricCanvas?.remove(activeObject);
+        }
+      } else {
+        fabricCanvas?.remove(activeObject);
+      }
     }
   }
 
   // detect delete button and remove selected object
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault();
       if (e.key === "Backspace") {
         removeSelectedObject();
       }
