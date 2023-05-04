@@ -49,6 +49,7 @@ import {
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
+  setCanvas,
   setContent,
   setShowGeneratedStoryboard,
   setTitle,
@@ -137,11 +138,20 @@ const LayoutPage = (props: Props) => {
   const [currentActiveObject, setCurrentActiveObject] = useState<fabric.Object | null>(null);
 
   const onLoad = useCallback((canvas: fabric.Canvas) => {
+
     const isDarkMode = localStorage.getItem("theme") === "dark";
+
+    // load json if exist in entry?.canvas
+    if (entry?.canvas) {
+      canvas.loadFromJSON(entry?.canvas, () => {
+        canvas.renderAll();
+      });
+    }
 
     // const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement);
     // make the fabric.Canvas instance available to your app
     setFabricCanvas(canvas);
+
 
     // snap to grid
     canvas.on("object:moving", function (options) {
@@ -188,15 +198,13 @@ const LayoutPage = (props: Props) => {
     // canvas.add(new fabric.Textbox("Hello world", { left: 50, top: 50 }));
     // canvas.add(new fabric.Textbox("Hello world", { left: 50, top: 150 }));
 
-    // canvas.backgroundColor = ";
-
-    fabric.Image.fromURL("http://fabricjs.com/assets/pug_small.jpg")
-      .then((img) => {
-        canvas.add(img);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // fabric.Image.fromURL("http://fabricjs.com/assets/pug_small.jpg")
+    //   .then((img) => {
+    //     canvas.add(img);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
 
     return () => {
       setFabricCanvas(null);
@@ -365,6 +373,16 @@ const LayoutPage = (props: Props) => {
           <div className="relative w-full h-full overflow-auto">
             {/* <canvas ref={canvasEl} width={"100%"} height={"100%"} /> */}
             <Canvas onLoad={onLoad} saveState />
+
+            <button 
+              onClick={() => {
+                const canvasJSON = fabricCanvas?.toJSON();
+                dispatch(setCanvas(canvasJSON))
+              }}
+              className="fixed bottom-0 right-0 m-4 p-2 rounded-md shadow-md bg-dark-background-tertiary"
+            >
+              Save JSON
+            </button>
           </div>
         </div>
 

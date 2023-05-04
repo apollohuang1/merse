@@ -24,6 +24,7 @@ const EntrySchema = new mongoose.Schema({
   content: { type: String, required: true }, // tiptap html
   characters: { type: [Object] , required: true },
   scenes: { type: [SceneSchema], required: true },
+  canvas: { type: Object, required: true },
   cover: { type: Object, required: true },
   created_at: { type: Date, required: false },
   updated_at: { type: Date, required: false },

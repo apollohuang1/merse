@@ -15,6 +15,7 @@ const initialState: Entry = {
   content: null,
   characters: [],
   scenes: [],
+  canvas: null,
   cover: null
 }
 
@@ -56,6 +57,9 @@ const entrySlice = createSlice({
     addScene: (state: Entry, action: PayloadAction<Scene>) => {
       // add scene to storyboard
       state.scenes.push(action.payload)
+    },
+    setCanvas: (state: Entry, action) => {
+      state.canvas = action.payload
     },
     setTitle: (state: Entry, action: PayloadAction<string>) => {
       state.title = action.payload
@@ -106,7 +110,7 @@ export const store: ToolkitStore = configureStore({
 
 // actions
 export const { setCurrentUser } = authenticationSlice.actions;
-export const { setEntryId, setEntryAuthor, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, setScenes, addScene } = entrySlice.actions;
+export const { setEntryId, setEntryAuthor, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, setScenes, addScene, setCanvas } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard, setIsGeneratingStoryboard } = entryHelperSlice.actions;
 
 

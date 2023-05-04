@@ -14,6 +14,7 @@ export interface Entry {
   characters: Character[];
   // storyboard: object | null;
   scenes: Scene[];
+  canvas: Object | null;
   cover: object | null;
   created_at?: Date;
   updated_at?: Date;
