@@ -11,6 +11,7 @@ import {
   FiBold,
   FiCode,
   FiEdit2,
+  FiGrid,
   FiImage,
   FiItalic,
   FiList,
@@ -72,6 +73,7 @@ import {
 } from "react-color";
 import { Popover } from "@headlessui/react";
 import SlideOver from "@/components/slide-over";
+import Divider from "@/components/divider";
 
 type Props = {};
 
@@ -520,7 +522,10 @@ const LayoutPage = (props: Props) => {
               </Popover>
 
               <ToolbarButton onClick={() => setShowTemplateSlideOver(true)}>
-                Template
+                <div className="flex flex-row items-center gap-1">
+                  <FiGrid />
+                  Templates
+                </div>
               </ToolbarButton>
             </div>
           </div>
@@ -686,7 +691,7 @@ const LayoutPage = (props: Props) => {
         title="Templates"
         withCloseButton={true}
       >
-        <div className="grid grid-cols-2 gap-3 py-4">
+        <div className="grid grid-cols-2 gap-6 py-4">
           {[
             puuungCanvasTemplate1,
             puuungCanvasTemplate2,
