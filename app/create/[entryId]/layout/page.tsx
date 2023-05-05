@@ -197,7 +197,8 @@ const LayoutPage = (props: Props) => {
     });
 
     // stylings
-    // canvas.backgroundColor = "#F5F5F7";
+    canvas.selectionBorderColor = "#10b981";
+    canvas.selectionColor = "rgba(16, 185, 129, 0.3)";
     canvas.backgroundColor = "transparent";
 
     // detect dark mode class and set background color
