@@ -175,9 +175,7 @@ const LayoutPage = (props: Props) => {
     });
 
     // stylings
-
-    // customize selection style
-    canvas.selectionColor = "rgba(0,0,0,0.3)";
+    // canvas.backgroundColor = "#F5F5F7";
 
     // detect dark mode class and set background color
     if (isDarkMode) {
@@ -211,6 +209,21 @@ const LayoutPage = (props: Props) => {
       setCurrentActiveObject(options.selected);
       setCurrentActiveObjectType(canvas.getActiveObject()?.get("type"));
 
+      canvas.getActiveObject()?.setControlsVisibility({
+        mt: false,
+        mb: false,
+        ml: false,
+        mr: false,
+      });
+
+      canvas.getActiveObject()?.set({
+        borderColor: "#10b981",
+        borderScaleFactor: 2,
+        // hasControls: false,
+        // lockScalingX: true,
+        // lockScalingY: true,
+      });
+
       // console.log(options.selected);
       // console.log(canvas.getActiveObject()?.get("type"));
     });
@@ -240,6 +253,10 @@ const LayoutPage = (props: Props) => {
   const addImageURLToCanvas = (url: string) => {
     fabric.Image.fromURL(url)
       .then((img) => {
+        img.scaleToWidth(500);
+        img.stroke = "black";
+        img.strokeWidth = 10;
+        img.preserveAspectRatio = "true";
         fabricCanvas?.add(img);
       })
       .catch((err) => {
@@ -296,15 +313,7 @@ const LayoutPage = (props: Props) => {
 
     for (let i = 0; i < scenes.length; i++) {
       const scene = scenes[i];
-      fabric.Image.fromURL(scene.artwork.url)
-        .then((img) => {
-          img.scaleToWidth(500);
-          img.preserveAspectRatio = "true";
-          fabricCanvas.add(img);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      addImageURLToCanvas(scene.artwork.url);
     }
   };
 
