@@ -46,6 +46,7 @@ import {
   createRoutes,
   puuungCanvasTemplate1,
   puuungCanvasTemplate2,
+  puuungCanvasTemplate3,
   storyboardSamples,
 } from "@/util/create-constants";
 
@@ -69,6 +70,7 @@ import {
   SwatchesPicker,
   TwitterPicker,
 } from "react-color";
+import { Popover } from "@headlessui/react";
 
 type Props = {};
 
@@ -220,7 +222,6 @@ const LayoutPage = (props: Props) => {
     // observers
 
     canvas.on("selection:created", function (options) {
-
       const activeObject = canvas.getActiveObject();
 
       // @ts-ignore
@@ -420,30 +421,53 @@ const LayoutPage = (props: Props) => {
 
               <ToolbarButton
                 onClick={() => {
-                  fabricCanvas?.loadFromJSON(puuungCanvasTemplate1, () => {
-                    dispatch(setCanvas(puuungCanvasTemplate1));
-                    fabricCanvas?.requestRenderAll();
-                  })
-                  .catch((err) => {
-                    console.log("Failed to load template 1, message: " + err.message);
-                  });
+                  fabricCanvas
+                    ?.loadFromJSON(puuungCanvasTemplate1, () => {
+                      dispatch(setCanvas(puuungCanvasTemplate1));
+                      fabricCanvas?.requestRenderAll();
+                    })
+                    .catch((err) => {
+                      console.log(
+                        "Failed to load template 1, message: " + err.message
+                      );
+                    });
                 }}
               >
-                Puuung Template 1
+                Template 1
               </ToolbarButton>
 
               <ToolbarButton
                 onClick={() => {
-                  fabricCanvas?.loadFromJSON(puuungCanvasTemplate2, () => {
-                    dispatch(setCanvas(puuungCanvasTemplate2));
-                    fabricCanvas?.requestRenderAll();
-                  })
-                  .catch((err) => {
-                    console.log("Failed to load template 2, message: " + err.message);
-                  });
+                  fabricCanvas
+                    ?.loadFromJSON(puuungCanvasTemplate2, () => {
+                      dispatch(setCanvas(puuungCanvasTemplate2));
+                      fabricCanvas?.requestRenderAll();
+                    })
+                    .catch((err) => {
+                      console.log(
+                        "Failed to load template 2, message: " + err.message
+                      );
+                    });
                 }}
               >
-                Puuung Template 2
+                Template 2
+              </ToolbarButton>
+
+              <ToolbarButton
+                onClick={() => {
+                  fabricCanvas
+                    ?.loadFromJSON(puuungCanvasTemplate3, () => {
+                      dispatch(setCanvas(puuungCanvasTemplate3));
+                      fabricCanvas?.requestRenderAll();
+                    })
+                    .catch((err) => {
+                      console.log(
+                        "Failed to load template 3, message: " + err.message
+                      );
+                    });
+                }}
+              >
+                Template 3
               </ToolbarButton>
             </div>
 
@@ -482,13 +506,64 @@ const LayoutPage = (props: Props) => {
                 </ToolbarButton>
               )}
 
-              <ToolbarButton
-                onClick={() => {
-                  setShowColorPicker(!showColorPicker);
-                }}
-              >
-                Background Color
-              </ToolbarButton>
+              <Popover className="relative">
+                {({ open }) => (
+                  <>
+                    <Popover.Button className="outline-none">
+                      <ToolbarButton
+                        onClick={() => {
+                          setShowColorPicker(!showColorPicker);
+                        }}
+                        isActive={open}
+                      >
+                        Background Color
+                      </ToolbarButton>
+                    </Popover.Button>
+
+                    <Popover.Panel className="absolute z-10 left-full">
+                      <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-xl overflow-clip border border-light-divider dark:border-dark-divider">
+                        <div className="flex flex-row px-3 py-3 justify-between">
+                          <button
+                            onClick={() => {
+                              fabricCanvas?.set({
+                                backgroundColor: "transparent",
+                              });
+                              fabricCanvas?.requestRenderAll();
+                            }}
+                            className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
+                          >
+                            Default
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setShowColorPicker(false);
+                            }}
+                            className="text-accent font-medium hover:text-emerald-600"
+                          >
+                            Finish
+                          </button>
+                        </div>
+
+                        <div className="rounded-none overflow-clip">
+                          <SwatchesPicker
+                            // className="flex shadow-none bg-light-background-primary dark:bg-dark-background-primary"
+                            // className={createStyles.colorPicker}
+                            onChangeComplete={(color: any) => {
+                              // alert(color.hex);
+                              fabricCanvas?.set({
+                                backgroundColor: color.hex,
+                              });
+                              fabricCanvas?.requestRenderAll();
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </Popover.Panel>
+                  </>
+                )}
+              </Popover>
+
               <ToolbarButton onClick={() => {}}>Template</ToolbarButton>
             </div>
           </div>
@@ -506,45 +581,6 @@ const LayoutPage = (props: Props) => {
             >
               Test Save JSON
             </button>
-
-            {showColorPicker && (
-              <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-xl overflow-clip border border-light-divider dark:border-dark-divider">
-                <SwatchesPicker
-                  className="flex shadow-none !bg-light-background-primary !dark:bg-dark-background-primary"
-                  // className={styles.colorPicker}
-                  onChangeComplete={(color: any) => {
-                    // alert(color.hex);
-                    fabricCanvas?.set({
-                      backgroundColor: color.hex,
-                    });
-                    fabricCanvas?.requestRenderAll();
-                  }}
-                />
-
-                <div className="flex flex-row px-3 py-3 justify-between">
-                  <button
-                    onClick={() => {
-                      fabricCanvas?.set({
-                        backgroundColor: "transparent",
-                      });
-                      fabricCanvas?.requestRenderAll();
-                    }}
-                    className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
-                  >
-                    Default
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setShowColorPicker(false);
-                    }}
-                    className="text-accent font-medium"
-                  >
-                    Finish
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
@@ -696,9 +732,10 @@ const ToolbarButton: React.FC<{
   return (
     <button
       onClick={onClick}
-      className={
-        "relative flex flex-row items-center justify-center h-10 px-3 rounded-md hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
-      }
+      className={clsx(
+        "relative flex flex-row items-center justify-center h-10 px-3 rounded-md hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
+        { "bg-light-background-secondary dark:bg-dark-background-secondary" : isActive}
+      )}
     >
       {children}
     </button>
