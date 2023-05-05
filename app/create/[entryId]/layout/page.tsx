@@ -359,18 +359,20 @@ const LayoutPage = (props: Props) => {
   };
 
   const removeSelectedObjects = () => {
-    const activeObjects: any = fabricCanvas?.getActiveObjects();
-    if (!activeObjects) return;
-    activeObjects.forEach((object: any) => {
+    const activeGroup = fabricCanvas?.getActiveObjects();
+    if (!activeGroup) return;
+    activeGroup.forEach((object: any) => {
       fabricCanvas?.remove(object);
-      fabricCanvas?.requestRenderAll();
+      // fabricCanvas?.requestRenderAll();
     });
+    fabricCanvas?.requestRenderAll();
   };
 
   // detect delete button and remove selected object
   window.addEventListener("keydown", (e) => {
     if (e.key === "Backspace") {
-      removeSelectedObject();
+      // removeSelectedObject();
+      removeSelectedObjects();
       // removeSelectedObjects();
     }
   });
@@ -701,7 +703,10 @@ const LayoutPage = (props: Props) => {
               key={index}
               className={clsx(
                 "aspect-square border border-light-divider dark:border-dark-divider rounded-xl hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary active:scale-95 transition-all duration-200",
-                { "ring-2 ring-emerald-500 bg-light-background-secondary dark:bg-dark-background-secondary" : selectedTemplate == entry?.canvas}
+                {
+                  "ring-2 ring-emerald-500 bg-light-background-secondary dark:bg-dark-background-secondary":
+                    selectedTemplate == entry?.canvas,
+                }
               )}
               onClick={() => {
                 fabricCanvas
@@ -716,8 +721,8 @@ const LayoutPage = (props: Props) => {
                   });
               }}
             >
-              Puuung 
-              <br/>
+              Puuung
+              <br />
               Template #{index + 1}
             </button>
           ))}
