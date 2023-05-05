@@ -44,7 +44,8 @@ import Placeholder from "@tiptap/extension-placeholder";
 import {
   StoryboardSample,
   createRoutes,
-  puuungCanvasTemplate,
+  puuungCanvasTemplate1,
+  puuungCanvasTemplate2,
   storyboardSamples,
 } from "@/util/create-constants";
 
@@ -366,7 +367,7 @@ const LayoutPage = (props: Props) => {
   window.addEventListener("keydown", (e) => {
     if (e.key === "Backspace") {
       removeSelectedObject();
-      removeSelectedObjects();
+      // removeSelectedObjects();
     }
   });
 
@@ -422,13 +423,24 @@ const LayoutPage = (props: Props) => {
 
               <ToolbarButton
                 onClick={() => {
-                  fabricCanvas?.loadFromJSON(puuungCanvasTemplate, () => {
+                  fabricCanvas?.loadFromJSON(puuungCanvasTemplate1, () => {
                     fabricCanvas.requestRenderAll();
-                    dispatch(setCanvas(puuungCanvasTemplate));
+                    dispatch(setCanvas(puuungCanvasTemplate1));
                   });
                 }}
               >
-                Puuung Template
+                Puuung Template 1
+              </ToolbarButton>
+
+              <ToolbarButton
+                onClick={() => {
+                  fabricCanvas?.loadFromJSON(puuungCanvasTemplate2, () => {
+                    fabricCanvas.requestRenderAll();
+                    dispatch(setCanvas(puuungCanvasTemplate2));
+                  });
+                }}
+              >
+                Puuung Template 2
               </ToolbarButton>
             </div>
 
