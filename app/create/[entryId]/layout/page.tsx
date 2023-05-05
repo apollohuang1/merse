@@ -516,49 +516,51 @@ const LayoutPage = (props: Props) => {
                         }}
                         isActive={open}
                       >
-                        Background Color
+                        Background
                       </ToolbarButton>
                     </Popover.Button>
 
                     <Popover.Panel className="absolute z-10 left-full">
-                      <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-xl overflow-clip border border-light-divider dark:border-dark-divider">
-                        <div className="flex flex-row px-3 py-3 justify-between">
-                          <button
-                            onClick={() => {
-                              fabricCanvas?.set({
-                                backgroundColor: "transparent",
-                              });
-                              fabricCanvas?.requestRenderAll();
-                            }}
-                            className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
-                          >
-                            Default
-                          </button>
+                      {({ close }) => (
+                        <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-xl overflow-clip border border-light-divider dark:border-dark-divider">
+                          <div className="flex flex-row px-3 py-3 justify-between">
+                            <button
+                              onClick={() => {
+                                fabricCanvas?.set({
+                                  backgroundColor: "transparent",
+                                });
+                                fabricCanvas?.requestRenderAll();
+                              }}
+                              className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
+                            >
+                              Default
+                            </button>
 
-                          <button
-                            onClick={() => {
-                              setShowColorPicker(false);
-                            }}
-                            className="text-accent font-medium hover:text-emerald-600"
-                          >
-                            Finish
-                          </button>
-                        </div>
+                            <button
+                              onClick={() => {
+                                close();
+                              }}
+                              className="text-accent font-medium hover:text-emerald-600"
+                            >
+                              Finish
+                            </button>
+                          </div>
 
-                        <div className="rounded-none overflow-clip">
-                          <SwatchesPicker
-                            // className="flex shadow-none bg-light-background-primary dark:bg-dark-background-primary"
-                            // className={createStyles.colorPicker}
-                            onChangeComplete={(color: any) => {
-                              // alert(color.hex);
-                              fabricCanvas?.set({
-                                backgroundColor: color.hex,
-                              });
-                              fabricCanvas?.requestRenderAll();
-                            }}
-                          />
+                          <div className="rounded-none overflow-clip">
+                            <SwatchesPicker
+                              // className="flex shadow-none bg-light-background-primary dark:bg-dark-background-primary"
+                              // className={createStyles.colorPicker}
+                              onChangeComplete={(color: any) => {
+                                // alert(color.hex);
+                                fabricCanvas?.set({
+                                  backgroundColor: color.hex,
+                                });
+                                fabricCanvas?.requestRenderAll();
+                              }}
+                            />
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </Popover.Panel>
                   </>
                 )}
@@ -734,7 +736,10 @@ const ToolbarButton: React.FC<{
       onClick={onClick}
       className={clsx(
         "relative flex flex-row items-center justify-center h-10 px-3 rounded-md hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
-        { "bg-light-background-secondary dark:bg-dark-background-secondary" : isActive}
+        {
+          "bg-light-background-secondary dark:bg-dark-background-secondary":
+            isActive,
+        }
       )}
     >
       {children}
