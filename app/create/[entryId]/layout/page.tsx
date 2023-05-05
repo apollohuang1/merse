@@ -474,7 +474,7 @@ const LayoutPage = (props: Props) => {
             </div>
           </div>
 
-          <div className="relative w-full h-full overflow-auto">
+          <div className="relative w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary">
             {/* <canvas ref={canvasEl} width={"100%"} height={"100%"} /> */}
             <Canvas onLoad={onLoad} saveState />
 
