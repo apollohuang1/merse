@@ -44,6 +44,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import {
   StoryboardSample,
   createRoutes,
+  puuungCanvasTemplate,
   storyboardSamples,
 } from "@/util/create-constants";
 
@@ -61,7 +62,12 @@ import { Scene } from "@/models/entry";
 import * as fabric from "fabric";
 import { Canvas } from "@/components/canvas";
 
-import { SwatchesPicker } from "react-color";
+import {
+  ChromePicker,
+  SketchPicker,
+  SwatchesPicker,
+  TwitterPicker,
+} from "react-color";
 
 type Props = {};
 
@@ -412,6 +418,15 @@ const LayoutPage = (props: Props) => {
               >
                 Add Puuung
               </ToolbarButton>
+
+              <ToolbarButton
+                onClick={() => {
+                  dispatch(setCanvas(puuungCanvasTemplate));
+                  fabricCanvas?.requestRenderAll();
+                }}
+              >
+                Puuung Template
+              </ToolbarButton>
             </div>
 
             <div className="flex flex-row gap-1">
@@ -449,21 +464,7 @@ const LayoutPage = (props: Props) => {
                 </ToolbarButton>
               )}
 
-              { showColorPicker &&
-                <SwatchesPicker
-                    className="fixed z-10 bottom-3 right-44"
-                    // className={styles.colorPicker}
-                    onChangeComplete={(color: any) => {
-                      // alert(color.hex);
-                      fabricCanvas?.set({
-                        backgroundColor: color.hex,
-                      })
-                      fabricCanvas?.renderAll();
-                    }}
-                  />
-              }
-              
-              <ToolbarButton 
+              <ToolbarButton
                 onClick={() => {
                   setShowColorPicker(!showColorPicker);
                 }}
@@ -487,6 +488,45 @@ const LayoutPage = (props: Props) => {
             >
               Test Save JSON
             </button>
+
+            {showColorPicker && (
+              <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-xl overflow-clip border border-light-divider dark:border-dark-divider">
+                <SwatchesPicker
+                  className="flex shadow-none !bg-light-background-primary !dark:bg-dark-background-primary"
+                  // className={styles.colorPicker}
+                  onChangeComplete={(color: any) => {
+                    // alert(color.hex);
+                    fabricCanvas?.set({
+                      backgroundColor: color.hex,
+                    });
+                    fabricCanvas?.renderAll();
+                  }}
+                />
+
+                <div className="flex flex-row px-3 py-3 justify-between">
+                  <button
+                    onClick={() => {
+                      fabricCanvas?.set({
+                        backgroundColor: "transparent",
+                      });
+                      fabricCanvas?.renderAll();
+                    }}
+                    className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
+                  >
+                    Default
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setShowColorPicker(false);
+                    }}
+                    className="text-accent font-medium"
+                  >
+                    Finish
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
