@@ -13,7 +13,7 @@ const SlideOver: React.FC<{
   isOpen: boolean;
   title?: string;
   withCloseButton?: boolean;
-  footer: React.ReactNode;
+  footer?: React.ReactNode;
   // onCancel?: () => void;
   // onSubmit?: () => void;
 }> = ({

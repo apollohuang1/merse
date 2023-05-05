@@ -29,7 +29,7 @@ const CreateLeftSideBar = (props: Props) => {
 
   return (
     <>
-      <div className="flex flex-col justify-between w-full h-full border-r border-x-light-divider dark:border-x-dark-divider">
+      <div className="flex flex-col justify-between w-full h-full border-r border-x-light-divider dark:border-x-dark-divider ">
 
         <div className="flex flex-col">
 

@@ -71,6 +71,7 @@ import {
   TwitterPicker,
 } from "react-color";
 import { Popover } from "@headlessui/react";
+import SlideOver from "@/components/slide-over";
 
 type Props = {};
 
@@ -86,6 +87,8 @@ const LayoutPage = (props: Props) => {
   const [expandedStoryboardIndex, setExpandedStoryboardIndex] = React.useState<
     number | null
   >(null);
+
+  const [showTemplateSlideOver, setShowTemplateSlideOver] = React.useState<boolean>(false);
 
   const editor = useEditor({
     extensions: [
@@ -418,57 +421,6 @@ const LayoutPage = (props: Props) => {
               >
                 Add Puuung
               </ToolbarButton>
-
-              <ToolbarButton
-                onClick={() => {
-                  fabricCanvas
-                    ?.loadFromJSON(puuungCanvasTemplate1, () => {
-                      dispatch(setCanvas(puuungCanvasTemplate1));
-                      fabricCanvas?.requestRenderAll();
-                    })
-                    .catch((err) => {
-                      console.log(
-                        "Failed to load template 1, message: " + err.message
-                      );
-                    });
-                }}
-              >
-                Template 1
-              </ToolbarButton>
-
-              <ToolbarButton
-                onClick={() => {
-                  fabricCanvas
-                    ?.loadFromJSON(puuungCanvasTemplate2, () => {
-                      dispatch(setCanvas(puuungCanvasTemplate2));
-                      fabricCanvas?.requestRenderAll();
-                    })
-                    .catch((err) => {
-                      console.log(
-                        "Failed to load template 2, message: " + err.message
-                      );
-                    });
-                }}
-              >
-                Template 2
-              </ToolbarButton>
-
-              <ToolbarButton
-                onClick={() => {
-                  fabricCanvas
-                    ?.loadFromJSON(puuungCanvasTemplate3, () => {
-                      dispatch(setCanvas(puuungCanvasTemplate3));
-                      fabricCanvas?.requestRenderAll();
-                    })
-                    .catch((err) => {
-                      console.log(
-                        "Failed to load template 3, message: " + err.message
-                      );
-                    });
-                }}
-              >
-                Template 3
-              </ToolbarButton>
             </div>
 
             <div className="flex flex-row gap-1">
@@ -522,8 +474,8 @@ const LayoutPage = (props: Props) => {
 
                     <Popover.Panel className="absolute z-10 left-full">
                       {({ close }) => (
-                        <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-xl overflow-clip border border-light-divider dark:border-dark-divider">
-                          <div className="flex flex-row px-3 py-3 justify-between">
+                        <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-xl overflow-clip">
+                          <div className="flex flex-row px-3 py-3 justify-between border-b border-b-light-divider dark:border-b-dark-divider">
                             <button
                               onClick={() => {
                                 fabricCanvas?.set({
@@ -566,7 +518,7 @@ const LayoutPage = (props: Props) => {
                 )}
               </Popover>
 
-              <ToolbarButton onClick={() => {}}>Template</ToolbarButton>
+              <ToolbarButton onClick={() => setShowTemplateSlideOver(true)}>Template</ToolbarButton>
             </div>
           </div>
 
@@ -722,6 +674,38 @@ const LayoutPage = (props: Props) => {
           </div>
         </div>
       </Modal>
+
+      <SlideOver 
+        onClose={() => {
+          setShowTemplateSlideOver(false);
+        }} 
+        isOpen={showTemplateSlideOver}
+        title="Template"
+        withCloseButton={true}
+      >
+        <div className="grid grid-cols-2 gap-3">  
+          {[puuungCanvasTemplate1, puuungCanvasTemplate2, puuungCanvasTemplate3].map((selectedTemplate: any, index) => (
+            <button
+              key={index}
+              className="aspect-square border border-light-divider dark:border-dark-divider rounded-xl hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary active:scale-95"
+              onClick={() => {
+                fabricCanvas
+                  ?.loadFromJSON(selectedTemplate, () => {
+                    dispatch(setCanvas(selectedTemplate));
+                    fabricCanvas?.requestRenderAll();
+                  })
+                  .catch((err) => {
+                    console.log(
+                      "Failed to load template 1, message: " + err.message
+                    );
+                  });
+              }}
+            >
+              Puuung Template #{index + 1}
+            </button>
+          ))}
+        </div>
+      </SlideOver>
     </>
   );
 };
