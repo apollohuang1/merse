@@ -159,7 +159,7 @@ const LayoutPage = (props: Props) => {
     // snap to grid
     canvas.on("object:moving", function (options) {
       // check if object is image
-      if (options.target.get("type") !== "image") {
+      if (options.target.get("type") !== "image" && options.target.get("type") !== "activeselection") {
         return;
       }
 
@@ -174,17 +174,6 @@ const LayoutPage = (props: Props) => {
       height: innerHeight * 4,
     });
 
-    canvas.on("selection:created", function (options) {
-      // @ts-ignore
-      setCurrentActiveObject(options.selected);
-      setCurrentActiveObjectType(canvas.getActiveObject()?.get("type"));
-    });
-
-    canvas.on("selection:cleared", function (options) {
-      setCurrentActiveObject(null);
-      setCurrentActiveObjectType(null);
-    });
-
     // stylings
 
     // customize selection style
@@ -197,7 +186,8 @@ const LayoutPage = (props: Props) => {
       canvas.backgroundColor = "#F5F5F7";
     }
 
-    const gridSize = 32;
+    // const gridSize = 32;
+    const gridSize = 20;
 
     // for (let i = 0; i < canvas.width; i += gridSize) {
     //   for (let j = 0; j < canvas.height; j += gridSize) {
@@ -213,6 +203,33 @@ const LayoutPage = (props: Props) => {
     //     canvas.add(circle);
     //   }
     // }
+
+    // observers
+
+    canvas.on("selection:created", function (options) {
+      // @ts-ignore
+      setCurrentActiveObject(options.selected);
+      setCurrentActiveObjectType(canvas.getActiveObject()?.get("type"));
+
+      // console.log(options.selected);
+      // console.log(canvas.getActiveObject()?.get("type"));
+    });
+
+    canvas.on("selection:cleared", function (options) {
+      setCurrentActiveObject(null);
+      setCurrentActiveObjectType(null);
+    });
+
+    // snap when resizing
+    canvas.on("object:scaling", function (options) {
+      // check if object is image
+      console.log(options.target.getScaledWidth());
+
+      // only scale with gridSize
+      // if (options.target.get("type") !== "image") {
+        // return;
+      // }
+    });
 
     return () => {
       setFabricCanvas(null);
