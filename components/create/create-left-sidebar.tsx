@@ -33,14 +33,14 @@ const CreateLeftSideBar = (props: Props) => {
 
         <div className="flex flex-col">
 
-          <div className="flex h-16 w-full items-center justify-center">
+          <div className="flex h-16 w-full items-center justify-center border-b border-b-light-divider dark:border-dark-divider mb-16">
             <button
               onClick={() => {
                 setShowDiscardAlert(true);
               }}
               className="flex flex-row h-full w-full px-6 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary items-center justify-center gap-1"
             >
-              <FiChevronLeft className="w-5 h-5"/>
+              <FiChevronLeft className="w-5 h-5 font-medium"/>
               <span>Home</span>
             </button>
           </div>
@@ -56,7 +56,7 @@ const CreateLeftSideBar = (props: Props) => {
                     className={clsx(
                       "flex items-center justify-center w-full h-16 transition-all active:opacity-50 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
                       {
-                        "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg border-r-2 border-r-accent":
+                        "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg border-r-[3px] border-r-accent":
                           route.title.toLowerCase() ===
                           pathName?.split("/")[3]?.toLowerCase(),
                       },

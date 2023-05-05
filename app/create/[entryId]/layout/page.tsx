@@ -220,27 +220,24 @@ const LayoutPage = (props: Props) => {
     // observers
 
     canvas.on("selection:created", function (options) {
+
+      const activeObject = canvas.getActiveObject();
+
       // @ts-ignore
       setCurrentActiveObject(options.selected);
-      setCurrentActiveObjectType(canvas.getActiveObject()?.get("type"));
+      setCurrentActiveObjectType(activeObject?.get("type"));
 
       canvas.getActiveObject()?.setControlsVisibility({
         mt: false,
         mb: false,
-        ml: false,
-        mr: false,
+        ml: activeObject?.get("type") === "i-text" ? true : false,
+        mr: activeObject?.get("type") === "i-text" ? true : false,
       });
 
-      canvas.getActiveObject()?.set({
+      activeObject?.set({
         borderColor: "#10b981",
-        borderScaleFactor: 2,
-        // hasControls: false,
-        // lockScalingX: true,
-        // lockScalingY: true,
+        borderScaleFactor: 2, // actually border width :)
       });
-
-      // console.log(options.selected);
-      // console.log(canvas.getActiveObject()?.get("type"));
     });
 
     canvas.on("selection:cleared", function (options) {
@@ -266,7 +263,7 @@ const LayoutPage = (props: Props) => {
   }, []); // end on canvas init
 
   const addImageURLToCanvas = (url: string) => {
-    fabric.Image.fromURL(url, {crossOrigin: "anonymous"})
+    fabric.Image.fromURL(url, { crossOrigin: "anonymous" })
       .then((img) => {
         img.scaleToWidth(500);
         img.stroke = "black";
@@ -383,7 +380,7 @@ const LayoutPage = (props: Props) => {
             <div className="flex flex-row gap-1">
               <ToolbarButton
                 onClick={() => {
-                  const newText = new fabric.IText("Add Text", {
+                  const newText = new fabric.Textbox("Add Text", {
                     left: 50,
                     top: 50,
                   });
