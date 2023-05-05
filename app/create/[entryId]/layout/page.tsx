@@ -491,7 +491,7 @@ const LayoutPage = (props: Props) => {
                               }}
                               className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
                             >
-                              Default
+                              Transparent
                             </button>
 
                             <button
@@ -500,7 +500,7 @@ const LayoutPage = (props: Props) => {
                               }}
                               className="text-accent font-medium hover:text-emerald-600"
                             >
-                              Finish
+                              Done
                             </button>
                           </div>
 
