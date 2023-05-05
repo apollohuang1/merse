@@ -88,7 +88,8 @@ const LayoutPage = (props: Props) => {
     number | null
   >(null);
 
-  const [showTemplateSlideOver, setShowTemplateSlideOver] = React.useState<boolean>(false);
+  const [showTemplateSlideOver, setShowTemplateSlideOver] =
+    React.useState<boolean>(false);
 
   const editor = useEditor({
     extensions: [
@@ -518,7 +519,9 @@ const LayoutPage = (props: Props) => {
                 )}
               </Popover>
 
-              <ToolbarButton onClick={() => setShowTemplateSlideOver(true)}>Template</ToolbarButton>
+              <ToolbarButton onClick={() => setShowTemplateSlideOver(true)}>
+                Template
+              </ToolbarButton>
             </div>
           </div>
 
@@ -675,19 +678,26 @@ const LayoutPage = (props: Props) => {
         </div>
       </Modal>
 
-      <SlideOver 
+      <SlideOver
         onClose={() => {
           setShowTemplateSlideOver(false);
-        }} 
+        }}
         isOpen={showTemplateSlideOver}
-        title="Template"
+        title="Templates"
         withCloseButton={true}
       >
-        <div className="grid grid-cols-2 gap-3">  
-          {[puuungCanvasTemplate1, puuungCanvasTemplate2, puuungCanvasTemplate3].map((selectedTemplate: any, index) => (
+        <div className="grid grid-cols-2 gap-3 py-4">
+          {[
+            puuungCanvasTemplate1,
+            puuungCanvasTemplate2,
+            puuungCanvasTemplate3,
+          ].map((selectedTemplate: any, index) => (
             <button
               key={index}
-              className="aspect-square border border-light-divider dark:border-dark-divider rounded-xl hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary active:scale-95"
+              className={clsx(
+                "aspect-square border border-light-divider dark:border-dark-divider rounded-xl hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary active:scale-95 transition-all duration-200",
+                { "ring-2 ring-emerald-500 bg-light-background-secondary dark:bg-dark-background-secondary" : selectedTemplate == entry?.canvas}
+              )}
               onClick={() => {
                 fabricCanvas
                   ?.loadFromJSON(selectedTemplate, () => {
@@ -701,7 +711,9 @@ const LayoutPage = (props: Props) => {
                   });
               }}
             >
-              Puuung Template #{index + 1}
+              Puuung 
+              <br/>
+              Template #{index + 1}
             </button>
           ))}
         </div>

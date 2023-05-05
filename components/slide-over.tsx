@@ -61,7 +61,7 @@ const SlideOver: React.FC<{
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-xl border-l border-l-light-divider dark:border-l-dark-divider">
                   <div className="flex h-full flex-col overflow-y-scroll shadow-xl bg-light-background-primary dark:bg-dark-background-primary">
                     {/* <div className="p-4 border-b border-b-light-divider dark:border-b-dark-divider"> */}
-                    <div className="p-4">
+                    <div className="p-6">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className=" text-xl font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary">
                           {title}
