@@ -32,6 +32,7 @@ import { HiXCircle } from "react-icons/hi";
 import { debounce } from "lodash";
 import axios from "axios";
 import { User } from "@/models/user";
+import mongoose from "mongoose";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref
@@ -162,7 +163,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
               {/* create */}
               <Link
-                href={"/create"}
+                href={`/create/${(new mongoose.Types.ObjectId()).toHexString()}/styles`}
                 className="flex w-full items-center justify-center cursor-pointer"
               >
                 <button

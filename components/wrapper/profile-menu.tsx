@@ -2,6 +2,7 @@ import useAuth from "@/hooks/useAuth";
 import { useAppSelector } from "@/redux-store/hooks";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import clsx from "clsx";
+import mongoose from "mongoose";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { FiBookOpen, FiChevronRight, FiLogOut, FiUser } from "react-icons/fi";
@@ -21,7 +22,7 @@ const ProfileMenu = (props: Props) => {
       label: "Profile",
       onClick: () => {
         if (auth?.currentUser) {
-          router.push(`/${auth.currentUser._id}`);
+          router.push(`/${auth.currentUser.username || auth.currentUser._id}`);
         }
       },
     },
@@ -29,7 +30,7 @@ const ProfileMenu = (props: Props) => {
       icon: <FiBookOpen />,
       label: "Create Comic",
       onClick: () => {
-        window.location.href = "/create/styles";
+        window.location.href = `/create/${(new mongoose.Types.ObjectId()).toHexString()}/styles`;
       },
     },
     {
