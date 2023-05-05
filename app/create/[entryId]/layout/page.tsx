@@ -158,7 +158,7 @@ const LayoutPage = (props: Props) => {
     // load json if exist in entry?.canvas
     if (entry?.canvas) {
       canvas.loadFromJSON(entry?.canvas, () => {
-        canvas.renderAll();
+        canvas.requestRenderAll();
       });
     }
 
@@ -358,7 +358,7 @@ const LayoutPage = (props: Props) => {
     if (!activeObjects) return;
     activeObjects.forEach((object: any) => {
       fabricCanvas?.remove(object);
-      fabricCanvas?.renderAll();
+      fabricCanvas?.requestRenderAll();
     });
   };
 
@@ -366,6 +366,7 @@ const LayoutPage = (props: Props) => {
   window.addEventListener("keydown", (e) => {
     if (e.key === "Backspace") {
       removeSelectedObject();
+      removeSelectedObjects();
     }
   });
 
@@ -421,8 +422,10 @@ const LayoutPage = (props: Props) => {
 
               <ToolbarButton
                 onClick={() => {
-                  dispatch(setCanvas(puuungCanvasTemplate));
-                  fabricCanvas?.requestRenderAll();
+                  fabricCanvas?.loadFromJSON(puuungCanvasTemplate, () => {
+                    fabricCanvas.requestRenderAll();
+                    dispatch(setCanvas(puuungCanvasTemplate));
+                  });
                 }}
               >
                 Puuung Template
@@ -447,7 +450,7 @@ const LayoutPage = (props: Props) => {
                             : "black",
                       });
                     }
-                    fabricCanvas?.renderAll();
+                    fabricCanvas?.requestRenderAll();
                   }}
                 >
                   Switch Color
@@ -499,7 +502,7 @@ const LayoutPage = (props: Props) => {
                     fabricCanvas?.set({
                       backgroundColor: color.hex,
                     });
-                    fabricCanvas?.renderAll();
+                    fabricCanvas?.requestRenderAll();
                   }}
                 />
 
@@ -509,7 +512,7 @@ const LayoutPage = (props: Props) => {
                       fabricCanvas?.set({
                         backgroundColor: "transparent",
                       });
-                      fabricCanvas?.renderAll();
+                      fabricCanvas?.requestRenderAll();
                     }}
                     className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
                   >
