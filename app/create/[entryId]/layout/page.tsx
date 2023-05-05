@@ -135,7 +135,12 @@ const LayoutPage = (props: Props) => {
   const canvasEl = React.useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<fabric.Canvas | null>(null);
   const [clipboard, setClipboard] = useState(null);
-  const [currentActiveObject, setCurrentActiveObject] = useState<any | null>(null);
+  const [currentActiveObject, setCurrentActiveObject] = useState<any | null>(
+    null
+  );
+  const [currentActiveObjectType, setCurrentActiveObjectType] = useState<
+    string | null
+  >(null);
 
   const onLoad = useCallback((canvas: fabric.Canvas) => {
     const isDarkMode = localStorage.getItem("theme") === "dark";
@@ -172,15 +177,12 @@ const LayoutPage = (props: Props) => {
     canvas.on("selection:created", function (options) {
       // @ts-ignore
       setCurrentActiveObject(options.selected);
+      setCurrentActiveObjectType(canvas.getActiveObject()?.get("type"));
     });
 
     canvas.on("selection:cleared", function (options) {
       setCurrentActiveObject(null);
-    });
-
-    canvas.on("selection:updated", function (options) {
-      // @ts-ignore
-      setCurrentActiveObject(options.selected);
+      setCurrentActiveObjectType(null);
     });
 
     // stylings
@@ -212,24 +214,11 @@ const LayoutPage = (props: Props) => {
     //   }
     // }
 
-
-
-    // canvas.add(new fabric.Textbox("Hello world", { left: 50, top: 50 }));
-    // canvas.add(new fabric.Textbox("Hello world", { left: 50, top: 150 }));
-
-    // fabric.Image.fromURL("http://fabricjs.com/assets/pug_small.jpg")
-    //   .then((img) => {
-    //     canvas.add(img);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
     return () => {
       setFabricCanvas(null);
       canvas.dispose();
     };
-  }, []);
+  }, []); // end on canvas init
 
   const addImageURLToCanvas = (url: string) => {
     fabric.Image.fromURL(url)
@@ -274,23 +263,20 @@ const LayoutPage = (props: Props) => {
     // bubbleGroup.bringObjectToFront(bubbleText);
     fabricCanvas?.add(bubblePath);
     fabricCanvas?.add(bubbleText);
-
-    
   };
 
   const addPuuungStoryboardToCanvas = () => {
-
     if (!fabricCanvas) return;
     // const scenes = entry?.scenes;
     const scenes = storyboardSamples;
-  
+
     const numRows = Math.ceil(scenes.length / 2);
     const colWidth = fabricCanvas.width / 2;
     const totalHeight = numRows * 500; // Assume all images have a width of 500
-  
+
     let x = 0;
     let y = 0;
-  
+
     for (let i = 0; i < scenes.length; i++) {
       const scene = scenes[i];
       fabric.Image.fromURL(scene.artwork.url)
@@ -332,6 +318,7 @@ const LayoutPage = (props: Props) => {
     if (!activeObjects) return;
     activeObjects.forEach((object: any) => {
       fabricCanvas?.remove(object);
+      fabricCanvas?.renderAll();
     });
   };
 
@@ -359,7 +346,7 @@ const LayoutPage = (props: Props) => {
                     top: 50,
                   });
                   // newText.backgroundColor = "white";
-                  newText.set({ fill: "black"})
+                  newText.set({ fill: "black" });
                   fabricCanvas?.add(newText);
                 }}
               >
@@ -394,23 +381,41 @@ const LayoutPage = (props: Props) => {
             </div>
 
             <div className="flex flex-row gap-1">
-            <ToolbarButton
-                onClick={() => {
-                  console.log(currentActiveObject);
-                }}
-              >
-                Test
-              </ToolbarButton>
+              {/* if current active ofject is text */}
 
-              <ToolbarButton
-                onClick={() => {
-                  bringSelectedObjectToFront();
-                }}
-              >
-                Bring to Front
-              </ToolbarButton>
+              {currentActiveObject && currentActiveObjectType === "i-text" && (
+                <ToolbarButton
+                  onClick={() => {
+                    const activeObject = fabricCanvas?.getActiveObject();
 
-              <ToolbarButton onClick={() => {}}>Template (soon)</ToolbarButton>
+                    if (!activeObject) return;
+
+                    if (activeObject.get("type") === "i-text") {
+                      activeObject.set({
+                        fill:
+                          activeObject.get("fill") === "black"
+                            ? "white"
+                            : "black",
+                      });
+                    }
+                    fabricCanvas?.renderAll();
+                  }}
+                >
+                  Switch Color
+                </ToolbarButton>
+              )}
+
+              {currentActiveObject && (
+                <ToolbarButton
+                  onClick={() => {
+                    bringSelectedObjectToFront();
+                  }}
+                >
+                  Bring to Front
+                </ToolbarButton>
+              )}
+
+              <ToolbarButton onClick={() => {}}>Template</ToolbarButton>
             </div>
           </div>
 
@@ -425,7 +430,7 @@ const LayoutPage = (props: Props) => {
               }}
               className="fixed bottom-0 right-0 m-4 py-2 px-4 rounded-md shadow-md bg-dark-background-tertiary text-white"
             >
-              Save
+              Test Save JSON
             </button>
           </div>
         </div>
