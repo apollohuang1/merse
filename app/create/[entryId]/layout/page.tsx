@@ -266,7 +266,7 @@ const LayoutPage = (props: Props) => {
   }, []); // end on canvas init
 
   const addImageURLToCanvas = (url: string) => {
-    fabric.Image.fromURL(url)
+    fabric.Image.fromURL(url, {crossOrigin: "anonymous"})
       .then((img) => {
         img.scaleToWidth(500);
         img.stroke = "black";
@@ -424,8 +424,11 @@ const LayoutPage = (props: Props) => {
               <ToolbarButton
                 onClick={() => {
                   fabricCanvas?.loadFromJSON(puuungCanvasTemplate1, () => {
-                    fabricCanvas.requestRenderAll();
                     dispatch(setCanvas(puuungCanvasTemplate1));
+                    fabricCanvas?.requestRenderAll();
+                  })
+                  .catch((err) => {
+                    console.log("Failed to load template 1, message: " + err.message);
                   });
                 }}
               >
@@ -435,8 +438,11 @@ const LayoutPage = (props: Props) => {
               <ToolbarButton
                 onClick={() => {
                   fabricCanvas?.loadFromJSON(puuungCanvasTemplate2, () => {
-                    fabricCanvas.requestRenderAll();
                     dispatch(setCanvas(puuungCanvasTemplate2));
+                    fabricCanvas?.requestRenderAll();
+                  })
+                  .catch((err) => {
+                    console.log("Failed to load template 2, message: " + err.message);
                   });
                 }}
               >

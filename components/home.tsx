@@ -35,9 +35,7 @@ const Home = (props: Props) => {
           <img
             // src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
             // src={"https://media2.giphy.com/media/l1KVaDmsxFkSfSOSA/giphy.gif?cid=ecf05e473fqbn80ec6al5d6ke8462qs8pgqrmzwv153jlf5k&rid=giphy.gif&ct=g"}
-            src={
-              "https://media1.giphy.com/media/110pOfMhZcYRUs/giphy.gif?cid=ecf05e47zm9qc6xnol7dxscitvv53x47c5v3ubi9o69fh345&ep=v1_gifs_related&rid=giphy.gif&ct=g"
-            }
+            src={"https://media1.giphy.com/media/110pOfMhZcYRUs/giphy.gif?cid=ecf05e47zm9qc6xnol7dxscitvv53x47c5v3ubi9o69fh345&ep=v1_gifs_related&rid=giphy.gif&ct=g"}
             className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
           />
 
