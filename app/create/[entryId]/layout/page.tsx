@@ -61,6 +61,8 @@ import { Scene } from "@/models/entry";
 import * as fabric from "fabric";
 import { Canvas } from "@/components/canvas";
 
+import { SwatchesPicker } from "react-color";
+
 type Props = {};
 
 const LayoutPage = (props: Props) => {
@@ -142,6 +144,8 @@ const LayoutPage = (props: Props) => {
     string | null
   >(null);
 
+  const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
+
   const onLoad = useCallback((canvas: fabric.Canvas) => {
     const isDarkMode = localStorage.getItem("theme") === "dark";
 
@@ -159,7 +163,10 @@ const LayoutPage = (props: Props) => {
     // snap to grid
     canvas.on("object:moving", function (options) {
       // check if object is image
-      if (options.target.get("type") !== "image" && options.target.get("type") !== "activeselection") {
+      if (
+        options.target.get("type") !== "image" &&
+        options.target.get("type") !== "activeselection"
+      ) {
         return;
       }
 
@@ -176,13 +183,14 @@ const LayoutPage = (props: Props) => {
 
     // stylings
     // canvas.backgroundColor = "#F5F5F7";
+    canvas.backgroundColor = "transparent";
 
     // detect dark mode class and set background color
-    if (isDarkMode) {
-      canvas.backgroundColor = "#161816";
-    } else {
-      canvas.backgroundColor = "#F5F5F7";
-    }
+    // if (isDarkMode) {
+    //   canvas.backgroundColor = "#161816";
+    // } else {
+    //   canvas.backgroundColor = "#F5F5F7";
+    // }
 
     // const gridSize = 32;
     const gridSize = 20;
@@ -240,7 +248,7 @@ const LayoutPage = (props: Props) => {
 
       // only scale with gridSize
       // if (options.target.get("type") !== "image") {
-        // return;
+      // return;
       // }
     });
 
@@ -441,6 +449,27 @@ const LayoutPage = (props: Props) => {
                 </ToolbarButton>
               )}
 
+              { showColorPicker &&
+                <SwatchesPicker
+                    className="fixed z-10 bottom-3 right-44"
+                    // className={styles.colorPicker}
+                    onChangeComplete={(color: any) => {
+                      // alert(color.hex);
+                      fabricCanvas?.set({
+                        backgroundColor: color.hex,
+                      })
+                      fabricCanvas?.renderAll();
+                    }}
+                  />
+              }
+              
+              <ToolbarButton 
+                onClick={() => {
+                  setShowColorPicker(!showColorPicker);
+                }}
+              >
+                Background Color
+              </ToolbarButton>
               <ToolbarButton onClick={() => {}}>Template</ToolbarButton>
             </div>
           </div>
@@ -610,7 +639,7 @@ const ToolbarButton: React.FC<{
     <button
       onClick={onClick}
       className={
-        "flex flex-row items-center justify-center h-10 px-3 rounded-md hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+        "relative flex flex-row items-center justify-center h-10 px-3 rounded-md hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
       }
     >
       {children}

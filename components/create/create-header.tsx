@@ -55,7 +55,7 @@ const CreateHeader = (props: Props) => {
                 // save an entry
                 saveEntry();
               }}
-              className="group inline-flex items-center justify-center rounded-full text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all hover:scale-105 active:scale-100 bg-emerald-500 hover:bg-emerald-600"
+              className="group inline-flex items-center justify-center rounded-2xl text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all hover:scale-105 active:scale-100 bg-emerald-500 hover:bg-emerald-600"
             >
               <span className="text-white">Finish</span>
             </button>
