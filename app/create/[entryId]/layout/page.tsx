@@ -372,8 +372,8 @@ const LayoutPage = (props: Props) => {
   // detect delete button and remove selected object
   window.addEventListener("keydown", (e) => {
     if (e.key === "Backspace") {
-      // removeSelectedObject();
-      removeSelectedObjects();
+      removeSelectedObject();
+      // removeSelectedObjects();
       // removeSelectedObjects();
     }
   });
