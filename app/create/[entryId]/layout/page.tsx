@@ -142,14 +142,7 @@ const LayoutPage = (props: Props) => {
     string | null
   >(null);
 
-  useEffect(() => {
-
-  }, [])
-
-  useEffect(() => {
-
-    const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement);
-
+  const onLoad = useCallback((canvas: fabric.Canvas) => {
     const isDarkMode = localStorage.getItem("theme") === "dark";
 
     // load json if exist in entry?.canvas
@@ -445,8 +438,7 @@ const LayoutPage = (props: Props) => {
 
           <div className="relative w-full h-full overflow-auto">
             {/* <canvas ref={canvasEl} width={"100%"} height={"100%"} /> */}
-            {/* <Canvas onLoad={onLoad} saveState /> */}
-            <canvas ref={canvasEl} width={"100%"} height={"100%"} />
+            <Canvas onLoad={onLoad} saveState />
 
             <button
               onClick={() => {
