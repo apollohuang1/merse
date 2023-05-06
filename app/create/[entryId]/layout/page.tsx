@@ -228,6 +228,26 @@ const LayoutPage = (props: Props) => {
 
     // observers
 
+    window.addEventListener("resize", () => {
+      console.log("resized width and height to: ", innerWidth, innerHeight);
+
+      var widthValueToSet = innerWidth - 250;
+
+      if (innerWidth < 1024) {
+        widthValueToSet = innerWidth - 175;
+      } 
+      
+      if (innerWidth < 640) {
+        widthValueToSet = innerWidth;
+      }
+
+      canvas.setDimensions({
+        width: widthValueToSet,
+        height: innerHeight,
+      });
+      console.log("canvas width and height: ", canvas.width, canvas.height);
+    });
+
     canvas.on("selection:created", function (options) {
       const activeObject = canvas.getActiveObject();
 

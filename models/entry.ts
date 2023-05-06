@@ -18,6 +18,7 @@ export interface Entry {
   cover: object | null;
   created_at?: Date;
   updated_at?: Date;
+  likes: mongoose.Types.ObjectId[];
 }
 
 interface StyleReference {

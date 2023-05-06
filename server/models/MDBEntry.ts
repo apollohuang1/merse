@@ -11,7 +11,7 @@ const SceneSchema = new mongoose.Schema<Scene>({
 });
 
 
-const EntrySchema = new mongoose.Schema({
+const EntrySchema = new mongoose.Schema<Entry>({
   _id: { type: String, required: true },
   author: {
     type: Schema.Types.ObjectId,
@@ -28,7 +28,7 @@ const EntrySchema = new mongoose.Schema({
   cover: { type: Object, required: true },
   created_at: { type: Date, required: false },
   updated_at: { type: Date, required: false },
-  likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  likes: [{ type: Schema.Types.ObjectId, ref: "User", required: false }],
   // published_at: { type: Date, required: true },
   // is_published: { type: Boolean, required: true },
   // is_deleted: { type: Boolean, required: true },

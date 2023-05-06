@@ -19,6 +19,9 @@ import {
 import { FiHeart } from "react-icons/fi";
 import clsx from "clsx";
 
+import * as fabric from "fabric";
+import { puuungCanvasTemplate3 } from "@/util/create-constants";
+
 type Props = {};
 
 const ReadPage = (props: Props) => {
@@ -60,6 +63,30 @@ const ReadPage = (props: Props) => {
     // return generatedHTML;
     return parse(entryData.content);
   }, [entryData]);
+
+  useEffect(() => {
+    // render fabric canvas
+
+    console.log(document.getElementById("canvas-parent")?.clientWidth as number)
+
+    window.addEventListener("resize", () => {
+      console.log("resized width and height to: ", innerWidth, innerHeight);
+      canvas.setDimensions({
+        width: innerWidth - 250,
+        height: innerHeight,
+      });
+    });
+
+    const canvas = new fabric.Canvas("canvas", {
+      backgroundColor: "#ffffff",
+    });
+
+    canvas.loadFromJSON(puuungCanvasTemplate3, (o, object) => {
+      canvas.renderAll();
+      object.selectable=false;
+    });
+
+  }, []);
 
   return (
     <div className="flex flex-col w-full h-full items-center p-6">
@@ -136,6 +163,18 @@ const ReadPage = (props: Props) => {
             </div>
           );
         })}
+
+        {/* fabric canvas */}
+        <div 
+          id="canvas-parent"
+          className="flex flex-col items-center w-96 h-full overflow-auto"
+        >
+          <canvas
+            id="canvas"
+            className="w-full h-full"
+            style={{ border: "1px solid #ccc" }}
+          ></canvas>
+        </div>
       </div>
     </div>
   );
