@@ -10,6 +10,7 @@ export interface User {
   banner_image_url: string;
   followers: mongoose.Types.ObjectId[];
   followings: mongoose.Types.ObjectId[];
+  joined_at: Date;
   stripe_customer_id: string;
   stripe_subscription_id: string;
   stripe_customer_email: string;

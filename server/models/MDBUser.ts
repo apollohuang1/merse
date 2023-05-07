@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema<User>({
   banner_image_url: { type: String, required: false },
   followers: [{ type: Schema.Types.ObjectId, required: false }],
   followings: [{ type: Schema.Types.ObjectId, required: false }],
+  joined_at: { type: Date, required: false },
   stripe_customer_id: { type: String, required: false },
   stripe_subscription_id: { type: String, required: false },
   stripe_customer_email: { type: String, required: false },

@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
       profile_image_url: body.picture,
       followers: [],
       followings: [],
+      joined_at: new Date(),
     });
 
     const savedUser = await newUser.save();
