@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-import { FiArrowUpRight, FiChevronRight } from "react-icons/fi";
+import { FiArrowUpRight, FiBookOpen, FiChevronRight } from "react-icons/fi";
 
 import {
   midjourneyGeneratedImages,
@@ -9,6 +9,10 @@ import {
 import Link from "next/link";
 import { HiPause, HiPlay } from "react-icons/hi2";
 import NavigationBar from "./navigation-bar";
+import { FcGoogle } from "react-icons/fc";
+import Modal from "./modal";
+import useAuth from "@/hooks/useAuth";
+import { Spinner } from "@chakra-ui/react";
 
 type Props = {};
 
@@ -16,6 +20,13 @@ const Landing = (props: Props) => {
   const demoVideoRef = useRef<HTMLVideoElement>(null);
   const [isDemoVidePlaying, setIsDemoVideoPlaying] =
     React.useState<boolean>(true);
+
+  const {
+    showLoginModal,
+    setShowLoginModal,
+    isLoadingCurrentUser,
+    continueWithGoogle,
+  } = useAuth();
 
   const toggleVideoPlayState = () => {
     if (demoVideoRef.current) {
@@ -74,12 +85,28 @@ const Landing = (props: Props) => {
                 </span>
               </div>
 
-              <Link href="/create/styles">
-                <button className="flex flex-row items-center gap-1 rounded-full bg-white hover:bg-opacity-80 backdrop-blur-xl px-4 h-10 text-sm font-medium text-light-text-primary shadow-sm hover:scale-105 active:scale-100 transition-all">
-                  <span className=" font-medium">Create comic book</span>
-                  <FiChevronRight className="w-4 h-4" />
+              {/* <div className="flex flex-row max-w-xl w-full h-12 rounded-full border border-white border-opacity-20 backdrop-blur-2xl bg-white bg-opacity-10 px-5">
+
+                <input
+                  type="text"
+                  placeholder="Enter your email"
+                  className="flex w-full bg-transparent text-white placeholder-white placeholder-opacity-50 outline-none"
+                />
+
+                <button className="flex flex-shrink-0 flex-row items-center justify-center px-3 h-full rounded-full">
+                  Join Waitlist
                 </button>
-              </Link>
+              </div> */}
+
+              <button
+                className="flex flex-row items-center gap-1 rounded-full bg-white hover:bg-opacity-80 backdrop-blur-xl px-4 h-10 text-sm font-medium text-light-text-primary shadow-sm hover:scale-105 active:scale-100 transition-all"
+                onClick={() => {
+                  setShowLoginModal(true);
+                }}
+              >
+                <span className=" font-medium">Browse the app</span>
+                <FiChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
 
@@ -87,8 +114,6 @@ const Landing = (props: Props) => {
             id="section-2"
             className="relative flex flex-col w-full h-screen max-lg:h-auto bg-[#F5F5F7] items-center justify-between px-6 min-h-[55vh] gap-[calc(42px+24px)]"
           >
-
-
             <div className="flex flex-col text-center items-center pt-[calc(42px+24px)]">
               <h1 className="text-5xl text-light-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
                 {/* Storyboard */}
@@ -135,7 +160,6 @@ const Landing = (props: Props) => {
               </div>
             </div>
           </div>
-
 
           {/* team section */}
           <div
@@ -205,6 +229,60 @@ const Landing = (props: Props) => {
             </div> */}
         </div>
       </div>
+
+      <Modal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        title="Login"
+      >
+        <div className="flex flex-col items-center justify-start w-full h-full text-light-text-primary dark:text-dark-text-primary gap-8 p-6">
+          <div className="flex flex-col items-center gap-2">
+            <FiBookOpen className="w-10 h-10" />
+
+            <div>
+              <h1 className="font-normal">Welcome to Comic</h1>
+              <p className="text-light-text-secondary dark:text-dark-text-secondary">
+                Turning your journaling entry into comic book
+              </p>
+            </div>
+          </div>
+
+          {/* continue with google */}
+          {isLoadingCurrentUser ? (
+            <div className="flex flex-row h-10 gap-3 justify-center items-center px-4 border border-light-divider dark:border-dark-divider rounded-full">
+              <Spinner speed={"0.8s"} className="w-4 h-4 text-accent" />
+              <span className="text-sm">Logging in...</span>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                continueWithGoogle();
+              }}
+              className="flex flex-row items-center justify-center gap-2 px-4 h-10 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider"
+            >
+              <FcGoogle className="text-xl" />
+              <span className="text-sm font-medium">Continue with Google</span>
+            </button>
+          )}
+
+          {/* <div className="flex flex-col p-3 items-center justify-center border border-accent bg-emerald-500 bg-opacity-10 rounded-xl">
+              <p className="text-sm">
+                <br/>
+              </p>
+            </div> */}
+
+          <p className="text-sm text-dark-text-secondary text-center max-w-sm border-t border-t-light-divider dark:border-t-dark-divider py-6">
+            By continuing, you agree to Merse&apos;s{" "}
+            <a className="text-accent font-medium hover:underline cursor-pointer">
+              Terms of Service
+            </a>{" "}
+            and acknowledge, you&apos;ve read our{" "}
+            <a className="text-accent font-medium hover:underline cursor-pointer">
+              Privacy Policy
+            </a>
+          </p>
+        </div>
+      </Modal>
     </>
   );
 };

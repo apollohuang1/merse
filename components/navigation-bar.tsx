@@ -25,19 +25,13 @@ import ProfileMenu from "./wrapper/profile-menu";
 const NavigationBar: React.FC<{
   isAuthenticated: boolean;
 }> = ({ isAuthenticated }) => {
+  
   const { toggleColorScheme } = useColorScheme();
 
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const {
-    continueWithGoogle,
-    showLoginModal,
-    setShowLoginModal,
-    isLoadingCurrentUser,
-    showSplashScreen,
-    logOut,
-  } = useAuth();
+  const { showLoginModal, setShowLoginModal, isLoadingCurrentUser, continueWithGoogle } = useAuth();
 
   const scrollToSection = (sectionNumber: number) => {
     const section = document.getElementById(`section-${sectionNumber}`);
@@ -214,7 +208,6 @@ const NavigationBar: React.FC<{
             ) : (
               <button
                 onClick={() => {
-                  // signIn();
                   setShowLoginModal(true);
                 }}
                 className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-6"
@@ -260,6 +253,12 @@ const NavigationBar: React.FC<{
               <span className="text-sm font-medium">Continue with Google</span>
             </button>
           )}
+
+          {/* <div className="flex flex-col p-3 items-center justify-center border border-accent bg-emerald-500 bg-opacity-10 rounded-xl">
+              <p className="text-sm">
+                <br/>
+              </p>
+            </div> */}
 
           <p className="text-sm text-dark-text-secondary text-center max-w-sm border-t border-t-light-divider dark:border-t-dark-divider py-6">
             By continuing, you agree to Merse&apos;s{" "}
