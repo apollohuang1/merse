@@ -50,7 +50,13 @@ export async function POST(request: NextRequest) {
     const existingUser = await MDBUser.findOne({ email: body.email })
 
     if (existingUser) {
-      // return NextResponse.json({ error: "User already exists" }, { status: 400 });
+
+      // if existing user has no joined_at, update to current date
+      if (!existingUser.joined_at) {
+        existingUser.joined_at = new Date();
+        await existingUser.save();
+      }
+
       return NextResponse.json(existingUser, { status: 200 });
     }
 

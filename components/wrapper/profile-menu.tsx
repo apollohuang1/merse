@@ -10,7 +10,6 @@ import { FiBookOpen, FiChevronRight, FiLogOut, FiUser } from "react-icons/fi";
 type Props = { children: React.ReactNode };
 
 const ProfileMenu = (props: Props) => {
-
   const { logOut } = useAuth();
   const router = useRouter();
 
@@ -30,7 +29,7 @@ const ProfileMenu = (props: Props) => {
       icon: <FiBookOpen />,
       label: "Create Comic",
       onClick: () => {
-        window.location.href = `/create/${(new mongoose.Types.ObjectId()).toHexString()}/styles`;
+        window.location.href = `/create/${new mongoose.Types.ObjectId().toHexString()}/styles`;
       },
     },
     {
@@ -45,44 +44,33 @@ const ProfileMenu = (props: Props) => {
   return (
     <>
       <Menu>
-
         <MenuButton>{props.children}</MenuButton>
 
-        <MenuList className="bg-light-background-primary dark:bg-dark-background-secondary w-48 rounded-lg drop-shadow-2xl border border-light-divider dark:border-dark-divider">
+        <MenuList className="bg-light-background-primary dark:bg-dark-background-secondary w-48 drop-shadow-2xl border border-light-divider dark:border-dark-divider py-2 rounded-md overflow-clip">
           {menuItems.map((item, index) => {
             return (
               <MenuItem
                 onClick={item.onClick}
                 key={index}
                 className={clsx(
-                  "flex flex-row justify-between px-3 h-12 transition-all duration-[275ms]",
+                  "flex flex-row justify-between px-4 h-11 transition-all duration-[275ms]",
                   {
                     "focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider":
                       index !== menuItems.length - 1,
                   },
-                  { "rounded-t-lg": index === 0 },
-                  {
-                    "rounded-b-lg focus:bg-red-500 focus:bg-opacity-30":
-                      index === menuItems.length - 1,
-                  }
+                  { "focus:bg-red-500 focus:bg-opacity-30 t-2": index === menuItems.length - 1 }
                 )}
               >
                 <div
                   className={clsx(
                     "flex flex-row gap-3 items-center",
-                    {
-                      "text-light-red dark:text-dark-red":
-                        item.label === "Logout",
-                    },
-                    {
-                      "text-light-text-primary dark:text-dark-text-primary":
-                        item.label !== "Logout",
-                    }
+                    { "text-light-red dark:text-dark-red": item.label === "Logout" },
+                    { "text-light-text-primary dark:text-dark-text-primary": item.label !== "Logout" }
                   )}
                 >
-                  {item.icon}
+                  {/* {item.icon} */}
                   <span
-                    className={clsx("text-base font-normal", {
+                    className={clsx("text-base", {
                       "text-light-text-primary dark:text-dark-text-primary":
                         item.label !== "Logout",
                     })}
