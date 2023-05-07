@@ -19,6 +19,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
 
+  // get api key from bear token
+  const token = request.headers.get("authorization");
+
+  // if key is not process.env.MERSE_API_KEY
+  if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   await dbConnect();
   const body = await request.json();
 

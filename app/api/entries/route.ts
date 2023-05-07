@@ -8,6 +8,14 @@ export async function GET(request: NextRequest) {
   try {
     const db = await dbConnect();
 
+    // get api key from bear token
+    const token = request.headers.get("authorization");
+
+    // if key is not process.env.MERSE_API_KEY
+    if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
     // const get params from fullURL
     const url = new URL(request.url);
     const entryId = url.searchParams.get("id");
@@ -40,6 +48,14 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
     const body = await request.json();
+
+     // get api key from bear token
+     const token = request.headers.get("authorization");
+
+     // if key is not process.env.MERSE_API_KEY
+     if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+       return new Response("Unauthorized", { status: 401 });
+     }
 
     // guards
     if (!body) {

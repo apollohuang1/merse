@@ -7,6 +7,15 @@ import mongoose from "mongoose";
 
 export async function GET(request: Request) {
   try {
+
+    // get api key from bear token
+   const token = request.headers.get("authorization");
+
+   // if key is not process.env.MERSE_API_KEY
+   if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+     return new Response("Unauthorized", { status: 401 });
+   }
+
     const db = await dbConnect();
 
     const searchParams = new URLSearchParams(request.url.split("?")[1]);
@@ -25,6 +34,14 @@ export async function GET(request: Request) {
 
 export async function POST(request: NextRequest) {
   try {
+
+    // get api key from bear token
+   const token = request.headers.get("authorization");
+
+   // if key is not process.env.MERSE_API_KEY
+   if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+     return new Response("Unauthorized", { status: 401 });
+   }
 
     // create new user in db
     const db = await dbConnect();
