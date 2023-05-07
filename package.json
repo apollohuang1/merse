@@ -66,6 +66,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",
+    "react-twitter-embed": "^4.0.4",
     "redux": "^4.2.1",
     "stripe": "^12.1.1",
     "typescript": "5.0.2",

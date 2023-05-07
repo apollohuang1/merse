@@ -14,6 +14,15 @@ import Modal from "./modal";
 import useAuth from "@/hooks/useAuth";
 import { Spinner } from "@chakra-ui/react";
 
+// Twitter
+import { TwitterTweetEmbed } from "react-twitter-embed";
+import {
+  markQuoteRyanTweetHtml,
+  ryanTweetHtml,
+  tweets,
+} from "@/util/home-constant";
+import parse from "html-react-parser";
+
 type Props = {};
 
 const Landing = (props: Props) => {
@@ -109,7 +118,6 @@ const Landing = (props: Props) => {
               </button>
             </div>
           </div>
-
           <div
             id="section-2"
             className="relative flex flex-col w-full h-screen max-lg:h-auto bg-[#F5F5F7] items-center justify-between px-6 min-h-[55vh] gap-[calc(42px+24px)]"
@@ -160,7 +168,6 @@ const Landing = (props: Props) => {
               </div>
             </div>
           </div>
-
           {/* team section */}
           <div
             id="section-3"
@@ -201,6 +208,46 @@ const Landing = (props: Props) => {
                     </Link>
                   );
                 })}
+              </div>
+            </div>
+          </div>
+          <div
+            id="section-4"
+            className="flex flex-row h-auto items-end justify-center p-10 max-lg:p-7"
+          >
+            <div className="flex flex-row items-center gap-8 max-lg:flex-col max-w-screen w-full justify-center">
+              <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] gap-2 max-lg:w-full items-center">
+                {parse(ryanTweetHtml)}
+                {parse(markQuoteRyanTweetHtml)}
+
+                <button
+                  onClick={() => {
+                    // target blank open ryanhover twitter profile
+                    window.open("https://twitter.com/rrhoover", "_blank");
+                  }}
+                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                >
+                  <span>Ryan Hoover, Founder of Product Hunt</span>
+                  <FiChevronRight />
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <iframe
+                  src="https://www.getairchat.com/sigil/sideprojects/afcfab29-9896-4ba0-b547-52d8d6b8197d"
+                  title="Naval's Reponse"
+                  className="aspect-[9/16] rounded-xl"
+                />
+                <button
+                  onClick={() => {
+                    // target blank open ryanhover twitter profile
+                    window.open("https://twitter.com/naval", "_blank");
+                  }}
+                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                >
+                  <span>Naval Ravikant, Founder of AngelList</span>
+                  <FiChevronRight />
+                </button>
               </div>
             </div>
           </div>
