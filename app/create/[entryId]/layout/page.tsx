@@ -719,9 +719,9 @@ const LayoutPage = (props: Props) => {
       >
         <div className="grid grid-cols-2 gap-6 py-4">
           {[
-            // puuungCanvasTemplate1,
-            // puuungCanvasTemplate2,
-            // puuungCanvasTemplate3,
+            puuungCanvasTemplate1,
+            puuungCanvasTemplate2,
+            puuungCanvasTemplate3,
             unsplashTemplate1,
             unsplashTemplate2,
             unsplashTemplate3
@@ -748,7 +748,7 @@ const LayoutPage = (props: Props) => {
                   });
               }}
             >
-              Puuung
+              { index < 3 ? "Puuung" :  "Unsplash"}
               <br />
               Template #{index + 1}
             </button>
