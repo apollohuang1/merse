@@ -82,6 +82,9 @@ const ProfilePage = (props: Props) => {
           userId: auth?.currentUser?._id,
           targetUserId: targetUserId,
         },
+        headers: {
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+        }
       });
 
       setFollowingState(FollowingState.FOLLOWING);
@@ -109,6 +112,9 @@ const ProfilePage = (props: Props) => {
           userId: auth?.currentUser?._id,
           targetUserId: targetUserId,
         },
+        headers: {
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+        }
       });
 
       setFollowingState(FollowingState.NOT_FOLLOWING);
@@ -194,6 +200,9 @@ const ProfilePage = (props: Props) => {
           name: editingName,
           bio: editingBio,
         },
+        headers: {
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+        }
       });
       await fetchUser();
       // setUser(response.data);

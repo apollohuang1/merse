@@ -53,6 +53,7 @@ const useCreateEntry = () => {
         url: "/api/entries",
         data: entry,
         headers: {
+          "Authorization": `Bearer ${process.env.MERSE_API_KEY}`,
           "Content-Type": "application/json",
         },
       });
