@@ -149,7 +149,6 @@ const ProfilePage = (props: Props) => {
         })
 
         setUser(response.data);
-        console.log("user: ", response.data);
 
         if (response.data._id === auth?.currentUser?._id) {
           setFollowingState(FollowingState.SELF);
