@@ -5,27 +5,27 @@ import mongoose, { Schema } from 'mongoose';
 
 const SceneSchema = new mongoose.Schema<Scene>({
   _id: { type: String, required: true },
-  image_base64: { type: String, required: true },
-  prompt: { type: String, required: true },
-  displayed_text: { type: String, required: true },
+  image_base64: { type: String, required: false },
+  prompt: { type: String, required: false },
+  displayed_text: { type: String, required: false },
 });
 
 
 const EntrySchema = new mongoose.Schema<Entry>({
-  _id: { type: String, required: true },
+  _id: { type: String, required: false },
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    required: false,
   },
-  title: { type: String, required: true },
-  style_reference: { type: Object, required: true },
+  title: { type: String, required: false },
+  style_reference: { type: Object, required: false },
   // content: { type: Object, required: true }, // tiptap content
-  content: { type: String, required: true }, // tiptap html
-  characters: { type: [Object] , required: true },
-  scenes: { type: [SceneSchema], required: true },
-  canvas: { type: Object, required: true },
-  cover: { type: Object, required: true },
+  content: { type: String, required: false }, // tiptap html
+  characters: { type: [Object] , required: false },
+  scenes: { type: [SceneSchema], required: false },
+  canvas: { type: Object, required: false },
+  cover: { type: Object, required: false },
   created_at: { type: Date, required: false },
   updated_at: { type: Date, required: false },
   likes: [{ type: Schema.Types.ObjectId, ref: "User", required: false }],

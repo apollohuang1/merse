@@ -46,7 +46,7 @@ export const sampleArtists: SampleArtist[] = [
     name: "Emily",
     username: "emily",
     _id: "643824151cb80eec2f543e85",
-    profile_image_url: "https://pbs.twimg.com/profile_images/1640925202162020352/W718YHZ0_400x400.jpg",
+    profile_image_url: "https://pbs.twimg.com/profile_images/1653106037262798848/xIwPY8Ws_400x400.jpg",
   },
   {
     name: "Jyoti",

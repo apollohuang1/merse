@@ -42,6 +42,8 @@ export async function POST(request: NextRequest) {
       name: body.name,
       email: body.email,
       profile_image_url: body.picture,
+      followers: [],
+      followings: [],
     });
 
     const savedUser = await newUser.save();
