@@ -213,7 +213,7 @@ const Landing = (props: Props) => {
           </div>
           <div
             id="section-4"
-            className="flex flex-row h-auto items-end justify-center p-10 max-lg:p-7"
+            className="flex flex-row items-end justify-center p-10 max-lg:p-7 h-screen max-lg:h-auto"
           >
             <div className="flex flex-row items-center gap-8 max-lg:flex-col max-w-screen w-full justify-center">
               <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] gap-2 max-lg:w-full items-center">
