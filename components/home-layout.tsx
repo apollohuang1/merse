@@ -4,6 +4,7 @@ import { useAppSelector } from "@/redux-store/hooks";
 import clsx from "clsx";
 import useColorScheme from "@/hooks/useColorScheme";
 import {
+  FiAlertTriangle,
   FiBell,
   FiBookOpen,
   FiCalendar,
@@ -158,120 +159,132 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </button>
             </div>
 
-            {/* side menus */}
-            <div className="flex flex-col w-full gap-5 items-center p-3">
-
-              {/* create */}
-              <Link
-                href={`/create/${(new mongoose.Types.ObjectId()).toHexString()}/styles`}
-                className="flex w-full items-center justify-center cursor-pointer"
-              >
-                <button
-                  className={clsx(
-                    "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
-                    {
-                      "flex-col justify-center h-12 w-12 aspect-square":
-                        !showFullSidebar,
-                    },
-                    {
-                      "flex-row justify-between pl-6 pr-3 h-12":
-                        showFullSidebar,
-                    }
-                  )}
+            <div className="flex flex-col justify-between h-full">
+              {/* side menus */}
+              <div className="flex flex-col w-full gap-5 items-center p-3">
+                {/* create button */}
+                <Link
+                  href={`/create/${new mongoose.Types.ObjectId().toHexString()}/styles`}
+                  className="flex w-full items-center justify-center cursor-pointer"
                 >
-                  <div className="flex flex-row items-center gap-3">
-                    <FiPlus className="h-5 w-5" />
-                    {showFullSidebar && (
-                      <span className="flex flex-shrink-0 font-medium">
-                        Create
-                      </span>
+                  <button
+                    className={clsx(
+                      "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
+                      {
+                        "flex-col justify-center h-12 w-12 aspect-square":
+                          !showFullSidebar,
+                      },
+                      {
+                        "flex-row justify-between pl-6 pr-3 h-12":
+                          showFullSidebar,
+                      }
                     )}
-                  </div>
-                </button>
-              </Link>
+                  >
+                    <div className="flex flex-row items-center gap-3">
+                      <FiPlus className="h-5 w-5" />
+                      {showFullSidebar && (
+                        <span className="flex flex-shrink-0 font-medium">
+                          Create
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                </Link>
 
-
-              <div className="flex flex-col gap-2">
-                {/* home */}
-                <SidebarMenuButton
-                  icon={<FiHome className="h-5 w-5" />}
-                  label="Home"
-                  href="/"
-                  isFull={showFullSidebar}
-                  isCurrentRoute={pathName === "/"}
-                />
-
-                {/* search */}
-                {/* <SidebarMenuButton
-                  icon={<FiSearch className="h-5 w-5" />}
-                  label="Search"
-                  href="/search"
-                  isFull={showFullSidebar}
-                  isCurrentRoute={pathName === "/search"}
-                /> */}
-
-                {/* notifications */}
-                <SidebarMenuButton
-                  icon={<FiBell className="h-5 w-5" />}
-                  label="Notifications"
-                  href="/notifications"
-                  isFull={showFullSidebar}
-                  isCurrentRoute={pathName === "/notifications"}
-                />
-
-                {/* dashboard */}
-                {/* <SidebarMenuButton
-                    icon={<FiCalendar />}
-                    label="Dashboard"
-                    href="/dashboard"
+                {/* navigation menus */}
+                <div className="flex flex-col gap-2">
+                  {/* home */}
+                  <SidebarMenuButton
+                    icon={<FiHome className="h-5 w-5" />}
+                    label="Home"
+                    href="/"
                     isFull={showFullSidebar}
-                    isNew={true}
+                    isCurrentRoute={pathName === "/"}
+                  />
+
+                  {/* search */}
+                  {/* <SidebarMenuButton
+                    icon={<FiSearch className="h-5 w-5" />}
+                    label="Search"
+                    href="/search"
+                    isFull={showFullSidebar}
+                    isCurrentRoute={pathName === "/search"}
                   /> */}
 
-                {/* subscription */}
-                <SidebarMenuButton
-                  icon={<FiFeather className="h-5 w-5" />}
-                  label="Following"
-                  href="/following"
-                  isFull={showFullSidebar}
-                  isCurrentRoute={pathName === "/following"}
-                />
+                  {/* notifications */}
+                  <SidebarMenuButton
+                    icon={<FiBell className="h-5 w-5" />}
+                    label="Notifications"
+                    href="/notifications"
+                    isFull={showFullSidebar}
+                    isCurrentRoute={pathName === "/notifications"}
+                  />
 
-                {/* subscription */}
-                <SidebarMenuButton
-                  icon={<FiZap className="h-5 w-5" />}
-                  label="Subscription"
-                  href="/subscription"
-                  isFull={showFullSidebar}
-                  isNew={true}
-                  isCurrentRoute={pathName === "/subscription"}
-                />
+                  {/* dashboard */}
+                  {/* <SidebarMenuButton
+                      icon={<FiCalendar />}
+                      label="Dashboard"
+                      href="/dashboard"
+                      isFull={showFullSidebar}
+                      isNew={true}
+                    /> */}
 
-                {/* read */}
-                <SidebarMenuButton
-                  icon={<FiBookOpen className="h-5 w-5" />}
-                  label="Read Sample"
-                  href="/entry/644c1bebdcb40d15e68ca258"
-                  isFull={showFullSidebar}
-                  isNew={true}
-                  isCurrentRoute={pathName === "/entry"}
-                />
+                  {/* subscription */}
+                  <SidebarMenuButton
+                    icon={<FiFeather className="h-5 w-5" />}
+                    label="Following"
+                    href="/following"
+                    isFull={showFullSidebar}
+                    isCurrentRoute={pathName === "/following"}
+                  />
 
-                {/* create */}
-                {/* <SidebarMenuButton
-                  icon={<FiPlus className="h-5 w-5" />}
-                  label="Create"
-                  href="/create/styles"
-                  isFull={showFullSidebar}
-                  // isNew={true}
-                /> */}
+                  {/* subscription */}
+                  <SidebarMenuButton
+                    icon={<FiZap className="h-5 w-5" />}
+                    label="Subscription"
+                    href="/subscription"
+                    isFull={showFullSidebar}
+                    isNew={true}
+                    isCurrentRoute={pathName === "/subscription"}
+                  />
+
+                  {/* read */}
+                  <SidebarMenuButton
+                    icon={<FiBookOpen className="h-5 w-5" />}
+                    label="Read Sample"
+                    href="/entry/644c1bebdcb40d15e68ca258"
+                    isFull={showFullSidebar}
+                    isNew={true}
+                    isCurrentRoute={pathName === "/entry"}
+                  />
+
+                  {/* create */}
+                  {/* <SidebarMenuButton
+                    icon={<FiPlus className="h-5 w-5" />}
+                    label="Create"
+                    href="/create/styles"
+                    isFull={showFullSidebar}
+                    // isNew={true}
+                  /> */}
+                </div>
+
+                <Divider />
               </div>
 
-              <Divider />
+              {showFullSidebar && (
+                <div className=" p-5 border-t border-light-divider dark:border-dark-divider">
+                  <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
+                    Product in development. 
+                    <br/>
+                    Browse our site and stay tuned for
+                    its release :))
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         )}
-        <div className="flex flex-col h-full w-full overflow-auto">
+        <div className="flex flex-col h-full w-full overflow-hidden">
           {/* top navigation bar */}
           {auth?.currentUser && !isCreateRoute && (
             <>
@@ -365,7 +378,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                               className={({ active, selected }) =>
                                 clsx(
                                   "flex select-none cursor-pointer items-center rounded-md px-4 h-[72px] w-96 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all",
-                                  { "bg-light-background-tertiary dark:bg-dark-background-tertiary": active }
+                                  {
+                                    "bg-light-background-tertiary dark:bg-dark-background-tertiary":
+                                      active,
+                                  }
                                   // { "border-b border-b-light-divider dark:border-dark-divider" : index !== filteredSearchResults.length - 1}
                                 )
                               }
@@ -380,7 +396,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                   }}
                                 />
                                 <div className="flex flex-col items-start">
-                                  <span className="leading-tight font-medium">{result.name}</span>
+                                  <span className="leading-tight font-medium">
+                                    {result.name}
+                                  </span>
                                   {result.username && (
                                     <span className="text-light-text-secondary dark:text-dark-text-secondary leading-tight">
                                       @{result.username}
@@ -422,7 +440,11 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </>
           )}
 
-          {children}
+          {/* <div className="flex flex-row w-full px-4 py-2 justify-between items-center bg-light-background-secondary dark:bg-dark-background-secondary">
+            This product is currently under development.
+          </div> */}
+
+          <div className="overflow-auto">{children}</div>
         </div>
       </div>
     </div>
