@@ -14,8 +14,7 @@ import Modal from "./modal";
 import useAuth from "@/hooks/useAuth";
 import { Spinner } from "@chakra-ui/react";
 
-// Twitter
-import { TwitterTweetEmbed } from "react-twitter-embed";
+// Tweets
 import {
   markQuoteRyanTweetHtml,
   ryanTweetHtml,
