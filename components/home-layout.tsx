@@ -1,6 +1,6 @@
 import React, { Children, useEffect, useState } from "react";
 import NavigationBar from "./navigation-bar";
-import { useAppSelector } from "@/redux-store/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import clsx from "clsx";
 import useColorScheme from "@/hooks/useColorScheme";
 import {
@@ -34,12 +34,14 @@ import { debounce } from "lodash";
 import axios from "axios";
 import { User } from "@/models/user";
 import mongoose from "mongoose";
+import { setScrollY } from "@/redux-store/store";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   // redux
+  const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
 
   const { toggleColorScheme } = useColorScheme();
@@ -116,6 +118,22 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           window.location.pathname = "/";
         }
       });
+  }, []);
+
+  React.useEffect(() => {
+    // log scroll value
+    const handleScroll = () => {
+      const scrollValue = document.getElementById("scroll-observer")?.scrollTop;
+      if (scrollValue) { 
+        dispatch(setScrollY(scrollValue));
+      }
+    };
+
+    document.getElementById("scroll-observer")?.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -286,7 +304,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
           </div>
         )}
-        <div className="flex flex-col h-full w-full overflow-auto">
+        <div
+          id="scroll-observer"
+          className="flex flex-col h-full w-full overflow-auto"
+        >
           {/* top navigation bar */}
           {auth?.currentUser && !isCreateRoute && (
             <>

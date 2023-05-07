@@ -28,6 +28,7 @@ const NavigationBar: React.FC<{
   
   const { toggleColorScheme } = useColorScheme();
 
+  const landing = useAppSelector((state) => state.landing);
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
@@ -58,22 +59,6 @@ const NavigationBar: React.FC<{
     // }
   ];
 
-  const [scrollY, setScrollY] = React.useState<number>(0);
-
-  React.useEffect(() => {
-    // log scroll value
-    const handleScroll = () => {
-      const scrollValue = window.scrollY;
-      setScrollY(scrollValue);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <>
       <div
@@ -81,11 +66,11 @@ const NavigationBar: React.FC<{
           "flex w-full items-center justify-center z-10 transition px-6",
           {
             "bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent":
-              scrollY < 100 && isAuthenticated === false,
+            landing?.scrollY < 100 && isAuthenticated === false,
           },
           {
             "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl":
-              scrollY >= 100 && isAuthenticated === false,
+              landing?.scrollY >= 100 && isAuthenticated === false,
           },
           {
             "bg-light-background-primary dark:bg-dark-background-primary":
@@ -139,9 +124,9 @@ const NavigationBar: React.FC<{
                         className={clsx(
                           `flex flex-row items-center gap-2 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`,
                           {
-                            "text-neutral-300": scrollY < 100,
+                            "text-neutral-300": landing?.scrollY < 100,
                           },
-                          { "text-neutral-400": scrollY >= 100 }
+                          { "text-neutral-400": landing?.scrollY >= 100 }
                         )}
                       >
                         <span className="text-sm">{item?.sectionTitle}</span>

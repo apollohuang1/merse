@@ -100,12 +100,25 @@ const authenticationSlice = createSlice({
   }
 })
 
+const landingSlice = createSlice({
+  name: 'landing',
+  initialState: {
+    scrollY: 0
+  },
+  reducers: {
+    setScrollY: (state, action: PayloadAction<number>) => {
+      state.scrollY = action.payload
+    }
+  }
+});
+
 
 export const store: ToolkitStore = configureStore({
   reducer: {
     auth: authenticationSlice.reducer,
     entry: entrySlice.reducer,
-    entryHelper: entryHelperSlice.reducer
+    entryHelper: entryHelperSlice.reducer,
+    landing: landingSlice.reducer,
   }
 })
 
@@ -113,6 +126,7 @@ export const store: ToolkitStore = configureStore({
 export const { setCurrentUser } = authenticationSlice.actions;
 export const { setEntryId, setEntryAuthor, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, setScenes, addScene, setCanvas } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard, setIsGeneratingStoryboard } = entryHelperSlice.actions;
+export const { setScrollY } = landingSlice.actions;
 
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

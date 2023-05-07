@@ -47,11 +47,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* title */}
+        <title>{metadata.title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content={metadata.description} />
-        <title>{metadata.title}</title>
-        <link rel="merse icon" href="/merse-logo.png" />
+        <link rel="icon" href="/merse-logo.png" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
       </head>
 
