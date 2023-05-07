@@ -16,7 +16,8 @@ const initialState: Entry = {
   characters: [],
   scenes: [],
   canvas: null,
-  cover: null
+  cover: null,
+  likes: [],
 }
 
 const entrySlice = createSlice({
