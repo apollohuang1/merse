@@ -49,6 +49,9 @@ import {
   puuungCanvasTemplate2,
   puuungCanvasTemplate3,
   storyboardSamples,
+  unsplashTemplate1,
+  unsplashTemplate2,
+  unsplashTemplate3,
 } from "@/util/create-constants";
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
@@ -716,9 +719,12 @@ const LayoutPage = (props: Props) => {
       >
         <div className="grid grid-cols-2 gap-6 py-4">
           {[
-            puuungCanvasTemplate1,
-            puuungCanvasTemplate2,
-            puuungCanvasTemplate3,
+            // puuungCanvasTemplate1,
+            // puuungCanvasTemplate2,
+            // puuungCanvasTemplate3,
+            unsplashTemplate1,
+            unsplashTemplate2,
+            unsplashTemplate3
           ].map((selectedTemplate: any, index) => (
             <button
               key={index}
