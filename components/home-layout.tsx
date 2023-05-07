@@ -81,8 +81,13 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   const debouncedHandleInputChange = debounce(async (query: string) => {
-    axios
-      .get(`/api/search?query=${query}`)
+    axios({
+      method: "GET",
+      url: `/api/search?query=${query}`,
+      headers: {
+        Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+      },
+    })
       .then((response) => {
         // console.log("search result response :)))", response);
         setSearchResults(response.data);
