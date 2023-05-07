@@ -134,7 +134,14 @@ const ProfilePage = (props: Props) => {
         // const id = pathname;
         if (!pathname) return;
         const usernameOrId = pathname.split("/")[1];
-        const response = await axios.get(`/api/users/${usernameOrId}`);
+        const response = await axios({
+          method: "GET",
+          url: `/api/users/${usernameOrId}`,
+          headers: {
+            Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+          }
+        })
+
         setUser(response.data);
         console.log("user: ", response.data);
 
@@ -160,7 +167,13 @@ const ProfilePage = (props: Props) => {
   const fetchAllEntries = async (user_id: string) => {
     try {
       setIsFetchingEntries(true);
-      const response = await axios.get(`/api/entries?userId=${user_id}`);
+      const response = await axios({
+        method: "GET",
+        url: `/api/entries?userId=${user_id}`,
+        headers: {
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+        }
+      })
       setAllEntries(response.data);
       setIsFetchingEntries(false);
     } catch (error: any) {

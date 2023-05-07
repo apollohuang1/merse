@@ -60,7 +60,13 @@ const useAuth = () => {
 
   const fetchCurrentUser = async (userId: string) => {
     try {
-      const userResponse = await axios.get(`/api/users/${userId}`);
+      const userResponse = await axios({
+        method: "GET",
+        url: `/api/users/${userId}`,
+        headers: {
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+        },
+      })
       dispatch(setCurrentUser(userResponse.data));
       localStorage.setItem("currentUser", JSON.stringify(userResponse.data));
     } catch (error: AxiosError | any) {
@@ -90,7 +96,15 @@ const useAuth = () => {
 
       // create new user if not exists in db
       const googleUserData = googleUserReponse.data;
-      const createUserReponse = await axios.post("/api/users", googleUserData);
+      
+      const createUserReponse = await axios({
+        method: "POST",
+        url: "/api/users",
+        data: googleUserData,
+        headers: {
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+        },
+      })
 
       // if user exists, return fetched user data
       setCurrentUser(createUserReponse.data);
