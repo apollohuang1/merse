@@ -167,9 +167,67 @@ const Landing = (props: Props) => {
               </div>
             </div>
           </div>
-          {/* team section */}
+
+
           <div
             id="section-3"
+            // className="flex flex-col items-center justify-center max-lg:px-7 h-screen max-lg:h-auto gap-[calc(42px+24px)] py-[calc(42px+24px)]"
+            className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6"
+          >
+
+            {/* team header text */}
+            <div className="flex flex-col text-center items-center">
+              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
+                Wall of Love
+              </h1>
+              <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm:text-base max-w-3xl max-md:max-w-xl">
+
+                {/* Wall of Love */}
+                Tweet from Ryan Hoover, and Airchat from Naval Ravikant
+              </span>
+            </div>
+
+            <div className="flex flex-row items-center gap-8 max-lg:flex-col max-lg:items-center max-w-screen max-lg:w-full justify-center">
+              <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] gap-2 max-lg:w-full items-center">
+                {parse(ryanTweetHtml)}
+                {parse(markQuoteRyanTweetHtml)}
+
+                <button
+                  onClick={() => {
+                    // target blank open ryanhover twitter profile
+                    window.open("https://twitter.com/rrhoover", "_blank");
+                  }}
+                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border dark:border-dark-divider hover:bg-dark-background-secondary"
+                >
+                  <span>Ryan Hoover, Founder of Product Hunt</span>
+                  <FiChevronRight />
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <iframe
+                  src="https://www.getairchat.com/sigil/sideprojects/afcfab29-9896-4ba0-b547-52d8d6b8197d"
+                  title="Naval's Reponse"
+                  className="aspect-[9/16] rounded-xl"
+                />
+                <button
+                  onClick={() => {
+                    // target blank open ryanhover twitter profile
+                    window.open("https://twitter.com/naval", "_blank");
+                  }}
+                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border dark:border-dark-divider hover:bg-dark-background-secondary"
+                >
+                  <span>Naval Ravikant, Founder of AngelList</span>
+                  <FiChevronRight />
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          {/* team section */}
+          <div
+            id="section-4"
             className="flex flex-col w-full bg-[rgb(13,13,15)] max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6"
           >
             {/* team header text */}
@@ -210,46 +268,7 @@ const Landing = (props: Props) => {
               </div>
             </div>
           </div>
-          <div
-            id="section-4"
-            className="flex flex-row items-end justify-center p-10 max-lg:p-7 h-screen max-lg:h-auto"
-          >
-            <div className="flex flex-row items-center gap-8 max-lg:flex-col max-w-screen w-full justify-center">
-              <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] gap-2 max-lg:w-full items-center">
-                {parse(ryanTweetHtml)}
-                {parse(markQuoteRyanTweetHtml)}
 
-                <button
-                  onClick={() => {
-                    // target blank open ryanhover twitter profile
-                    window.open("https://twitter.com/rrhoover", "_blank");
-                  }}
-                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
-                >
-                  <span>Ryan Hoover, Founder of Product Hunt</span>
-                  <FiChevronRight />
-                </button>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <iframe
-                  src="https://www.getairchat.com/sigil/sideprojects/afcfab29-9896-4ba0-b547-52d8d6b8197d"
-                  title="Naval's Reponse"
-                  className="aspect-[9/16] rounded-xl"
-                />
-                <button
-                  onClick={() => {
-                    // target blank open ryanhover twitter profile
-                    window.open("https://twitter.com/naval", "_blank");
-                  }}
-                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
-                >
-                  <span>Naval Ravikant, Founder of AngelList</span>
-                  <FiChevronRight />
-                </button>
-              </div>
-            </div>
-          </div>
 
           {/* <div
               id="section-3"

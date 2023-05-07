@@ -52,6 +52,9 @@ const NavigationBar: React.FC<{
       sectionTitle: "Storyboard",
     },
     {
+      sectionTitle: "Wall of Love",
+    },
+    {
       sectionTitle: "Team",
     },
     // {
@@ -122,7 +125,7 @@ const NavigationBar: React.FC<{
                         }}
                         key={index}
                         className={clsx(
-                          `flex flex-row items-center gap-2 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`,
+                          `flex flex-row flex-shrink-0 items-center gap-2 hover:text-white font-light px-4 rounded-full transition-all active:opacity-50`,
                           {
                             "text-neutral-300": landing?.scrollY < 100,
                           },
