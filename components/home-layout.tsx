@@ -138,7 +138,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         {auth?.currentUser && (
           <div
             className={clsx(
-              "flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r border-r-light-divider dark:border-dark-divider max-sm:hidden",
+              "flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-none border-r-light-divider dark:border-dark-divider max-sm:hidden",
               { hidden: isCreateRoute }
             )}
           >
@@ -197,7 +197,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 </Link>
 
                 {/* navigation menus */}
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 w-full">
                   {/* home */}
                   <SidebarMenuButton
                     icon={<FiHome className="h-5 w-5" />}
@@ -249,7 +249,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     label="Subscription"
                     href="/subscription"
                     isFull={showFullSidebar}
-                    isNew={true}
                     isCurrentRoute={pathName === "/subscription"}
                   />
 
@@ -259,7 +258,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     label="Read Sample"
                     href="/entry/644c1bebdcb40d15e68ca258"
                     isFull={showFullSidebar}
-                    isNew={true}
                     isCurrentRoute={pathName === "/entry"}
                   />
 
