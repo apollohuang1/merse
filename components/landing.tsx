@@ -119,7 +119,7 @@ const Landing = (props: Props) => {
           </div>
           <div
             id="section-2"
-            className="relative flex flex-col w-full h-screen max-lg:h-auto bg-[#F5F5F7] items-center justify-between px-6 min-h-[55vh] gap-[calc(42px+24px)]"
+            className="relative flex flex-col w-full h-auto max-lg:h-auto bg-[#F5F5F7] items-center justify-between px-6 gap-[calc(42px+24px)]"
           >
             <div className="flex flex-col text-center items-center pt-[calc(42px+24px)]">
               <h1 className="text-5xl text-light-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
@@ -191,7 +191,6 @@ const Landing = (props: Props) => {
               <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] gap-2 max-lg:w-full items-center">
                 {parse(ryanTweetHtml)}
                 {parse(markQuoteRyanTweetHtml)}
-
                 <button
                   onClick={() => {
                     // target blank open ryanhover twitter profile
