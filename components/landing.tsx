@@ -197,7 +197,7 @@ const Landing = (props: Props) => {
                   }}
                   className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-white border-opacity-20 hover:bg-dark-background-secondary"
                 >
-                  <span>Ryan Hoover, Founder of Product Hunt</span>
+                  <span className=" max-sm:text-sm">Ryan Hoover, Founder of Product Hunt</span>
                   <FiChevronRight className="text-accent font-medium" />
                 </button>
               </div>
@@ -215,7 +215,7 @@ const Landing = (props: Props) => {
                   }}
                   className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-white border-opacity-20 hover:bg-dark-background-secondary"
                 >
-                  <span>Naval Ravikant, Founder of AngelList</span>
+                  <span className=" max-sm:text-sm">Naval Ravikant, Founder of AngelList</span>
                   <FiChevronRight className="text-accent font-medium" />
                 </button>
               </div>
