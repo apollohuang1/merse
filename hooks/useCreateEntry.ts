@@ -53,7 +53,7 @@ const useCreateEntry = () => {
         url: "/api/entries",
         data: entry,
         headers: {
-          "Authorization": `Bearer ${process.env.MERSE_API_KEY}`,
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
           "Content-Type": "application/json",
         },
       });
@@ -64,11 +64,9 @@ const useCreateEntry = () => {
     }
   };
 
-
   // Only use try catch block here. sub-functions should handle/throw their own errors to this like a dumb
   const generateStoryboard = async (editor: Editor | null) => {
     try {
-
       // guard log in to prevent anonymous users from burning our API credits
       if (auth?.currentUser === null) {
         alert(
@@ -86,7 +84,9 @@ const useCreateEntry = () => {
 
       if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
         // alert to let people know we're still developing
-        alert("Sorry, we're still developing this feature. We will let you know when it's ready!")
+        alert(
+          "Sorry, we're still developing this feature. We will let you know when it's ready!"
+        );
         throw new Error("User not whitelisted");
       }
 
@@ -128,7 +128,6 @@ const useCreateEntry = () => {
         .filter((line) => line.startsWith("Scene: "))
         .map((line) => line.substring("Scene: ".length).trim());
 
-
       // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now :))
       console.log(
         "###--------------------SPLITTED SCENES--------------------###"
@@ -151,7 +150,8 @@ const useCreateEntry = () => {
       );
       console.log(sceneDescriptions);
 
-      const diaryTextControlPrompt = 'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ';
+      const diaryTextControlPrompt =
+        'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ';
       const generatedDiaryText: string = await createGenericChatCompletion(
         sceneDescriptions,
         diaryTextControlPrompt
@@ -168,7 +168,8 @@ const useCreateEntry = () => {
         _id: new mongoose.Types.ObjectId().toString(),
         image_base64: base64String,
         prompt: sceneTextsArray[0],
-        displayed_text: "Annyeong Emily❤️ Diary text should be here, check out the newScene: Scene interface in useCreateEntry hook :))",
+        displayed_text:
+          "Annyeong Emily❤️ Diary text should be here, check out the newScene: Scene interface in useCreateEntry hook :))",
       };
       dispatch(addScene(newScene));
       dispatch(setShowGeneratedStoryboard(true));
@@ -310,6 +311,35 @@ const useCreateEntry = () => {
     return base64String;
   };
 
+
+  /**
+   * ❌ DO NOT USE THIS FUNCTION. OPENAI USAGE WILL SPIKE SUPER HIGH. WE WILL ADD THIS LATER TO MAKE EDITOR SIMILAR TO GITHUB CO-PILOT WHEN REVENUE BREAKS EVEN.
+   * @param input 
+   */
+  const getOpenAIInsertedText = async (input: string) => {
+    try {
+
+      const configuration = new Configuration({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+
+      const openai = new OpenAIApi(configuration);
+  
+      const response = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: input,
+        suffix: "",
+        temperature: 0.7,
+        max_tokens: 256,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      });
+    } catch (error: any) {
+      console.log("Failed to get insert text: ", error.message);
+    }
+  };
+
   //new 4/30 -----
   const handleFileUpload = async (file: File) => {
     try {
@@ -405,10 +435,11 @@ const useCreateEntry = () => {
 
   return {
     generateStoryboard,
+    convertTiptapJSONToText,
+    getOpenAIInsertedText,
     saveEntry,
     handleFileUpload,
   };
 };
-
 
 export default useCreateEntry;
