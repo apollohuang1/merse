@@ -20,7 +20,6 @@ import { FiHeart } from "react-icons/fi";
 import clsx from "clsx";
 
 import * as fabric from "fabric";
-import { puuungCanvasTemplate3 } from "@/util/create-constants";
 import { Spinner } from "@chakra-ui/react";
 
 type Props = {};
@@ -38,7 +37,6 @@ const ReadPage = (props: Props) => {
     fetchEntry();
   }, []);
 
-
   const fetchEntry = async () => {
     try {
       if (!pathname) {
@@ -52,7 +50,7 @@ const ReadPage = (props: Props) => {
         method: "GET",
         url: `/api/entries?id=${entryId}`,
         headers: {
-          "Authorization" : `Bearer ${process.env.MERSE_API_KEY}`
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
       });
       setEntryData(response.data);
@@ -68,13 +66,18 @@ const ReadPage = (props: Props) => {
     return parse(entryData.content);
   }, [entryData]);
 
+  const [fabricCanvas, setFabricCanvas] = React.useState<fabric.Canvas | null>(
+    null
+  );
+
   useEffect(() => {
     // render fabric canvas
 
-    console.log(document.getElementById("canvas-parent")?.clientWidth as number)
+    console.log(
+      document.getElementById("canvas-parent")?.clientWidth as number
+    );
 
     window.addEventListener("resize", () => {
-      console.log("resized width and height to: ", innerWidth, innerHeight);
       canvas.setDimensions({
         width: innerWidth - 250,
         height: innerHeight,
@@ -85,105 +88,136 @@ const ReadPage = (props: Props) => {
       backgroundColor: "#ffffff",
     });
 
-    canvas.loadFromJSON(puuungCanvasTemplate3, (o, object) => {
-      canvas.renderAll();
-      object.selectable=false;
+    canvas.setDimensions({
+      width: innerWidth - 250,
+      height: innerHeight,
     });
 
+    setFabricCanvas(canvas);
   }, []);
+
+  useEffect(() => {
+    if (!fabricCanvas) return;
+    if (!entryData?.canvas) return;
+
+    console.log(entryData.canvas);
+
+    fabricCanvas
+      .loadFromJSON(entryData.canvas, (o, object) => {
+        fabricCanvas.renderAll();
+        object.selectable = true;
+      })
+      .then(() => {
+        fabricCanvas.renderAll();
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+  }, [fabricCanvas, entryData]);
 
   return (
     <div className="flex flex-col w-full h-full items-center p-6">
+      {entryData ? (
+        <div className="flex flex-col w-full h-full items-center">
+          <div className="flex flex-col w-full h-full items-center max-w-3xl gap-6">
+            {/* author profile */}
 
-      { entryData ? (
-        <div className="flex flex-col w-full h-full items-center max-w-3xl gap-6">
-          {/* author profile */}
+            {entryData?.author && (
+              <div className="flex flex-row items-center justify-between w-full">
+                <div className="flex flex-row gap-4 w-full justify-start">
+                  <img
+                    src={entryData?.author?.profile_image_url}
+                    alt="author profile image"
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
 
-          {entryData?.author && (
-            <div className="flex flex-row items-center justify-between w-full">
-              <div className="flex flex-row gap-4 w-full justify-start">
-                <img
-                  src={entryData?.author?.profile_image_url}
-                  alt="author profile image"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-
-                <div className="flex flex-col">
-                  <span className="font-medium">
-                    {entryData?.author?.name as string}
-                  </span>
-                  <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">{`Created at ${getFormattedDateFromMongoDBDate(
-                    entryData?.created_at
-                  )}`}</span>
+                  <div className="flex flex-col">
+                    <span className="font-medium">
+                      {entryData?.author?.name as string}
+                    </span>
+                    <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">{`Created at ${getFormattedDateFromMongoDBDate(
+                      entryData?.created_at
+                    )}`}</span>
+                  </div>
                 </div>
+
+                <button
+                  onClick={() => {
+                    console.log("clicked");
+                    setIsLiked(!isLiked);
+                  }}
+                >
+                  <FiHeart
+                    className={clsx(
+                      "w-6 h-6 transition-all hover:scale-105 active:scale-100",
+                      {
+                        "text-light-text-secondary dark:text-dark-text-secondary fill-transparent":
+                          !isLiked,
+                      },
+                      {
+                        "fill-light-red dark:fill-dark-red text-light-red dark:text-dark-red":
+                          isLiked,
+                      }
+                    )}
+                  />
+                </button>
               </div>
+            )}
 
-              <button
-                onClick={() => {
-                  console.log("clicked");
-                  setIsLiked(!isLiked);
-                }}
-              >
-                <FiHeart
-                  className={clsx(
-                    "w-6 h-6 transition-all hover:scale-105 active:scale-100",
-                    { "text-light-text-secondary dark:text-dark-text-secondary fill-transparent": !isLiked },
-                    { "fill-light-red dark:fill-dark-red text-light-red dark:text-dark-red": isLiked }
-                  )}
-                />
-              </button>
-            </div>
-          )}
-
-          {output && (
-            // <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
-            <div className="flex flex-col w-full rounded-xl gap-4">
-              <h1 className="text-4xl font-bold">{entryData?.title}</h1>
-              <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" />
-              {output}
-            </div>
-          )}
-
-          {/* { entryData?.spotify_playlist_id &&
-            <iframe
-              // style="border-radius:12px"
-              className="rounded-xl w-full h-[352px] min-h-[352px]"
-              src={`https://open.spotify.com/embed/playlist/${entryData.spotify_playlist_id}?utm_source=generator`}
-              // width="100%"
-              // height="352"
-              allowFullScreen
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-            ></iframe>
-          } */}
-
-          {entryData?.scenes?.map((scene, index) => {
-            return (
-              <div key={index} className="flex flex-col items-center w-full">
-                <img
-                  // base64 image url source
-                  src={"data:image/png;base64," + scene.image_base64}
-                  alt="scene"
-                  className="w-full h-full object-cover"
-                />
+            {output && (
+              // <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
+              <div className="flex flex-col w-full rounded-xl gap-4">
+                <h1 className="text-4xl font-bold">{entryData?.title}</h1>
+                <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" />
+                {output}
               </div>
-            );
-          })}
+            )}
+
+            {/* { entryData?.spotify_playlist_id &&
+              <iframe
+                // style="border-radius:12px"
+                className="rounded-xl w-full h-[352px] min-h-[352px]"
+                src={`https://open.spotify.com/embed/playlist/${entryData.spotify_playlist_id}?utm_source=generator`}
+                // width="100%"
+                // height="352"
+                allowFullScreen
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              ></iframe>
+            } */}
+
+            {entryData?.scenes?.map((scene, index) => {
+              return (
+                <div key={index} className="flex flex-col items-center w-full">
+                  <img
+                    // base64 image url source
+                    src={"data:image/png;base64," + scene.image_base64}
+                    alt="scene"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              );
+            })}
+          </div>
 
           {/* fabric canvas */}
+          {entryData?.canvas && (
+            <canvas
+              id="canvas"
+              className="w-full h-full"
+            ></canvas>
 
-          { entryData?.canvas &&
-            <div 
-              id="canvas-parent"
-              className="flex flex-col items-center w-96 h-full overflow-auto"
-            >
-              <canvas
-                id="canvas"
-                className="w-full h-full"
-                style={{ border: "1px solid #ccc" }}
-              ></canvas>
-            </div>
-          }
+            // <div
+            //   id="canvas-parent"
+            //   className="flex flex-col items-center w-96 h-full overflow-auto"
+            // >
+            //   <canvas
+            //     id="canvas"
+            //     className="w-full h-full"
+            //     style={{ border: "1px solid #ccc" }}
+            //   ></canvas>
+            // </div>
+          )}
         </div>
       ) : (
         <div className="flex flex-row w-full h-full items-center justify-center">
