@@ -168,27 +168,26 @@ const Landing = (props: Props) => {
             </div>
           </div>
 
-
           <div
             id="section-3"
             // className="flex flex-col items-center justify-center max-lg:px-7 h-screen max-lg:h-auto gap-[calc(42px+24px)] py-[calc(42px+24px)]"
             className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6"
           >
-
             {/* team header text */}
             <div className="flex flex-col text-center items-center">
               <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
                 Wall of Love
               </h1>
               <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm:text-base max-w-3xl max-md:max-w-xl">
-
                 {/* Wall of Love */}
                 Tweet from Ryan Hoover, and Airchat from Naval Ravikant
               </span>
             </div>
 
-            <div className="flex flex-row items-center gap-8 max-lg:flex-col max-lg:items-center max-w-screen max-lg:w-full justify-center">
-              <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] gap-2 max-lg:w-full items-center">
+            <div className="flex flex-row items-center gap-8 max-lg:flex-col max-lg:items-center max-w-screen max-lg:w-full justify-center max-lg:gap-16">
+
+              {/* ryan tweets container */}
+              <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] max-lg:w-full items-start max-lg:items-center">
                 {parse(ryanTweetHtml)}
                 {parse(markQuoteRyanTweetHtml)}
                 <button
@@ -196,10 +195,10 @@ const Landing = (props: Props) => {
                     // target blank open ryanhover twitter profile
                     window.open("https://twitter.com/rrhoover", "_blank");
                   }}
-                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border dark:border-dark-divider hover:bg-dark-background-secondary"
+                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-white border-opacity-20 hover:bg-dark-background-secondary"
                 >
                   <span>Ryan Hoover, Founder of Product Hunt</span>
-                  <FiChevronRight />
+                  <FiChevronRight className="text-accent font-medium" />
                 </button>
               </div>
 
@@ -214,15 +213,14 @@ const Landing = (props: Props) => {
                     // target blank open ryanhover twitter profile
                     window.open("https://twitter.com/naval", "_blank");
                   }}
-                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border dark:border-dark-divider hover:bg-dark-background-secondary"
+                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-white border-opacity-20 hover:bg-dark-background-secondary"
                 >
                   <span>Naval Ravikant, Founder of AngelList</span>
-                  <FiChevronRight />
+                  <FiChevronRight className="text-accent font-medium" />
                 </button>
               </div>
             </div>
           </div>
-
 
           {/* team section */}
           <div
@@ -267,7 +265,6 @@ const Landing = (props: Props) => {
               </div>
             </div>
           </div>
-
 
           {/* <div
               id="section-3"
