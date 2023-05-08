@@ -34,8 +34,8 @@ const NavigationBar: React.FC<{
 
   const { showLoginModal, setShowLoginModal, isLoadingCurrentUser, continueWithGoogle } = useAuth();
 
-  const scrollToSection = (sectionNumber: number) => {
-    const section = document.getElementById(`section-${sectionNumber}`);
+  const scrollToSection = (sectionName: string) => {
+    const section = document.getElementById(sectionName);
     if (section) {
       section.scrollIntoView({
         behavior: "smooth",
@@ -47,15 +47,19 @@ const NavigationBar: React.FC<{
   const homeContents: any[] = [
     {
       sectionTitle: "About",
+      sectionName: "about",
     },
     {
       sectionTitle: "Storyboard",
+      sectionName: "storyboard",
     },
     {
       sectionTitle: "Wall of Love",
+      sectionName: "wall-of-love",
     },
     {
       sectionTitle: "Team",
+      sectionName: "team",
     },
     // {
     //   sectionTitle: "Contact",
@@ -104,7 +108,7 @@ const NavigationBar: React.FC<{
             className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all text-light-text-primary dark:text-dark-text-primary"
             onClick={() => {
               // with smooth scroll
-              scrollToSection(1);
+              scrollToSection(homeContents[0]?.sectionName)
             }}
           >
             <MerseLogo />
@@ -121,7 +125,7 @@ const NavigationBar: React.FC<{
                     return (
                       <button
                         onClick={() => {
-                          scrollToSection(index + 1);
+                          scrollToSection(item?.sectionName);
                         }}
                         key={index}
                         className={clsx(

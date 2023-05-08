@@ -57,7 +57,7 @@ const Landing = (props: Props) => {
         <div className="flex flex-col gap-0">
           {/* Hero */}
           <div
-            id="section-1"
+            id="about"
             className="flex relative items-center justify-center h-screen w-screen"
           >
             <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
@@ -118,7 +118,7 @@ const Landing = (props: Props) => {
             </div>
           </div>
           <div
-            id="section-2"
+            id="storyboard"
             className="relative flex flex-col w-full h-auto max-lg:h-auto bg-[#F5F5F7] items-center justify-between px-6 gap-[calc(42px+24px)]"
           >
             <div className="flex flex-col text-center items-center pt-[calc(42px+24px)]">
@@ -169,7 +169,7 @@ const Landing = (props: Props) => {
           </div>
 
           <div
-            id="section-3"
+            id="wall-of-love"
             // className="flex flex-col items-center justify-center max-lg:px-7 h-screen max-lg:h-auto gap-[calc(42px+24px)] py-[calc(42px+24px)]"
             className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6"
           >
@@ -224,7 +224,7 @@ const Landing = (props: Props) => {
 
           {/* team section */}
           <div
-            id="section-4"
+            id="team"
             className="flex flex-col w-full bg-[rgb(13,13,15)] max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6"
           >
             {/* team header text */}
