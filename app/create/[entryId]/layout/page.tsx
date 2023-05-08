@@ -294,7 +294,7 @@ const LayoutPage = (props: Props) => {
   }, []); // end on canvas init
 
   const addImageURLToCanvas = (url: string) => {
-    fabric.Image.fromURL(url)
+    fabric.Image.fromURL(url, { crossOrigin: "anonymous"})
       .then((img) => {
         img.scaleToWidth(500);
         img.stroke = "black";
