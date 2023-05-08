@@ -57,8 +57,9 @@ const useCreateEntry = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log("Successfully saved entry");
+      // add alert here in the future
       router.push(`/`);
+      alert("Successfully saved entry");
     } catch (error: any) {
       console.log(`Failed to save entry, message: ${error?.message}`);
     }

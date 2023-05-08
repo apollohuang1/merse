@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
         image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaCdoBj4sMKAneZ35yzHHceTTZWXaQly7e46eVsJ1oGD29RKEz71w6KG7jyvXw47uDMnQ&usqp=CAU",
       },
       scenes: body.scenes,
+      canvas: body.canvas,
       created_at: new Date(),
       updated_at: new Date(),
     });
