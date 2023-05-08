@@ -531,7 +531,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -569,7 +569,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -607,7 +607,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.pinimg.com/736x/40/b5/ff/40b5ff11e9226543c9287ffde1bba69f.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -645,7 +645,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/d5VBJhlbtnk/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -683,7 +683,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://e1.pxfuel.com/desktop-wallpaper/522/148/desktop-wallpaper-puuung-on-instagram-coffee-time-1%EF%B8%8F%E2%83%A3-an-art-print-greeting-card-and-post-card-are-available-on-redbubble-puuung1-redbub%E2%80%A6-puuung.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -721,7 +721,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://ninisencoree.files.wordpress.com/2020/04/kakaotalk_20200411_174604120.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -759,7 +759,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -797,7 +797,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -835,7 +835,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -873,7 +873,7 @@ export const puuungCanvasTemplate1 = {
       skewX: 0,
       skewY: 0,
       src: "https://static.boredpanda.com/blog/wp-content/uploads/2016/06/love-is-illustrations-korea-puuung-98-574fed60683c4__880.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
   ],
@@ -918,7 +918,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -956,7 +956,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.pinimg.com/736x/40/b5/ff/40b5ff11e9226543c9287ffde1bba69f.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -994,7 +994,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://e1.pxfuel.com/desktop-wallpaper/522/148/desktop-wallpaper-puuung-on-instagram-coffee-time-1%EF%B8%8F%E2%83%A3-an-art-print-greeting-card-and-post-card-are-available-on-redbubble-puuung1-redbub%E2%80%A6-puuung.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1032,7 +1032,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://ninisencoree.files.wordpress.com/2020/04/kakaotalk_20200411_174604120.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1070,7 +1070,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1108,7 +1108,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1146,7 +1146,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1184,7 +1184,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://static.boredpanda.com/blog/wp-content/uploads/2016/06/love-is-illustrations-korea-puuung-98-574fed60683c4__880.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1222,7 +1222,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1260,7 +1260,7 @@ export const puuungCanvasTemplate2 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/d5VBJhlbtnk/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1804,7 +1804,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://mymodernmet.com/wp/wp-content/uploads/2017/03/puuung-love-is-1.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1842,7 +1842,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1624708748070-A25VMWA19RLIW3MUQ94L/cover2.jpeg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1880,7 +1880,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.pinimg.com/736x/40/b5/ff/40b5ff11e9226543c9287ffde1bba69f.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1918,7 +1918,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/d5VBJhlbtnk/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1956,7 +1956,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://e1.pxfuel.com/desktop-wallpaper/522/148/desktop-wallpaper-puuung-on-instagram-coffee-time-1%EF%B8%8F%E2%83%A3-an-art-print-greeting-card-and-post-card-are-available-on-redbubble-puuung1-redbub%E2%80%A6-puuung.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -1994,7 +1994,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://ninisencoree.files.wordpress.com/2020/04/kakaotalk_20200411_174604120.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -2032,7 +2032,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/3MGC6olB1F4/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -2070,7 +2070,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/HBWC9wTk4tQ/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -2108,7 +2108,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://i.ytimg.com/vi/FrjPOH8EHyk/maxresdefault.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
@@ -2146,7 +2146,7 @@ export const puuungCanvasTemplate3 = {
       skewX: 0,
       skewY: 0,
       src: "https://static.boredpanda.com/blog/wp-content/uploads/2016/06/love-is-illustrations-korea-puuung-98-574fed60683c4__880.jpg",
-      crossOrigin: null,
+      crossOrigin: "anonymous",
       filters: [],
     },
     {
