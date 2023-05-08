@@ -54,6 +54,7 @@ const ReadPage = (props: Props) => {
         },
       });
       setEntryData(response.data);
+      renderCanvas(response.data.canvas);
     } catch (error: any) {
       console.log("Failed to fetch entry, message: ", error.message);
     }
@@ -70,12 +71,8 @@ const ReadPage = (props: Props) => {
     null
   );
 
-  useEffect(() => {
+  const renderCanvas = (canvasJSON: object) => {
     // render fabric canvas
-
-    console.log(
-      document.getElementById("canvas-parent")?.clientWidth as number
-    );
 
     window.addEventListener("resize", () => {
       canvas.setDimensions({
@@ -84,36 +81,30 @@ const ReadPage = (props: Props) => {
       });
     });
 
-    const canvas = new fabric.Canvas("canvas", {
-      backgroundColor: "#ffffff",
-    });
+    const canvas = new fabric.Canvas("canvas");
 
     canvas.setDimensions({
       width: innerWidth - 250,
       height: innerHeight,
     });
 
+    canvas.backgroundColor = "#ffffff";
+
     setFabricCanvas(canvas);
-  }, []);
 
-  useEffect(() => {
-    if (!fabricCanvas) return;
-    if (!entryData?.canvas) return;
-
-    console.log(entryData.canvas);
-
-    fabricCanvas
-      .loadFromJSON(entryData.canvas, (o, object) => {
-        fabricCanvas.renderAll();
-        object.selectable = true;
+    canvas
+      .loadFromJSON(canvasJSON, (o, object) => {
+        object.selectable = false;
       })
       .then(() => {
-        fabricCanvas.renderAll();
+        console.log("Canvas loaded successfully");
+        console.log("canvas: ", canvas);
+        canvas.requestRenderAll();
       })
       .catch((error) => {
         console.log("error: ", error);
       });
-  }, [fabricCanvas, entryData]);
+  };
 
   return (
     <div className="flex flex-col w-full h-full items-center p-6">
@@ -204,8 +195,8 @@ const ReadPage = (props: Props) => {
           {entryData?.canvas && (
             <canvas
               id="canvas"
-              className="w-full h-full"
-            ></canvas>
+              className="w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary"
+            />
 
             // <div
             //   id="canvas-parent"
