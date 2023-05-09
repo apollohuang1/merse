@@ -84,7 +84,7 @@ const ProfilePage = (props: Props) => {
         },
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
-        }
+        },
       });
 
       setFollowingState(FollowingState.FOLLOWING);
@@ -114,7 +114,7 @@ const ProfilePage = (props: Props) => {
         },
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
-        }
+        },
       });
 
       setFollowingState(FollowingState.NOT_FOLLOWING);
@@ -145,8 +145,8 @@ const ProfilePage = (props: Props) => {
           url: `/api/users/${usernameOrId}`,
           headers: {
             Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
-          }
-        })
+          },
+        });
 
         setUser(response.data);
 
@@ -177,8 +177,8 @@ const ProfilePage = (props: Props) => {
         url: `/api/entries?userId=${user_id}`,
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
-        }
-      })
+        },
+      });
       setAllEntries(response.data);
       setIsFetchingEntries(false);
     } catch (error: any) {
@@ -201,7 +201,7 @@ const ProfilePage = (props: Props) => {
         },
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
-        }
+        },
       });
       await fetchUser();
       // setUser(response.data);
@@ -215,6 +215,20 @@ const ProfilePage = (props: Props) => {
       console.log("Failed to update profile, message: ", error.message);
     }
   };
+
+  const tabs = [
+    { name: "Entries", href: "#entries" },
+    { name: "Collection", href: "#collection" },
+    { name: "About", href: "#about" },
+  ];
+
+  // add listerner to window.location.hash
+  window.addEventListener("hashchange", () => {
+    const hash = window.location.hash;
+    setActiveHash(hash);
+  });
+
+  const [activehash, setActiveHash] = useState<string>("#entries");
 
   return (
     <>
@@ -329,47 +343,69 @@ const ProfilePage = (props: Props) => {
               </div>
             </div>
 
-            <Divider />
+            <div className="border-b border-light-divider dark:border-dark-divider">
+              <nav className="-mb-px flex" aria-label="Tabs">
+                {tabs.map((tab: any) => (
+                  <a
+                    key={tab.name}
+                    href={tab.href}
+                    className={clsx(
+                      "whitespace-nowrap border-b-2 py-4 font-medium px-6 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
+                      // when click it adds #tab to link, change tab.current to sync with url
+                      { "border-accent text-accent": activehash === tab.href },
+                      { "border-transparent text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary": activehash !== tab.href }
+                    )}
+                    // aria-current={tab.current ? "page" : undefined}
+                  >
+                    {tab.name}
+                  </a>
+                ))}
+              </nav>
 
-            <div className="grid grid-cols-3 gap-3 max-lg:grid-cols-2 w-full">
-              {isFetchingEntries ? (
-                <>
-                  {[...Array(6)].map((_, index) => (
-                    <div
-                      key={index}
-                      className="w-full h-full animate-pulse aspect-square bg-light bg-light-background-secondary dark:bg-dark-background-secondary rounded-md"
-                    />
-                  ))}
-                </>
-              ) : (
-                <>
-                  {allEntries.map((entry: Entry, index: number) => (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        router.push(`/entry/${entry._id}`);
-                      }}
-                      className="flex flex-col w-full items-center justify-between bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-md overflow-clip"
-                    >
-                      {entry?.scenes[0]?.image_base64 ? (
-                        <img
-                          src={getImageURLfromBase64(
-                            entry?.scenes[0]?.image_base64
-                          )}
-                          className="w-full h-full aspect-square object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-emerald-300 dark:bg-emerald-800"></div>
-                      )}
-
-                      <div className="flex flex-row px-6 py-4 items-center justify-start w-full text-left">
-                        <span className="line-clamp-1">{entry.title}</span>
-                      </div>
-                    </button>
-                  ))}
-                </>
-              )}
+              {/* <span>{activehash} compared {tabs[0].href}</span> */}
             </div>
+
+            { activehash === "#entries" &&
+              <div className="grid grid-cols-3 gap-3 max-lg:grid-cols-2 w-full">
+                {isFetchingEntries ? (
+                  <>
+                    {[...Array(6)].map((_, index) => (
+                      <div
+                        key={index}
+                        className="w-full h-full animate-pulse aspect-square bg-light bg-light-background-secondary dark:bg-dark-background-secondary rounded-md"
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {allEntries.map((entry: Entry, index: number) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          router.push(`/entry/${entry._id}`);
+                        }}
+                        className="flex flex-col w-full items-center justify-between bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-md overflow-clip"
+                      >
+                        {entry?.scenes[0]?.image_base64 ? (
+                          <img
+                            src={getImageURLfromBase64(
+                              entry?.scenes[0]?.image_base64
+                            )}
+                            className="w-full h-full aspect-square object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-emerald-300 dark:bg-emerald-800"></div>
+                        )}
+
+                        <div className="flex flex-row px-6 py-4 items-center justify-start w-full text-left">
+                          <span className="line-clamp-1">{entry.title}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </>
+                )}
+              </div>
+            }
           </div>
         </div>
       </div>
