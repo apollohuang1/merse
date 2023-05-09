@@ -458,7 +458,7 @@ const ProfilePage = (props: Props) => {
         }
       >
         {/* create/edit character slideover content */}
-        <div className="flex flex-col items-center py-3">
+        <div className="flex flex-col items-center">
 
           <div className="flex flex-col w-full h-40 items-center justify-center">
             {editingBannerURL ? (

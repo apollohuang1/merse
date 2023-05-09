@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import React, { useEffect, useMemo } from "react";
+import React, { Fragment, useEffect, useMemo } from "react";
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { JSONContent, generateHTML } from "@tiptap/react";
@@ -22,6 +22,8 @@ import clsx from "clsx";
 import * as fabric from "fabric";
 import { Spinner } from "@chakra-ui/react";
 import Divider from "@/components/divider";
+import { Transition } from "@headlessui/react";
+import SlideOver from "@/components/slide-over";
 
 type Props = {};
 
@@ -31,6 +33,8 @@ const ReadPage = (props: Props) => {
   // states
   const [entryData, setEntryData] = React.useState<Entry | null>(null);
   const [isLiked, setIsLiked] = React.useState<boolean>(false);
+  const [showCommentSection, setShowCommentSection] =
+    React.useState<boolean>(false);
 
   const pathname = usePathname();
 
@@ -108,10 +112,10 @@ const ReadPage = (props: Props) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full items-center p-6">
-      {entryData ? (
-        <div className="flex flex-col w-full h-full items-center">
-          <div className="flex flex-col w-full h-full items-center max-w-3xl gap-12">
+    <>
+      <div className="flex flex-col w-full h-full items-center overflow-auto">
+        {entryData ? (
+          <div className="flex flex-col w-full h-auto items-center max-w-3xl gap-12 pb-64">
             {/* author profile */}
             {entryData?.author && (
               <div className="flex flex-row items-center justify-between w-full">
@@ -132,8 +136,11 @@ const ReadPage = (props: Props) => {
                   </div>
                 </div>
 
-                <div className="flex flex-row gap-3 flex-shrink-0">
-                  <button className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg">
+                <div className="flex flex-row gap-2 flex-shrink-0">
+                  <button
+                    onClick={() => setShowCommentSection(!showCommentSection)}
+                    className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg"
+                  >
                     <FiMessageCircle className="w-6 h-6 text-light-text-secondary dark:text-dark-text-secondary" />
                     <span className="line-clamp-1">{0}</span>
                   </button>
@@ -188,33 +195,62 @@ const ReadPage = (props: Props) => {
                 </div>
               );
             })}
+
+            {/* fabric canvas */}
+            {entryData?.canvas && (
+              <canvas
+                id="canvas"
+                className="w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary"
+              />
+
+              // <div
+              //   id="canvas-parent"
+              //   className="flex flex-col items-center w-96 h-full overflow-auto"
+              // >
+              //   <canvas
+              //     id="canvas"
+              //     className="w-full h-full"
+              //     style={{ border: "1px solid #ccc" }}
+              //   ></canvas>
+              // </div>
+            )}
           </div>
+        ) : (
+          <div className="flex flex-row w-full h-full items-center justify-center">
+            <Spinner className="w-7 h-7 text-light-text-tertiary dark:text-dark-text-tertiary" />
+          </div>
+        )}
+      </div>
 
-          {/* fabric canvas */}
-          {entryData?.canvas && (
-            <canvas
-              id="canvas"
-              className="w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary"
-            />
+      <SlideOver
+        size="xl"
+        title="Comments"
+        isOpen={showCommentSection}
+        onClose={() => {
+          setShowCommentSection(false);
+        }}
+        withCloseButton
+      >
+        <div className="flex flex-col gap-0">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((item, index) => (
+            <div key={index} className="flex flex-row gap-3 w-full border-b border-light-divider dark:border-dark-divider py-6">
+              {/* image */}
+              <img
+                src="https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg"
+                className="w-12 h-12 rounded-full object-cover"
+              />
 
-            // <div
-            //   id="canvas-parent"
-            //   className="flex flex-col items-center w-96 h-full overflow-auto"
-            // >
-            //   <canvas
-            //     id="canvas"
-            //     className="w-full h-full"
-            //     style={{ border: "1px solid #ccc" }}
-            //   ></canvas>
-            // </div>
-          )}
+              <div className="flex flex-col">
+                <span className="font-semibold">John Doe</span>
+                <span className="text-base">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
-      ) : (
-        <div className="flex flex-row w-full h-full items-center justify-center">
-          <Spinner className="w-7 h-7 text-light-text-tertiary dark:text-dark-text-tertiary" />
-        </div>
-      )}
-    </div>
+      </SlideOver>
+    </>
   );
 };
 

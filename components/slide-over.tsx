@@ -8,22 +8,26 @@ import { FiX } from "react-icons/fi";
 
 const SlideOver: React.FC<{
   children: React.ReactNode;
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
   onOpen?: () => void;
   onClose: () => void;
   isOpen: boolean;
   title?: string;
   withCloseButton?: boolean;
   footer?: React.ReactNode;
+  withOverlay?: boolean;
   // onCancel?: () => void;
   // onSubmit?: () => void;
 }> = ({
   children,
+  size = "xl",
   onOpen,
   onClose,
   isOpen,
   title,
   withCloseButton = false,
   footer,
+  withOverlay = true,
   // onSubmit,
 }) => {
   return (
@@ -33,18 +37,21 @@ const SlideOver: React.FC<{
         className="relative text-light-text-primary dark:text-dark-text-primary z-50"
         onClose={onClose}
       >
+
         {/* curtain overlay */}
-        <Transition.Child
-          as={Fragment}
-          enter="ease-in-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in-out duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black dark:bg-white bg-opacity-50 dark:bg-opacity-30 transition-opacity" />
-        </Transition.Child>
+        { withOverlay &&
+          <Transition.Child
+            as={Fragment}
+            enter="ease-in-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in-out duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black dark:bg-white bg-opacity-50 dark:bg-opacity-30 transition-opacity" />
+          </Transition.Child>
+        }
 
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
@@ -58,10 +65,9 @@ const SlideOver: React.FC<{
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-xl border-l border-l-light-divider dark:border-l-dark-divider">
+                <Dialog.Panel className={`pointer-events-auto w-screen max-w-${size} border-l border-l-light-divider dark:border-l-dark-divider`}>
                   <div className="flex h-full flex-col overflow-y-scroll shadow-xl bg-light-background-primary dark:bg-dark-background-primary">
-                    {/* <div className="p-4 border-b border-b-light-divider dark:border-b-dark-divider"> */}
-                    <div className="p-6">
+                    <div className="p-6 border-b border-light-divider dark:border-dark-divider">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className=" text-xl font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary">
                           {title}
@@ -71,7 +77,7 @@ const SlideOver: React.FC<{
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
-                              className="rounded-full p-2 bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-secondary dark:text-dark-text-secondary hover:text-gray-500"
+                              className="rounded-full p-2 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary text-light-text-secondary dark:text-dark-text-secondary hover:text-gray-500"
                               onClick={() => onClose()}
                             >
                               <span className="sr-only">Close panel</span>
@@ -82,13 +88,15 @@ const SlideOver: React.FC<{
                       </div>
                     </div>
 
-                    <div className="mt-6 flex-1 px-4 sm:px-6 overflow-auto">
+                    <div className="flex-1 p-6 sm:px-6 overflow-auto">
                       {children}
                     </div>
 
-                    <div className="py-2 border-t border-t-light-divider dark:border-t-dark-divider">
-                      { footer }
-                    </div>
+                    { footer &&
+                      <div className="py-2 border-t border-t-light-divider dark:border-t-dark-divider">
+                        { footer }
+                      </div>
+                    }
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
