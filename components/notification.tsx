@@ -43,11 +43,11 @@ const Notification = (props: Props) => {
                 <div className="ml-4 flex flex-shrink-0">
                   <button
                     type="button"
-                    className="inline-flex rounded-full p-1 bg-light-background-secondary dark:bg-dark-background-tertiary text-gray-400 hover:text-gray-500 focus:outline-none"
+                    className="inline-flex rounded-full p-1 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary text-gray-400 hover:text-gray-500 focus:outline-none"
                     onClick={props.onClose}
                   >
                     <span className="sr-only">Close</span>
-                    <FiX className="h-5 w-5" aria-hidden="true" />
+                    <FiX className="h-5 w-5 text-light-text-secondary dark:text-dark-text-secondary" aria-hidden="true" />
                   </button>
                 </div>
               </div>

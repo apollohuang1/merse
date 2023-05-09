@@ -51,10 +51,13 @@ const ProfilePage = (props: Props) => {
   const [followingState, setFollowingState] = useState<FollowingState>(
     FollowingState.UNKNOWN
   );
-
   const [isFetchingEntries, setIsFetchingEntries] = useState<boolean>(false);
-
   const [showProfileEditModal, setShowProfileEditModal] =
+    useState<boolean>(false);
+
+  const [isBannerInputFocused, setIsBannerInputFocused] =
+    useState<boolean>(false);
+  const [isProfileInputFocused, setIsProfileInputFocused] =
     useState<boolean>(false);
 
   const pathname = usePathname();
@@ -353,7 +356,10 @@ const ProfilePage = (props: Props) => {
                       "whitespace-nowrap border-b-2 py-4 font-medium px-6 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
                       // when click it adds #tab to link, change tab.current to sync with url
                       { "border-accent text-accent": activehash === tab.href },
-                      { "border-transparent text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary": activehash !== tab.href }
+                      {
+                        "border-transparent text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary":
+                          activehash !== tab.href,
+                      }
                     )}
                     // aria-current={tab.current ? "page" : undefined}
                   >
@@ -365,7 +371,7 @@ const ProfilePage = (props: Props) => {
               {/* <span>{activehash} compared {tabs[0].href}</span> */}
             </div>
 
-            { activehash === "#entries" &&
+            {activehash === "#entries" && (
               <div className="grid grid-cols-3 gap-3 max-lg:grid-cols-2 w-full">
                 {isFetchingEntries ? (
                   <>
@@ -405,7 +411,7 @@ const ProfilePage = (props: Props) => {
                   </>
                 )}
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
@@ -443,12 +449,15 @@ const ProfilePage = (props: Props) => {
         }
       >
         {/* create/edit character slideover content */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center py-5">
+
           <div className="flex flex-col w-full h-40 items-center justify-center">
             {editingBannerURL ? (
               <img
                 src={editingBannerURL}
-                className="w-full h-full object-cover"
+                className={clsx("w-full h-full object-cover", {
+                  "ring-2 ring-accent ring-opacity-70": isBannerInputFocused,
+                })}
               />
             ) : (
               <div className="w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary" />
@@ -461,7 +470,10 @@ const ProfilePage = (props: Props) => {
               {editingProfileURL && editingProfileURL !== "" ? (
                 <img
                   src={editingProfileURL}
-                  className="absolute w-full h-full object-cover rounded-full"
+                  className={clsx(
+                    "absolute w-full h-full object-cover rounded-full",
+                    { "ring-2 ring-accent ring-opacity-80": isProfileInputFocused }
+                  )}
                   alt="character face"
                 />
               ) : (
@@ -503,6 +515,12 @@ const ProfilePage = (props: Props) => {
                   type="text"
                   name="imageURL"
                   id="imageURL"
+                  onFocus={(e) => {
+                    setIsBannerInputFocused(true);
+                  }}
+                  onBlur={(e) => {
+                    setIsBannerInputFocused(false);
+                  }}
                   enterKeyHint="next"
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                   value={editingBannerURL ?? ""}
@@ -525,6 +543,12 @@ const ProfilePage = (props: Props) => {
                   type="text"
                   name="imageURL"
                   id="imageURL"
+                  onFocus={(e) => {
+                    setIsProfileInputFocused(true);
+                  }}
+                  onBlur={(e) => {
+                    setIsProfileInputFocused(false);
+                  }}
                   enterKeyHint="next"
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                   value={editingProfileURL ?? ""}
