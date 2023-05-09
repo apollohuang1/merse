@@ -4,7 +4,8 @@ import Divider from "@/components/divider";
 import SlideOver from "@/components/slide-over";
 import { Entry } from "@/models/entry";
 import { User } from "@/models/user";
-import { useAppSelector } from "@/redux-store/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
+import { setShowNotifications } from "@/redux-store/store";
 import { getImageURLfromBase64 } from "@/util/helper";
 import axios from "axios";
 import clsx from "clsx";
@@ -31,6 +32,7 @@ const ProfilePage = (props: Props) => {
   const router = useRouter();
 
   const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   const [user, setUser] = useState<User | null>(null);
   const [allEntries, setAllEntries] = useState<Entry[]>([]);
@@ -209,6 +211,7 @@ const ProfilePage = (props: Props) => {
       await fetchUser();
       // setUser(response.data);
       setShowProfileEditModal(false);
+      dispatch(setShowNotifications(true));
     } catch (error: any) {
       if (error.response.data.error === "Username already exists") {
         alert("Username already exists");
@@ -449,7 +452,7 @@ const ProfilePage = (props: Props) => {
         }
       >
         {/* create/edit character slideover content */}
-        <div className="flex flex-col items-center py-5">
+        <div className="flex flex-col items-center py-3">
 
           <div className="flex flex-col w-full h-40 items-center justify-center">
             {editingBannerURL ? (
@@ -574,7 +577,7 @@ const ProfilePage = (props: Props) => {
                   enterKeyHint="next"
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
                   value={editingUsername ?? ""}
-                  placeholder="Enter your name"
+                  placeholder="Enter your username"
                   onChange={(e) => {
                     setEditingUsername(e.target.value);
                   }}
