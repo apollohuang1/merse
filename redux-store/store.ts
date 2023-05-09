@@ -112,6 +112,18 @@ const landingSlice = createSlice({
   }
 });
 
+const notificationsSlice = createSlice({
+  name: 'notifications',
+  initialState: {
+    showNotifications: false
+  },
+  reducers: {
+    setShowNotifications: (state, action: PayloadAction<boolean>) => {
+      state.showNotifications = action.payload
+    }
+  }
+});
+
 
 export const store: ToolkitStore = configureStore({
   reducer: {
@@ -119,6 +131,7 @@ export const store: ToolkitStore = configureStore({
     entry: entrySlice.reducer,
     entryHelper: entryHelperSlice.reducer,
     landing: landingSlice.reducer,
+    notifications: notificationsSlice.reducer
   }
 })
 
@@ -127,6 +140,7 @@ export const { setCurrentUser } = authenticationSlice.actions;
 export const { setEntryId, setEntryAuthor, setStyle, addCharacter, updateCharacter, removeCharacter, setTitle, setContent, setScenes, addScene, setCanvas } = entrySlice.actions;
 export const { setStylesScrollPosition, setShowGeneratedStoryboard, setIsGeneratingStoryboard } = entryHelperSlice.actions;
 export const { setScrollY } = landingSlice.actions;
+export const { setShowNotifications } = notificationsSlice.actions;
 
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

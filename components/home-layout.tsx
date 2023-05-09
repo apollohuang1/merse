@@ -35,8 +35,9 @@ import { debounce } from "lodash";
 import axios from "axios";
 import { User } from "@/models/user";
 import mongoose from "mongoose";
-import { setScrollY } from "@/redux-store/store";
+import { setScrollY, setShowNotifications } from "@/redux-store/store";
 import Notification from "./notification";
+import { useNotifications } from "@/hooks/useNotifications";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref
@@ -45,6 +46,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // redux
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
+  const notificationsStore = useAppSelector((state) => state.notifications);
 
   const { toggleColorScheme } = useColorScheme();
   const router = useRouter();
@@ -60,7 +62,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [selectedSearchResult, setSelectedSearchResult] = useState<any>(null);
   const [query, setQuery] = useState("");
-  const [showNotifications, setShowNotifications] = useState<boolean>(false);
 
   const filteredSearchResults =
     searchText === ""
@@ -472,9 +473,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </div>
 
       <Notification 
-        isOpen={showNotifications} 
+        isOpen={notificationsStore?.showNotifications} 
         onClose={() => {
-          setShowNotifications(false)
+          dispatch(setShowNotifications(false));
         }}
       />
 
