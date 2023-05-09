@@ -16,11 +16,12 @@ import {
   getFormattedDateFromMongoDBDate,
   getLastIdFromUrl,
 } from "@/util/helper";
-import { FiHeart } from "react-icons/fi";
+import { FiHeart, FiMessageCircle } from "react-icons/fi";
 import clsx from "clsx";
 
 import * as fabric from "fabric";
 import { Spinner } from "@chakra-ui/react";
+import Divider from "@/components/divider";
 
 type Props = {};
 
@@ -110,9 +111,8 @@ const ReadPage = (props: Props) => {
     <div className="flex flex-col w-full h-full items-center p-6">
       {entryData ? (
         <div className="flex flex-col w-full h-full items-center">
-          <div className="flex flex-col w-full h-full items-center max-w-3xl gap-6">
+          <div className="flex flex-col w-full h-full items-center max-w-3xl gap-12">
             {/* author profile */}
-
             {entryData?.author && (
               <div className="flex flex-row items-center justify-between w-full">
                 <div className="flex flex-row gap-4 w-full justify-start">
@@ -132,50 +132,49 @@ const ReadPage = (props: Props) => {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => {
-                    console.log("clicked");
-                    setIsLiked(!isLiked);
-                  }}
-                >
-                  <FiHeart
-                    className={clsx(
-                      "w-6 h-6 transition-all hover:scale-105 active:scale-100",
-                      {
-                        "text-light-text-secondary dark:text-dark-text-secondary fill-transparent":
-                          !isLiked,
-                      },
-                      {
-                        "fill-light-red dark:fill-dark-red text-light-red dark:text-dark-red":
-                          isLiked,
-                      }
-                    )}
-                  />
-                </button>
+                <div className="flex flex-row gap-3 flex-shrink-0">
+                  <button className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg">
+                    <FiMessageCircle className="w-6 h-6 text-light-text-secondary dark:text-dark-text-secondary" />
+                    <span className="line-clamp-1">{0}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      console.log("clicked");
+                      setIsLiked(!isLiked);
+                    }}
+                    className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg"
+                  >
+                    <FiHeart
+                      className={clsx(
+                        "w-6 h-6 transition-all hover:scale-105 active:scale-100",
+                        {
+                          "text-light-text-secondary dark:text-dark-text-secondary fill-transparent":
+                            !isLiked,
+                        },
+                        {
+                          "fill-light-red dark:fill-dark-red text-light-red dark:text-dark-red":
+                            isLiked,
+                        }
+                      )}
+                    />
+                    <span className="line-clamp-1">{0}</span>
+                  </button>
+                </div>
               </div>
             )}
 
             {output && (
               // <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
-              <div className="flex flex-col w-full rounded-xl gap-4">
-                <h1 className="text-4xl font-bold">{entryData?.title}</h1>
-                <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" />
+              <div className="flex flex-col w-full rounded-xl gap-5">
+                <h1 className="text-5xl font-semibold leading-tight">
+                  {entryData?.title}
+                </h1>
+                {/* <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" /> */}
+                <Divider />
                 {output}
               </div>
             )}
-
-            {/* { entryData?.spotify_playlist_id &&
-              <iframe
-                // style="border-radius:12px"
-                className="rounded-xl w-full h-[352px] min-h-[352px]"
-                src={`https://open.spotify.com/embed/playlist/${entryData.spotify_playlist_id}?utm_source=generator`}
-                // width="100%"
-                // height="352"
-                allowFullScreen
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-              ></iframe>
-            } */}
 
             {entryData?.scenes?.map((scene, index) => {
               return (
