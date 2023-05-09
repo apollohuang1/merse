@@ -115,7 +115,7 @@ const ReadPage = (props: Props) => {
     <>
       <div className="flex flex-col w-full h-full items-center overflow-auto">
         {entryData ? (
-          <div className="flex flex-col w-full h-auto items-center max-w-3xl gap-12 pb-64">
+          <div className="flex flex-col w-full h-auto items-center max-w-3xl gap-12 pb-64 px-6 pt-6">
             {/* author profile */}
             {entryData?.author && (
               <div className="flex flex-row items-center justify-between w-full">
@@ -139,10 +139,10 @@ const ReadPage = (props: Props) => {
                 <div className="flex flex-row gap-2 flex-shrink-0">
                   <button
                     onClick={() => setShowCommentSection(!showCommentSection)}
-                    className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg"
+                    className="group flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg"
                   >
-                    <FiMessageCircle className="w-6 h-6 text-light-text-secondary dark:text-dark-text-secondary" />
-                    <span className="line-clamp-1">{0}</span>
+                    <FiMessageCircle className="w-6 h-6 text-light-text-tertiary dark:text-dark-text-tertiary" />
+                    <span className="line-clamp-1 font-medium">{entryData?.comments?.length ?? 0}</span>
                   </button>
 
                   <button
@@ -156,7 +156,7 @@ const ReadPage = (props: Props) => {
                       className={clsx(
                         "w-6 h-6 transition-all hover:scale-105 active:scale-100",
                         {
-                          "text-light-text-secondary dark:text-dark-text-secondary fill-transparent":
+                          "text-light-text-tertiary dark:text-dark-text-tertiary fill-transparent":
                             !isLiked,
                         },
                         {
@@ -165,7 +165,7 @@ const ReadPage = (props: Props) => {
                         }
                       )}
                     />
-                    <span className="line-clamp-1">{0}</span>
+                    <span className="line-clamp-1 font-medium">{entryData?.likes?.length ?? 0}</span>
                   </button>
                 </div>
               </div>
@@ -223,7 +223,7 @@ const ReadPage = (props: Props) => {
       </div>
 
       <SlideOver
-        size="xl"
+        size="md"
         title="Comments"
         isOpen={showCommentSection}
         onClose={() => {
@@ -241,8 +241,8 @@ const ReadPage = (props: Props) => {
               />
 
               <div className="flex flex-col">
-                <span className="font-semibold">John Doe</span>
-                <span className="text-base">
+                <span className="font-semibold leading-tight">Comment Name</span>
+                <span className="text-base leading-tight">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 </span>
               </div>

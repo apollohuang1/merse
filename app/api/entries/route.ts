@@ -80,6 +80,8 @@ export async function POST(request: NextRequest) {
       canvas: body.canvas,
       created_at: new Date(),
       updated_at: new Date(),
+      likes: body.likes,
+      comments: body.comments,
     });
 
     const savedEntry = await newEntry.save();
@@ -87,6 +89,49 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(savedEntry, { status: 200 });
   } catch (error: any) {
     console.log(error.message);
+    return NextResponse.json({ error: error?.message }, { status: 500 });
+  }
+}
+
+// put functio to add likes and comments
+export async function PUT(request: NextRequest) {
+  try {
+
+    await dbConnect();
+
+    // get api key from bear token
+    const token = request.headers.get("authorization");
+
+    // if key is not process.env.MERSE_API_KEY
+    if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const body = await request.json();
+
+    // guards
+    if (!body) {
+      return NextResponse.json({ error: "No body provided" }, { status: 400 });
+    }
+
+    if (!body._id) {
+      return NextResponse.json({ error: "No _id provided" }, { status: 400 });
+    }
+
+    const updatedEntry = await MDBEntry.findByIdAndUpdate(
+      body._id,
+      {
+        $set: {
+          likes: body.likes,
+          comments: body.comments,
+        },
+      },
+      { new: true }
+    );
+
+    return NextResponse.json(updatedEntry, { status: 200 });
+
+  } catch (error: any) {
     return NextResponse.json({ error: error?.message }, { status: 500 });
   }
 }

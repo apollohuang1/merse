@@ -19,6 +19,24 @@ export interface Entry {
   created_at?: Date;
   updated_at?: Date;
   likes: mongoose.Types.ObjectId[];
+  comments: Comment[];
+}
+
+export interface Comment {
+  _id: string;
+  author: mongoose.Types.ObjectId;
+  content: string;
+  created_at: Date;
+  likes: mongoose.Types.ObjectId[];
+  replies: Reply;
+}
+
+export interface Reply {
+  _id: string;
+  author: mongoose.Types.ObjectId;
+  content: string;
+  created_at: Date;
+  likes: mongoose.Types.ObjectId[];
 }
 
 interface StyleReference {

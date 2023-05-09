@@ -18,6 +18,7 @@ const initialState: Entry = {
   canvas: null,
   cover: null,
   likes: [],
+  comments: [],
 }
 
 const entrySlice = createSlice({
