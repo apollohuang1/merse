@@ -5,7 +5,7 @@ import SlideOver from "@/components/slide-over";
 import { Entry } from "@/models/entry";
 import { User } from "@/models/user";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setShowNotifications } from "@/redux-store/store";
+import { setNotificationContent, setShowNotifications } from "@/redux-store/store";
 import { getImageURLfromBase64 } from "@/util/helper";
 import axios from "axios";
 import clsx from "clsx";
@@ -212,6 +212,12 @@ const ProfilePage = (props: Props) => {
       // setUser(response.data);
       setShowProfileEditModal(false);
       dispatch(setShowNotifications(true));
+      dispatch(setNotificationContent(
+        {
+          title: "Profile updated",
+          message: "Your profile has been updated",
+        }
+      ));
     } catch (error: any) {
       if (error.response.data.error === "Username already exists") {
         alert("Username already exists");

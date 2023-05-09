@@ -14,6 +14,7 @@ import {
 import {
   addScene,
   setIsGeneratingStoryboard,
+  setNotificationContent,
   setShowGeneratedStoryboard,
   setShowNotifications,
 } from "@/redux-store/store";
@@ -63,6 +64,10 @@ const useCreateEntry = () => {
       router.push(`/`);
       setTimeout(() => {
         dispatch(setShowNotifications(true));
+        dispatch(setNotificationContent({
+          title: "Saved!",
+          message: "Your entry has been saved successfully.",
+        }));
       }, 1000);
     } catch (error: any) {
       console.log(`Failed to save entry, message: ${error?.message}`);

@@ -473,6 +473,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </div>
 
       <Notification 
+        title={notificationsStore.title}
+        message={notificationsStore.message}
         isOpen={notificationsStore?.showNotifications} 
         onClose={() => {
           dispatch(setShowNotifications(false));

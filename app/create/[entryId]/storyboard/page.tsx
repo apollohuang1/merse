@@ -44,6 +44,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
   setContent,
+  setNotificationContent,
   setScenes,
   setShowGeneratedStoryboard,
   setTitle,
