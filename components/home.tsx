@@ -28,73 +28,44 @@ const Home = (props: Props) => {
 
   return (
     <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center w-full h-full">
+
       {/* main content */}
       <div className="flex flex-col w-full h-full gap-6 max-sm:gap-3 items-center">
-        {/* promoted banner */}
-        <div className="flex relative w-full h-[60vh] overflow-clip">
-          <img
-            // src="https://static.techspot.com/images2/news/bigimage/2020/02/2020-02-12-image-5.jpg"
-            // src={"https://media2.giphy.com/media/l1KVaDmsxFkSfSOSA/giphy.gif?cid=ecf05e473fqbn80ec6al5d6ke8462qs8pgqrmzwv153jlf5k&rid=giphy.gif&ct=g"}
-            src={"https://media1.giphy.com/media/110pOfMhZcYRUs/giphy.gif?cid=ecf05e47zm9qc6xnol7dxscitvv53x47c5v3ubi9o69fh345&ep=v1_gifs_related&rid=giphy.gif&ct=g"}
-            className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
-          />
 
-          {/* <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            // ref={demoVideoRef}
-            src="./puuung.mp4"
-            // poster="./screenshot-storyboard.png"
-            className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.6)]"
-          /> */}
+        {/* artist updates */}
+        <div className="flex flex-row gap-5 max-sm:gap-4 overflow-x-auto px-6 w-full py-3">
+          {sampleArtists.map((artist, index) => {
+            return (
+              <button
+                key={index}
+                className="group flex flex-col items-center gap-2 w-20 min-w-[80px]"
+                onClick={() => {
+                  if (artist._id) {
+                    router.push(`/${artist._id}`);
+                  }
+                }}
+              >
+                <img
+                  src={artist?.profile_image_url}
+                  className={
+                    "w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full group-hover:scale-105 transition-all duration-300 group-active:scale-100"
+                  }
+                  alt="profile image"
+                />
 
-          {/* artist updates */}
-          <div className="absolute flex flex-row gap-5 max-sm:gap-4 overflow-x-auto p-6 w-full bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent">
-            {sampleArtists.map((artist, index) => {
-              return (
-                <button
-                  key={index}
-                  className="group flex flex-col items-center gap-2 w-20 min-w-[80px]"
-                  onClick={() => {
-                    if (artist._id) {
-                      router.push(`/${artist._id}`);
-                    }
-                  }}
-                >
-                  <img
-                    src={artist?.profile_image_url}
-                    className={
-                      "w-20 h-20 object-cover aspect-square aspect-square rounded-full border-2 border-emerald-500 p-1 rounded-full group-hover:scale-105 transition-all duration-300 group-active:scale-100"
-                    }
-                    alt="profile image"
-                  />
-
-                  <span className="line-clamp-1 text-sm text-white">
-                    {artist?.name}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="flex absolute bottom-0 h-1/2 bg-gradient-to-t from-[rgb(0,0,0,0.6)] to-transparent w-full items-end justify-end p-6">
-            <div className="flex flex-row gap-2 items-center backdrop-blur-xl pl-3 pr-4 py-2 rounded-full">
-              <img
-                src={"https://cdn.myanimelist.net/images/company/21.png"}
-                className="w-6 h-6 object-cover rounded-full"
-              />
-              <span className="text-white">The Garden of Words</span>
-            </div>
-          </div>
+                <span className="line-clamp-1 text-sm">
+                  {artist?.name}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        <div className="flex flex-row w-full gap-6 max-sm:gap-3 items-center justify-between overflow-auto max-sm:px-3 px-6">
+        <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 w-full gap-6 items-center justify-between overflow-auto px-6">
           {storyboardSamples.map((scene: any, index: number) => {
             return (
-              <div key={index}>
-                <button className="relative aspect-video min-w-[18vw] h-[24vh] max-lg:min-w-[15vw] max-lg:h-[20vh] max-md:min-w-[12vw] max-md:h-[16vh] rounded-lg overflow-clip">
+              <div key={index} className="group flex flex-col justify-start h-full">
+                <button className="relative aspect-video rounded-lg overflow-clip">
                   <img
                     src={scene?.artwork.url}
                     className="inset-0 w-full h-full object-cover"
@@ -106,21 +77,21 @@ const Home = (props: Props) => {
 
                 <div className="flex flex-row justify-between">
                   <div className="text-left py-2">
-                    <span className="text-light-text-primary dark:text-dark-text-primary text-xl font-bold">
-                      Episode {index + 1}
+                    <span className="text-light-text-primary dark:text-dark-text-primary text-lg font-semibold">
+                      Puuung Sample {index + 1}
                     </span>
                     <span className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-2 w-5/6">
                       {scene.text}
                     </span>
                   </div>
 
-                  <div className="flex flex-row flex-shrink-0 gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
+                  {/* <div className="flex flex-row flex-shrink-0 gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
                     <img
                       src={sampleArtists[1].profile_image_url}
                       className="w-6 h-6 rounded-full"
                     />
-                    <span className="text-white">Puuung</span>
-                  </div>
+                    <span>Puuung</span>
+                  </div> */}
                 </div>
               </div>
             );
