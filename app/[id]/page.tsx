@@ -158,7 +158,6 @@ const ProfilePage = (props: Props) => {
 
         setUser(response.data);
 
-        console.log("response.data: ", response.data);
         // await fetchAllEntries(response.data._id);
         resolve(response.data);
       } catch (error: any) {

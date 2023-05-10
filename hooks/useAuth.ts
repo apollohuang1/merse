@@ -151,7 +151,6 @@ const useAuth = () => {
 
   // google signin failure handler
   const onGoogleLoginError = (error: any) => {
-    console.log("onGoogleLoginError");
     alert("Please try again, we're fixing this issue.");
     setShowLoginModal(false);
   };
