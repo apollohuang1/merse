@@ -37,11 +37,7 @@ const ProfilePage = (props: Props) => {
   const [user, setUser] = useState<User | null>(null);
   const [allEntries, setAllEntries] = useState<Entry[]>([]);
 
-  const [editingBannerURL, setEditingBannerURL] = useState<string>("");
-  const [editingProfileURL, setEditingProfileURL] = useState<string>("");
-  const [editingUsername, setEditingUsername] = useState<string>("");
-  const [editingName, setEditingName] = useState<string>("");
-  const [editingBio, setEditingBio] = useState<string>("");
+  const [editingUserData, setEditingUserData] = useState<any | null>(null);
 
   const enum FollowingState {
     FOLLOWING = "following",
@@ -203,14 +199,7 @@ const ProfilePage = (props: Props) => {
       const updatedUserReponse = await axios({
         method: "PUT",
         url: `/api/users`,
-        data: {
-          _id: user?._id,
-          banner_image_url: editingBannerURL,
-          profile_image_url: editingProfileURL,
-          username: editingUsername,
-          name: editingName,
-          bio: editingBio,
-        },
+        data: editingUserData,
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
@@ -244,13 +233,7 @@ const ProfilePage = (props: Props) => {
   };
 
   const isUpdatingDataChanged = () => {
-    return (
-      editingBannerURL !== user?.banner_image_url ||
-      editingProfileURL !== user?.profile_image_url ||
-      editingUsername !== user?.username ||
-      editingName !== user?.name ||
-      editingBio !== user?.bio
-    );
+    return user !== editingUserData
   };
 
   const tabs = [
@@ -313,11 +296,7 @@ const ProfilePage = (props: Props) => {
                           unfollowUser(user?._id);
                           break;
                         case FollowingState.SELF:
-                          setEditingProfileURL(user?.profile_image_url);
-                          setEditingBannerURL(user?.banner_image_url);
-                          setEditingUsername(user?.username);
-                          setEditingName(user?.name);
-                          setEditingBio(user?.bio);
+                          setEditingUserData(user);
                           setShowProfileEditModal(true);
                           break;
                       }
@@ -486,9 +465,9 @@ const ProfilePage = (props: Props) => {
         <div className="flex flex-col items-center">
 
           <div className="flex flex-col w-full h-40 items-center justify-center">
-            {editingBannerURL ? (
+            {editingUserData?.banner_image_url ? (
               <img
-                src={editingBannerURL}
+                src={editingUserData?.banner_image_url}
                 className={clsx("w-full h-full object-cover", {
                   "ring-2 ring-accent ring-opacity-70": isBannerInputFocused,
                 })}
@@ -501,9 +480,9 @@ const ProfilePage = (props: Props) => {
           <div className="flex flex-col w-full -translate-y-[56px] gap-7">
             {/* circle image input */}
             <div className="group relative w-28 h-28 border border-light-divider dark:border-dark-divider rounded-full mx-4">
-              {editingProfileURL && editingProfileURL !== "" ? (
+              {editingUserData?.profile_image_url && editingUserData.profile_image_url !== "" ? (
                 <img
-                  src={editingProfileURL}
+                  src={editingUserData.profile_image_url}
                   className={clsx(
                     "absolute w-full h-full object-cover rounded-full",
                     { "ring-2 ring-accent ring-opacity-80": isProfileInputFocused }
@@ -557,10 +536,13 @@ const ProfilePage = (props: Props) => {
                   }}
                   enterKeyHint="next"
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                  value={editingBannerURL ?? ""}
+                  value={editingUserData?.banner_image_url ?? ""}
                   placeholder="Enter banner image URL"
                   onChange={(e) => {
-                    setEditingBannerURL(e.target.value);
+                    setEditingUserData({
+                      ...editingUserData,
+                      banner_image_url: e.target.value,
+                    });
                   }}
                 />
               </div>
@@ -585,10 +567,13 @@ const ProfilePage = (props: Props) => {
                   }}
                   enterKeyHint="next"
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                  value={editingProfileURL ?? ""}
+                  value={editingUserData?.profile_image_url ?? ""}
                   placeholder="Enter profile image URL"
                   onChange={(e) => {
-                    setEditingProfileURL(e.target.value);
+                    setEditingUserData({
+                      ...editingUserData,
+                      profile_image_url: e.target.value,
+                    });
                   }}
                 />
               </div>
@@ -607,10 +592,13 @@ const ProfilePage = (props: Props) => {
                   id="name"
                   enterKeyHint="next"
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                  value={editingUsername ?? ""}
+                  value={editingUserData?.username ?? ""}
                   placeholder="Enter your username"
                   onChange={(e) => {
-                    setEditingUsername(e.target.value);
+                    setEditingUserData({
+                      ...editingUserData,
+                      username: e.target.value,
+                    });
                   }}
                 />
               </div>
@@ -629,10 +617,13 @@ const ProfilePage = (props: Props) => {
                   id="name"
                   enterKeyHint="next"
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
-                  value={editingName ?? ""}
+                  value={editingUserData?.name ?? ""}
                   placeholder="Enter your name"
                   onChange={(e) => {
-                    setEditingName(e.target.value);
+                    setEditingUserData({
+                      ...editingUserData,
+                      name: e.target.value,
+                    });
                   }}
                 />
               </div>
@@ -650,10 +641,13 @@ const ProfilePage = (props: Props) => {
                   id="description"
                   rows={4}
                   className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md min-h-[100px] border border-light-divider dark:border-dark-divider bg-transparent"
-                  value={editingBio ?? ""}
+                  value={editingUserData?.bio ?? ""}
                   placeholder="Enter your bio"
                   onChange={(e) => {
-                    setEditingBio(e.target.value);
+                    setEditingUserData({
+                      ...editingUserData,
+                      bio: e.target.value,
+                    });
                   }}
                 />
               </div>
