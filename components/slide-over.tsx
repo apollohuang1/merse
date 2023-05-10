@@ -5,6 +5,7 @@ import React, { Children } from "react";
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FiX } from "react-icons/fi";
+import clsx from "clsx";
 
 const SlideOver: React.FC<{
   children: React.ReactNode;
@@ -16,6 +17,7 @@ const SlideOver: React.FC<{
   withCloseButton?: boolean;
   footer?: React.ReactNode;
   withOverlay?: boolean;
+  withPadding?: boolean;
   // onCancel?: () => void;
   // onSubmit?: () => void;
 }> = ({
@@ -28,6 +30,7 @@ const SlideOver: React.FC<{
   withCloseButton = false,
   footer,
   withOverlay = true,
+  withPadding = true,
   // onSubmit,
 }) => {
   return (
@@ -37,9 +40,8 @@ const SlideOver: React.FC<{
         className="relative text-light-text-primary dark:text-dark-text-primary z-50"
         onClose={onClose}
       >
-
         {/* curtain overlay */}
-        { withOverlay &&
+        {withOverlay && (
           <Transition.Child
             as={Fragment}
             enter="ease-in-out duration-300"
@@ -51,7 +53,7 @@ const SlideOver: React.FC<{
           >
             <div className="fixed inset-0 bg-black dark:bg-white bg-opacity-50 dark:bg-opacity-30 transition-opacity" />
           </Transition.Child>
-        }
+        )}
 
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
@@ -65,14 +67,16 @@ const SlideOver: React.FC<{
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className={`pointer-events-auto w-screen max-w-${size} border-l border-l-light-divider dark:border-l-dark-divider`}>
+                <Dialog.Panel
+                  className={`pointer-events-auto w-screen max-w-${size} border-l border-l-light-divider dark:border-l-dark-divider`}
+                >
                   <div className="flex h-full flex-col overflow-y-scroll shadow-xl bg-light-background-primary dark:bg-dark-background-primary">
                     <div className="p-6 border-b border-light-divider dark:border-dark-divider">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className=" text-xl font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary">
                           {title}
                         </Dialog.Title>
-                        
+
                         {withCloseButton && (
                           <div className="ml-3 flex h-7 items-center">
                             <button
@@ -88,15 +92,21 @@ const SlideOver: React.FC<{
                       </div>
                     </div>
 
-                    <div className="flex-1 p-6 sm:px-6 overflow-auto">
+                    <div 
+                      id="comments-slide-over"
+                      className={clsx(
+                        "flex-1 overflow-auto",
+                        { "p-6 sm:px-6" : withPadding}
+                      )}
+                    >
                       {children}
                     </div>
 
-                    { footer &&
+                    {footer && (
                       <div className="py-2 border-t border-t-light-divider dark:border-t-dark-divider">
-                        { footer }
+                        {footer}
                       </div>
-                    }
+                    )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

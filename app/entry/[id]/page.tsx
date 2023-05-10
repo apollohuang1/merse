@@ -159,6 +159,16 @@ const ReadPage = (props: Props) => {
       setCommentText("");
       setIsSendingComment(false);
 
+      setTimeout(() => {
+        // smooth scroll to bottom in document id comments-slide-over
+        const commentsSection = document.getElementById("comments-slide-over");
+        commentsSection?.scrollTo({
+          top: commentsSection.scrollHeight,
+          behavior: "smooth",
+        });
+      }, 0);
+
+
     } catch (error: any) {
       setIsSendingComment(false);
       console.log("Failed to add comment to entry, message: ", error.message);
@@ -191,7 +201,7 @@ const ReadPage = (props: Props) => {
                   </div>
                 </div>
 
-                <div className="flex flex-row gap-2 flex-shrink-0">
+                <div className="flex flex-row gap-0 flex-shrink-0">
                   <button
                     onClick={() => setShowCommentSection(!showCommentSection)}
                     className="group flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg"
@@ -275,24 +285,25 @@ const ReadPage = (props: Props) => {
       </div>
 
       <SlideOver
-        size="lg"
+        size="md"
         title={`${entryData?.comments?.length} Comments`}
         isOpen={showCommentSection}
         onClose={() => {
           setShowCommentSection(false);
         }}
         withCloseButton
+        withPadding={false}
       >
 
-        <div className="flex flex-row gap-3 pb-4">
+        <div className="sticky top-0 flex flex-row gap-3 px-6 py-3 bg-light-background-secondary dark:bg-dark-background-secondary border-b border-light-divider dark:border-dark-divider">
 
           <img
             src={auth?.currentUser?.profile_image_url}
-            className="w-12 h-12 rounded-full object-cover"
+            className="w-11 h-11 rounded-full object-cover"
           />
 
           {/* add comment input */}
-          <div className="flex flex-row items-center px-5 gap-2 w-full bg-light-background-secondary dark:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider rounded-full overflow-clip">
+          <div className="flex flex-row items-center gap-3 w-full border-light-divider dark:border-dark-divider rounded-none overflow-clip">
             <input
               type="text"
               value={commentText}
@@ -314,18 +325,18 @@ const ReadPage = (props: Props) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-0">
+        <div className="flex flex-col gap-0 px-6">
           {entryData?.comments?.map((comment: Comment, index: number) => (
             <div key={index} className="flex flex-row gap-3 w-full border-b border-light-divider dark:border-dark-divider py-6">
               {/* image */}
               <img
                 src="https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg"
-                className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                className="w-11 h-11 rounded-full object-cover flex-shrink-0"
               />
 
               <div className="flex flex-col">
-                <span className="font-semibold leading-tight">Test Name</span>
-                <span className="text-base leading-tight">
+                <span className="font-semibold leading-normal">Test Name</span>
+                <span className="text-base leading-snug">
                   { comment?.content }
                 </span>
               </div>
