@@ -128,12 +128,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     // log scroll value
     const handleScroll = () => {
       const scrollValue = document.getElementById("scroll-observer")?.scrollTop;
-      if (scrollValue) { 
+      if (scrollValue) {
         dispatch(setScrollY(scrollValue));
       }
     };
 
-    document.getElementById("scroll-observer")?.addEventListener("scroll", handleScroll);
+    document
+      .getElementById("scroll-observer")
+      ?.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -142,7 +144,12 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <>
-      <div className="flex flex-col text-light-text-primary dark:text-dark-text-primary items-center h-screen w-screen">
+      <div
+        className={clsx(
+          "flex flex-col text-light-text-primary dark:text-dark-text-primary items-center h-screen w-screen",
+          { "fixed inset-0" : auth?.currentUser }, // unauthenticated
+        )}
+      >
         <div
           className={clsx(
             "w-full h-full max-sm:flex max-sm:flex-col",
@@ -311,7 +318,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           )}
           <div
             id="scroll-observer"
-            className="flex flex-col h-full w-full overflow-auto"
+            className="flex flex-col h-full w-full overflow-auto bg-light-background-primary dark:bg-dark-background-primary"
           >
             {/* top navigation bar */}
             {auth?.currentUser && !isCreateRoute && (
@@ -472,15 +479,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       </div>
 
-      <Notification 
+      <Notification
         title={notificationsStore.title}
         message={notificationsStore.message}
-        isOpen={notificationsStore?.showNotifications} 
+        isOpen={notificationsStore?.showNotifications}
         onClose={() => {
           dispatch(setShowNotifications(false));
         }}
       />
-
     </>
   );
 };
