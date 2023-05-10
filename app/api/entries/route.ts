@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import MDBEntry from "@/server/models/MDBEntry";
 
-
 export async function GET(request: NextRequest) {
   try {
     const db = await dbConnect();
@@ -22,40 +21,49 @@ export async function GET(request: NextRequest) {
     const userId = url.searchParams.get("userId");
 
     if (userId) {
-      // fetch all
+      // fetch all entries from user
       const allEntriesFromUser = await MDBEntry.find({
         author: userId,
       });
+
       return NextResponse.json(allEntriesFromUser, { status: 200 });
     }
 
     if (entryId) {
-      const oneEntry = await MDBEntry.findById(entryId).populate("author");
+      // populate author, and comments that have user as refs with only profile_image_url, username, and _id
+      const oneEntry = await MDBEntry.findById(entryId)
+        .populate({
+          path: "author",
+          select: "profile_image_url name username _id",
+        })
+        .populate({
+          path: "comments",
+          populate: {
+            path: "author",
+            select: "profile_image_url username _id",
+          },
+        });
 
       return NextResponse.json(oneEntry, { status: 200 });
-    } 
-
+    }
   } catch (error: any) {
     // return new Response(error, { status: 500 })
     return NextResponse.json({ error: error?.message }, { status: 500 });
   }
 }
 
-
 export async function POST(request: NextRequest) {
-
   try {
-
     await dbConnect();
     const body = await request.json();
 
-     // get api key from bear token
-     const token = request.headers.get("authorization");
+    // get api key from bear token
+    const token = request.headers.get("authorization");
 
-     // if key is not process.env.MERSE_API_KEY
-     if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
-       return new Response("Unauthorized", { status: 401 });
-     }
+    // if key is not process.env.MERSE_API_KEY
+    if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+      return new Response("Unauthorized", { status: 401 });
+    }
 
     // guards
     if (!body) {
@@ -74,7 +82,8 @@ export async function POST(request: NextRequest) {
       content: body.content,
       characters: body.characters,
       cover: {
-        image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaCdoBj4sMKAneZ35yzHHceTTZWXaQly7e46eVsJ1oGD29RKEz71w6KG7jyvXw47uDMnQ&usqp=CAU",
+        image_url:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaCdoBj4sMKAneZ35yzHHceTTZWXaQly7e46eVsJ1oGD29RKEz71w6KG7jyvXw47uDMnQ&usqp=CAU",
       },
       scenes: body.scenes,
       canvas: body.canvas,
@@ -85,7 +94,7 @@ export async function POST(request: NextRequest) {
     });
 
     const savedEntry = await newEntry.save();
-    
+
     return NextResponse.json(savedEntry, { status: 200 });
   } catch (error: any) {
     console.log(error.message);
@@ -96,7 +105,6 @@ export async function POST(request: NextRequest) {
 // put functio to add likes and comments
 export async function PUT(request: NextRequest) {
   try {
-
     await dbConnect();
 
     // get api key from bear token
@@ -130,7 +138,6 @@ export async function PUT(request: NextRequest) {
     );
 
     return NextResponse.json(updatedEntry, { status: 200 });
-
   } catch (error: any) {
     return NextResponse.json({ error: error?.message }, { status: 500 });
   }

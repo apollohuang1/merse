@@ -46,6 +46,8 @@ export const useReadEntry = () => {
         }
       })
 
+      console.log("updatedComments: ", updatedComments.data);
+
       if (!updatedComments) throw new Error("No updated comments array returned.");
 
       // reponse is updated entry

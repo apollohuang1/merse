@@ -66,6 +66,7 @@ const ReadPage = (props: Props) => {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
       });
+      
       setEntryData(response.data);
       renderCanvas(response.data.canvas);
     } catch (error: any) {
@@ -330,12 +331,12 @@ const ReadPage = (props: Props) => {
             <div key={index} className="flex flex-row gap-3 w-full border-b border-light-divider dark:border-dark-divider py-6">
               {/* image */}
               <img
-                src="https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg"
+                src={comment?.author?.profile_image_url}
                 className="w-11 h-11 rounded-full object-cover flex-shrink-0"
               />
 
               <div className="flex flex-col">
-                <span className="font-semibold leading-normal">Test Name</span>
+                <span className="font-semibold leading-normal">{comment?.author?.username || comment?.author?.name}</span>
                 <span className="text-base leading-snug">
                   { comment?.content }
                 </span>

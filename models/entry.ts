@@ -24,7 +24,7 @@ export interface Entry {
 
 export interface Comment {
   _id: string;
-  author: mongoose.Types.ObjectId;
+  author: User | null;
   content: string;
   created_at: Date;
   likes: mongoose.Types.ObjectId[];

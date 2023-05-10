@@ -55,7 +55,15 @@ export async function POST(request: NextRequest) {
         }
       },
       { new: true }
-    );
+    )
+    .populate({
+      path: "comments",
+      populate: {
+        path: "author",
+        select: "username name profile_image_url _id",
+      },
+    })
+    .exec();
 
     if (!updatedDocument) {
       return new Response("No entry found with id: " + body.entryId, {
