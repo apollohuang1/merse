@@ -24,17 +24,23 @@ import { Spinner } from "@chakra-ui/react";
 import Divider from "@/components/divider";
 import { Transition } from "@headlessui/react";
 import SlideOver from "@/components/slide-over";
+import { useReadEntry } from "@/hooks/useReadEntry";
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
+import { ObjectId } from "mongoose";
 
 type Props = {};
 
 const ReadPage = (props: Props) => {
+
   const searchParams = useSearchParams();
+  const { likeEntry } = useReadEntry();
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   // states
   const [entryData, setEntryData] = React.useState<Entry | null>(null);
   const [isLiked, setIsLiked] = React.useState<boolean>(false);
-  const [showCommentSection, setShowCommentSection] =
-    React.useState<boolean>(false);
+  const [showCommentSection, setShowCommentSection] = React.useState<boolean>(false);
 
   const pathname = usePathname();
 
@@ -111,6 +117,32 @@ const ReadPage = (props: Props) => {
       });
   };
 
+  const isLikedByCurrentUser = () => {
+    return entryData?.likes?.includes(auth?.currentUser?._id);
+  }
+
+
+  const handleLikeEntry = async () => {
+    try {
+      // guards
+      if (!entryData?._id || !auth?.currentUser?._id) return;
+  
+      // setIsLiked(!isLiked);
+      const updatedLikes = await likeEntry(auth?.currentUser?._id, entryData?._id);
+
+      if (!updatedLikes) throw new Error("No updated likes array returned");
+      
+      setEntryData({
+        ...entryData,
+        likes: updatedLikes.data,
+      });
+  
+    } catch (error: any) {
+      console.log("Failed to like entry, message: ", error.message);
+    }
+  }
+
+
   return (
     <>
       <div className="flex flex-col w-full h-full items-center overflow-auto">
@@ -146,10 +178,7 @@ const ReadPage = (props: Props) => {
                   </button>
 
                   <button
-                    onClick={() => {
-                      console.log("clicked");
-                      setIsLiked(!isLiked);
-                    }}
+                    onClick={handleLikeEntry}
                     className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg"
                   >
                     <FiHeart
@@ -157,11 +186,11 @@ const ReadPage = (props: Props) => {
                         "w-6 h-6 transition-all hover:scale-105 active:scale-100",
                         {
                           "text-light-text-tertiary dark:text-dark-text-tertiary fill-transparent":
-                            !isLiked,
+                            isLikedByCurrentUser() == false,
                         },
                         {
                           "fill-light-red dark:fill-dark-red text-light-red dark:text-dark-red":
-                            isLiked,
+                            isLikedByCurrentUser(),
                         }
                       )}
                     />
