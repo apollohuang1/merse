@@ -125,7 +125,7 @@ const ReadPage = (props: Props) => {
     try {
       // guards
       if (!entryData?._id || !auth?.currentUser?._id) return;
-      
+
       const updatedLikes = await likeEntry(auth?.currentUser?._id, entryData?._id, isLikedByCurrentUser() ? "unlike" : "like");
 
       if (!updatedLikes) throw new Error("No updated likes array returned");
@@ -251,13 +251,38 @@ const ReadPage = (props: Props) => {
 
       <SlideOver
         size="md"
-        title="Comments"
+        title={`${entryData?.comments?.length} Comments`}
         isOpen={showCommentSection}
         onClose={() => {
           setShowCommentSection(false);
         }}
         withCloseButton
       >
+
+        <div className="flex flex-row gap-3 pb-4">
+
+          <img
+            src={auth?.currentUser?.profile_image_url}
+            className="w-12 h-12 rounded-full object-cover"
+          />
+
+          {/* add comment input */}
+          <div className="flex flex-col w-full">
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              // className="w-full h-12 px-4 py-2 rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus:outline-none"
+              className="w-full px-4 py-2 rounded-full focus:outline-none bg-light-background-secondary dark:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider placeholder:text-light-text-secondary dark:placeholder:text-dark-text-secondary"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  // alert("Enter key pressed");
+                  // handleAddComment();
+                }
+              }}
+            />
+          </div>
+        </div>
+
         <div className="flex flex-col gap-0">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((item, index) => (
             <div key={index} className="flex flex-row gap-3 w-full border-b border-light-divider dark:border-dark-divider py-6">
