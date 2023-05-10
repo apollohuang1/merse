@@ -194,6 +194,12 @@ const ProfilePage = (props: Props) => {
   const updateProfile = async () => {
     try {
 
+      // if no update close modal
+      if (!isUpdatingDataChanged()) {
+        setShowProfileEditModal(false);
+        return;
+      }
+
       const updatedUserReponse = await axios({
         method: "PUT",
         url: `/api/users`,
@@ -235,6 +241,16 @@ const ProfilePage = (props: Props) => {
 
       console.log("Failed to update profile, message: ", error.message);
     }
+  };
+
+  const isUpdatingDataChanged = () => {
+    return (
+      editingBannerURL !== user?.banner_image_url ||
+      editingProfileURL !== user?.profile_image_url ||
+      editingUsername !== user?.username ||
+      editingName !== user?.name ||
+      editingBio !== user?.bio
+    );
   };
 
   const tabs = [
