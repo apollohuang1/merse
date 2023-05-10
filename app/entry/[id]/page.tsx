@@ -170,7 +170,7 @@ const ReadPage = (props: Props) => {
     <>
       <div className="flex flex-col w-full h-full items-center overflow-auto">
         {entryData ? (
-          <div className="flex flex-col w-full h-auto items-center max-w-3xl gap-12 pb-64 px-6 pt-6">
+          <div className="flex flex-col w-full h-auto items-center max-w-3xl gap-14 pb-64 px-6 pt-6">
             {/* author profile */}
             {entryData?.author && (
               <div className="flex flex-row items-center justify-between w-full">
@@ -226,7 +226,7 @@ const ReadPage = (props: Props) => {
             {output && (
               // <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
               <div className="flex flex-col w-full rounded-xl gap-5">
-                <h1 className="text-5xl font-semibold leading-tight">
+                <h1 className="text-4xl font-semibold leading-tight">
                   {entryData?.title}
                 </h1>
                 {/* <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" /> */}
@@ -275,7 +275,7 @@ const ReadPage = (props: Props) => {
       </div>
 
       <SlideOver
-        size="md"
+        size="lg"
         title={`${entryData?.comments?.length} Comments`}
         isOpen={showCommentSection}
         onClose={() => {

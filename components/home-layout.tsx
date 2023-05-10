@@ -209,9 +209,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       )}
                     >
                       <div className="flex flex-row items-center gap-3">
-                        <FiPlus className="h-5 w-5" />
+                        <FiPlus className="h-[18px] w-[18px]" />
                         {showFullSidebar && (
-                          <span className="flex flex-shrink-0 font-medium">
+                          <span className="flex flex-shrink-0 font-normal">
                             Create
                           </span>
                         )}
@@ -220,10 +220,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   </Link>
 
                   {/* navigation menus */}
-                  <div className="flex flex-col gap-2 w-full">
+                  <div className="flex flex-col gap-1 w-full">
                     {/* home */}
                     <SidebarMenuButton
-                      icon={<FiHome className="h-5 w-5" />}
+                      icon={<FiHome className="h-[18px] w-[18px]" />}
                       label="Home"
                       href="/"
                       isFull={showFullSidebar}
@@ -241,7 +241,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                     {/* notifications */}
                     <SidebarMenuButton
-                      icon={<FiBell className="h-5 w-5" />}
+                      icon={<FiBell className="h-[18px] w-[18px]" />}
                       label="Notifications"
                       href="/notifications"
                       isFull={showFullSidebar}
@@ -259,7 +259,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                     {/* subscription */}
                     <SidebarMenuButton
-                      icon={<FiFeather className="h-5 w-5" />}
+                      icon={<FiFeather className="h-[18px] w-[18px]" />}
                       label="Following"
                       href="/following"
                       isFull={showFullSidebar}
@@ -268,7 +268,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                     {/* subscription */}
                     <SidebarMenuButton
-                      icon={<FiZap className="h-5 w-5" />}
+                      icon={<FiZap className="h-[18px] w-[18px]" />}
                       label="Subscription"
                       href="/subscription"
                       isFull={showFullSidebar}
@@ -277,7 +277,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                     {/* read */}
                     <SidebarMenuButton
-                      icon={<FiBookOpen className="h-5 w-5" />}
+                      icon={<FiBookOpen className="h-[18px] w-[18px]" />}
                       label="Read Sample"
                       href="/entry/644c1bebdcb40d15e68ca258"
                       isFull={showFullSidebar}
@@ -299,7 +299,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                 {showFullSidebar && (
                   <div className=" p-5 border-t border-light-divider dark:border-dark-divider">
-                    <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
+                    <span className="text-sm font-light text-light-text-secondary dark:text-dark-text-secondary">
                       Product in development.
                       <br />
                       Browse our site and stay tuned for its release :))
@@ -354,7 +354,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       >
                         <div
                           className={clsx(
-                            "relative group flex flex-row gap-3 px-4 items-center justify-between duration-300 focus-within:w-96 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-emerald-500 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
+                            "relative group flex flex-row gap-3 px-4 items-center justify-between duration-300 focus-within:w-96 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-secondary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-neutral-300 dark:focus-within:ring-neutral-700 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
                             { "w-96": searchText.length > 0 },
                             { "w-80": searchText.length === 0 }
                           )}
@@ -389,7 +389,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           <Combobox.Options
                             // static
                             className={
-                              "flex flex-col absolute top-[calc(100%+5px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-xl overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-2xl"
+                              "flex flex-col absolute top-[calc(100%+5px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-lg overflow-clip border-none border-light-divider dark:border-dark-divider drop-shadow-2xl"
                             }
                           >
                             {searchResults.map((result: any, index) => (
@@ -405,7 +405,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                 }}
                                 className={({ active, selected }) =>
                                   clsx(
-                                    "flex select-none cursor-pointer items-center rounded-md px-4 h-[72px] w-96 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all",
+                                    "flex select-none cursor-pointer items-center rounded-none px-4 h-[72px] w-96 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary transition-all",
                                     {
                                       "bg-light-background-tertiary dark:bg-dark-background-tertiary":
                                         active,
@@ -521,11 +521,10 @@ const SidebarMenuButton: React.FC<{
       >
         <div
           className={clsx(
-            "flex flex-row items-center gap-3 font-medium text-base text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100 transition-all duration-200",
-            { "text-opacity-100 dark:text-opacity-100": isCurrentRoute },
-            // { "text-opacity-50 dark:text-opacity-50": !isCurrentRoute },
+            "flex flex-row items-center gap-3 text-base text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100 transition-all duration-200",
+            { "dark:text-opacity-100 font-medium": isCurrentRoute },
             {
-              "text-light-text-secondary dark:text-dark-text-secondary group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary":
+              "font-normal text-light-text-secondary dark:text-dark-text-secondary group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary":
                 !isCurrentRoute,
             }
           )}
