@@ -8,7 +8,7 @@ import { JSONContent, generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import parse from "html-react-parser";
-import { Entry } from "@/models/entry";
+import { Comment, Entry } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
 import Image from "@tiptap/extension-image";
 import HardBreak from "@tiptap/extension-hard-break";
@@ -33,13 +33,17 @@ type Props = {};
 const ReadPage = (props: Props) => {
 
   const searchParams = useSearchParams();
-  const { likeEntry } = useReadEntry();
+  const { likeEntry, addComment } = useReadEntry();
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   // states
   const [entryData, setEntryData] = React.useState<Entry | null>(null);
   const [showCommentSection, setShowCommentSection] = React.useState<boolean>(false);
+
+  // comments
+  const [commentText, setCommentText] = React.useState<string>("");
+  const [isSendingComment, setIsSendingComment] = React.useState<boolean>(false);
 
   const pathname = usePathname();
 
@@ -55,7 +59,6 @@ const ReadPage = (props: Props) => {
 
       const entryId = pathname.split("/")[2];
 
-      console.log("entryId: ", entryId);
       const response = await axios({
         method: "GET",
         url: `/api/entries?id=${entryId}`,
@@ -107,8 +110,8 @@ const ReadPage = (props: Props) => {
         object.selectable = false;
       })
       .then(() => {
-        console.log("Canvas loaded successfully");
-        console.log("canvas: ", canvas);
+        // console.log("Canvas loaded successfully");
+        // console.log("canvas: ", canvas);
         canvas.requestRenderAll();
       })
       .catch((error) => {
@@ -132,11 +135,33 @@ const ReadPage = (props: Props) => {
 
       setEntryData({
         ...entryData,
-        likes: updatedLikes.data,
+        likes: updatedLikes,
       });
   
     } catch (error: any) {
       console.log("Failed to like entry, message: ", error.message);
+    }
+  }
+
+  const handleAddComment = async () => {
+    try {
+
+      if (!entryData?._id || !auth?.currentUser?._id) return;
+      setIsSendingComment(true);
+
+      const newComments = await addComment(auth?.currentUser?._id, entryData?._id, commentText);
+
+      setEntryData({
+        ...entryData,
+        comments: newComments,
+      });
+
+      setCommentText("");
+      setIsSendingComment(false);
+
+    } catch (error: any) {
+      setIsSendingComment(false);
+      console.log("Failed to add comment to entry, message: ", error.message);
     }
   }
 
@@ -267,35 +292,41 @@ const ReadPage = (props: Props) => {
           />
 
           {/* add comment input */}
-          <div className="flex flex-col w-full">
+          <div className="flex flex-row items-center px-5 gap-2 w-full bg-light-background-secondary dark:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider rounded-full overflow-clip">
             <input
               type="text"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
               placeholder="Add a comment..."
               // className="w-full h-12 px-4 py-2 rounded-full bg-light-background-tertiary dark:bg-dark-background-tertiary focus:outline-none"
-              className="w-full px-4 py-2 rounded-full focus:outline-none bg-light-background-secondary dark:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider placeholder:text-light-text-secondary dark:placeholder:text-dark-text-secondary"
-              onKeyDown={(e) => {
+              className="w-full outline-none placeholder:text-light-text-secondary dark:placeholder:text-dark-text-secondary bg-transparent"
+              onKeyDown={(e: any) => {
                 if (e.key === "Enter") {
-                  // alert("Enter key pressed");
-                  // handleAddComment();
+                  handleAddComment();
                 }
               }}
             />
+
+            { isSendingComment &&
+              <Spinner className="w-4 h-4 text-light-text-tertiary dark:text-dark-text-tertiary" />
+            }
+
           </div>
         </div>
 
         <div className="flex flex-col gap-0">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((item, index) => (
+          {entryData?.comments?.map((comment: Comment, index: number) => (
             <div key={index} className="flex flex-row gap-3 w-full border-b border-light-divider dark:border-dark-divider py-6">
               {/* image */}
               <img
                 src="https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg"
-                className="w-12 h-12 rounded-full object-cover"
+                className="w-12 h-12 rounded-full object-cover flex-shrink-0"
               />
 
               <div className="flex flex-col">
-                <span className="font-semibold leading-tight">Comment Name</span>
+                <span className="font-semibold leading-tight">Test Name</span>
                 <span className="text-base leading-tight">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  { comment?.content }
                 </span>
               </div>
             </div>

@@ -28,7 +28,7 @@ export interface Comment {
   content: string;
   created_at: Date;
   likes: mongoose.Types.ObjectId[];
-  replies: Reply;
+  replies: Reply[];
 }
 
 export interface Reply {
