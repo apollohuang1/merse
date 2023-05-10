@@ -11,6 +11,7 @@ import {
   FiChevronLeft,
   FiChevronRight,
   FiChevronsLeft,
+  FiEdit,
   FiFeather,
   FiHome,
   FiMenu,
@@ -147,7 +148,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div
         className={clsx(
           "flex flex-col text-light-text-primary dark:text-dark-text-primary items-center h-screen w-screen",
-          { "fixed inset-0" : auth?.currentUser }, // unauthenticated
+          { "fixed inset-0": auth?.currentUser } // unauthenticated
         )}
       >
         <div
@@ -216,7 +217,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       )}
                     >
                       <div className="flex flex-row items-center gap-3">
-                        <FiPlus className="h-[18px] w-[18px]" />
+                        <FiEdit className="h-[18px] w-[18px]" />
                         {showFullSidebar && (
                           <span className="flex flex-shrink-0 font-normal">
                             Create
@@ -230,7 +231,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <div className="flex flex-col gap-1 w-full">
                     {/* home */}
                     <SidebarMenuButton
-                      icon={<FiHome className="h-[18px] w-[18px]" />}
+                      icon={
+                        <FiHome
+                          className={clsx(
+                            { "h-[18px] w-[18px]": showFullSidebar },
+                            { "w-5 h-5": !showFullSidebar }
+                          )}
+                        />
+                      }
                       label="Home"
                       href="/"
                       isFull={showFullSidebar}
@@ -248,7 +256,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                     {/* notifications */}
                     <SidebarMenuButton
-                      icon={<FiBell className="h-[18px] w-[18px]" />}
+                      icon={
+                        <FiBell
+                          className={clsx(
+                            { "h-[18px] w-[18px]": showFullSidebar },
+                            { "w-5 h-5": !showFullSidebar }
+                          )}
+                        />
+                      }
                       label="Notifications"
                       href="/notifications"
                       isFull={showFullSidebar}
@@ -266,7 +281,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                     {/* subscription */}
                     <SidebarMenuButton
-                      icon={<FiFeather className="h-[18px] w-[18px]" />}
+                      icon={
+                        <FiFeather
+                          className={clsx(
+                            { "h-[18px] w-[18px]": showFullSidebar },
+                            { "w-5 h-5": !showFullSidebar }
+                          )}
+                        />
+                      }
                       label="Following"
                       href="/following"
                       isFull={showFullSidebar}
@@ -275,7 +297,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                     {/* subscription */}
                     <SidebarMenuButton
-                      icon={<FiZap className="h-[18px] w-[18px]" />}
+                      icon={
+                        <FiZap
+                          className={clsx(
+                            { "h-[18px] w-[18px]": showFullSidebar },
+                            { "w-5 h-5": !showFullSidebar }
+                          )}
+                        />
+                      }
                       label="Subscription"
                       href="/subscription"
                       isFull={showFullSidebar}
@@ -284,7 +313,14 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                     {/* read */}
                     <SidebarMenuButton
-                      icon={<FiBookOpen className="h-[18px] w-[18px]" />}
+                      icon={
+                        <FiBookOpen
+                          className={clsx(
+                            { "h-[18px] w-[18px]": showFullSidebar },
+                            { "w-5 h-5": !showFullSidebar }
+                          )}
+                        />
+                      }
                       label="Read Sample"
                       href="/entry/644c1bebdcb40d15e68ca258"
                       isFull={showFullSidebar}
@@ -361,7 +397,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       >
                         <div
                           className={clsx(
-                            "relative group flex flex-row gap-3 px-4 items-center justify-between duration-300 focus-within:w-96 h-9 border-light-divider dark:border-dark-divider rounded-full bg-light-background-secondary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-neutral-300 dark:focus-within:ring-neutral-700 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
+                            "relative group flex flex-row gap-3 px-4 items-center justify-between duration-300 focus-within:w-96 h-9 rounded-full bg-light-background-secondary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-neutral-300 dark:focus-within:ring-neutral-700 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
                             { "w-96": searchText.length > 0 },
                             { "w-80": searchText.length === 0 }
                           )}
@@ -396,7 +432,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           <Combobox.Options
                             // static
                             className={
-                              "flex flex-col absolute top-[calc(100%+5px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-lg overflow-clip border-none border-light-divider dark:border-dark-divider drop-shadow-2xl"
+                              "flex flex-col absolute top-[calc(100%+5px)] left-[-16px] bg-light-background-primary dark:bg-dark-background-primary rounded-xl overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-2xl"
                             }
                           >
                             {searchResults.map((result: any, index) => (
