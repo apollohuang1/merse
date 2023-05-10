@@ -39,7 +39,6 @@ const ReadPage = (props: Props) => {
 
   // states
   const [entryData, setEntryData] = React.useState<Entry | null>(null);
-  const [isLiked, setIsLiked] = React.useState<boolean>(false);
   const [showCommentSection, setShowCommentSection] = React.useState<boolean>(false);
 
   const pathname = usePathname();
@@ -126,12 +125,11 @@ const ReadPage = (props: Props) => {
     try {
       // guards
       if (!entryData?._id || !auth?.currentUser?._id) return;
-  
-      // setIsLiked(!isLiked);
-      const updatedLikes = await likeEntry(auth?.currentUser?._id, entryData?._id);
+      
+      const updatedLikes = await likeEntry(auth?.currentUser?._id, entryData?._id, isLikedByCurrentUser() ? "unlike" : "like");
 
       if (!updatedLikes) throw new Error("No updated likes array returned");
-      
+
       setEntryData({
         ...entryData,
         likes: updatedLikes.data,

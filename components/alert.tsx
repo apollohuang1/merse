@@ -54,7 +54,7 @@ const Alert: React.FC<{
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="flex flex-col overflow-hidden rounded-xl bg-light-background-primary dark:bg-dark-background-primary shadow-xl transition-all max-w-md w-full p-5">
+              <Dialog.Panel className="flex flex-col overflow-hidden rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-xl transition-all max-w-md w-full p-5">
                 <div className="flex flex-col items-start h-full w-full">
 
                   {/* header */}

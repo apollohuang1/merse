@@ -3,12 +3,13 @@ import axios from "axios"
 
 export const useReadEntry = () => {
 
-  const likeEntry = async (userId: string, entryId: string) => {
+  const likeEntry = async (userId: string, entryId: string, action: "like" | "unlike") => {
     try {
       const response = await axios({
         method: "POST",
         url: `/api/entries/like/${entryId}`,
         data: {
+          action: action,
           userId: userId
         },
         headers: {
