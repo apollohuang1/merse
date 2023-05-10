@@ -3,7 +3,7 @@
 import axios from "axios";
 import React, { Fragment, useEffect, useMemo } from "react";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { JSONContent, generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -27,11 +27,13 @@ import SlideOver from "@/components/slide-over";
 import { useReadEntry } from "@/hooks/useReadEntry";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { ObjectId } from "mongoose";
+import Link from "next/link";
 
 type Props = {};
 
 const ReadPage = (props: Props) => {
 
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { likeEntry, addComment } = useReadEntry();
   const auth = useAppSelector((state) => state.auth);
@@ -39,11 +41,13 @@ const ReadPage = (props: Props) => {
 
   // states
   const [entryData, setEntryData] = React.useState<Entry | null>(null);
-  const [showCommentSection, setShowCommentSection] = React.useState<boolean>(false);
+  const [showCommentSection, setShowCommentSection] =
+    React.useState<boolean>(false);
 
   // comments
   const [commentText, setCommentText] = React.useState<string>("");
-  const [isSendingComment, setIsSendingComment] = React.useState<boolean>(false);
+  const [isSendingComment, setIsSendingComment] =
+    React.useState<boolean>(false);
 
   const pathname = usePathname();
 
@@ -66,7 +70,7 @@ const ReadPage = (props: Props) => {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
       });
-      
+
       setEntryData(response.data);
       renderCanvas(response.data.canvas);
     } catch (error: any) {
@@ -122,15 +126,18 @@ const ReadPage = (props: Props) => {
 
   const isLikedByCurrentUser = () => {
     return entryData?.likes?.includes(auth?.currentUser?._id);
-  }
-
+  };
 
   const handleLikeEntry = async () => {
     try {
       // guards
       if (!entryData?._id || !auth?.currentUser?._id) return;
 
-      const updatedLikes = await likeEntry(auth?.currentUser?._id, entryData?._id, isLikedByCurrentUser() ? "unlike" : "like");
+      const updatedLikes = await likeEntry(
+        auth?.currentUser?._id,
+        entryData?._id,
+        isLikedByCurrentUser() ? "unlike" : "like"
+      );
 
       if (!updatedLikes) throw new Error("No updated likes array returned");
 
@@ -138,19 +145,21 @@ const ReadPage = (props: Props) => {
         ...entryData,
         likes: updatedLikes,
       });
-  
     } catch (error: any) {
       console.log("Failed to like entry, message: ", error.message);
     }
-  }
+  };
 
   const handleAddComment = async () => {
     try {
-
       if (!entryData?._id || !auth?.currentUser?._id) return;
       setIsSendingComment(true);
 
-      const newComments = await addComment(auth?.currentUser?._id, entryData?._id, commentText);
+      const newComments = await addComment(
+        auth?.currentUser?._id,
+        entryData?._id,
+        commentText
+      );
 
       setEntryData({
         ...entryData,
@@ -168,14 +177,11 @@ const ReadPage = (props: Props) => {
           behavior: "smooth",
         });
       }, 0);
-
-
     } catch (error: any) {
       setIsSendingComment(false);
       console.log("Failed to add comment to entry, message: ", error.message);
     }
-  }
-
+  };
 
   return (
     <>
@@ -208,7 +214,9 @@ const ReadPage = (props: Props) => {
                     className="group flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg"
                   >
                     <FiMessageCircle className="w-6 h-6 text-light-text-tertiary dark:text-dark-text-tertiary" />
-                    <span className="line-clamp-1 font-medium">{entryData?.comments?.length ?? 0}</span>
+                    <span className="line-clamp-1 font-medium">
+                      {entryData?.comments?.length ?? 0}
+                    </span>
                   </button>
 
                   <button
@@ -228,7 +236,9 @@ const ReadPage = (props: Props) => {
                         }
                       )}
                     />
-                    <span className="line-clamp-1 font-medium">{entryData?.likes?.length ?? 0}</span>
+                    <span className="line-clamp-1 font-medium">
+                      {entryData?.likes?.length ?? 0}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -295,9 +305,7 @@ const ReadPage = (props: Props) => {
         withCloseButton
         withPadding={false}
       >
-
         <div className="sticky top-0 flex flex-row gap-3 px-6 py-3 bg-light-background-secondary dark:bg-dark-background-secondary border-b border-light-divider dark:border-dark-divider">
-
           <img
             src={auth?.currentUser?.profile_image_url}
             className="w-11 h-11 rounded-full object-cover"
@@ -319,26 +327,41 @@ const ReadPage = (props: Props) => {
               }}
             />
 
-            { isSendingComment &&
+            {isSendingComment && (
               <Spinner className="w-4 h-4 text-light-text-tertiary dark:text-dark-text-tertiary" />
-            }
-
+            )}
           </div>
         </div>
 
         <div className="flex flex-col gap-0 px-6">
           {entryData?.comments?.map((comment: Comment, index: number) => (
-            <div key={index} className="flex flex-row gap-3 w-full border-b border-light-divider dark:border-dark-divider py-6">
+            <div
+              key={index}
+              className="flex flex-row gap-3 w-full border-b border-light-divider dark:border-dark-divider py-6 items-start"
+            >
               {/* image */}
-              <img
-                src={comment?.author?.profile_image_url}
-                className="w-11 h-11 rounded-full object-cover flex-shrink-0"
-              />
+              <button
+                onClick={() => {
+                  router.push(`/${comment?.author?.username || comment?.author?._id }`);
+                }}
+                className="flex-shrink-0"
+              >
+                <img
+                  src={comment?.author?.profile_image_url}
+                  className="w-11 h-11 rounded-full object-cover"
+                />
+              </button>
 
-              <div className="flex flex-col">
-                <span className="font-semibold leading-normal">{comment?.author?.username || comment?.author?.name}</span>
+              <div className="flex flex-col items-start gap-[3px]">
+                <Link
+                  href={`/${comment?.author?.username || comment?.author?._id }`}
+                  className="font-semibold leading-none hover:underline"
+                >
+                  {/* if username exsits use it. if not, use name */}
+                  {comment?.author?.username || comment?.author?.name || "Unknown"}
+                </Link>
                 <span className="text-base leading-snug">
-                  { comment?.content }
+                  {comment?.content}
                 </span>
               </div>
             </div>
