@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 }
 
 
-// update
+// update profile
 export async function PUT(request: NextRequest) {
   try {
     const db = await dbConnect();
@@ -93,7 +93,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Username already exists" }, { status: 400 });
     }
 
-    const updatedUser = await MDBUser.findOneAndUpdate(filter, body);
+    const updatedUser = await MDBUser.findOneAndUpdate(filter, body, { new: true });
     
     return NextResponse.json(updatedUser, { status: 200 });
 

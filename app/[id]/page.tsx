@@ -5,7 +5,7 @@ import SlideOver from "@/components/slide-over";
 import { Entry } from "@/models/entry";
 import { User } from "@/models/user";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setNotificationContent, setShowNotifications } from "@/redux-store/store";
+import { setCurrentUser, setNotificationContent, setShowNotifications } from "@/redux-store/store";
 import { getImageURLfromBase64 } from "@/util/helper";
 import axios from "axios";
 import clsx from "clsx";
@@ -193,7 +193,8 @@ const ProfilePage = (props: Props) => {
 
   const updateProfile = async () => {
     try {
-      const response = await axios({
+
+      const updatedUserReponse = await axios({
         method: "PUT",
         url: `/api/users`,
         data: {
@@ -208,8 +209,15 @@ const ProfilePage = (props: Props) => {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
       });
-      await fetchUser();
-      // setUser(response.data);
+
+      setUser(updatedUserReponse.data);
+      dispatch(setCurrentUser(updatedUserReponse.data));
+
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify(updatedUserReponse.data)
+      );
+
       setShowProfileEditModal(false);
       dispatch(setShowNotifications(true));
       dispatch(setNotificationContent(
@@ -218,6 +226,7 @@ const ProfilePage = (props: Props) => {
           message: "Your profile has been updated",
         }
       ));
+
     } catch (error: any) {
       if (error.response.data.error === "Username already exists") {
         alert("Username already exists");
