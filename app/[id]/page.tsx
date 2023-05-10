@@ -5,8 +5,13 @@ import SlideOver from "@/components/slide-over";
 import { Entry } from "@/models/entry";
 import { User } from "@/models/user";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setCurrentUser, setNotificationContent, setShowNotifications } from "@/redux-store/store";
+import {
+  setCurrentUser,
+  setNotificationContent,
+  setShowNotifications,
+} from "@/redux-store/store";
 import { getImageURLfromBase64 } from "@/util/helper";
+import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
@@ -46,10 +51,13 @@ const ProfilePage = (props: Props) => {
     UNKNOWN = "unknown",
   }
 
-  const [followingState, setFollowingState] = useState<FollowingState>(FollowingState.UNKNOWN);
+  const [followingState, setFollowingState] = useState<FollowingState>(
+    FollowingState.UNKNOWN
+  );
   const [isFetchingEntries, setIsFetchingEntries] = useState<boolean>(false);
   const [showProfileEditModal, setShowProfileEditModal] =
     useState<boolean>(false);
+  const [isSavingProfile, setIsSavingProfile] = useState<boolean>(false);
 
   const [isBannerInputFocused, setIsBannerInputFocused] =
     useState<boolean>(false);
@@ -73,7 +81,6 @@ const ProfilePage = (props: Props) => {
 
   async function followUser(targetUserId: string) {
     try {
-
       const response = await axios({
         method: "POST",
         url: `/api/users/follow`,
@@ -162,15 +169,14 @@ const ProfilePage = (props: Props) => {
   };
 
   useEffect(() => {
-
-    if (!user) { 
-      setFollowingState(FollowingState.UNKNOWN); 
+    if (!user) {
+      setFollowingState(FollowingState.UNKNOWN);
       return;
     }
 
     if (user?._id === auth?.currentUser?._id) {
       setFollowingState(FollowingState.SELF);
-      return
+      return;
     }
 
     if (user?.followers.includes(auth?.currentUser?._id)) {
@@ -199,6 +205,7 @@ const ProfilePage = (props: Props) => {
 
   const updateProfile = async () => {
     try {
+      setIsSavingProfile(true);
 
       // if no update close modal
       if (!isUpdatingDataChanged()) {
@@ -225,14 +232,21 @@ const ProfilePage = (props: Props) => {
 
       setShowProfileEditModal(false);
       dispatch(setShowNotifications(true));
-      dispatch(setNotificationContent(
-        {
+      dispatch(
+        setNotificationContent({
           title: "Profile updated",
           message: "Your profile has been updated",
-        }
-      ));
+        })
+      );
 
+      setIsSavingProfile(false);
+
+      // if username changed, then navigate to new username
+      if (user?.username !== updatedUserReponse.data.username) {
+        router.push(`/${updatedUserReponse.data.username}`);
+      }
     } catch (error: any) {
+      setIsSavingProfile(false);
       if (error.response.data.error === "Username already exists") {
         alert("Username already exists");
         return;
@@ -243,7 +257,7 @@ const ProfilePage = (props: Props) => {
   };
 
   const isUpdatingDataChanged = () => {
-    return user !== editingUserData
+    return user !== editingUserData;
   };
 
   const tabs = [
@@ -362,10 +376,18 @@ const ProfilePage = (props: Props) => {
                   </span> */}
                 </div>
 
-                <p className="max-w-sm font-normal">
-                  {user?.bio ??
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis lectus magna, ut rutrum justo interdum sed. Aliquam erat elit."}
-                </p>
+                {!user?.bio && user?.bio !== "" && (
+                  <p className="max-w-sm font-normal">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Aliquam convallis lectus magna, ut rutrum justo interdum
+                    sed. Aliquam erat elit.
+                  </p>
+                )}
+
+                {user?.bio && user?.bio !== "" && (
+                  <p className="max-w-sm font-normal">{user?.bio}</p>
+                )}
+
               </div>
             </div>
 
@@ -463,9 +485,11 @@ const ProfilePage = (props: Props) => {
               <button
                 onClick={() => updateProfile()}
                 type="submit"
-                className="bg-accent w-24 h-10 text-white rounded-full"
+                className="flex flex-row bg-accent w-28 h-10 text-white rounded-full items-center justify-center"
+                disabled={isSavingProfile}
               >
-                Save
+                {isSavingProfile && <Spinner className="w-3 h-3 mr-2" />}
+                {isSavingProfile ? "Saving..." : "Save"}
               </button>
             </div>
           </div>
@@ -473,7 +497,6 @@ const ProfilePage = (props: Props) => {
       >
         {/* create/edit character slideover content */}
         <div className="flex flex-col items-center">
-
           <div className="flex flex-col w-full h-40 items-center justify-center">
             {editingUserData?.banner_image_url ? (
               <img
@@ -490,12 +513,16 @@ const ProfilePage = (props: Props) => {
           <div className="flex flex-col w-full -translate-y-[56px] gap-7">
             {/* circle image input */}
             <div className="group relative w-28 h-28 border border-light-divider dark:border-dark-divider rounded-full mx-4">
-              {editingUserData?.profile_image_url && editingUserData.profile_image_url !== "" ? (
+              {editingUserData?.profile_image_url &&
+              editingUserData.profile_image_url !== "" ? (
                 <img
                   src={editingUserData.profile_image_url}
                   className={clsx(
                     "absolute w-full h-full object-cover rounded-full",
-                    { "ring-2 ring-accent ring-opacity-80": isProfileInputFocused }
+                    {
+                      "ring-2 ring-accent ring-opacity-80":
+                        isProfileInputFocused,
+                    }
                   )}
                   alt="character face"
                 />
