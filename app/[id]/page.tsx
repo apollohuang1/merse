@@ -46,9 +46,7 @@ const ProfilePage = (props: Props) => {
     UNKNOWN = "unknown",
   }
 
-  const [followingState, setFollowingState] = useState<FollowingState>(
-    FollowingState.UNKNOWN
-  );
+  const [followingState, setFollowingState] = useState<FollowingState>(FollowingState.UNKNOWN);
   const [isFetchingEntries, setIsFetchingEntries] = useState<boolean>(false);
   const [showProfileEditModal, setShowProfileEditModal] =
     useState<boolean>(false);
@@ -75,6 +73,7 @@ const ProfilePage = (props: Props) => {
 
   async function followUser(targetUserId: string) {
     try {
+
       const response = await axios({
         method: "POST",
         url: `/api/users/follow`,
@@ -141,6 +140,7 @@ const ProfilePage = (props: Props) => {
         // const id = pathname;
         if (!pathname) return;
         const usernameOrId = pathname.split("/")[1];
+
         const response = await axios({
           method: "GET",
           url: `/api/users/${usernameOrId}`,
@@ -151,16 +151,7 @@ const ProfilePage = (props: Props) => {
 
         setUser(response.data);
 
-        if (response.data._id === auth?.currentUser?._id) {
-          setFollowingState(FollowingState.SELF);
-        } else {
-          if (response.data.followers.includes(auth?.currentUser?._id)) {
-            setFollowingState(FollowingState.FOLLOWING);
-          } else {
-            setFollowingState(FollowingState.NOT_FOLLOWING);
-          }
-        }
-
+        console.log("response.data: ", response.data);
         // await fetchAllEntries(response.data._id);
         resolve(response.data);
       } catch (error: any) {
@@ -169,6 +160,25 @@ const ProfilePage = (props: Props) => {
       }
     });
   };
+
+  useEffect(() => {
+
+    if (!user) { 
+      setFollowingState(FollowingState.UNKNOWN); 
+      return;
+    }
+
+    if (user?._id === auth?.currentUser?._id) {
+      setFollowingState(FollowingState.SELF);
+      return
+    }
+
+    if (user?.followers.includes(auth?.currentUser?._id)) {
+      setFollowingState(FollowingState.FOLLOWING);
+    } else {
+      setFollowingState(FollowingState.NOT_FOLLOWING);
+    }
+  }, [auth?.currentUser?._id, user?._id]);
 
   const fetchAllEntries = async (user_id: string) => {
     try {
