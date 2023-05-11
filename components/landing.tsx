@@ -5,7 +5,7 @@ import { FiArrowUpRight, FiBookOpen, FiChevronRight } from "react-icons/fi";
 import {
   midjourneyGeneratedImages,
   teamMembers,
-} from "@/util/landing-constant";
+} from "@/util/constants/landing-constant";
 import Link from "next/link";
 import { HiPause, HiPlay } from "react-icons/hi2";
 import NavigationBar from "./navigation-bar";
@@ -19,7 +19,7 @@ import {
   markQuoteRyanTweetHtml,
   ryanTweetHtml,
   tweets,
-} from "@/util/home-constant";
+} from "@/util/constants/home-constant";
 import parse from "html-react-parser";
 
 type Props = {};

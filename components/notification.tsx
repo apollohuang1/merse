@@ -29,18 +29,18 @@ const Notification = (props: Props) => {
       { [1].map((notification, index: number) => (
         <div
           key={index}
-          className="flex w-full flex-row items-center justify-end space-y-4 sm:items-end"
+          className="flex w-full flex-row items-center justify-center space-y-4 sm:items-end"
         >
           {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
           <Transition
             show={props.isOpen}
             as={Fragment}
             enter="transform ease-out duration-300 transition"
-            enterFrom="translate-x-2 opacity-0"
-            enterTo="translate-x-0 opacity-100"
+            enterFrom="translate-y-2 opacity-0"
+            enterTo="translate-y-0 opacity-100"
             leave="transition ease-in duration-100"
-            leaveFrom="opacity-100 translate-x-0"
-            leaveTo="opacity-0 translate-x-2"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-2"
           >
             <div className="pointer-events-auto w-full max-w-md overflow-hidden rounded-2xl bg-light-background-primary dark:bg-dark-background-secondary bg-opacity-80 dark:bg-opacity-80 backdrop-blur-lg drop-shadow-2xl ring-1 ring-light-divider dark:ring-dark-divider">
               <div className="px-3 py-3">

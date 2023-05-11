@@ -39,7 +39,7 @@ import {
   StoryboardSample,
   createRoutes,
   storyboardSamples,
-} from "@/util/create-constants";
+} from "@/util/constants/create-constants";
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {

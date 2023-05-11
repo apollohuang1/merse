@@ -16,7 +16,7 @@ import {
 } from "@/redux-store/store";
 import { genders } from "@/util/select";
 import mongoose from "mongoose";
-import { createRoutes } from "@/util/create-constants";
+import { createRoutes } from "@/util/constants/create-constants";
 
 type Props = {};
 

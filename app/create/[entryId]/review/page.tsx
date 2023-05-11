@@ -4,7 +4,7 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux-store/hooks';
 import CreateHeader from '@/components/create/create-header';
-import { createRoutes } from '@/util/create-constants';
+import { createRoutes } from '@/util/constants/create-constants';
 
 type Props = {}
 //const { base_64, createImageFromText } = useCreateEntry();

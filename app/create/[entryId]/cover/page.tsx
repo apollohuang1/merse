@@ -3,7 +3,7 @@
 import CreateHeader from '@/components/create/create-header'
 import MaxWidthContainer from '@/components/create/max-width-container'
 import { useAppSelector } from '@/redux-store/hooks'
-import { createRoutes } from '@/util/create-constants'
+import { createRoutes } from '@/util/constants/create-constants'
 import React from 'react'
 import { FiArrowRight } from 'react-icons/fi'
 

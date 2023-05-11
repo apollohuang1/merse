@@ -8,7 +8,7 @@ import useAuth from "@/hooks/useAuth";
 import { Entry } from "@/models/entry";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setEntryAuthor, setEntryId } from "@/redux-store/store";
-import { CreateRoute, createRoutes } from "@/util/create-constants";
+import { CreateRoute, createRoutes } from "@/util/constants/create-constants";
 import mongoose from "mongoose";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";

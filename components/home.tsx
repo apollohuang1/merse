@@ -13,8 +13,8 @@ import {
 } from "react-icons/fi";
 import MerseLogo from "./svgs/merse-logo";
 import useColorScheme from "@/hooks/useColorScheme";
-import { sampleArtists } from "@/util/home-constant";
-import { storyboardSamples } from "@/util/create-constants";
+import { sampleArtists } from "@/util/constants/home-constant";
+import { storyboardSamples } from "@/util/constants/create-constants";
 import { useRouter } from "next/navigation";
 
 type Props = {};

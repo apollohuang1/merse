@@ -2,6 +2,7 @@
 
 import Divider from "@/components/divider";
 import SlideOver from "@/components/slide-over";
+import useCreateEntry from "@/hooks/useCreateEntry";
 import { Entry } from "@/models/entry";
 import { User } from "@/models/user";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
@@ -10,31 +11,22 @@ import {
   setNotificationContent,
   setShowNotifications,
 } from "@/redux-store/store";
+import { singaporeEntrySample } from "@/util/constants/profile-constants";
 import { getImageURLfromBase64 } from "@/util/helper";
 import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import clsx from "clsx";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiMoreHorizontal, FiPlus } from "react-icons/fi";
 
 type Props = {};
 
 const ProfilePage = (props: Props) => {
-  useEffect(() => {
-    // fetchAllEntries();
-
-    // fetch user
-    fetchUser()
-      .then((user: any) => {
-        fetchAllEntries(user._id);
-      })
-      .catch((error: any) => {
-        // console.log("Failed to fetch user, message: ", error.message);
-      });
-  }, []);
-
   const router = useRouter();
+  const pathname = usePathname();
+  const createEntryUtils = useCreateEntry();
 
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -63,8 +55,6 @@ const ProfilePage = (props: Props) => {
     useState<boolean>(false);
   const [isProfileInputFocused, setIsProfileInputFocused] =
     useState<boolean>(false);
-
-  const pathname = usePathname();
 
   // async function followUser(userId, targetUserId) {
   //   const user = await User.findById(userId);
@@ -168,6 +158,19 @@ const ProfilePage = (props: Props) => {
   };
 
   useEffect(() => {
+    // fetchAllEntries();
+
+    // fetch user
+    fetchUser()
+      .then((user: any) => {
+        fetchAllEntries(user._id);
+      })
+      .catch((error: any) => {
+        // console.log("Failed to fetch user, message: ", error.message);
+      });
+  }, []);
+
+  useEffect(() => {
     if (!user) {
       setFollowingState(FollowingState.UNKNOWN);
       return;
@@ -195,6 +198,7 @@ const ProfilePage = (props: Props) => {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
       });
+      console.log("response.data: ", response.data);
       setAllEntries(response.data);
       setIsFetchingEntries(false);
     } catch (error: any) {
@@ -375,17 +379,16 @@ const ProfilePage = (props: Props) => {
                   </span> */}
                 </div>
 
-                { user?.bio && user?.bio !== "" && (
+                {user?.bio && user?.bio !== "" && (
                   <p className="max-w-sm font-normal">{user?.bio}</p>
                 )}
-
               </div>
             </div>
 
             <div className="border-b border-light-divider dark:border-dark-divider">
               <nav className="-mb-px flex" aria-label="Tabs">
                 {tabs.map((tab: any) => (
-                  <a
+                  <Link
                     key={tab.name}
                     href={tab.href}
                     className={clsx(
@@ -400,7 +403,7 @@ const ProfilePage = (props: Props) => {
                     // aria-current={tab.current ? "page" : undefined}
                   >
                     {tab.name}
-                  </a>
+                  </Link>
                 ))}
               </nav>
 
@@ -408,41 +411,90 @@ const ProfilePage = (props: Props) => {
             </div>
 
             {activehash === "#entries" && (
-              <div className="grid grid-cols-3 gap-3 max-lg:grid-cols-2 w-full">
+              <div className="flex flex-col gap-3 max-lg:grid-cols-2 w-full">
                 {isFetchingEntries ? (
                   <>
                     {[...Array(6)].map((_, index) => (
                       <div
                         key={index}
-                        className="w-full h-full animate-pulse aspect-square bg-light bg-light-background-secondary dark:bg-dark-background-secondary rounded-md"
+                        className="flex flex-row w-full h-56 animate-pulse bg-light-background-secondary dark:bg-dark-background-secondary rounded-md"
                       />
                     ))}
                   </>
                 ) : (
                   <>
+                    {/* {[ singaporeEntrySample, singaporeEntrySample, singaporeEntrySample, singaporeEntrySample,].map((entry: any, index: number) => ( */}
                     {allEntries.map((entry: Entry, index: number) => (
-                      <button
+                      <div
                         key={index}
-                        onClick={() => {
-                          router.push(`/entry/${entry._id}`);
-                        }}
-                        className="flex flex-col w-full items-center justify-between bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-md overflow-clip"
+                        className="flex flex-row w-full h-56 py-6 border-b border-light-divider dark:border-dark-divider rounded-none overflow-clip gap-6"
                       >
-                        {entry?.scenes[0]?.image_base64 ? (
-                          <img
-                            src={getImageURLfromBase64(
-                              entry?.scenes[0]?.image_base64
-                            )}
-                            className="w-full h-full aspect-square object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-emerald-300 dark:bg-emerald-800"></div>
-                        )}
+                        <Link
+                          href={`entry/${entry?._id}`}
+                          className="flex-shrink-0"
+                        >
+                          {entry?.scenes[0]?.image_base64 ? (
+                            <img
+                              src={getImageURLfromBase64(
+                                entry?.scenes[0]?.image_base64
+                              )}
+                              className="h-full aspect-square object-cover rounded-none"
+                            />
+                          ) : (
+                            <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary"></div>
+                          )}
+                        </Link>
 
-                        <div className="flex flex-row px-6 py-4 items-center justify-start w-full text-left">
-                          <span className="line-clamp-1">{entry.title}</span>
+                        <div className="flex flex-col justify-start w-full h-full gap-3 items-start">
+                          <div className="flex flex-row w-full justify-between flex-shrink-0">
+                            {/* author info */}
+                            <Link
+                              className="flex flex-row gap-2"
+                              href={`/${
+                                entry?.author?.username || entry?.author?._id
+                              }`}
+                            >
+                              <img
+                                src={entry?.author?.profile_image_url}
+                                className="w-6 h-6 rounded-full aspect-square"
+                              />
+
+                              <div className="flex flex-col">
+                                <span className="text-light-text-primary dark:text-dark-text-primary font-medium">
+                                  {entry?.author?.username ||
+                                    entry?.author?.name ||
+                                    "Unknown"}
+                                </span>
+                              </div>
+                            </Link>
+
+                            {/* options */}
+                            <button className="group flex w-8 h-8 hover:bg-emerald-500 hover:bg-opacity-10 items-center justify-center rounded-full">
+                              <FiMoreHorizontal className="w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-hover:text-emerald-500" />
+                            </button>
+                          </div>
+
+                          {/* title and description */}
+                          <Link href={`/entry/${entry._id}`}>
+                            <p className="line-clamp-1 font-semibold text-2xl flex-shrink-0 leading-snug">
+                              {entry.title}
+                            </p>
+
+                            <p className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-4">
+                              Lorem ipsum dolor sit amet consectetur adipisicing
+                              elit. Quisquam, quibusdam. Lorem ipsum dolor sit
+                              amet consectetur adipisicing elit. Quisquam,
+                              quibusdam. Lorem ipsum dolor sit amet consectetur
+                              adipisicing elit. Quisquam, quibusdam. Lorem ipsum
+                              dolor sit amet consectetur adipisicing elit.
+                              Quisquam, quibusdam. Lorem ipsum dolor sit amet
+                              consectetur adipisicing elit. Quisquam, quibusdam.
+                              Lorem ipsum dolor sit amet consectetur adipisicing
+                              elit. Quisquam, quibusdam.
+                            </p>
+                          </Link>
                         </div>
-                      </button>
+                      </div>
                     ))}
                   </>
                 )}

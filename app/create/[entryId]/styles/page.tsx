@@ -5,7 +5,7 @@ import MaxWidthContainer from "@/components/create/max-width-container";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
-import { ComicStyle, comicStyles, createRoutes } from "@/util/create-constants";
+import { ComicStyle, comicStyles, createRoutes } from "@/util/constants/create-constants";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setStyle, setStylesScrollPosition } from "@/redux-store/store";
 

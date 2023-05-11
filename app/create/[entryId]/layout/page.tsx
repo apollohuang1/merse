@@ -52,7 +52,7 @@ import {
   unsplashTemplate1,
   unsplashTemplate2,
   unsplashTemplate3,
-} from "@/util/create-constants";
+} from "@/util/constants/create-constants";
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {

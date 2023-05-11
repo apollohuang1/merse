@@ -30,7 +30,7 @@ import ProfileMenu from "./wrapper/profile-menu";
 import MerseLogo from "./svgs/merse-logo";
 import Divider from "./divider";
 import { Combobox, Transition } from "@headlessui/react";
-import { sampleArtists } from "@/util/home-constant";
+import { sampleArtists } from "@/util/constants/home-constant";
 import { HiXCircle } from "react-icons/hi";
 import { debounce } from "lodash";
 import axios from "axios";

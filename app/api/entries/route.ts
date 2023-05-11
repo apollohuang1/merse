@@ -24,7 +24,11 @@ export async function GET(request: NextRequest) {
       // fetch all entries from user
       const allEntriesFromUser = await MDBEntry.find({
         author: userId,
-      });
+      })
+      .populate({
+        path: "author",
+        select: "profile_image_url name username _id",
+      })
 
       return NextResponse.json(allEntriesFromUser, { status: 200 });
     }

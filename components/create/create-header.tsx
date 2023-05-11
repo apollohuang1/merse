@@ -1,5 +1,5 @@
 import useCreateEntry from "@/hooks/useCreateEntry";
-import { CreateRoute } from "@/util/create-constants";
+import { CreateRoute } from "@/util/constants/create-constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
