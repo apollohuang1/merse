@@ -199,33 +199,33 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 {/* side menus */}
                 <div className="flex flex-col w-full gap-5 items-center p-3">
                   {/* create button */}
-                  <Link
-                    href={`/create/${new mongoose.Types.ObjectId().toHexString()}/styles`}
-                    className="flex w-full items-center justify-center cursor-pointer"
+                  <button
+                    onClick={() => {
+                      router.push(
+                        `/create/${new mongoose.Types.ObjectId().toHexString()}/styles`
+                      );
+                    }}
+                    className={clsx(
+                      "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
+                      {
+                        "flex-col justify-center h-12 w-12 aspect-square":
+                          !showFullSidebar,
+                      },
+                      {
+                        "flex-row justify-between pl-6 pr-3 h-12":
+                          showFullSidebar,
+                      }
+                    )}
                   >
-                    <button
-                      className={clsx(
-                        "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
-                        {
-                          "flex-col justify-center h-12 w-12 aspect-square":
-                            !showFullSidebar,
-                        },
-                        {
-                          "flex-row justify-between pl-6 pr-3 h-12":
-                            showFullSidebar,
-                        }
+                    <div className="flex flex-row items-center gap-3">
+                      <FiEdit className="h-[18px] w-[18px]" />
+                      {showFullSidebar && (
+                        <span className="flex flex-shrink-0 font-normal">
+                          Create
+                        </span>
                       )}
-                    >
-                      <div className="flex flex-row items-center gap-3">
-                        <FiEdit className="h-[18px] w-[18px]" />
-                        {showFullSidebar && (
-                          <span className="flex flex-shrink-0 font-normal">
-                            Create
-                          </span>
-                        )}
-                      </div>
-                    </button>
-                  </Link>
+                    </div>
+                  </button>
 
                   {/* navigation menus */}
                   <div className="flex flex-col gap-1 w-full">
@@ -544,44 +544,49 @@ const SidebarMenuButton: React.FC<{
   isNew = false,
   isCurrentRoute,
 }) => {
+  const router = useRouter();
+
   return (
-    <Link
-      href={href}
-      className="group flex w-full items-center justify-center cursor-pointer"
+    // <Link
+    //   href={href}
+    //   className="group flex w-full items-center justify-center cursor-pointer"
+    // >
+    <button
+      onClick={() => {
+        router.push(href);
+      }}
+      className={clsx(
+        "group flex flex-row items-center gap-3 w-full transition-all rounded-xl",
+        { "bg-accent hover:bg-emerald-600": variant === "solid" },
+        // {
+        // "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary":
+        // variant === "normal",
+        // },
+        { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
+        { "flex-row justify-between pl-6 pr-3 h-12": isFull }
+      )}
     >
-      <button
+      <div
         className={clsx(
-          "flex flex-row items-center gap-3 w-full transition-all rounded-xl",
-          { "bg-accent hover:bg-emerald-600": variant === "solid" },
-          // {
-          // "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary":
-          // variant === "normal",
-          // },
-          { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
-          { "flex-row justify-between pl-6 pr-3 h-12": isFull }
+          "flex flex-row items-center gap-3 text-base text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100 transition-all duration-200",
+          { "dark:text-opacity-100 font-medium": isCurrentRoute },
+          {
+            "font-normal text-light-text-secondary dark:text-dark-text-secondary group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary":
+              !isCurrentRoute,
+          }
         )}
       >
-        <div
-          className={clsx(
-            "flex flex-row items-center gap-3 text-base text-light-text-primary dark:text-dark-text-primary group-hover:text-opacity-100 transition-all duration-200",
-            { "dark:text-opacity-100 font-medium": isCurrentRoute },
-            {
-              "font-normal text-light-text-secondary dark:text-dark-text-secondary group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary":
-                !isCurrentRoute,
-            }
-          )}
-        >
-          {icon}
-          {isFull && <span className="flex flex-shrink-0">{label}</span>}
-        </div>
+        {icon}
+        {isFull && <span className="flex flex-shrink-0">{label}</span>}
+      </div>
 
-        {isNew && isFull && (
-          <span className="text-accent text-sm font-medium px-2 py-[2px] bg-emerald-500 bg-opacity-[0.15] dark:bg-opacity-30 rounded-lg">
-            New
-          </span>
-        )}
-      </button>
-    </Link>
+      {isNew && isFull && (
+        <span className="text-accent text-sm font-medium px-2 py-[2px] bg-emerald-500 bg-opacity-[0.15] dark:bg-opacity-30 rounded-lg">
+          New
+        </span>
+      )}
+    </button>
+    // </Link>
   );
 };
 

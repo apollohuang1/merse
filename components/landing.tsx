@@ -195,7 +195,7 @@ const Landing = (props: Props) => {
                     // target blank open ryanhover twitter profile
                     window.open("https://twitter.com/rrhoover", "_blank");
                   }}
-                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-white border-opacity-20 hover:bg-dark-background-secondary"
+                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
                 >
                   <span className=" max-sm:text-sm">Ryan Hoover, Founder of Product Hunt</span>
                   <FiChevronRight className="text-accent font-medium" />
@@ -213,7 +213,7 @@ const Landing = (props: Props) => {
                     // target blank open ryanhover twitter profile
                     window.open("https://twitter.com/naval", "_blank");
                   }}
-                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-white border-opacity-20 hover:bg-dark-background-secondary"
+                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
                 >
                   <span className=" max-sm:text-sm">Naval Ravikant, Founder of AngelList</span>
                   <FiChevronRight className="text-accent font-medium" />
