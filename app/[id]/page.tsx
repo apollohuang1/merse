@@ -6,10 +6,7 @@ import useCreateEntry from "@/hooks/useCreateEntry";
 import { Entry } from "@/models/entry";
 import { User } from "@/models/user";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import {
-  setCurrentUser,
-  setNotificationContent,
-} from "@/redux-store/store";
+import { setCurrentUser, setNotificationContent } from "@/redux-store/store";
 import { singaporeEntrySample } from "@/util/constants/profile-constants";
 import {
   getFormattedDateFromMongoDBDate,
@@ -419,7 +416,7 @@ const ProfilePage = (props: Props) => {
 
             {activehash === "#entries" && (
               <div className="flex flex-col gap-3 w-full">
-                {/* {isFetchingEntries ? (
+                {isFetchingEntries ? (
                   <>
                     {[...Array(6)].map((_, index) => (
                       <div
@@ -428,190 +425,217 @@ const ProfilePage = (props: Props) => {
                       />
                     ))}
                   </>
-                ) : ( */}
-                <>
-                  {[
+                ) : (
+                  <>
+                    {/* {[
                     singaporeEntrySample,
                     singaporeEntrySample,
                     singaporeEntrySample,
                     singaporeEntrySample,
-                  ].map((entry: any, index: number) => (
-                    // {allEntries.map((entry: Entry, index: number) => (
-                    <>
-                      <div
-                        key={index}
-                        className="flex flex-row w-full h-56 py-6 border-light-divider dark:border-dark-divider rounded-none overflow-clip gap-6"
-                      >
-                        <Link
-                          href={`entry/${entry?._id}`}
-                          className="flex-shrink-0"
+                  ].map((entry: any, index: number) => ( */}
+                    {allEntries.map((entry: Entry, index: number) => (
+                      <>
+                        <div
+                          key={index}
+                          className="flex flex-row w-full h-56 py-6 border-light-divider dark:border-dark-divider rounded-none overflow-clip gap-6"
                         >
-                          {entry?.scenes[0]?.image_base64 ? (
-                            <img
-                              src={getImageURLfromBase64(
-                                entry?.scenes[0]?.image_base64
-                              )}
-                              className="h-full aspect-square object-cover rounded-none"
-                            />
-                          ) : (
-                            <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary"></div>
-                          )}
-                        </Link>
-
-                        <div className="flex flex-col justify-between w-full h-full gap-1 items-start">
-                          <div className="flex flex-row w-full justify-between flex-shrink-0">
-                            <div className="flex flex-row items-center gap-2">
-                              {/* author info */}
-                              <Link
-                                className="flex flex-row gap-2 items-center hover:underline"
-                                href={`/${
-                                  entry?.author?.username || entry?.author?._id
-                                }`}
-                              >
-                                <img
-                                  src={entry?.author?.profile_image_url}
-                                  className="w-6 h-6 rounded-full aspect-square"
-                                />
-
-                                <span className="text-light-text-primary dark:text-dark-text-primary font-medium">
-                                  {entry?.author?.username ||
-                                    entry?.author?.name ||
-                                    "Unknown"}
-                                </span>
-                              </Link>
-
-                              <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary font-medium">
-                                {getFormattedDateFromMongoDBDate(
-                                  entry?.created_at
-                                )}
-                              </span>
-                            </div>
-
-                            <div className="flex flex-row items-center gap-3">
-                              {/* likes */}
-                              <button className="flex flex-row items-center">
-                                <FiHeart className="w-5 h-5 text-light-text-tertiary dark:text-dark-text-tertiary" />
-                                <span className="text-sm font-medium ml-[5px]">
-                                  1.2k
-                                </span>
-                              </button>
-
-                              {/* comments */}
-                              <button className="flex flex-row items-center">
-                                <FiMessageCircle className="w-5 h-5 text-light-text-tertiary dark:text-dark-text-tertiary" />
-                                <span className="text-sm font-medium ml-1">
-                                  1.2k
-                                </span>
-                              </button>
-
-                              {/* options */}
-
-                              <Menu
-                                as="div"
-                                className="relative inline-block text-left"
-                              >
-                                <div>
-                                  <Menu.Button className="group flex w-8 h-8 hover:bg-emerald-500 hover:bg-opacity-10 items-center justify-center rounded-full">
-                                    <FiMoreHorizontal className="w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-hover:text-emerald-500" />
-                                  </Menu.Button>
-                                </div>
-
-                                <Transition
-                                  as={Fragment}
-                                  enter="transition ease-out duration-150"
-                                  enterFrom="transform opacity-0 scale-95"
-                                  enterTo="transform opacity-100 scale-100"
-                                  leave="transition ease-in duration-100"
-                                  leaveFrom="transform opacity-100 scale-100"
-                                  leaveTo="transform opacity-0 scale-95"
-                                >
-                                  <Menu.Items className="absolute top-full right-1/2 z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-sm bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-lg">
-                                    <div className="py-1">
-                                      <Menu.Item>
-                                        {({ active }) => (
-                                          <button
-                                            className={clsx(
-                                              "text-base flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                                              {
-                                                "bg-light-background-secondary dark:bg-dark-background-tertiary": active,
-                                              },
-                                              { "": !active }
-                                            )}
-                                          >
-                                            Edit
-                                          </button>
-                                        )}
-                                      </Menu.Item>
-
-                                      <Menu.Item>
-                                        {({ active }) => (
-                                          <button
-                                            onClick={() => {
-                                              navigator.clipboard.writeText(
-                                                `${window.location.origin}/entry/${entry._id}`
-                                              );
-
-                                              dispatch(setNotificationContent({
-                                                title: "Link Copied",
-                                                message: "Entry link copied to clipboard.",
-                                              }));
-
-                                            }}
-                                            className={clsx(
-                                              "text-base flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                                              {
-                                                "bg-light-background-secondary dark:bg-dark-background-tertiary": active,
-                                              },
-                                              { "": !active }
-                                            )}
-                                          >
-                                            Copy Entry Link
-                                          </button>
-                                        )}
-                                      </Menu.Item>
-
-                                    </div>
-                                  </Menu.Items>
-                                </Transition>
-                              </Menu>
-                            </div>
-                          </div>
-
-                          {/* title and description */}
                           <Link
-                            href={`/entry/${entry._id}`}
-                            className="flex flex-col"
+                            href={`entry/${entry?._id}`}
+                            className="flex-shrink-0"
                           >
-                            <p className="line-clamp-1 font-semibold text-2xl flex-shrink-0 leading-normal line-clamp-1">
-                              {entry.title}
-                            </p>
-
-                            <p className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-4 leading-normal">
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Quisquam, quibusdam. Lorem ipsum dolor sit
-                              amet consectetur adipisicing elit. Quisquam,
-                              quibusdam. Lorem ipsum dolor sit amet consectetur
-                              adipisicing elit. Quisquam, quibusdam. Lorem ipsum
-                              dolor sit amet consectetur adipisicing elit.
-                              Quisquam, quibusdam. Lorem ipsum dolor sit amet
-                              consectetur adipisicing elit. Quisquam, quibusdam.
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Quisquam, quibusdam.
-                            </p>
+                            {entry?.scenes[0]?.image_base64 ? (
+                              <img
+                                src={getImageURLfromBase64(
+                                  entry?.scenes[0]?.image_base64
+                                )}
+                                className="h-full aspect-square object-cover rounded-none"
+                              />
+                            ) : (
+                              <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary"></div>
+                            )}
                           </Link>
 
-                          {/* tags */}
-                          <div className="flex flex-row w-full gap-3 items-center justify-end opacity-0">
-                            asd
+                          <div className="flex flex-col justify-between w-full h-full gap-1 items-start">
+                            <div className="flex flex-row w-full justify-between flex-shrink-0">
+                              <div className="flex flex-row items-center gap-2">
+                                {/* author info */}
+                                <Link
+                                  className="flex flex-row gap-2 items-center hover:underline"
+                                  href={`/${
+                                    entry?.author?.username ||
+                                    entry?.author?._id
+                                  }`}
+                                >
+                                  <img
+                                    src={entry?.author?.profile_image_url}
+                                    className="w-6 h-6 rounded-full aspect-square"
+                                  />
+
+                                  <span className="text-light-text-primary dark:text-dark-text-primary font-medium">
+                                    {entry?.author?.username ||
+                                      entry?.author?.name ||
+                                      "Unknown"}
+                                  </span>
+                                </Link>
+
+                                <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary font-medium">
+                                  {getFormattedDateFromMongoDBDate(
+                                    entry?.created_at
+                                  )}
+                                </span>
+                              </div>
+
+                              <div className="flex flex-row items-center gap-3">
+                                {/* likes */}
+                                <button className="flex flex-row items-center">
+                                  <FiHeart className="w-5 h-5 text-light-text-tertiary dark:text-dark-text-tertiary" />
+                                  <span className="text-sm font-medium ml-[5px]">
+                                    {entry?.likes?.length || 0}
+                                  </span>
+                                </button>
+
+                                {/* comments */}
+                                <button className="flex flex-row items-center">
+                                  <FiMessageCircle className="w-5 h-5 text-light-text-tertiary dark:text-dark-text-tertiary" />
+                                  <span className="text-sm font-medium ml-1">
+                                    {entry?.comments?.length || 0}
+                                  </span>
+                                </button>
+
+                                {/* options */}
+
+                                <Menu
+                                  as="div"
+                                  className="relative inline-block text-left"
+                                >
+                                  {({ open }) => (
+                                    <>
+                                      <div>
+                                        <Menu.Button
+                                          className={clsx(
+                                            "group flex w-8 h-8 hover:bg-emerald-500 hover:bg-opacity-10 items-center justify-center rounded-full",
+                                            {
+                                              "bg-emerald-500 bg-opacity-10":
+                                                open,
+                                            }
+                                          )}
+                                        >
+                                          <FiMoreHorizontal
+                                            className={clsx(
+                                              "w-5 h-5 group-hover:text-emerald-500",
+                                              { "text-emerald-500": open },
+                                              {
+                                                "text-light-text-secondary dark:text-dark-text-secondary":
+                                                  !open,
+                                              }
+                                            )}
+                                          />
+                                        </Menu.Button>
+                                      </div>
+
+                                      <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-150"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-100"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                      >
+                                        <Menu.Items className="absolute top-full right-1/2 z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-md bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-lg">
+                                          <div className="py-1">
+                                            <Menu.Item>
+                                              {({ active }) => (
+                                                <button
+                                                  className={clsx(
+                                                    "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                                    {
+                                                      "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                                        active,
+                                                    },
+                                                    { "": !active }
+                                                  )}
+                                                >
+                                                  Edit
+                                                </button>
+                                              )}
+                                            </Menu.Item>
+
+                                            <Menu.Item>
+                                              {({ active }) => (
+                                                <button
+                                                  onClick={() => {
+                                                    navigator.clipboard.writeText(
+                                                      `${window.location.origin}/entry/${entry._id}`
+                                                    );
+
+                                                    dispatch(
+                                                      setNotificationContent({
+                                                        title: "Link Copied",
+                                                        message:
+                                                          "Entry link copied to clipboard.",
+                                                      })
+                                                    );
+                                                  }}
+                                                  className={clsx(
+                                                    "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                                    {
+                                                      "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                                        active,
+                                                    },
+                                                    { "": !active }
+                                                  )}
+                                                >
+                                                  Copy Entry Link
+                                                </button>
+                                              )}
+                                            </Menu.Item>
+                                          </div>
+                                        </Menu.Items>
+                                      </Transition>
+                                    </>
+                                  )}
+                                </Menu>
+                              </div>
+                            </div>
+
+                            {/* title and description */}
+                            <Link
+                              href={`/entry/${entry._id}`}
+                              className="flex flex-col"
+                            >
+                              <p className="line-clamp-1 font-semibold text-2xl flex-shrink-0 leading-normal line-clamp-1">
+                                {entry.title}
+                              </p>
+
+                              <p className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-4 leading-normal">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quisquam, quibusdam. Lorem
+                                ipsum dolor sit amet consectetur adipisicing
+                                elit. Quisquam, quibusdam. Lorem ipsum dolor sit
+                                amet consectetur adipisicing elit. Quisquam,
+                                quibusdam. Lorem ipsum dolor sit amet
+                                consectetur adipisicing elit. Quisquam,
+                                quibusdam. Lorem ipsum dolor sit amet
+                                consectetur adipisicing elit. Quisquam,
+                                quibusdam. Lorem ipsum dolor sit amet
+                                consectetur adipisicing elit. Quisquam,
+                                quibusdam.
+                              </p>
+                            </Link>
+
+                            {/* tags */}
+                            <div className="flex flex-row w-full gap-3 items-center justify-end opacity-0">
+                              asd
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <Divider />
-                    </>
-                  ))}
-                </>
-                {/* )} */}
+                        <Divider />
+                      </>
+                    ))}
+                  </>
+                )}
               </div>
             )}
           </div>
