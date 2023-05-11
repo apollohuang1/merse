@@ -36,6 +36,7 @@ module.exports = {
           accent: "#E52B12",
           appleBlue: "#007AFF", // blue
           divider: "#EFEFEF", // opque
+          dividerContrast: "#E7E7E7", // more contrast
           blue: "#007AFF",
           red: '#FF3B30',
           pink: '#FF2D55',
@@ -66,6 +67,7 @@ module.exports = {
           accent: "#E52B12",
           appleBlue: '#0A84FF', // blue
           divider: "#262626", // opaque
+          dividerContrast: "#3F3F42", // opaque
           // divider: "#2C302B", // satoshi
           blue: '#0A84FF',
           red: '#FF453A',

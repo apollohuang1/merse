@@ -336,8 +336,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       // isNew={true}
                     /> */}
                   </div>
-
-                  <Divider />
                 </div>
 
                 {showFullSidebar && (
@@ -397,7 +395,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       >
                         <div
                           className={clsx(
-                            "relative group flex flex-row gap-3 px-4 items-center justify-between duration-300 focus-within:w-96 h-9 rounded-full bg-light-background-secondary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-neutral-300 dark:focus-within:ring-neutral-700 transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
+                            "relative group flex flex-row gap-3 px-4 items-center justify-between duration-300 focus-within:w-96 h-9 rounded-full bg-light-background-secondary dark:bg-dark-background-tertiary focus-within:ring-1 focus-within:ring-light-dividerContrast dark:focus-within:ring-dark-dividerContrast transition-all max-md:hidden focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary",
                             { "w-96": searchText.length > 0 },
                             { "w-80": searchText.length === 0 }
                           )}

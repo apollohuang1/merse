@@ -325,7 +325,7 @@ const ProfilePage = (props: Props) => {
                       }
                     }}
                     className={clsx(
-                      "h-10 w-28 font-medium rounded-full border border-light-divider dark:border-dark-divider",
+                      "h-10 w-28 font-medium rounded-full border border-light-dividerContrast dark:border-dark-dividerContrast",
                       {
                         "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary":
                           followingState === FollowingState.SELF,
