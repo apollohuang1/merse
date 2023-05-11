@@ -305,7 +305,7 @@ const ReadPage = (props: Props) => {
         withCloseButton
         withPadding={false}
       >
-        <div className="sticky top-0 flex flex-row gap-3 px-6 py-3 bg-light-background-secondary dark:bg-dark-background-secondary border-b border-light-divider dark:border-dark-divider">
+        <div className="sticky top-0 flex flex-row gap-3 px-6 py-3 bg-light-background-secondary dark:bg-dark-background-secondary focus-within:bg-light-background-primary dark:focus-within:bg-dark-background-primary transition-all border-b border-light-divider dark:border-dark-divider">
           <img
             src={auth?.currentUser?.profile_image_url}
             className="w-11 h-11 rounded-full object-cover"
@@ -337,7 +337,7 @@ const ReadPage = (props: Props) => {
           {entryData?.comments?.map((comment: Comment, index: number) => (
             <div
               key={index}
-              className="flex flex-row gap-3 w-full border-b border-light-divider dark:border-dark-divider py-6 items-start"
+              className="flex flex-row gap-3 w-full border-light-divider dark:border-dark-divider py-5 items-start"
             >
               {/* image */}
               <button
