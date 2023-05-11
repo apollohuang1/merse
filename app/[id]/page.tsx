@@ -12,14 +12,22 @@ import {
   setShowNotifications,
 } from "@/redux-store/store";
 import { singaporeEntrySample } from "@/util/constants/profile-constants";
-import { getImageURLfromBase64 } from "@/util/helper";
+import {
+  getFormattedDateFromMongoDBDate,
+  getImageURLfromBase64,
+} from "@/util/helper";
 import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
-import { FiMoreHorizontal, FiPlus } from "react-icons/fi";
+import {
+  FiHeart,
+  FiMessageCircle,
+  FiMoreHorizontal,
+  FiPlus,
+} from "react-icons/fi";
 
 type Props = {};
 
@@ -411,7 +419,7 @@ const ProfilePage = (props: Props) => {
             </div>
 
             {activehash === "#entries" && (
-              <div className="flex flex-col gap-3 max-lg:grid-cols-2 w-full">
+              <div className="flex flex-col gap-3 w-full">
                 {isFetchingEntries ? (
                   <>
                     {[...Array(6)].map((_, index) => (
@@ -423,78 +431,119 @@ const ProfilePage = (props: Props) => {
                   </>
                 ) : (
                   <>
-                    {/* {[ singaporeEntrySample, singaporeEntrySample, singaporeEntrySample, singaporeEntrySample,].map((entry: any, index: number) => ( */}
-                    {allEntries.map((entry: Entry, index: number) => (
-                      <div
-                        key={index}
-                        className="flex flex-row w-full h-56 py-6 border-b border-light-divider dark:border-dark-divider rounded-none overflow-clip gap-6"
-                      >
-                        <Link
-                          href={`entry/${entry?._id}`}
-                          className="flex-shrink-0"
-                        >
-                          {entry?.scenes[0]?.image_base64 ? (
-                            <img
-                              src={getImageURLfromBase64(
-                                entry?.scenes[0]?.image_base64
-                              )}
-                              className="h-full aspect-square object-cover rounded-none"
-                            />
-                          ) : (
-                            <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary"></div>
-                          )}
-                        </Link>
-
-                        <div className="flex flex-col justify-start w-full h-full gap-3 items-start">
-                          <div className="flex flex-row w-full justify-between flex-shrink-0">
-                            {/* author info */}
+                    {/* {[
+                      singaporeEntrySample,
+                      singaporeEntrySample,
+                      singaporeEntrySample,
+                      singaporeEntrySample,
+                    ].map((entry: any, index: number) => ( */}
+                      {allEntries.map((entry: Entry, index: number) => (
+                        <>
+                          <div
+                            key={index}
+                            className="flex flex-row w-full h-56 py-6 border-light-divider dark:border-dark-divider rounded-none overflow-clip gap-6"
+                          >
                             <Link
-                              className="flex flex-row gap-2"
-                              href={`/${
-                                entry?.author?.username || entry?.author?._id
-                              }`}
+                              href={`entry/${entry?._id}`}
+                              className="flex-shrink-0"
                             >
-                              <img
-                                src={entry?.author?.profile_image_url}
-                                className="w-6 h-6 rounded-full aspect-square"
-                              />
-
-                              <div className="flex flex-col">
-                                <span className="text-light-text-primary dark:text-dark-text-primary font-medium">
-                                  {entry?.author?.username ||
-                                    entry?.author?.name ||
-                                    "Unknown"}
-                                </span>
-                              </div>
+                              {entry?.scenes[0]?.image_base64 ? (
+                                <img
+                                  src={getImageURLfromBase64(
+                                    entry?.scenes[0]?.image_base64
+                                  )}
+                                  className="h-full aspect-square object-cover rounded-none"
+                                />
+                              ) : (
+                                <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary"></div>
+                              )}
                             </Link>
 
-                            {/* options */}
-                            <button className="group flex w-8 h-8 hover:bg-emerald-500 hover:bg-opacity-10 items-center justify-center rounded-full">
-                              <FiMoreHorizontal className="w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-hover:text-emerald-500" />
-                            </button>
+                            <div className="flex flex-col justify-between w-full h-full gap-1 items-start">
+                              <div className="flex flex-row w-full justify-between flex-shrink-0">
+                                <div className="flex flex-row items-center gap-2">
+                                  {/* author info */}
+                                  <Link
+                                    className="flex flex-row gap-2 items-center"
+                                    href={`/${
+                                      entry?.author?.username || entry?.author?._id
+                                    }`}
+                                  >
+                                    <img
+                                      src={entry?.author?.profile_image_url}
+                                      className="w-6 h-6 rounded-full aspect-square"
+                                    />
+
+                                    <span className="text-light-text-primary dark:text-dark-text-primary font-medium">
+                                      {entry?.author?.username ||
+                                        entry?.author?.name ||
+                                        "Unknown"}
+                                    </span>
+                                  </Link>
+
+                                  <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary font-medium">
+                                    {getFormattedDateFromMongoDBDate(
+                                      entry?.created_at
+                                    )}
+                                  </span>
+                                </div>
+
+                                <div className="flex flex-row items-center gap-3">
+                                  {/* likes */}
+                                  <button className="flex flex-row items-center">
+                                    <FiHeart className="w-5 h-5 text-light-text-tertiary dark:text-dark-text-tertiary" />
+                                    <span className="text-sm font-medium ml-[5px]">
+                                      1.2k
+                                    </span>
+                                  </button>
+
+                                  {/* comments */}
+                                  <button className="flex flex-row items-center">
+                                    <FiMessageCircle className="w-5 h-5 text-light-text-tertiary dark:text-dark-text-tertiary" />
+                                    <span className="text-sm font-medium ml-1">
+                                      1.2k
+                                    </span>
+                                  </button>
+
+                                  {/* options */}
+                                  <button className="group flex w-8 h-8 hover:bg-emerald-500 hover:bg-opacity-10 items-center justify-center rounded-full">
+                                    <FiMoreHorizontal className="w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-hover:text-emerald-500" />
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* title and description */}
+                              <Link
+                                href={`/entry/${entry._id}`}
+                                className="flex flex-col"
+                              >
+                                <p className="line-clamp-1 font-semibold text-2xl flex-shrink-0 leading-normal line-clamp-1">
+                                  {entry.title}
+                                </p>
+
+                                <p className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-4 leading-normal">
+                                  Lorem ipsum dolor sit amet consectetur adipisicing
+                                  elit. Quisquam, quibusdam. Lorem ipsum dolor sit
+                                  amet consectetur adipisicing elit. Quisquam,
+                                  quibusdam. Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit. Quisquam, quibusdam. Lorem ipsum
+                                  dolor sit amet consectetur adipisicing elit.
+                                  Quisquam, quibusdam. Lorem ipsum dolor sit amet
+                                  consectetur adipisicing elit. Quisquam, quibusdam.
+                                  Lorem ipsum dolor sit amet consectetur adipisicing
+                                  elit. Quisquam, quibusdam.
+                                </p>
+                              </Link>
+
+                              {/* tags */}
+                              <div className="flex flex-row w-full gap-3 items-center justify-end opacity-0">
+                                asd
+                              </div>
+                            </div>
                           </div>
 
-                          {/* title and description */}
-                          <Link href={`/entry/${entry._id}`}>
-                            <p className="line-clamp-1 font-semibold text-2xl flex-shrink-0 leading-snug">
-                              {entry.title}
-                            </p>
-
-                            <p className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-4">
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Quisquam, quibusdam. Lorem ipsum dolor sit
-                              amet consectetur adipisicing elit. Quisquam,
-                              quibusdam. Lorem ipsum dolor sit amet consectetur
-                              adipisicing elit. Quisquam, quibusdam. Lorem ipsum
-                              dolor sit amet consectetur adipisicing elit.
-                              Quisquam, quibusdam. Lorem ipsum dolor sit amet
-                              consectetur adipisicing elit. Quisquam, quibusdam.
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Quisquam, quibusdam.
-                            </p>
-                          </Link>
-                        </div>
-                      </div>
+                          <Divider />
+                        </>
                     ))}
                   </>
                 )}
