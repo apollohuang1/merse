@@ -415,7 +415,7 @@ const ProfilePage = (props: Props) => {
             </div>
 
             {activehash === "#entries" && (
-              <div className="flex flex-col gap-3 w-full">
+              <div className="flex flex-col gap-6 w-full">
                 {isFetchingEntries ? (
                   <>
                     {[...Array(6)].map((_, index) => (
