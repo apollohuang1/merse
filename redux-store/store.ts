@@ -127,6 +127,7 @@ const notificationsSlice = createSlice({
     setNotificationContent: (state, action: PayloadAction<{title: string, message: string}>) => {
       state.title = action.payload.title
       state.message = action.payload.message
+      state.showNotifications = true
     }
   }
 });
