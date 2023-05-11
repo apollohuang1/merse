@@ -38,7 +38,7 @@ const CreateLeftSideBar = (props: Props) => {
               onClick={() => {
                 setShowDiscardAlert(true);
               }}
-              className="flex flex-row h-full w-full px-6 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary items-center justify-center gap-1"
+              className="flex flex-row h-full w-full px-6 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary items-center justify-center gap-1"
             >
               <FiChevronLeft className="w-5 h-5 font-medium"/>
               <span>Home</span>
@@ -80,7 +80,7 @@ const CreateLeftSideBar = (props: Props) => {
             onClick={() => {
               toggleColorScheme();
             }}
-            className="flex flex-row h-16 w-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2 border-t border-t-light-divider dark:border-t-dark-divider"
+            className="flex flex-row h-16 w-full hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2 border-t border-t-light-divider dark:border-t-dark-divider"
           >
             <FiSun />
           </button>
@@ -92,7 +92,7 @@ const CreateLeftSideBar = (props: Props) => {
                 // window.location.href = "/";
                 setShowDiscardAlert(true);
               }}
-              className="group h-16 w-full hover:bg-light-red dark:hover:bg-dark-red hover:bg-opacity-30 dark:hover:bg-opacity-20"
+              className="group h-16 w-full hover:bg-light-red dark:hover:bg-dark-red hover:bg-opacity-20 dark:hover:bg-opacity-20"
             >
               <span className="font-semibold text-light-text-secondary dark:text-dark-text-secondary group-hover:text-light-red dark:group-hover:text-dark-red">
                 Discard
@@ -115,7 +115,7 @@ const CreateLeftSideBar = (props: Props) => {
                 //     "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
                 // }, 2000);
               }}
-              className="flex flex-row h-16 w-full hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2"
+              className="flex flex-row h-16 w-full hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary border-l border-l-light-divider dark:border-l-dark-divider items-center justify-center gap-2"
             >
               {isSaving && <Spinner className="w-4 h-4" />}
               <span className="font-semibold text-light-text-primary dark:text-dark-text-primary">

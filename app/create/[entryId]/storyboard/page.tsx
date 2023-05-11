@@ -174,7 +174,7 @@ const Storyboard = (props: Props) => {
               <div className="flex flex-row w-full items-center justify-between border-b border-b-light-divider dark:border-b-dark-divider pb-3">
                 {entry?.scenes?.length > 0 ? (
                   <button
-                    className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
+                    className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
                     onClick={() => {
                       // setShowGeneratedStoryboard(!showGeneratedStoryboard);
                       dispatch(
@@ -217,7 +217,7 @@ const Storyboard = (props: Props) => {
                 <div className="flex flex-row gap-2">
                   <div className="flex flex-row gap-2 items-center h-8">
                     <button
-                      className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
+                      className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
                       onClick={() => {
                         // generateStoryboard(editor);
                         dispatch(setScenes(storyboardSamples));
@@ -236,7 +236,7 @@ const Storyboard = (props: Props) => {
                   ) : (
                     <div className="flex flex-row gap-2 items-center h-8">
                       <button
-                        className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-30"
+                        className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
                         onClick={() => {
                           generateStoryboard(editor);
                         }}
