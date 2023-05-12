@@ -1,18 +1,21 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FiPlus } from "react-icons/fi";
+import clsx from "clsx";
 
 const Modal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
   title?: string;
   withCloseButton?: boolean;
+  withPaddingTop?: boolean;
   children: React.ReactNode;
 }> = ({
   isOpen,
   onClose,
   title = "",
   withCloseButton = true,
+  withPaddingTop = true,
   children,
 }) => {
   return (
@@ -54,7 +57,7 @@ const Modal: React.FC<{
                     {withCloseButton && (
                       <button
                         type="button"
-                        className="text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-full p-2"
+                        className="text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-full p-1"
                         onClick={onClose}
                       >
                         <FiPlus className="w-6 h-6 rotate-45 text-light-text-secondary dark:text-dark-text-secondary" />
@@ -62,7 +65,13 @@ const Modal: React.FC<{
                     )}
                   </div>
 
-                  <div className="flex w-full h-full p-3">
+                  <div
+                    className={clsx(
+                      "flex flex-col w-full h-full items-center",
+                       { "p-6 max-sm:p-3" : withPaddingTop },
+                       { "px-6 pb-6 max-sm:px-3 max-sm:pb-3": !withPaddingTop }
+                    )}
+                  >
                     {children}
                   </div>
                 </div>

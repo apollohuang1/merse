@@ -6,6 +6,7 @@ import MDBUser from "@/server/models/MDBUser";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 import { setCurrentUser } from "@/redux-store/store";
+import { User } from "@/models/user";
 
 const useAuth = () => {
   // const [currentGoogleUser, setCurrentGoogleUser] = React.useState<any>(null);
@@ -20,8 +21,14 @@ const useAuth = () => {
   const [showLoginModal, setShowLoginModal] = React.useState<boolean>(false);
   const [isLoadingCurrentUser, setIsLoadingCurrentUser] =
     React.useState<boolean>(false);
-
   const [showSplashScreen, setShowSplashScreen] = React.useState<boolean>(true);
+
+  const [googleUserDataTemp, setGoogleUserDataTemp] = React.useState<
+    any | null
+  >(null);
+  const [registeringUserData, setRegisteringUserData] = React.useState<
+    any | null
+  >(null);
 
   useEffect(() => {
     reloadCurrentLocalUser()
@@ -66,7 +73,7 @@ const useAuth = () => {
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
-      })
+      });
       dispatch(setCurrentUser(userResponse.data));
       localStorage.setItem("currentUser", JSON.stringify(userResponse.data));
     } catch (error: AxiosError | any) {
@@ -96,28 +103,37 @@ const useAuth = () => {
 
       // create new user if not exists in db
       const googleUserData = googleUserReponse.data;
-      
-      const createUserReponse = await axios({
-        method: "POST",
-        url: "/api/users",
-        data: googleUserData,
+
+      setRegisteringUserData({
+        name: googleUserData.name,
+        email: googleUserData.email,
+        profile_image_url: googleUserData.picture
+      });
+
+      // get user from db
+      const userInDB = await axios({
+        method: "GET",
+        url: `/api/users?email=${googleUserData.email}`,
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
-      })
+      });
 
       // if user exists, return fetched user data
-      setCurrentUser(createUserReponse.data);
-      dispatch(setCurrentUser(createUserReponse.data));
+      if (userInDB.data) {
+        setCurrentUser(userInDB.data);
+        dispatch(setCurrentUser(userInDB.data));
+        localStorage.setItem("currentUser", JSON.stringify(userInDB.data));
+        setShowLoginModal(false);
+        setIsLoadingCurrentUser(false);
+        setShowLoginModal(false);
+      } else {
+        // create new user
+        setGoogleUserDataTemp(googleUserData);
+        setIsLoadingCurrentUser(false);
+        // createNewUser(googleUserData);
+      }
 
-      localStorage.setItem(
-        "currentUser",
-        JSON.stringify(createUserReponse.data)
-      );
-
-      // alert("Please try again, we're fixing this issue.")
-      setIsLoadingCurrentUser(false);
-      setShowLoginModal(false);
     } catch (error: AxiosError | any) {
       if (error.response) {
         if (
@@ -130,6 +146,30 @@ const useAuth = () => {
       }
       setIsLoadingCurrentUser(false);
     }
+  };
+
+  const registerNewUser = async () => {
+
+    console.log("registering user", registeringUserData);
+
+    const createUserReponse = await axios({
+      method: "POST",
+      url: "/api/users",
+      data: registeringUserData,
+      headers: {
+        Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+      },
+    });
+
+    // if user exists, return fetched user data
+    setCurrentUser(createUserReponse.data);
+    dispatch(setCurrentUser(createUserReponse.data));
+
+    localStorage.setItem("currentUser", JSON.stringify(createUserReponse.data));
+
+    // alert("Please try again, we're fixing this issue.")
+    setIsLoadingCurrentUser(false);
+    setShowLoginModal(false);
   };
 
   // const retrieveStripeCustomer = async (stripeCustomerId: string) => {
@@ -223,6 +263,11 @@ const useAuth = () => {
 
   return {
     continueWithGoogle,
+    googleUserDataTemp,
+    setGoogleUserDataTemp,
+    registeringUserData,
+    setRegisteringUserData,
+    registerNewUser,
     showLoginModal,
     setShowLoginModal,
     isLoadingCurrentUser,

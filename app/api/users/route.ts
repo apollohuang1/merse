@@ -64,6 +64,8 @@ export async function POST(request: NextRequest) {
       _id: new mongoose.Types.ObjectId(),
       name: body.name,
       email: body.email,
+      username: body.username,
+      banner_image_url: body.banner_image_url,
       profile_image_url: body.picture,
       followers: [],
       followings: [],

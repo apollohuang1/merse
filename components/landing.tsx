@@ -1,6 +1,11 @@
 import React, { useRef } from "react";
 
-import { FiArrowUpRight, FiBookOpen, FiChevronRight } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiArrowUpRight,
+  FiBookOpen,
+  FiChevronRight,
+} from "react-icons/fi";
 
 import {
   midjourneyGeneratedImages,
@@ -21,6 +26,7 @@ import {
   tweets,
 } from "@/util/constants/home-constant";
 import parse from "html-react-parser";
+import { Transition } from "@headlessui/react";
 
 type Props = {};
 
@@ -34,6 +40,11 @@ const Landing = (props: Props) => {
     setShowLoginModal,
     isLoadingCurrentUser,
     continueWithGoogle,
+    googleUserDataTemp,
+    setGoogleUserDataTemp,
+    registeringUserData,
+    setRegisteringUserData,
+    registerNewUser,
   } = useAuth();
 
   const toggleVideoPlayState = () => {
@@ -51,7 +62,11 @@ const Landing = (props: Props) => {
       <div className="flex flex-col bg-black">
         {/* navigation bar */}
 
-        <NavigationBar isAuthenticated={false} />
+        <NavigationBar
+          isAuthenticated={false}
+          showLoginModal={showLoginModal}
+          setShowLoginModal={setShowLoginModal}
+        />
 
         {/* main content */}
         <div className="flex flex-col gap-0">
@@ -185,7 +200,6 @@ const Landing = (props: Props) => {
             </div>
 
             <div className="flex flex-row items-center gap-8 max-lg:flex-col max-lg:items-center max-w-screen max-lg:w-full justify-center max-lg:gap-16">
-
               {/* ryan tweets container */}
               <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] max-lg:w-full items-start max-lg:items-center">
                 {parse(ryanTweetHtml)}
@@ -197,7 +211,9 @@ const Landing = (props: Props) => {
                   }}
                   className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-dark-dividerContrast hover:bg-dark-background-secondary"
                 >
-                  <span className=" max-sm:text-sm">Ryan Hoover, Founder of Product Hunt</span>
+                  <span className=" max-sm:text-sm">
+                    Ryan Hoover, Founder of Product Hunt
+                  </span>
                   <FiChevronRight className="text-accent font-medium" />
                 </button>
               </div>
@@ -215,7 +231,9 @@ const Landing = (props: Props) => {
                   }}
                   className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-full border border-dark-dividerContrast hover:bg-dark-background-secondary"
                 >
-                  <span className=" max-sm:text-sm">Naval Ravikant, Founder of AngelList</span>
+                  <span className=" max-sm:text-sm">
+                    Naval Ravikant, Founder of AngelList
+                  </span>
                   <FiChevronRight className="text-accent font-medium" />
                 </button>
               </div>
@@ -295,54 +313,176 @@ const Landing = (props: Props) => {
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         title="Login"
+        withPaddingTop={false}
       >
-        <div className="flex flex-col items-center justify-start w-full h-full text-light-text-primary dark:text-dark-text-primary gap-8 p-6">
-          <div className="flex flex-col items-center gap-2">
-            <FiBookOpen className="w-10 h-10" />
+        {!googleUserDataTemp ? (
+          <div className="flex flex-col items-center justify-start w-full h-80 text-light-text-primary dark:text-dark-text-primary gap-8 p-6 transition-all ease-in-out duration-300">
+            {/* step 1 */}
+            <div className="flex flex-col items-center gap-2">
+              <FiBookOpen className="w-10 h-10" />
 
-            <div>
-              <h1 className="font-normal">Welcome to Comic</h1>
-              <p className="text-light-text-secondary dark:text-dark-text-secondary">
-                Turning your journaling entry into comic book
-              </p>
+              <div>
+                <h1 className="font-normal">Welcome to Comic</h1>
+                <p className="text-light-text-secondary dark:text-dark-text-secondary">
+                  Turning your journaling entry into comic book
+                </p>
+              </div>
             </div>
+
+            {/* continue with google */}
+            {isLoadingCurrentUser ? (
+              <div className="flex flex-shrink-0 flex-row h-10 gap-3 justify-center items-center px-4 border border-light-divider dark:border-dark-divider rounded-full">
+                <Spinner speed={"0.8s"} className="w-4 h-4 text-accent" />
+                <span className="text-sm">Logging in...</span>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  continueWithGoogle();
+                }}
+                className="flex flex-row flex-shrink-0 items-center justify-center gap-2 px-4 h-10 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider"
+              >
+                <FcGoogle className="text-xl" />
+                <span className="text-sm font-medium">
+                  Continue with Google
+                </span>
+              </button>
+            )}
+
+            {/* <div className="flex flex-col p-3 items-center justify-center border border-accent bg-emerald-500 bg-opacity-10 rounded-xl">
+                    <p className="text-sm">
+                      <br/>
+                    </p>
+                  </div> */}
+
+            <p className="text-sm text-dark-text-secondary text-center max-w-sm border-t border-t-light-divider dark:border-t-dark-divider py-6">
+              By continuing, you agree to Merse&apos;s{" "}
+              <a className="text-accent font-medium hover:underline cursor-pointer">
+                Terms of Service
+              </a>{" "}
+              and acknowledge, you&apos;ve read our{" "}
+              <a className="text-accent font-medium hover:underline cursor-pointer">
+                Privacy Policy
+              </a>
+            </p>
           </div>
+        ) : (
+          <div className="flex flex-col items-center justify-start w-full h-[704px] max-w text-light-text-primary dark:text-dark-text-primary gap-8 p-6 transition-all ease-in-out duration-300">
+            {/* step 2 */}
 
-          {/* continue with google */}
-          {isLoadingCurrentUser ? (
-            <div className="flex flex-row h-10 gap-3 justify-center items-center px-4 border border-light-divider dark:border-dark-divider rounded-full">
-              <Spinner speed={"0.8s"} className="w-4 h-4 text-accent" />
-              <span className="text-sm">Logging in...</span>
+            <div className="flex flex-row gap-3 w-full items-center">
+              <button
+                onClick={() => {
+                  setGoogleUserDataTemp(null);
+                }}
+                className="p-2 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary"
+              >
+                <FiArrowLeft className="text-light-text-secondary dark:text-dark-text-secondary" />
+              </button>
+
+              <span>{googleUserDataTemp?.email}</span>
             </div>
-          ) : (
+
+            <div className="flex flex-col gap-3 w-full">
+              {/* banner */}
+              <div className="flex flex-col">
+                {registeringUserData?.banner_image_url ? (
+                  <img
+                    src={registeringUserData?.banner_image_url ?? ""}
+                    alt="banner"
+                    className="w-full h-24 object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-24 bg-light-background-secondary dark:bg-dark-background-secondary" />
+                )}
+
+                {registeringUserData?.profile_image_url ? (
+                  <img
+                    src={registeringUserData?.profile_image_url ?? ""}
+                    alt="profile"
+                    className="w-20 h-20 rounded-full -mt-10 mx-3"
+                  />
+                ) : (
+                  <div className="w-20 h-20 rounded-full -mt-10 mx-3 bg-light-background-secondary dark:bg-dark-background-secondary" />
+                )}
+              </div>
+
+              <form className="flex flex-col gap-4">
+                <label className="text-left">
+                  <span className="text-sm font-medium">Name</span>
+                  <input
+                    type="text"
+                    className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                    value={registeringUserData?.name ?? ""}
+                    placeholder="Name"
+                    onChange={(e) => {
+                      setRegisteringUserData({
+                        ...registeringUserData,
+                        name: e.target.value,
+                      });
+                    }}
+                  />
+                </label>
+
+                <label className="text-left">
+                  <span className="text-sm font-medium">Username</span>
+                  <input
+                    type="text"
+                    className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                    value={registeringUserData?.username ?? ""}
+                    placeholder="Username"
+                    onChange={(e) => {
+                      setRegisteringUserData({
+                        ...registeringUserData,
+                        username: e.target.value,
+                      });
+                    }}
+                  />
+                </label>
+
+                <label className="text-left">
+                  <span className="text-sm font-medium">Banner Image URL</span>
+                  <input
+                    type="text"
+                    className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                    value={registeringUserData?.banner_image_url ?? ""}
+                    placeholder="Banner Image URL"
+                    onChange={(e) => {
+                      setRegisteringUserData({
+                        ...registeringUserData,
+                        banner_image_url: e.target.value,
+                      });
+                    }}
+                  />
+                </label>
+
+                <label className="text-left">
+                  <span className="text-sm font-medium">Profile Image URL</span>
+                  <input
+                    type="text"
+                    className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                    value={registeringUserData?.profile_image_url ?? ""}
+                    placeholder="Profile Image URL"
+                    onChange={(e) => {
+                      setRegisteringUserData({
+                        ...registeringUserData,
+                        profile_image_url: e.target.value,
+                      });
+                    }}
+                  />
+                </label>
+              </form>
+            </div>
+
             <button
-              onClick={() => {
-                continueWithGoogle();
-              }}
-              className="flex flex-row items-center justify-center gap-2 px-4 h-10 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider"
+              onClick={registerNewUser}
+              className="flex flex-row w-full px-3 h-10 rounded-full bg-accent hover:bg-emerald-600 text-white font-medium items-center justify-center"
             >
-              <FcGoogle className="text-xl" />
-              <span className="text-sm font-medium">Continue with Google</span>
+              Create Account
             </button>
-          )}
 
-          {/* <div className="flex flex-col p-3 items-center justify-center border border-accent bg-emerald-500 bg-opacity-10 rounded-xl">
-              <p className="text-sm">
-                <br/>
-              </p>
-            </div> */}
-
-          <p className="text-sm text-dark-text-secondary text-center max-w-sm border-t border-t-light-divider dark:border-t-dark-divider py-6">
-            By continuing, you agree to Merse&apos;s{" "}
-            <a className="text-accent font-medium hover:underline cursor-pointer">
-              Terms of Service
-            </a>{" "}
-            and acknowledge, you&apos;ve read our{" "}
-            <a className="text-accent font-medium hover:underline cursor-pointer">
-              Privacy Policy
-            </a>
-          </p>
-        </div>
+          </div>
+        )}
       </Modal>
     </>
   );

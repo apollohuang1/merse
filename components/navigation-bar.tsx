@@ -24,15 +24,16 @@ import ProfileMenu from "./wrapper/profile-menu";
 
 const NavigationBar: React.FC<{
   isAuthenticated: boolean;
-}> = ({ isAuthenticated }) => {
-  
+  showLoginModal: boolean;
+  setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ isAuthenticated, showLoginModal, setShowLoginModal }) => {
   const { toggleColorScheme } = useColorScheme();
 
   const landing = useAppSelector((state) => state.landing);
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const { showLoginModal, setShowLoginModal, isLoadingCurrentUser, continueWithGoogle } = useAuth();
+  const { isLoadingCurrentUser, continueWithGoogle } = useAuth();
 
   const scrollToSection = (sectionName: string) => {
     const section = document.getElementById(sectionName);
@@ -73,7 +74,7 @@ const NavigationBar: React.FC<{
           "flex w-full items-center justify-center z-10 transition px-6",
           {
             "bg-gradient-to-b from-[rgb(0,0,0,0.7)] to-transparent":
-            landing?.scrollY < 100 && isAuthenticated === false,
+              landing?.scrollY < 100 && isAuthenticated === false,
           },
           {
             "bg-[rgb(13,13,14,0.7)] backdrop-blur-xl":
@@ -108,7 +109,7 @@ const NavigationBar: React.FC<{
             className="flex flex-row items-center gap-2 cursor-pointer active:opacity-75 transition-all text-light-text-primary dark:text-dark-text-primary"
             onClick={() => {
               // with smooth scroll
-              scrollToSection(homeContents[0]?.sectionName)
+              scrollToSection(homeContents[0]?.sectionName);
             }}
           >
             <MerseLogo theme="dark" />
@@ -133,7 +134,7 @@ const NavigationBar: React.FC<{
                           {
                             "text-neutral-300": landing?.scrollY < 100,
                           },
-                          { "text-neutral-400": landing?.scrollY >= 100 },
+                          { "text-neutral-400": landing?.scrollY >= 100 }
                         )}
                       >
                         <span className="text-sm">{item?.sectionTitle}</span>
@@ -210,60 +211,6 @@ const NavigationBar: React.FC<{
           </div>
         </div>
       </div>
-
-      <Modal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        title="Login"
-      >
-        <div className="flex flex-col items-center justify-start w-full h-full text-light-text-primary dark:text-dark-text-primary gap-8 p-6">
-          <div className="flex flex-col items-center gap-2">
-            <FiBookOpen className="w-10 h-10" />
-
-            <div>
-              <h1 className="font-normal">Welcome to Comic</h1>
-              <p className="text-light-text-secondary dark:text-dark-text-secondary">
-                Turning your journaling entry into comic book
-              </p>
-            </div>
-          </div>
-
-          {/* continue with google */}
-          {isLoadingCurrentUser ? (
-            <div className="flex flex-row h-10 gap-3 justify-center items-center px-4 border border-light-divider dark:border-dark-divider rounded-full">
-              <Spinner speed={"0.8s"} className="w-4 h-4 text-accent" />
-              <span className="text-sm">Logging in...</span>
-            </div>
-          ) : (
-            <button
-              onClick={() => {
-                continueWithGoogle();
-              }}
-              className="flex flex-row items-center justify-center gap-2 px-4 h-10 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider"
-            >
-              <FcGoogle className="text-xl" />
-              <span className="text-sm font-medium">Continue with Google</span>
-            </button>
-          )}
-
-          {/* <div className="flex flex-col p-3 items-center justify-center border border-accent bg-emerald-500 bg-opacity-10 rounded-xl">
-              <p className="text-sm">
-                <br/>
-              </p>
-            </div> */}
-
-          <p className="text-sm text-dark-text-secondary text-center max-w-sm border-t border-t-light-divider dark:border-t-dark-divider py-6">
-            By continuing, you agree to Merse&apos;s{" "}
-            <a className="text-accent font-medium hover:underline cursor-pointer">
-              Terms of Service
-            </a>{" "}
-            and acknowledge, you&apos;ve read our{" "}
-            <a className="text-accent font-medium hover:underline cursor-pointer">
-              Privacy Policy
-            </a>
-          </p>
-        </div>
-      </Modal>
     </>
   );
 };
