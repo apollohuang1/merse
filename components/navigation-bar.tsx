@@ -111,8 +111,8 @@ const NavigationBar: React.FC<{
               scrollToSection(homeContents[0]?.sectionName)
             }}
           >
-            <MerseLogo />
-            <span>Comic</span>
+            <MerseLogo theme="dark" />
+            <span className="text-white">Comic</span>
           </div>
 
           {/* section navigator */}

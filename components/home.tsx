@@ -40,8 +40,8 @@ const Home = (props: Props) => {
                 key={index}
                 className="group flex flex-col items-center gap-2 w-20 min-w-[80px]"
                 onClick={() => {
-                  if (artist._id) {
-                    router.push(`/${artist._id}`);
+                  if (artist._id || artist.username) {
+                    router.push(`/${artist.username || artist._id}`);
                   }
                 }}
               >

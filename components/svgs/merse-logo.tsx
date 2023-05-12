@@ -1,16 +1,21 @@
+import clsx from "clsx";
 import React from "react";
 
 type Props = {};
 
 const MerseLogo: React.FC<{
-  width?: "10.5px"|"12px"|"20px"|"50px";
-}> = ({
-  width = "10.5px"
-}) => {
+  width?: "10.5px" | "12px" | "20px" | "50px";
+  theme?: "light" | "dark" | "default";
+}> = ({ width = "10.5px", theme = "default" }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={`w-[10.5px] object-contain stroke-light-text-primary dark:stroke-dark-text-primary`}
+      className={clsx(
+        `w-[10.5px] object-contain`,
+        { "stroke-light-text-primary dark:stroke-dark-text-primary" : theme === "default" },
+        { "stroke-light-text-primary" : theme === "light" },
+        { "stroke-dark-text-primary" : theme === "dark" },
+      )}
       viewBox="0 0 1100 1840"
       fill="none"
     >
