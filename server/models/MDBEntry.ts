@@ -47,6 +47,7 @@ const EntrySchema = new mongoose.Schema<Entry>({
   updated_at: { type: Date, required: false },
   likes: [{ type: Schema.Types.ObjectId, ref: "User", required: false }],
   comments: [{ type: CommentSchema, ref: "Comment", required: false }],
+  is_private: { type: Boolean, required: true },
   // published_at: { type: Date, required: true },
   // is_published: { type: Boolean, required: true },
   // is_deleted: { type: Boolean, required: true },

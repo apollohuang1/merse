@@ -283,8 +283,17 @@ const Storyboard = (props: Props) => {
                     editor={editor}
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       // if content is empty and user push backspace, focus on title
-                      if (e.key === "Backspace" && editor?.isEmpty) {
-                        document.getElementById("title")?.focus();
+
+                      // or if user is on the first block of tiptip
+                      if ((e.key === "Backspace" || e.key === "ArrowUp" ) && editor?.isEmpty) {
+                        // focus at the end of input
+                        e.preventDefault();
+                        const titleInput = document.getElementById("title") as HTMLInputElement;
+                        titleInput?.focus();
+                        titleInput?.setSelectionRange(
+                          titleInput.value.length,
+                          titleInput.value.length
+                        );
                       }
                     }}
                   />

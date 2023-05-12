@@ -35,6 +35,7 @@ export async function GET(request: NextRequest) {
 
     if (entryId) {
       // populate author, and comments that have user as refs with only profile_image_url, username, and _id
+      // sort date, newest first
       const oneEntry = await MDBEntry.findById(entryId)
         .populate({
           path: "author",
@@ -46,7 +47,8 @@ export async function GET(request: NextRequest) {
             path: "author",
             select: "profile_image_url username _id",
           },
-        });
+        })
+        .sort({ created_at: "ascending" });
 
       return NextResponse.json(oneEntry, { status: 200 });
     }
@@ -95,14 +97,14 @@ export async function POST(request: NextRequest) {
       updated_at: new Date(),
       likes: body.likes,
       comments: body.comments,
+      is_private: body.is_private,
     });
 
     const savedEntry = await newEntry.save();
 
     return NextResponse.json(savedEntry, { status: 200 });
   } catch (error: any) {
-    console.log(error.message);
-    return NextResponse.json({ error: error?.message }, { status: 500 });
+    return NextResponse.json(error.message, { status: 500 });
   }
 }
 

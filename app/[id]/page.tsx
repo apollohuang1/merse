@@ -21,6 +21,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import {
   FiHeart,
+  FiLock,
   FiMessageCircle,
   FiMoreHorizontal,
   FiPlus,
@@ -204,7 +205,17 @@ const ProfilePage = (props: Props) => {
         },
       });
       console.log("response.data: ", response.data);
-      setAllEntries(response.data);
+      const reponseData = response.data as Entry[];
+
+      // I have some entries that contains { is_private: bool } field, and if entry?.suthor?._id === auth?.currentUser?._id, then show it
+      const filteredEntries = reponseData.filter((entry) => {
+        if (entry.is_private && entry.author?._id !== auth?.currentUser?._id) {
+          return false;
+        }
+        return true;
+      });
+
+      setAllEntries(filteredEntries)
       setIsFetchingEntries(false);
     } catch (error: any) {
       console.log("Failed to fetch entries, message: ", error.message);
@@ -433,7 +444,7 @@ const ProfilePage = (props: Props) => {
                     singaporeEntrySample,
                     singaporeEntrySample,
                   ].map((entry: any, index: number) => ( */}
-                    {allEntries.map((entry: Entry, index: number) => (
+                    {allEntries.map((entry: any, index: number) => (
                       <>
                         <div
                           key={index}
@@ -483,6 +494,11 @@ const ProfilePage = (props: Props) => {
                                     entry?.created_at
                                   )}
                                 </span>
+
+                                { entry?.is_private &&
+                                  <FiLock className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary"/>
+                                }
+
                               </div>
 
                               <div className="flex flex-row items-center gap-3">

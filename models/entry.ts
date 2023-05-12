@@ -20,6 +20,7 @@ export interface Entry {
   updated_at?: Date;
   likes: mongoose.Types.ObjectId[];
   comments: Comment[];
+  is_private: boolean;
 }
 
 export interface Comment {
