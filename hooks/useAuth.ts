@@ -23,12 +23,7 @@ const useAuth = () => {
     React.useState<boolean>(false);
   const [showSplashScreen, setShowSplashScreen] = React.useState<boolean>(true);
 
-  const [googleUserDataTemp, setGoogleUserDataTemp] = React.useState<
-    any | null
-  >(null);
-  const [registeringUserData, setRegisteringUserData] = React.useState<
-    any | null
-  >(null);
+  const [registeringUserData, setRegisteringUserData] = React.useState<any | null>(null);
 
   useEffect(() => {
     reloadCurrentLocalUser()
@@ -104,12 +99,6 @@ const useAuth = () => {
       // create new user if not exists in db
       const googleUserData = googleUserReponse.data;
 
-      setRegisteringUserData({
-        name: googleUserData.name,
-        email: googleUserData.email,
-        profile_image_url: googleUserData.picture
-      });
-
       // get user from db
       const userInDB = await axios({
         method: "GET",
@@ -129,9 +118,12 @@ const useAuth = () => {
         setShowLoginModal(false);
       } else {
         // create new user
-        setGoogleUserDataTemp(googleUserData);
+        setRegisteringUserData({
+          name: googleUserData.name,
+          email: googleUserData.email,
+          profile_image_url: googleUserData.picture
+        });
         setIsLoadingCurrentUser(false);
-        // createNewUser(googleUserData);
       }
 
     } catch (error: AxiosError | any) {
@@ -149,8 +141,6 @@ const useAuth = () => {
   };
 
   const registerNewUser = async () => {
-
-    console.log("registering user", registeringUserData);
 
     const createUserReponse = await axios({
       method: "POST",
@@ -263,8 +253,6 @@ const useAuth = () => {
 
   return {
     continueWithGoogle,
-    googleUserDataTemp,
-    setGoogleUserDataTemp,
     registeringUserData,
     setRegisteringUserData,
     registerNewUser,

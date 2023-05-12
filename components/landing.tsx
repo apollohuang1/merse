@@ -40,8 +40,6 @@ const Landing = (props: Props) => {
     setShowLoginModal,
     isLoadingCurrentUser,
     continueWithGoogle,
-    googleUserDataTemp,
-    setGoogleUserDataTemp,
     registeringUserData,
     setRegisteringUserData,
     registerNewUser,
@@ -315,7 +313,7 @@ const Landing = (props: Props) => {
         title="Login"
         withPaddingTop={false}
       >
-        {!googleUserDataTemp ? (
+        {!registeringUserData ? (
           <div className="flex flex-col items-center justify-start w-full h-80 text-light-text-primary dark:text-dark-text-primary gap-8 p-6 transition-all ease-in-out duration-300">
             {/* step 1 */}
             <div className="flex flex-col items-center gap-2">
@@ -373,14 +371,14 @@ const Landing = (props: Props) => {
             <div className="flex flex-row gap-3 w-full items-center">
               <button
                 onClick={() => {
-                  setGoogleUserDataTemp(null);
+                  setRegisteringUserData(null);
                 }}
                 className="p-2 rounded-full bg-light-background-secondary dark:bg-dark-background-secondary"
               >
                 <FiArrowLeft className="text-light-text-secondary dark:text-dark-text-secondary" />
               </button>
 
-              <span>{googleUserDataTemp?.email}</span>
+              <span className="text-light-text-secondary dark:text-dark-text-secondary">{registeringUserData?.email}</span>
             </div>
 
             <div className="flex flex-col gap-3 w-full">
