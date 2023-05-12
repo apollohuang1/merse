@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       email: body.email,
       username: body.username,
       banner_image_url: body.banner_image_url,
-      profile_image_url: body.picture,
+      profile_image_url: body.profile_image_url,
       followers: [],
       followings: [],
       joined_at: new Date(),
