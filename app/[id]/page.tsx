@@ -645,6 +645,7 @@ const ProfilePage = (props: Props) => {
       {/* creating new character slideover */}
       <SlideOver
         isOpen={showProfileEditModal}
+        size="lg"
         onClose={() => {
           setShowProfileEditModal(false);
         }}

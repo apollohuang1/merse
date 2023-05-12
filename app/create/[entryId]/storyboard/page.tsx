@@ -26,7 +26,7 @@ import StarterKit from "@tiptap/starter-kit";
 import HardBreak from "@tiptap/extension-hard-break";
 import Image from "@tiptap/extension-image";
 import Collaboration from "@tiptap/extension-collaboration";
-import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 
 // ChakraUI
 import { Spinner } from "@chakra-ui/react";
@@ -53,7 +53,6 @@ import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 import { Scene } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
-
 
 // Collaborative editing
 // import { HocuspocusProvider } from '@hocuspocus/provider';
@@ -151,6 +150,8 @@ const Storyboard = (props: Props) => {
   //     avatar: 'https://pbs.twimg.com/profile_images/1653106037262798848/xIwPY8Ws_400x400.jpg',
   //   })
   // }, [editor])
+
+  const [focusedMenuIndex, setFocusedMenuIndex] = useState<number>(0);
 
   return (
     <>
@@ -267,17 +268,26 @@ const Storyboard = (props: Props) => {
                       // push content down one block and focus on the first block
                       editor?.commands.focus("start");
                     }
+
+                    // if key is down arrow, focus on editor
+                    if (e.key === "ArrowDown") {
+                      e.preventDefault();
+                      editor?.commands.focus();
+                    }
                   }}
                   placeholder="Title"
                 />
 
                 <>
-                  <EditorContent editor={editor} onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                    // if content is empty and user push backspace, focus on title
-                    if (e.key === "Backspace" && editor?.isEmpty) {
-                      document.getElementById("title")?.focus();
-                    }
-                  }}/>
+                  <EditorContent
+                    editor={editor}
+                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                      // if content is empty and user push backspace, focus on title
+                      if (e.key === "Backspace" && editor?.isEmpty) {
+                        document.getElementById("title")?.focus();
+                      }
+                    }}
+                  />
 
                   {editor && (
                     <FloatingMenu
@@ -290,7 +300,15 @@ const Storyboard = (props: Props) => {
                       {floatingMenus.map((floatingMenu, index) => (
                         <button
                           key={index}
-                          onClick={() => floatingMenu.onClick(editor)}
+                          onClick={() => {
+                            if (floatingMenu.type === "image") {
+                              floatingMenu.onClick(editor, () => {
+                                setShowAddingImageModal(true);
+                              });
+                            } else {
+                              floatingMenu.onClick(editor)
+                            }
+                          }}
                           className={clsx(
                             "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
                             {
@@ -301,25 +319,19 @@ const Storyboard = (props: Props) => {
                               "rounded-t-lg": index === 0,
                             }
                           )}
+                          id={`floating-menu-${index}`}
+                          onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
+                            // if hit tab, focus on next menu until the last one, then focus on the first one
+                            if (e.key === "Tab") {
+                              e.preventDefault();
+                              document.getElementById(`floating-menu-${(index + 1) % floatingMenus.length}`)?.focus();
+                          }}}
                         >
                           {floatingMenu.icon}
                           <span>{floatingMenu.label}</span>
                         </button>
                       ))}
 
-                      <button
-                        onClick={() => setShowAddingImageModal(true)}
-                        className={clsx(
-                          "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary rounded-b-lg",
-                          {
-                            "text-accent bg-opacity-30 font-semibold":
-                              editor.isActive("image"),
-                          }
-                        )}
-                      >
-                        <FiImage />
-                        <span>Image</span>
-                      </button>
                     </FloatingMenu>
                   )}
 
@@ -559,6 +571,18 @@ const bubbleMenus = [
       }
     },
     isActive: (editor: Editor) => editor?.isActive("spotify"),
+  },
+  //image
+  {
+    type: "image",
+    label: "Image",
+    icon: <FiImage />,
+    onClick: (editor: Editor, setShowAddingImageModal?: () => void) => {
+      if (setShowAddingImageModal) {
+        setShowAddingImageModal();
+      }
+    },
+    isActive: (editor: Editor) => editor?.isActive("image"),
   },
 ];
 

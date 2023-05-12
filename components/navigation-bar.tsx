@@ -133,7 +133,7 @@ const NavigationBar: React.FC<{
                           {
                             "text-neutral-300": landing?.scrollY < 100,
                           },
-                          { "text-neutral-400": landing?.scrollY >= 100 }
+                          { "text-neutral-400": landing?.scrollY >= 100 },
                         )}
                       >
                         <span className="text-sm">{item?.sectionTitle}</span>
