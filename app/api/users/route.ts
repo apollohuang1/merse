@@ -47,10 +47,13 @@ export async function POST(request: NextRequest) {
     const db = await dbConnect();
     const body = await request.json();
 
-    const existingUser = await MDBUser.findOne({ email: body.email })
+    // const existingUser = await MDBUser.findOne({ email: body.email })
+    // find one with email or username
+    const existingUser = await MDBUser.findOne({
+      $or: [{ email: body.email }, { username: body.username }],
+    });
 
-    if (existingUser) {
-
+    if (existingUser && existingUser.email === body.email) {
       // if existing user has no joined_at, update to current date
       if (!existingUser.joined_at) {
         existingUser.joined_at = new Date();
@@ -59,6 +62,13 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(existingUser, { status: 200 });
     }
+
+    // check username
+    if (existingUser && existingUser.username) {
+      return NextResponse.json({ error: "Username already exists" }, { status: 400 });
+    }
+
+    // user not exists, create new user
 
     const newUser = new MDBUser({
       _id: new mongoose.Types.ObjectId(),

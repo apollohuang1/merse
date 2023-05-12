@@ -5,7 +5,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import MDBUser from "@/server/models/MDBUser";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
-import { setCurrentUser } from "@/redux-store/store";
+import { setCurrentUser, setNotificationContent } from "@/redux-store/store";
 import { User } from "@/models/user";
 
 const useAuth = () => {
@@ -142,24 +142,31 @@ const useAuth = () => {
 
   const registerNewUser = async () => {
 
-    const createUserReponse = await axios({
-      method: "POST",
-      url: "/api/users",
-      data: registeringUserData,
-      headers: {
-        Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
-      },
-    });
-
-    // if user exists, return fetched user data
-    setCurrentUser(createUserReponse.data);
-    dispatch(setCurrentUser(createUserReponse.data));
-
-    localStorage.setItem("currentUser", JSON.stringify(createUserReponse.data));
-
-    // alert("Please try again, we're fixing this issue.")
-    setIsLoadingCurrentUser(false);
-    setShowLoginModal(false);
+    try {
+      const createUserReponse = await axios({
+        method: "POST",
+        url: "/api/users",
+        data: registeringUserData,
+        headers: {
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+        },
+      });
+  
+      // if user exists, return fetched user data
+      setCurrentUser(createUserReponse.data);
+      dispatch(setCurrentUser(createUserReponse.data));
+  
+      localStorage.setItem("currentUser", JSON.stringify(createUserReponse.data));
+  
+      // alert("Please try again, we're fixing this issue.")
+      setIsLoadingCurrentUser(false);
+      setShowLoginModal(false);
+    } catch (error: any) {
+      const errorMessage = error.response.data.error;
+      if (errorMessage === "Username already exists") {
+        alert("Username already exists");
+      }
+    }
   };
 
   // const retrieveStripeCustomer = async (stripeCustomerId: string) => {
