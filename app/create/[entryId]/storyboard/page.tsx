@@ -45,11 +45,13 @@ import {
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
+  addChatMessage,
   setContent,
   setNotificationContent,
   setScenes,
   setShowGeneratedStoryboard,
   setTitle,
+  toggleShowChat,
 } from "@/redux-store/store";
 import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
@@ -94,10 +96,6 @@ const Storyboard = (props: Props) => {
   const [showAddingImageModal, setShowAddingImageModal] =
     React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
-  const [showChat, setShowChat] = React.useState<boolean>(false);
-  const [chatMessages, setChatMessages] = React.useState<
-    openai.ChatCompletionRequestMessage[]
-  >([]);
   const [chatInputText, setChatInputText] = React.useState<string>("");
   const [isChatResponseLoading, setIsChatResponseLoading] =
     React.useState<boolean>(false);
@@ -207,7 +205,7 @@ const Storyboard = (props: Props) => {
         content: chatInputText,
       };
 
-      setChatMessages((prev) => [...prev, newChatMessage]);
+      dispatch(addChatMessage(newChatMessage));
       setChatInputText("");
       scrollToChatBottom();
 
@@ -226,7 +224,7 @@ const Storyboard = (props: Props) => {
       const completionResponse = await openAIAPI.createChatCompletion({
         model: "gpt-3.5-turbo",
         // messages: [...chatMessages, { role: "user", content: chatInputText}],
-        messages: [systemMessage, ...chatMessages, newChatMessage],
+        messages: [systemMessage, ...entry?.chat_messages, newChatMessage],
         temperature: 0.7,
       });
 
@@ -235,10 +233,7 @@ const Storyboard = (props: Props) => {
 
       if (!responseMessage) return;
 
-      setChatMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: responseMessage },
-      ]);
+      dispatch(addChatMessage({ role: "assistant", content: responseMessage }));
 
       setIsChatResponseLoading(false);
 
@@ -250,6 +245,15 @@ const Storyboard = (props: Props) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    // scroll without smooth
+    const chatScrollSection = document.getElementById("chat-content");
+    chatScrollSection?.scrollTo({
+      top: chatScrollSection.scrollHeight,
+      behavior: "auto",
+    });
+  }, []);
 
   return (
     <>
@@ -328,9 +332,9 @@ const Storyboard = (props: Props) => {
                     <button
                       className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
                       onClick={() => {
-                        setShowChat(!showChat);
+                        dispatch(toggleShowChat());
                         // focus on text input chat-input
-                        if (!showChat) {
+                        if (!entryHelper.showChat) {
                           chatInputRef.current?.focus();
                         }
                       }}
@@ -359,15 +363,15 @@ const Storyboard = (props: Props) => {
                 </div>
               </div>
 
-              {!showChat ? (
+              {entryHelper?.showChat ? (
                 <div className="flex flex-col w-full h-full overflow-auto">
                   {/* <div className="w-full h-full bg-sky-200"> */}
                   <div
                     id="chat-content"
                     className="flex flex-col w-full h-full gap-3 overflow-auto"
                   >
-                    {chatMessages.map(
-                      (message: openai.ChatCompletionRequestMessage, index) => (
+                    {entry?.chat_messages.map(
+                      (message: openai.ChatCompletionRequestMessage, index: number) => (
                         <div
                           key={index}
                           className={clsx(
@@ -408,10 +412,10 @@ const Storyboard = (props: Props) => {
                       <div className="flex flex-row w-full p-3 gap-2 justify-start">
                         <div
                           className={
-                            "flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[60%] bg-light-background-secondary dark:bg-dark-background-secondary"
+                            "flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[60%] bg-light-background-secondary dark:bg-dark-background-secondary animate-pulse"
                           }
                         >
-                          <FiMoreHorizontal className="w-8 h-6 text-light-text-secondary dark:text-dark-text-secondary animate-pulse" />
+                          <FiMoreHorizontal className="w-8 h-6 text-light-text-secondary dark:text-dark-text-secondary" />
                         </div>
                       </div>
                     )}
@@ -444,6 +448,11 @@ const Storyboard = (props: Props) => {
                       </button> */}
 
                       <button
+                        onClick={() => {
+                          if (chatInputText) {
+                            handleSendMessage();
+                          }
+                        }}
                         className="flex bg-emerald-500 h-full rounded-full aspect-square items-center justify-center disabled:opacity-50"
                         disabled={chatInputText.length === 0}
                       >

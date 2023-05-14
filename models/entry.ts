@@ -11,6 +11,7 @@ export interface Entry {
   style_reference: StyleReference | null;
 // content: object | null;
   content: string | null;
+  chat_messages: object[];
   characters: Character[];
   // storyboard: object | null;
   scenes: Scene[];

@@ -5,6 +5,7 @@ import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import mongoose, { Types } from "mongoose";
 import { ObjectId } from "mongoose";
+import { ChatCompletionRequestMessage } from "openai";
 
 const initialState: Entry = {
   _id: "",
@@ -14,6 +15,7 @@ const initialState: Entry = {
   content: null,
   characters: [],
   scenes: [],
+  chat_messages: [],
   canvas: null,
   cover: null,
   likes: [],
@@ -55,6 +57,13 @@ const entrySlice = createSlice({
     setContent: (state: Entry, action) => {
       state.content = action.payload;
     },
+    setChatMessages: (state: Entry, action: PayloadAction<ChatCompletionRequestMessage[]>) => {
+      state.chat_messages = action.payload;
+    },
+    addChatMessage: (state: Entry, action: PayloadAction<ChatCompletionRequestMessage>) => {
+      // add chat message to storyboard
+      state.chat_messages.push(action.payload);
+    },
     setScenes: (state: Entry, action) => {
       state.scenes = action.payload;
     },
@@ -80,17 +89,24 @@ const entryHelperSlice = createSlice({
     stylesScrollPosition: 0,
     showGeneratedStoryboard: false,
     isGeneratingStoryboard: false,
+    showChat: false,
   },
   reducers: {
-    setStylesScrollPosition: (state, action) => {
+    setStylesScrollPosition: (state, action: PayloadAction<number>) => {
       state.stylesScrollPosition = action.payload;
     },
-    setShowGeneratedStoryboard: (state, action) => {
+    setShowGeneratedStoryboard: (state, action: PayloadAction<boolean>) => {
       state.showGeneratedStoryboard = action.payload;
     },
-    setIsGeneratingStoryboard: (state, action) => {
+    setIsGeneratingStoryboard: (state, action: PayloadAction<boolean>) => {
       state.isGeneratingStoryboard = action.payload;
     },
+    setShowChat: (state, action: PayloadAction<boolean>) => {
+      state.showChat = action.payload;
+    },
+    toggleShowChat: (state) => {
+      state.showChat = !state.showChat;
+    }
   },
 });
 
@@ -162,6 +178,8 @@ export const {
   removeCharacter,
   setTitle,
   setContent,
+  setChatMessages,
+  addChatMessage,
   setScenes,
   addScene,
   setCanvas,
@@ -172,6 +190,8 @@ export const {
   setStylesScrollPosition,
   setShowGeneratedStoryboard,
   setIsGeneratingStoryboard,
+  setShowChat,
+  toggleShowChat
 } = entryHelperSlice.actions;
 
 export const { setScrollY } = landingSlice.actions;
