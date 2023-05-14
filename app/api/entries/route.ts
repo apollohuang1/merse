@@ -86,6 +86,7 @@ export async function POST(request: NextRequest) {
       title: body.title,
       style_reference: body.style_reference,
       content: body.content,
+      chat_messages: body.chat_messages,
       characters: body.characters,
       cover: {
         image_url:

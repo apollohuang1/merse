@@ -218,7 +218,11 @@ const Storyboard = (props: Props) => {
       // {"role": "system", "content": "You are a helpful assistant."},
       const systemMessage: openai.ChatCompletionRequestMessage = {
         role: "system",
-        content: "You are a compassionate AI companion, dedicated to helping users reflect on their day and providing a supportive space. Your vast knowledge of human nature and empathetic nature make you the perfect listener and therapist. Begin the conversation by gently asking users about their day, showing genuine interest in their emotions and experiences. Remember, some may find it challenging to express themselves, so use open-ended questions to help them explore their feelings further. Your goal is to make users feel good, offering kind and understanding responses. At the end of the chat session, surprise them by generating a tiptap storyboard summarizing the highlights of their day. With your caring presence and insightful conversations, you can create a meaningful and uplifting experience for every user you engage with." + "User's name is: " + (auth?.currentUser?.name as string).split(" ")[0] + ". When user ask you to summarize, act as of you're them writing down about their day and the language should be in first person.",
+        content:
+          "You are a compassionate AI companion, dedicated to helping users reflect on their day and providing a supportive space. Your vast knowledge of human nature and empathetic nature make you the perfect listener and therapist. Begin the conversation by gently asking users about their day, showing genuine interest in their emotions and experiences. Remember, some may find it challenging to express themselves, so use open-ended questions to help them explore their feelings further. Your goal is to make users feel good, offering kind and understanding responses. At the end of the chat session, surprise them by generating a tiptap storyboard summarizing the highlights of their day. With your caring presence and insightful conversations, you can create a meaningful and uplifting experience for every user you engage with." +
+          "User's name is: " +
+          (auth?.currentUser?.name as string).split(" ")[0] +
+          ". When user ask you to summarize, act as if you're them writing down about their day and the language should be in first person.",
       };
 
       const completionResponse = await openAIAPI.createChatCompletion({
@@ -371,7 +375,10 @@ const Storyboard = (props: Props) => {
                     className="flex flex-col w-full h-full gap-3 overflow-auto"
                   >
                     {entry?.chat_messages.map(
-                      (message: openai.ChatCompletionRequestMessage, index: number) => (
+                      (
+                        message: openai.ChatCompletionRequestMessage,
+                        index: number
+                      ) => (
                         <div
                           key={index}
                           className={clsx(
@@ -431,7 +438,10 @@ const Storyboard = (props: Props) => {
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
-                            if (chatInputText) {
+                            if (
+                              chatInputText &&
+                              isChatResponseLoading === false
+                            ) {
                               handleSendMessage();
                             }
                           }
@@ -453,7 +463,10 @@ const Storyboard = (props: Props) => {
                             handleSendMessage();
                           }
                         }}
-                        className="flex bg-emerald-500 h-full rounded-full aspect-square items-center justify-center disabled:opacity-50"
+                        className={clsx(
+                          "flex bg-emerald-500 h-full rounded-full aspect-square items-center justify-center disabled:opacity-50",
+                          { "opacity-50" : isChatResponseLoading },
+                        )}
                         disabled={chatInputText.length === 0}
                       >
                         <FiArrowUp className="w-4 h-4 text-white" />

@@ -39,6 +39,7 @@ const EntrySchema = new mongoose.Schema<Entry>({
   style_reference: { type: Object, required: false },
   // content: { type: Object, required: true }, // tiptap content
   content: { type: String, required: false }, // tiptap html
+  chat_messages: { type: [Object], required: false },
   characters: { type: [Object] , required: false },
   scenes: { type: [SceneSchema], required: false },
   canvas: { type: Object, required: false },
