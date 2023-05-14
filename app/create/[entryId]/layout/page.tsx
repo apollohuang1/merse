@@ -20,6 +20,7 @@ import {
 } from "react-icons/fi";
 
 import { BiText } from "react-icons/bi";
+import { CSSProperties } from 'react';
 
 import { BsQuote } from "react-icons/bs";
 import { IoText } from "react-icons/io5";
@@ -635,7 +636,7 @@ const LayoutPage = (props: Props) => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{` 
         .fade-top::before {
           content: "";
           position: absolute;
