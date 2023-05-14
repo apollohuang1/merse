@@ -10,6 +10,7 @@ import {
   FiImage,
   FiItalic,
   FiList,
+  FiMoreHorizontal,
 } from "react-icons/fi";
 import { BsQuote, BsSpotify } from "react-icons/bs";
 import { IoText } from "react-icons/io5";
@@ -55,6 +56,13 @@ import Blockquote from "@tiptap/extension-blockquote";
 import { Scene } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
 
+import openai, {
+  Configuration,
+  CreateChatCompletionResponse,
+  OpenAIApi,
+} from "openai";
+import { Transition } from "@headlessui/react";
+
 // Collaborative editing
 // import { HocuspocusProvider } from '@hocuspocus/provider';
 // import { WebrtcProvider } from "y-webrtc";
@@ -83,8 +91,11 @@ const Storyboard = (props: Props) => {
     React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
   const [showChat, setShowChat] = React.useState<boolean>(false);
-  const [chatMessages, setChatMessages] = React.useState<string[]>([]);
+  const [chatMessages, setChatMessages] = React.useState<
+    openai.ChatCompletionRequestMessage[]
+  >([]);
   const [chatInputText, setChatInputText] = React.useState<string>("");
+  const [isChatResponseLoading, setIsChatResponseLoading] = React.useState<boolean>(false);
 
   // Set up the Hocuspocus WebSocket provider
   // const provider = new HocuspocusProvider({
@@ -156,6 +167,80 @@ const Storyboard = (props: Props) => {
   // }, [editor])
 
   const [focusedMenuIndex, setFocusedMenuIndex] = useState<number>(0);
+
+  const scrollToChatBottom = () => {
+    setTimeout(() => {
+      const chatScrollSection = document.getElementById("chat-content");
+      chatScrollSection?.scrollTo({
+        top: chatScrollSection.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 0);
+  };
+
+  const handleSendMessage = async () => {
+    try {
+
+
+      // people who are allowed to generate storyboards
+      const manualWhitelistedEmails = [
+        "markrachapoom@gmail.com",
+        "emily.park@berkeley.edu",
+        "jyoti.rani@berkeley.edu",
+      ];
+
+      if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
+        // alert to let people know we're still developing
+        alert(
+          "Sorry, we're still developing this feature. We will let you know when it's ready!"
+        );
+        throw new Error("User not whitelisted");
+      }
+      setIsChatResponseLoading(true);
+
+      // add new message to chatMessages array
+      const newChatMessage: openai.ChatCompletionRequestMessage = {
+        role: "user",
+        content: chatInputText,
+      };
+
+      setChatMessages((prev) => [...prev, newChatMessage]);
+      setChatInputText("");
+      scrollToChatBottom();
+
+      const configuration = new Configuration({
+        apiKey: process.env.OPENAI_API_KEY as string,
+      });
+
+      const openAIAPI = new OpenAIApi(configuration);
+
+      const completionResponse = await openAIAPI.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        // messages: [...chatMessages, { role: "user", content: chatInputText}],
+        messages: [...chatMessages, newChatMessage],
+        temperature: 0.7,
+      });
+
+      const responseMessage =
+        completionResponse.data.choices[0].message?.content;
+
+      if (!responseMessage) return;
+
+      setChatMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: responseMessage },
+      ]);
+
+      setIsChatResponseLoading(false);
+
+      scrollToChatBottom();
+
+      // setChatInputText("");
+    } catch (error: any) {
+      setIsChatResponseLoading(false);
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -264,79 +349,56 @@ const Storyboard = (props: Props) => {
               {!showChat ? (
                 <div className="flex flex-col w-full h-full overflow-auto">
                   {/* <div className="w-full h-full bg-sky-200"> */}
-                  <div className="flex flex-col w-full h-full gap-3 overflow-auto">
-                    {[
-                      {
-                        role: "user",
-                        content:
-                          "hello my name is mark and I am testing ai chatbot UI!",
-                      },
-                      { role: "assistant", content: "I am OpenAI" },
-                      {
-                        role: "user",
-                        content:
-                          "I am testing this chatbot UI and I am very excited to see how it works!",
-                      },
-                      { role: "assistant", content: "I am OpenAI" },
-                      {
-                        role: "user",
-                        content:
-                          "hello my name is mark and I am testing ai chatbot UI!",
-                      },
-                      { role: "assistant", content: "I am OpenAI" },
-                      {
-                        role: "user",
-                        content:
-                          "I am testing this chatbot UI and I am very excited to see how it works!",
-                      },
-                      { role: "assistant", content: "I am OpenAI" },
-                      {
-                        role: "user",
-                        content:
-                          "hello my name is mark and I am testing ai chatbot UI!",
-                      },
-                      { role: "assistant", content: "I am OpenAI" },
-                      {
-                        role: "user",
-                        content:
-                          "I am testing this chatbot UI and I am very excited to see how it works!",
-                      },
-                      { role: "assistant", content: "I am OpenAI" },
-                    ].map((message, index) => (
-                      <div
-                        key={index}
-                        className={clsx(
-                          "flex flex-row w-full p-3 gap-2",
-                          { "justify-end": message.role === "user" },
-                          { "justify-start": message.role === "assistant" }
-                        )}
-                      >
+                  <div
+                    id="chat-content"
+                    className="flex flex-col w-full h-full gap-3 overflow-auto"
+                  >
+                    {chatMessages.map(
+                      (message: openai.ChatCompletionRequestMessage, index) => (
                         <div
+                          key={index}
                           className={clsx(
-                            "flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[50%]",
-                            {
-                              "bg-light-background-secondary dark:bg-dark-background-secondary":
-                                message.role === "assistant",
-                            },
-                            {
-                              "bg-light-blueChat dark:bg-dark-blueChat text-white":
-                                message.role === "user",
-                            }
+                            "flex flex-row w-full p-3 gap-2",
+                            { "justify-end": message.role === "user" },
+                            { "justify-start": message.role === "assistant" }
                           )}
                         >
-                          {message.content}
-                        </div>
+                          <div
+                            className={clsx(
+                              "flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[60%]",
+                              {
+                                "bg-light-background-secondary dark:bg-dark-background-secondary":
+                                  message.role === "assistant",
+                              },
+                              {
+                                "bg-emerald-500 dark:bg-emerald-500 text-white":
+                                  message.role === "user",
+                              }
+                            )}
+                          >
+                            {message.content}
+                          </div>
 
-                        {/* {auth?.currentUser?.profile_image_url &&
-                          message.role === "user" && (
-                            <img
-                              src={auth?.currentUser?.profile_image_url}
-                              alt="profile"
-                              className="w-8 h-8 rounded-full"
-                            />
-                          )} */}
+                          {/* {auth?.currentUser?.profile_image_url &&
+                            message.role === "user" && (
+                              <img
+                                src={auth?.currentUser?.profile_image_url}
+                                alt="profile"
+                                className="w-8 h-8 rounded-full"
+                              />
+                            )} */}
+                        </div>
+                      )
+                    )}
+
+                    { isChatResponseLoading &&
+                      <div className="flex flex-row w-full p-3 gap-2 justify-start">
+                        <div className={"flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[60%] bg-light-background-secondary dark:bg-dark-background-secondary"}>
+                          <FiMoreHorizontal className="w-8 h-6 text-light-text-secondary dark:text-dark-text-secondary animate-pulse"/>
+                        </div>
                       </div>
-                    ))}
+                    }
+
                   </div>
 
                   <div className="flex flex-row w-full py-3">
@@ -348,13 +410,13 @@ const Storyboard = (props: Props) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
                             if (chatInputText) {
-                              setChatInputText("");
+                              handleSendMessage();
                             }
                           }
                         }}
                         type="text"
                         placeholder="Type a message..."
-                        className="w-full h-full outline-none rounded-full bg-transparent text-light-text-primary dark:text-dark-text-primary"
+                        className="w-full h-full outline-none bg-transparent text-light-text-primary dark:text-dark-text-primary"
                       />
 
                       {/* <button
@@ -364,7 +426,7 @@ const Storyboard = (props: Props) => {
                         Send
                       </button> */}
 
-                      <button 
+                      <button
                         className="flex bg-emerald-500 h-full rounded-full aspect-square items-center justify-center disabled:opacity-50"
                         disabled={chatInputText.length === 0}
                       >
