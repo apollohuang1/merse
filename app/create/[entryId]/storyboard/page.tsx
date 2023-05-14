@@ -3,6 +3,7 @@
 import CreateHeader from "@/components/create/create-header";
 import React, { FormEventHandler, useEffect, useState } from "react";
 import {
+  FiArrowUp,
   FiBold,
   FiCode,
   FiEdit2,
@@ -81,6 +82,9 @@ const Storyboard = (props: Props) => {
   const [showAddingImageModal, setShowAddingImageModal] =
     React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
+  const [showChat, setShowChat] = React.useState<boolean>(false);
+  const [chatMessages, setChatMessages] = React.useState<string[]>([]);
+  const [chatInputText, setChatInputText] = React.useState<string>("");
 
   // Set up the Hocuspocus WebSocket provider
   // const provider = new HocuspocusProvider({
@@ -217,7 +221,7 @@ const Storyboard = (props: Props) => {
 
                 <div className="flex flex-row gap-2">
                   <div className="flex flex-row gap-2 items-center h-8">
-                    <button
+                    {/* <button
                       className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
                       onClick={() => {
                         // generateStoryboard(editor);
@@ -226,6 +230,14 @@ const Storyboard = (props: Props) => {
                       }}
                     >
                       Puuung samples (test)
+                    </button> */}
+                    <button
+                      className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
+                      onClick={() => {
+                        setShowChat(!showChat);
+                      }}
+                    >
+                      Chat
                     </button>
                   </div>
 
@@ -249,126 +261,257 @@ const Storyboard = (props: Props) => {
                 </div>
               </div>
 
-              {/* title and editor */}
-              <div className="flex flex-col w-full h-full overflow-auto">
-                {/* title */}
-                <input
-                  type="text"
-                  id="title"
-                  className="w-full py-5 bg-transparent outline-none text-6xl font-semibold text-[#0E100E] dark:text-[#E7FCE8] placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
-                  value={entry?.title ?? ""}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    const updatedTitle = e.target.value;
-                    dispatch(setTitle(updatedTitle));
-                  }}
-                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                    // press enter, shife focus to editor
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      // push content down one block and focus on the first block
-                      editor?.commands.focus("start");
-                    }
-
-                    // if key is down arrow, focus on editor
-                    if (e.key === "ArrowDown") {
-                      e.preventDefault();
-                      editor?.commands.focus();
-                    }
-                  }}
-                  placeholder="Title"
-                />
-
-                <>
-                  <EditorContent
-                    editor={editor}
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      // if content is empty and user push backspace, focus on title
-
-                      // or if user is on the first block of tiptip
-                      if ((e.key === "Backspace" || e.key === "ArrowUp" ) && editor?.isEmpty) {
-                        // focus at the end of input
-                        e.preventDefault();
-                        const titleInput = document.getElementById("title") as HTMLInputElement;
-                        titleInput?.focus();
-                        titleInput?.setSelectionRange(
-                          titleInput.value.length,
-                          titleInput.value.length
-                        );
-                      }
-                    }}
-                  />
-
-                  {editor && (
-                    <FloatingMenu
-                      editor={editor}
-                      tippyOptions={{ duration: 100 }}
-                      className={clsx(
-                        "flex flex-col bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-lg translate-y-[calc(50%+21px)] -translate-x-3"
-                      )}
-                    >
-                      {floatingMenus.map((floatingMenu, index) => (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            if (floatingMenu.type === "image") {
-                              floatingMenu.onClick(editor, () => {
-                                setShowAddingImageModal(true);
-                              });
-                            } else {
-                              floatingMenu.onClick(editor)
-                            }
-                          }}
+              {!showChat ? (
+                <div className="flex flex-col w-full h-full overflow-auto">
+                  {/* <div className="w-full h-full bg-sky-200"> */}
+                  <div className="flex flex-col w-full h-full gap-3 overflow-auto">
+                    {[
+                      {
+                        role: "user",
+                        content:
+                          "hello my name is mark and I am testing ai chatbot UI!",
+                      },
+                      { role: "assistant", content: "I am OpenAI" },
+                      {
+                        role: "user",
+                        content:
+                          "I am testing this chatbot UI and I am very excited to see how it works!",
+                      },
+                      { role: "assistant", content: "I am OpenAI" },
+                      {
+                        role: "user",
+                        content:
+                          "hello my name is mark and I am testing ai chatbot UI!",
+                      },
+                      { role: "assistant", content: "I am OpenAI" },
+                      {
+                        role: "user",
+                        content:
+                          "I am testing this chatbot UI and I am very excited to see how it works!",
+                      },
+                      { role: "assistant", content: "I am OpenAI" },
+                      {
+                        role: "user",
+                        content:
+                          "hello my name is mark and I am testing ai chatbot UI!",
+                      },
+                      { role: "assistant", content: "I am OpenAI" },
+                      {
+                        role: "user",
+                        content:
+                          "I am testing this chatbot UI and I am very excited to see how it works!",
+                      },
+                      { role: "assistant", content: "I am OpenAI" },
+                    ].map((message, index) => (
+                      <div
+                        key={index}
+                        className={clsx(
+                          "flex flex-row w-full p-3 gap-2",
+                          { "justify-end": message.role === "user" },
+                          { "justify-start": message.role === "assistant" }
+                        )}
+                      >
+                        <div
                           className={clsx(
-                            "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
+                            "flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[50%]",
                             {
-                              " text-accent bg-opacity-30 font-semibold":
-                                floatingMenu.isActive(editor),
+                              "bg-light-background-secondary dark:bg-dark-background-secondary":
+                                message.role === "assistant",
                             },
                             {
-                              "rounded-t-lg": index === 0,
+                              "bg-light-blueChat dark:bg-dark-blueChat text-white":
+                                message.role === "user",
                             }
                           )}
-                          id={`floating-menu-${index}`}
-                          onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
-                            // if hit tab, focus on next menu until the last one, then focus on the first one
-                            if (e.key === "Tab") {
-                              e.preventDefault();
-                              document.getElementById(`floating-menu-${(index + 1) % floatingMenus.length}`)?.focus();
-                          }}}
                         >
-                          {floatingMenu.icon}
-                          <span>{floatingMenu.label}</span>
-                        </button>
-                      ))}
+                          {message.content}
+                        </div>
 
-                    </FloatingMenu>
-                  )}
+                        {/* {auth?.currentUser?.profile_image_url &&
+                          message.role === "user" && (
+                            <img
+                              src={auth?.currentUser?.profile_image_url}
+                              alt="profile"
+                              className="w-8 h-8 rounded-full"
+                            />
+                          )} */}
+                      </div>
+                    ))}
+                  </div>
 
-                  {editor && (
-                    <BubbleMenu
-                      editor={editor}
-                      tippyOptions={{ duration: 100 }}
-                      className="flex flex-row bg-light-background-primary dark:bg-dark-background-primary drop-shadow-md border border-light-divider dark:border-dark-divider h-8"
-                    >
-                      {bubbleMenus.map((bubbleMenu: any, index: number) => (
-                        <button
-                          key={index}
-                          onClick={() => bubbleMenu.onClick(editor)}
+                  <div className="flex flex-row w-full py-3">
+                    <div className="flex flex-row items-center gap-4 border border-light-dividerContrast dark:border-dark-dividerContrast w-full h-12 rounded-full pl-4 pr-2 py-2">
+                      <input
+                        value={chatInputText}
+                        onChange={(e) => setChatInputText(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            if (chatInputText) {
+                              setChatInputText("");
+                            }
+                          }
+                        }}
+                        type="text"
+                        placeholder="Type a message..."
+                        className="w-full h-full outline-none rounded-full bg-transparent text-light-text-primary dark:text-dark-text-primary"
+                      />
+
+                      {/* <button
+                        className="text-emerald-500 text-sm font-semibold disabled:opacity-50"
+                        disabled={chatInputText.length === 0}
+                      >
+                        Send
+                      </button> */}
+
+                      <button 
+                        className="flex bg-emerald-500 h-full rounded-full aspect-square items-center justify-center disabled:opacity-50"
+                        disabled={chatInputText.length === 0}
+                      >
+                        <FiArrowUp className="w-4 h-4 text-white" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* title and editor */}
+                  <div className="flex flex-col w-full h-full overflow-auto">
+                    {/* title */}
+                    <input
+                      type="text"
+                      id="title"
+                      className="w-full py-5 bg-transparent outline-none text-6xl font-semibold text-[#0E100E] dark:text-[#E7FCE8] placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
+                      value={entry?.title ?? ""}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const updatedTitle = e.target.value;
+                        dispatch(setTitle(updatedTitle));
+                      }}
+                      onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                        // press enter, shife focus to editor
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          // push content down one block and focus on the first block
+                          editor?.commands.focus("start");
+                        }
+
+                        // if key is down arrow, focus on editor
+                        if (e.key === "ArrowDown") {
+                          e.preventDefault();
+                          editor?.commands.focus();
+                        }
+                      }}
+                      placeholder="Title"
+                    />
+
+                    <>
+                      <EditorContent
+                        editor={editor}
+                        onKeyDown={(
+                          e: React.KeyboardEvent<HTMLInputElement>
+                        ) => {
+                          // if content is empty and user push backspace, focus on title
+
+                          // or if user is on the first block of tiptip
+                          if (
+                            (e.key === "Backspace" || e.key === "ArrowUp") &&
+                            editor?.isEmpty
+                          ) {
+                            // focus at the end of input
+                            e.preventDefault();
+                            const titleInput = document.getElementById(
+                              "title"
+                            ) as HTMLInputElement;
+                            titleInput?.focus();
+                            titleInput?.setSelectionRange(
+                              titleInput.value.length,
+                              titleInput.value.length
+                            );
+                          }
+                        }}
+                      />
+
+                      {editor && (
+                        <FloatingMenu
+                          editor={editor}
+                          tippyOptions={{ duration: 100 }}
                           className={clsx(
-                            "flex flex-row items-center justify-start outline-none gap-2 px-2 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary",
-                            {
-                              " text-accent bg-opacity-30":
-                                bubbleMenu?.isActive(editor),
-                            }
+                            "flex flex-col bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-lg translate-y-[calc(50%+21px)] -translate-x-3"
                           )}
                         >
-                          {bubbleMenu.icon}
-                        </button>
-                      ))}
-                    </BubbleMenu>
-                  )}
+                          {floatingMenus.map((floatingMenu, index) => (
+                            <button
+                              key={index}
+                              onClick={() => {
+                                if (floatingMenu.type === "image") {
+                                  floatingMenu.onClick(editor, () => {
+                                    setShowAddingImageModal(true);
+                                  });
+                                } else {
+                                  floatingMenu.onClick(editor);
+                                }
+                              }}
+                              className={clsx(
+                                "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
+                                {
+                                  " text-accent bg-opacity-30 font-semibold":
+                                    floatingMenu.isActive(editor),
+                                },
+                                {
+                                  "rounded-t-lg": index === 0,
+                                }
+                              )}
+                              id={`floating-menu-${index}`}
+                              onKeyDown={(
+                                e: React.KeyboardEvent<HTMLButtonElement>
+                              ) => {
+                                // if hit tab, focus on next menu until the last one, then focus on the first one
+                                if (e.key === "Tab") {
+                                  e.preventDefault();
+                                  document
+                                    .getElementById(
+                                      `floating-menu-${
+                                        (index + 1) % floatingMenus.length
+                                      }`
+                                    )
+                                    ?.focus();
+                                }
+                              }}
+                            >
+                              {floatingMenu.icon}
+                              <span>{floatingMenu.label}</span>
+                            </button>
+                          ))}
+                        </FloatingMenu>
+                      )}
+
+                      {editor && (
+                        <BubbleMenu
+                          editor={editor}
+                          tippyOptions={{ duration: 100 }}
+                          className="flex flex-row bg-light-background-primary dark:bg-dark-background-primary drop-shadow-md border border-light-divider dark:border-dark-divider h-8"
+                        >
+                          {bubbleMenus.map((bubbleMenu: any, index: number) => (
+                            <button
+                              key={index}
+                              onClick={() => bubbleMenu.onClick(editor)}
+                              className={clsx(
+                                "flex flex-row items-center justify-start outline-none gap-2 px-2 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary",
+                                {
+                                  " text-accent bg-opacity-30":
+                                    bubbleMenu?.isActive(editor),
+                                }
+                              )}
+                            >
+                              {bubbleMenu.icon}
+                            </button>
+                          ))}
+                        </BubbleMenu>
+                      )}
+                    </>
+                  </div>
                 </>
-              </div>
+              )}
             </div>
           </div>
 

@@ -38,6 +38,7 @@ module.exports = {
           divider: "#EFEFEF", // opque
           dividerContrast: "#E7E7E7", // more contrast
           blue: "#007AFF",
+          blueChat: "#3F9CF8",
           red: '#FF3B30',
           pink: '#FF2D55',
           green: "#34C759",
@@ -70,6 +71,7 @@ module.exports = {
           dividerContrast: "#3F3F42", // opaque
           // divider: "#2C302B", // satoshi
           blue: '#0A84FF',
+          blueChat: "#3390FA",
           red: '#FF453A',
           pink: '#FF375F',
           green: "#32D74B",
