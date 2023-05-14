@@ -87,6 +87,10 @@ const Storyboard = (props: Props) => {
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const dispatch = useAppDispatch();
 
+  // useRef
+  const chatInputRef = React.useRef<HTMLInputElement>(null);
+
+  // useStates
   const [showAddingImageModal, setShowAddingImageModal] =
     React.useState<boolean>(false);
   const [addingImageURL, setAddingImageURL] = React.useState<string>("");
@@ -95,7 +99,8 @@ const Storyboard = (props: Props) => {
     openai.ChatCompletionRequestMessage[]
   >([]);
   const [chatInputText, setChatInputText] = React.useState<string>("");
-  const [isChatResponseLoading, setIsChatResponseLoading] = React.useState<boolean>(false);
+  const [isChatResponseLoading, setIsChatResponseLoading] =
+    React.useState<boolean>(false);
 
   // Set up the Hocuspocus WebSocket provider
   // const provider = new HocuspocusProvider({
@@ -180,8 +185,6 @@ const Storyboard = (props: Props) => {
 
   const handleSendMessage = async () => {
     try {
-
-
       // people who are allowed to generate storyboards
       const manualWhitelistedEmails = [
         "markrachapoom@gmail.com",
@@ -214,10 +217,16 @@ const Storyboard = (props: Props) => {
 
       const openAIAPI = new OpenAIApi(configuration);
 
+      // {"role": "system", "content": "You are a helpful assistant."},
+      const systemMessage: openai.ChatCompletionRequestMessage = {
+        role: "system",
+        content: "You are a compassionate AI companion, dedicated to helping users reflect on their day and providing a supportive space. Your vast knowledge of human nature and empathetic nature make you the perfect listener and therapist. Begin the conversation by gently asking users about their day, showing genuine interest in their emotions and experiences. Remember, some may find it challenging to express themselves, so use open-ended questions to help them explore their feelings further. Your goal is to make users feel good, offering kind and understanding responses. At the end of the chat session, surprise them by generating a tiptap storyboard summarizing the highlights of their day. With your caring presence and insightful conversations, you can create a meaningful and uplifting experience for every user you engage with." + "User's name is: " + (auth?.currentUser?.name as string).split(" ")[0] + ". When user ask you to summarize, act as of you're them writing down about their day and the language should be in first person.",
+      };
+
       const completionResponse = await openAIAPI.createChatCompletion({
         model: "gpt-3.5-turbo",
         // messages: [...chatMessages, { role: "user", content: chatInputText}],
-        messages: [...chatMessages, newChatMessage],
+        messages: [systemMessage, ...chatMessages, newChatMessage],
         temperature: 0.7,
       });
 
@@ -320,6 +329,10 @@ const Storyboard = (props: Props) => {
                       className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
                       onClick={() => {
                         setShowChat(!showChat);
+                        // focus on text input chat-input
+                        if (!showChat) {
+                          chatInputRef.current?.focus();
+                        }
                       }}
                     >
                       Chat
@@ -391,19 +404,24 @@ const Storyboard = (props: Props) => {
                       )
                     )}
 
-                    { isChatResponseLoading &&
+                    {isChatResponseLoading && (
                       <div className="flex flex-row w-full p-3 gap-2 justify-start">
-                        <div className={"flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[60%] bg-light-background-secondary dark:bg-dark-background-secondary"}>
-                          <FiMoreHorizontal className="w-8 h-6 text-light-text-secondary dark:text-dark-text-secondary animate-pulse"/>
+                        <div
+                          className={
+                            "flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[60%] bg-light-background-secondary dark:bg-dark-background-secondary"
+                          }
+                        >
+                          <FiMoreHorizontal className="w-8 h-6 text-light-text-secondary dark:text-dark-text-secondary animate-pulse" />
                         </div>
                       </div>
-                    }
-
+                    )}
                   </div>
 
                   <div className="flex flex-row w-full py-3">
                     <div className="flex flex-row items-center gap-4 border border-light-dividerContrast dark:border-dark-dividerContrast w-full h-12 rounded-full pl-4 pr-2 py-2">
                       <input
+                        type="text"
+                        ref={chatInputRef}
                         value={chatInputText}
                         onChange={(e) => setChatInputText(e.target.value)}
                         onKeyDown={(e) => {
@@ -414,7 +432,6 @@ const Storyboard = (props: Props) => {
                             }
                           }
                         }}
-                        type="text"
                         placeholder="Type a message..."
                         className="w-full h-full outline-none bg-transparent text-light-text-primary dark:text-dark-text-primary"
                       />
