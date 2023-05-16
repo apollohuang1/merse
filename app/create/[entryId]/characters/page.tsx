@@ -111,7 +111,7 @@ const CreateCharacterPage = (props: Props) => {
                     clearForm();
                     setIsEditingCharacter(true);
                   }}
-                  className="flex flex-col items-center justify-center text-center gap-4 w-full h-60 rounded-xl border-2 border-dashed border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                  className="animate-fade-in-up flex flex-col items-center justify-center text-center gap-4 w-full h-60 rounded-xl border-2 border-dashed border-light-divider dark:border-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
                 >
                   <div className="flex flex-row items-center gap-8">
                     {/* plus icon */}

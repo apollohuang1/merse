@@ -400,7 +400,7 @@ const Storyboard = (props: Props) => {
                                   message.role === "assistant",
                               },
                               {
-                                "bg-emerald-500 dark:bg-emerald-500 text-white rounded-t-2xl rounded-bl-2xl":
+                                "bg-emerald-500 dark:bg-emerald-500 text-white rounded-t-2xl rounded-bl-2xl animate-chat-bubble-user":
                                   message.role === "user",
                               }
                             )}
@@ -424,7 +424,7 @@ const Storyboard = (props: Props) => {
                       <div className="flex flex-row w-full p-3 gap-2 justify-start">
                         <div
                           className={
-                            "flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[60%] bg-light-background-secondary dark:bg-dark-background-secondary animate-pulse"
+                            "flex px-4 py-2 h-auto items-center justify-center max-w-[60%] bg-light-background-secondary dark:bg-dark-background-secondary animate-pulse rounded-t-2xl rounded-br-2xl"
                           }
                         >
                           <FiMoreHorizontal className="w-8 h-6 text-light-text-secondary dark:text-dark-text-secondary" />
