@@ -100,6 +100,8 @@ const Storyboard = (props: Props) => {
   const [isChatResponseLoading, setIsChatResponseLoading] =
     React.useState<boolean>(false);
 
+  const [isEnterPressed, setIsEnterPressed] = React.useState<boolean>(false);
+
   // Set up the Hocuspocus WebSocket provider
   // const provider = new HocuspocusProvider({
   //   url: "ws://127.0.0.1:1234",
@@ -389,13 +391,13 @@ const Storyboard = (props: Props) => {
                         >
                           <div
                             className={clsx(
-                              "flex px-4 py-2 h-auto items-center justify-center rounded-2xl max-w-[60%]",
+                              "flex px-4 py-2 h-auto items-center justify-center max-w-[60%]",
                               {
-                                "bg-light-background-secondary dark:bg-dark-background-secondary":
+                                "bg-light-background-secondary dark:bg-dark-background-secondary rounded-t-2xl rounded-br-2xl":
                                   message.role === "assistant",
                               },
                               {
-                                "bg-emerald-500 dark:bg-emerald-500 text-white":
+                                "bg-emerald-500 dark:bg-emerald-500 text-white rounded-t-2xl rounded-bl-2xl":
                                   message.role === "user",
                               }
                             )}
@@ -438,6 +440,14 @@ const Storyboard = (props: Props) => {
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
+                            setIsEnterPressed(true);
+                          }
+                        }}
+                        onKeyUp={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            setIsEnterPressed(false);
+
                             if (
                               chatInputText &&
                               isChatResponseLoading === false
@@ -465,7 +475,9 @@ const Storyboard = (props: Props) => {
                         }}
                         className={clsx(
                           "flex bg-emerald-500 h-full rounded-full aspect-square items-center justify-center disabled:opacity-50",
-                          { "opacity-50" : isChatResponseLoading },
+                          { "opacity-50": isChatResponseLoading },
+                          { "scale-95": isEnterPressed },
+                          { "scale-100": !isEnterPressed }
                         )}
                         disabled={chatInputText.length === 0}
                       >
