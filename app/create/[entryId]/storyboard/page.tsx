@@ -153,15 +153,6 @@ const Storyboard = (props: Props) => {
     },
   });
 
-  editor?.on("update", (updatedEditor: any) => {
-    const updatedContent = updatedEditor?.editor?.getHTML();
-    dispatch(setContent(updatedContent));
-  });
-
-  editor?.on("create", (createdEditor: any) => {
-    createdEditor?.editor.commands.setContent(entry?.content);
-  });
-
   // useEffect(() => {
   //   if (!editor) return;
   //   editor.commands.updateUser({
@@ -260,6 +251,18 @@ const Storyboard = (props: Props) => {
       behavior: "auto",
     });
   }, []);
+
+  useEffect(() => {
+    if (editor) {
+      editor?.commands.setContent(entry?.content)
+    }
+  }, [editor])
+
+
+  editor?.on("update", (updatedEditor: any) => {
+    const updatedContent = updatedEditor?.editor?.getHTML();
+    dispatch(setContent(updatedContent));
+  });
 
   return (
     <>
