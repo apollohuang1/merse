@@ -277,45 +277,50 @@ const ReadPage = (props: Props) => {
                         >
                           <Menu.Items className="absolute top-[calc(100%+5px)] z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-md bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-lg">
                             <div className="py-1">
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                  onClick={() => {
-                                    router.push(`/create/${entryData?._id}`)
-                                  }}
-                                    className={clsx(
-                                      "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                                      {
-                                        "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                          active,
-                                      },
-                                      { "": !active }
-                                    )}
-                                  >
-                                    Edit
-                                  </button>
-                                )}
-                              </Menu.Item>
 
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    onClick={() => {
-                                      alert("In development.");
-                                    }}
-                                    className={clsx(
-                                      "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                                      {
-                                        "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                          active,
-                                      },
-                                      { "": !active }
+                              { entryData?.author?._id === auth?.currentUser?._id &&
+                                <>
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                      onClick={() => {
+                                        router.push(`/create/${entryData?._id}`)
+                                      }}
+                                        className={clsx(
+                                          "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                          {
+                                            "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                              active,
+                                          },
+                                          { "": !active }
+                                        )}
+                                      >
+                                        Edit
+                                      </button>
                                     )}
-                                  >
-                                    Delete
-                                  </button>
-                                )}
-                              </Menu.Item>
+                                  </Menu.Item>
+
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                        onClick={() => {
+                                          alert("In development.");
+                                        }}
+                                        className={clsx(
+                                          "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                          {
+                                            "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                              active,
+                                          },
+                                          { "": !active }
+                                        )}
+                                      >
+                                        Delete
+                                      </button>
+                                    )}
+                                  </Menu.Item>
+                                </>
+                              }
 
                               <Menu.Item>
                                 {({ active }) => (
