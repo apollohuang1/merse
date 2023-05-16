@@ -400,7 +400,7 @@ const Storyboard = (props: Props) => {
                                   message.role === "assistant",
                               },
                               {
-                                "bg-emerald-500 dark:bg-emerald-500 text-white rounded-t-2xl rounded-bl-2xl animate-chat-bubble-user":
+                                "bg-emerald-500 dark:bg-emerald-500 text-white rounded-t-2xl rounded-bl-2xl":
                                   message.role === "user",
                               }
                             )}

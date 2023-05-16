@@ -563,6 +563,9 @@ const ProfilePage = (props: Props) => {
                                             <Menu.Item>
                                               {({ active }) => (
                                                 <button
+                                                  onClick={() => {
+                                                    router.push(`/create/${entry._id}`)
+                                                  }}
                                                   className={clsx(
                                                     "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
                                                     {
