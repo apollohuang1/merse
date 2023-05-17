@@ -265,8 +265,8 @@ const useCreateEntry = () => {
     const stableDiffusionApiKey = process.env.STABLE_DIFFUSION_API_KEY;
 
     //SDXL
-    const engineId = "stable-diffusion-v1-5";
-    // const engineId = "stable-diffusion-xl-beta-v2-2-2";
+    // const engineId = "stable-diffusion-v1-5";
+    const engineId = "stable-diffusion-xl-beta-v2-2-2";
     const apiHost = process.env.API_HOST ?? "https://api.stability.ai";
     const apiKey = process.env.STABILITY_API_KEY;
 
