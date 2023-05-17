@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { Editor, JSONContent } from "@tiptap/react";
 import axios from "axios";
 
+
 import {
   Configuration,
   CreateChatCompletionRequest,
@@ -29,13 +30,17 @@ import {
 } from "@aws-sdk/client-s3";
 
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux-store/store";
 
 // Hook for creating new entries
 const useCreateEntry = () => {
   // redux states
+  
   const entry = useAppSelector((state) => state.entry);
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const auth = useAppSelector((state) => state.auth);
+  const stylePreset = useAppSelector((state) => state.entry.style_preset);
 
   const dispatch = useAppDispatch();
 
@@ -110,8 +115,9 @@ const useCreateEntry = () => {
 
       // scenes text from gpt3.5 as generating prompts
       const scenesControlPrompt =
-        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ';
-      const generatedText = await createGenericChatCompletion(
+        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed, but DO NOT generate new storylines that are not in TEXT_STORY) \nTEXT_STORY: ';
+        //'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ';
+        const generatedText = await createGenericChatCompletion(
         textContent,
         scenesControlPrompt
       );
@@ -294,7 +300,7 @@ const useCreateEntry = () => {
         clip_guidance_preset: "FAST_BLUE",
         height: 512,
         width: 512,
-        style_preset: "comic-book",
+        style_preset: stylePreset,
         samples: 1,
         steps: 30,
       },
@@ -303,6 +309,7 @@ const useCreateEntry = () => {
         Accept: "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
+      
     });
 
     interface GenerationResponse {
