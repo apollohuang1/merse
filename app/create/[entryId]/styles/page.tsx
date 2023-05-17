@@ -9,6 +9,7 @@ import { ComicStyle, comicStyles, createRoutes } from "@/util/constants/create-c
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setStyle, setStylesScrollPosition } from "@/redux-store/store";
 
+
 type Props = {};
 
 const Styles = (props: Props) => {
