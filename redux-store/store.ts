@@ -30,6 +30,21 @@ const entrySlice = createSlice({
   name: "entry",
   initialState: initialState,
   reducers: {
+    setEntry: (state: Entry, action: PayloadAction<Entry>) => {
+      state._id = action.payload._id;
+      state.author = action.payload.author;
+      state.title = action.payload.title;
+      state.style_reference = action.payload.style_reference;
+      state.content = action.payload.content;
+      state.characters = action.payload.characters;
+      state.scenes = action.payload.scenes;
+      state.chat_messages = action.payload.chat_messages;
+      state.canvas = action.payload.canvas;
+      state.cover = action.payload.cover;
+      state.likes = action.payload.likes;
+      state.comments = action.payload.comments;
+      state.is_private = action.payload.is_private;
+    },
     setEntryId: (state: Entry, action: PayloadAction<string>) => {
       state._id = action.payload;
     },
@@ -176,6 +191,7 @@ export const store: ToolkitStore = configureStore({
 export const { setCurrentUser } = authenticationSlice.actions;
 
 export const {
+  setEntry,
   setEntryId,
   setEntryAuthor,
   setStyle,

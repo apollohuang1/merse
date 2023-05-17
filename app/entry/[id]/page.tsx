@@ -16,23 +16,23 @@ import {
   getFormattedDateFromMongoDBDate,
   getLastIdFromUrl,
 } from "@/util/helper";
-import { FiHeart, FiMessageCircle } from "react-icons/fi";
+import { FiHeart, FiMessageCircle, FiMoreHorizontal } from "react-icons/fi";
 import clsx from "clsx";
 
 import * as fabric from "fabric";
 import { Spinner } from "@chakra-ui/react";
 import Divider from "@/components/divider";
-import { Transition } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import SlideOver from "@/components/slide-over";
 import { useReadEntry } from "@/hooks/useReadEntry";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { ObjectId } from "mongoose";
 import Link from "next/link";
+import { setEntry, setNotificationContent } from "@/redux-store/store";
 
 type Props = {};
 
 const ReadPage = (props: Props) => {
-
   const router = useRouter();
   const searchParams = useSearchParams();
   const { likeEntry, addComment } = useReadEntry();
@@ -208,10 +208,10 @@ const ReadPage = (props: Props) => {
                   </div>
                 </div>
 
-                <div className="flex flex-row gap-0 flex-shrink-0">
+                <div className="flex flex-row gap-2 flex-shrink-0 items-center">
                   <button
                     onClick={() => setShowCommentSection(!showCommentSection)}
-                    className="group flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg"
+                    className="group flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-2 rounded-lg"
                   >
                     <FiMessageCircle className="w-6 h-6 text-light-text-tertiary dark:text-dark-text-tertiary" />
                     <span className="line-clamp-1 font-medium">
@@ -221,7 +221,7 @@ const ReadPage = (props: Props) => {
 
                   <button
                     onClick={handleLikeEntry}
-                    className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-3 rounded-lg"
+                    className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-2 rounded-lg"
                   >
                     <FiHeart
                       className={clsx(
@@ -240,6 +240,123 @@ const ReadPage = (props: Props) => {
                       {entryData?.likes?.length ?? 0}
                     </span>
                   </button>
+
+                  <Menu as="div" className="relative inline-block text-left">
+                    {({ open }) => (
+                      <>
+                        <div>
+                          <Menu.Button
+                            className={clsx(
+                              "group flex w-8 h-8 hover:bg-emerald-500 hover:bg-opacity-10 items-center justify-center rounded-full",
+                              {
+                                "bg-emerald-500 bg-opacity-10": open,
+                              }
+                            )}
+                          >
+                            <FiMoreHorizontal
+                              className={clsx(
+                                "w-5 h-5 group-hover:text-emerald-500",
+                                { "text-emerald-500": open },
+                                {
+                                  "text-light-text-secondary dark:text-dark-text-secondary":
+                                    !open,
+                                }
+                              )}
+                            />
+                          </Menu.Button>
+                        </div>
+
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-150"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-100"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items className="absolute top-[calc(100%+5px)] z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-md bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-lg">
+                            <div className="py-1">
+
+                              { entryData?.author?._id === auth?.currentUser?._id &&
+                                <>
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                      onClick={() => {
+                                        router.push(`/create/${entryData?._id}`)
+                                      }}
+                                        className={clsx(
+                                          "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                          {
+                                            "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                              active,
+                                          },
+                                          { "": !active }
+                                        )}
+                                      >
+                                        Edit
+                                      </button>
+                                    )}
+                                  </Menu.Item>
+
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                        onClick={() => {
+                                          alert("In development.");
+                                        }}
+                                        className={clsx(
+                                          "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                          {
+                                            "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                              active,
+                                          },
+                                          { "": !active }
+                                        )}
+                                      >
+                                        Delete
+                                      </button>
+                                    )}
+                                  </Menu.Item>
+                                </>
+                              }
+
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <button
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(
+                                        window.location.href
+                                      );
+
+                                      dispatch(
+                                        setNotificationContent({
+                                          title: "Link Copied",
+                                          message:
+                                            "Entry link copied to clipboard.",
+                                        })
+                                      );
+                                    }}
+                                    className={clsx(
+                                      "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                      {
+                                        "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                          active,
+                                      },
+                                      { "": !active }
+                                    )}
+                                  >
+                                    Copy Entry Link
+                                  </button>
+                                )}
+                              </Menu.Item>
+                            </div>
+                          </Menu.Items>
+                        </Transition>
+                      </>
+                    )}
+                  </Menu>
                 </div>
               </div>
             )}
@@ -342,7 +459,9 @@ const ReadPage = (props: Props) => {
               {/* image */}
               <button
                 onClick={() => {
-                  router.push(`/${comment?.author?.username || comment?.author?._id }`);
+                  router.push(
+                    `/${comment?.author?.username || comment?.author?._id}`
+                  );
                 }}
                 className="flex-shrink-0"
               >
@@ -354,11 +473,13 @@ const ReadPage = (props: Props) => {
 
               <div className="flex flex-col items-start gap-[3px]">
                 <Link
-                  href={`/${comment?.author?.username || comment?.author?._id }`}
+                  href={`/${comment?.author?.username || comment?.author?._id}`}
                   className="font-semibold leading-none hover:underline"
                 >
                   {/* if username exsits use it. if not, use name */}
-                  {comment?.author?.username || comment?.author?.name || "Unknown"}
+                  {comment?.author?.username ||
+                    comment?.author?.name ||
+                    "Unknown"}
                 </Link>
                 <span className="text-base leading-snug">
                   {comment?.content}

@@ -25,6 +25,32 @@ module.exports = {
       padding: {
         'navigationBar': '42px',
       },
+      keyframes: {
+        'fade-in-up': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(20px)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+        'chat-bubble-user': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateX(-100px) translateY(21px) scale(0)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateX(0) translateY(0) scale(1)',
+          },
+        },
+      },
+      animation: {
+        'fade-in-up': 'fade-in-up 0.3s ease-out',
+        'chat-bubble-user': 'chat-bubble-user 0.13s ease-out',
+      },
       colors: {
         // accent: "#4D9D7D", // green
         accent: "#10b981",

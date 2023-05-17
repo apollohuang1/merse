@@ -24,11 +24,10 @@ export async function GET(request: NextRequest) {
       // fetch all entries from user
       const allEntriesFromUser = await MDBEntry.find({
         author: userId,
-      })
-      .populate({
+      }).populate({
         path: "author",
         select: "profile_image_url name username _id",
-      })
+      });
 
       return NextResponse.json(allEntriesFromUser, { status: 200 });
     }
@@ -80,26 +79,55 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No _id provided" }, { status: 400 });
     }
 
+    // check if exist
+    const updatedEntry = await MDBEntry.findByIdAndUpdate(
+      body._id,
+      {
+        // set the entire entry, not specific fields
+        $set: {
+          ...body,
+          updated_at: new Date(),
+        },
+      },
+      { new: true }
+    );
+
+    if (updatedEntry) {
+      console.log("updatedEntry", updatedEntry);
+      // redirect
+      return NextResponse.json({ updatedEntry: updatedEntry, reason: "update" }, { status: 200 });
+    }
+
     const newEntry = new MDBEntry({
-      _id: body._id,
-      author: body.author,
-      title: body.title,
-      style_reference: body.style_reference,
-      content: body.content,
-      chat_messages: body.chat_messages,
-      characters: body.characters,
+      ...body,
+      created_at: new Date(),
+      updated_at: new Date(),
       cover: {
         image_url:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaCdoBj4sMKAneZ35yzHHceTTZWXaQly7e46eVsJ1oGD29RKEz71w6KG7jyvXw47uDMnQ&usqp=CAU",
       },
-      scenes: body.scenes,
-      canvas: body.canvas,
-      created_at: new Date(),
-      updated_at: new Date(),
-      likes: body.likes,
-      comments: body.comments,
-      is_private: body.is_private,
     });
+
+    // const newEntry = new MDBEntry({
+    //   _id: body._id,
+    //   author: body.author,
+    //   title: body.title,
+    //   style_reference: body.style_reference,
+    //   content: body.content,
+    //   chat_messages: body.chat_messages,
+    //   characters: body.characters,
+    //   cover: {
+    //     image_url:
+    //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaCdoBj4sMKAneZ35yzHHceTTZWXaQly7e46eVsJ1oGD29RKEz71w6KG7jyvXw47uDMnQ&usqp=CAU",
+    //   },
+    //   scenes: body.scenes,
+    //   canvas: body.canvas,
+    //   created_at: new Date(),
+    //   updated_at: new Date(),
+    //   likes: body.likes,
+    //   comments: body.comments,
+    //   is_private: body.is_private,
+    // });
 
     const savedEntry = await newEntry.save();
 

@@ -65,8 +65,15 @@ const useCreateEntry = () => {
           "Content-Type": "application/json",
         },
       });
-      // add alert here in the future
-      router.push(`/`);
+
+      console.log("here: ", response);
+
+      if (response.status === 200 && response.data.reason === "update") {
+        router.push(`/entry/${response.data.updatedEntry._id}`);
+      } else {
+        router.push(`/`);
+      }
+
       setTimeout(() => {
         dispatch(setShowNotifications(true));
         dispatch(setNotificationContent({
