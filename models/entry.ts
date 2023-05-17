@@ -1,6 +1,7 @@
 import mongoose, { ObjectId, Types } from "mongoose";
 import { Character } from "./character";
 import { User } from "./user";
+import { StyleReference } from "./types";
 
 export interface Entry {
   _id: string;
@@ -8,7 +9,10 @@ export interface Entry {
   author: User | null;
   // author: mongoose.Types.ObjectId;
   title: string;
+
   style_reference: StyleReference | null;
+  style_preset: string;
+
 // content: object | null;
   content: string | null;
   chat_messages: object[];
@@ -41,12 +45,12 @@ export interface Reply {
   likes: mongoose.Types.ObjectId[];
 }
 
-interface StyleReference {
-  artist: string,
-  artwork: {
-    url: string;
-  }
-}
+// interface StyleReference {
+//   artist: string,
+//   artwork: {
+//     url: string;
+//   }
+// }
 
 // scene model
 export interface Scene {
