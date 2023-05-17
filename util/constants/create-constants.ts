@@ -47,15 +47,23 @@ export const createRoutes: CreateRoute[] = allCreateRoutes.map((route, i) => {
   };
 });
 
+export type StyleReference = number;
+
 export type ComicStyle = {
   id?: string;
   artist: string;
-  artwork?: {
+  artwork: {
     url: string;
   };
 };
 
 export const comicStyles: ComicStyle[] = [
+  {
+    artist: "digital-art",
+    artwork: {
+      url: "https://cdn.stability.ai/assets/org-n9HTGsDC8ViMwTunucgo89vN/00000000-0000-0000-0000-000000000000/26711089-3f86-c6c5-e769-ecd783d91c14",
+    },
+  },
   {
     artist: "Quentin Blake",
     artwork: {
