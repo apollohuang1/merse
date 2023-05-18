@@ -169,6 +169,7 @@ const LayoutPage = (props: Props) => {
   >(null);
 
   // tool bars
+  const [selectedFont, setSelectedFont] = useState<string>("");
   const [fontSize, setFontSize] = useState<number>(16);
 
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
@@ -275,6 +276,8 @@ const LayoutPage = (props: Props) => {
       });
 
       if (activeObject?.get("type") === "i-text") {
+        console.log(activeObject)
+        setSelectedFont(activeObject?.get("fontFamily"));
         setFontSize(activeObject?.get("fontSize"));
       }
 
@@ -490,7 +493,7 @@ const LayoutPage = (props: Props) => {
                 </ToolbarButton>
               )}
 
-              <ToolbarButton
+              {/* <ToolbarButton
                 onClick={() => {
                   // get active
                   const activeObject = currentActiveObject;
@@ -498,7 +501,7 @@ const LayoutPage = (props: Props) => {
                 }}
               >
                 Print Active
-              </ToolbarButton>
+              </ToolbarButton> */}
 
               {currentActiveObject && (
                 <ToolbarButton
@@ -515,8 +518,8 @@ const LayoutPage = (props: Props) => {
                 <>
                   <Menu as="div" className="relative inline-block text-left">
                     <div>
-                      <Menu.Button className="flex flex-row items-center w-full justify-center gap-x-1.5 rounded-md px-3 h-10 shadow-sm hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary">
-                        Fonts
+                      <Menu.Button className="flex flex-row items-center w-full justify-center gap-x-1.5 rounded-md px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary">
+                        { selectedFont }
                         <FiChevronDown
                           className="-mr-1 h-5 w-5 text-light-text-secondary dark:text-dark-text-secondary"
                           aria-hidden="true"
@@ -551,6 +554,7 @@ const LayoutPage = (props: Props) => {
                                       });
                                     }
                                     fabricCanvas?.requestRenderAll();
+                                    setSelectedFont(font);
                                   }}
                                   className={clsx(
                                     "flex flex-row px-4 py-2 text-sm w-full items-start hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
