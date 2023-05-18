@@ -1,5 +1,7 @@
 import createImageFromText from "@/hooks/useCreateEntry";
 
+export const allFonts = ["Times New Roman", "Pacifico", "VT323", "Quicksand", "Inconsolata"];
+
 export type CreateRoute = {
   pathname: string;
   title: string;

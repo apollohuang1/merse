@@ -3,12 +3,14 @@
 import CreateHeader from "@/components/create/create-header";
 import React, {
   FormEventHandler,
+  Fragment,
   useCallback,
   useEffect,
   useState,
 } from "react";
 import {
   FiBold,
+  FiChevronDown,
   FiCode,
   FiEdit2,
   FiGrid,
@@ -20,7 +22,7 @@ import {
 } from "react-icons/fi";
 
 import { BiText } from "react-icons/bi";
-import { CSSProperties } from 'react';
+import { CSSProperties } from "react";
 
 import { BsQuote } from "react-icons/bs";
 import { IoText } from "react-icons/io5";
@@ -45,6 +47,7 @@ import Modal from "@/components/modal";
 import Placeholder from "@tiptap/extension-placeholder";
 import {
   StoryboardSample,
+  allFonts,
   createRoutes,
   puuungCanvasTemplate1,
   puuungCanvasTemplate2,
@@ -75,7 +78,7 @@ import {
   SwatchesPicker,
   TwitterPicker,
 } from "react-color";
-import { Popover } from "@headlessui/react";
+import { Menu, Popover, Transition } from "@headlessui/react";
 import SlideOver from "@/components/slide-over";
 import Divider from "@/components/divider";
 
@@ -239,8 +242,8 @@ const LayoutPage = (props: Props) => {
 
       if (innerWidth < 1024) {
         widthValueToSet = innerWidth - 175;
-      } 
-      
+      }
+
       if (innerWidth < 640) {
         widthValueToSet = innerWidth;
       }
@@ -295,7 +298,7 @@ const LayoutPage = (props: Props) => {
   }, []); // end on canvas init
 
   const addImageURLToCanvas = (url: string) => {
-    fabric.Image.fromURL(url, { crossOrigin: "anonymous"})
+    fabric.Image.fromURL(url, { crossOrigin: "anonymous" })
       .then((img) => {
         img.scaleToWidth(500);
         img.stroke = "black";
@@ -486,6 +489,52 @@ const LayoutPage = (props: Props) => {
                 >
                   Bring to Front
                 </ToolbarButton>
+              )}
+
+              {/* // when focus is text */}
+              {currentActiveObject && currentActiveObjectType === "i-text" && (
+                <Menu as="div" className="relative inline-block text-left">
+                  <div>
+                    <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                      {allFonts[0]}
+                      <FiChevronDown
+                        className="-mr-1 h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </Menu.Button>
+                  </div>
+
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        {allFonts.map((font: string, index: number) => (
+                          <Menu.Item key={index}>
+                            {({ active }) => (
+                              <button
+                                className={clsx(
+                                  "flex flex-row px-4 py-2 text-sm w-full items-start",
+                                  {
+                                    "bg-gray-100 text-gray-900": active,
+                                  }
+                                )}
+                              >
+                                {font}
+                              </button>
+                            )}
+                          </Menu.Item>
+                        ))}
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
               )}
 
               <Popover className="relative">
@@ -725,7 +774,7 @@ const LayoutPage = (props: Props) => {
             puuungCanvasTemplate3,
             unsplashTemplate1,
             unsplashTemplate2,
-            unsplashTemplate3
+            unsplashTemplate3,
           ].map((selectedTemplate: any, index) => (
             <button
               key={index}
@@ -749,7 +798,7 @@ const LayoutPage = (props: Props) => {
                   });
               }}
             >
-              { index < 3 ? "Puuung" :  "Unsplash"}
+              {index < 3 ? "Puuung" : "Unsplash"}
               <br />
               Template #{index + 1}
             </button>
