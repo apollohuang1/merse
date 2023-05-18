@@ -31,6 +31,12 @@
   ol {
     @apply list-decimal list-inside;
   }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 /* Display a Placeholder only for the first line in an empty editor. */

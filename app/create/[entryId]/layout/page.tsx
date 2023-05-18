@@ -168,6 +168,9 @@ const LayoutPage = (props: Props) => {
     string | null
   >(null);
 
+  // tool bars
+  const [fontSize, setFontSize] = useState<number>(16);
+
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
 
   const onLoad = useCallback((canvas: fabric.Canvas) => {
@@ -270,6 +273,10 @@ const LayoutPage = (props: Props) => {
         ml: activeObject?.get("type") === "i-text" ? true : false,
         mr: activeObject?.get("type") === "i-text" ? true : false,
       });
+
+      if (activeObject?.get("type") === "i-text") {
+        setFontSize(activeObject?.get("fontSize"));
+      }
 
       activeObject?.set({
         borderColor: "#10b981",
@@ -446,7 +453,7 @@ const LayoutPage = (props: Props) => {
                   addComicBubbleToCanvas();
                 }}
               >
-                <FiMessageSquare />
+                <FiMessageCircle />
               </ToolbarButton>
 
               <ToolbarButton
@@ -562,6 +569,7 @@ const LayoutPage = (props: Props) => {
                   <div className="flex flex-row items-center gap-1">
                     <ToolbarButton
                       onClick={() => {
+                        setFontSize((prev) => prev - 1);
                         const activeObject = fabricCanvas?.getActiveObject();
                         if (!activeObject) return;
 
@@ -579,24 +587,32 @@ const LayoutPage = (props: Props) => {
                     {/* font number input */}
                     <input
                       type="number"
-                      className="px-3 w-16 h-10 rounded-md bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-secondary dark:text-dark-text-secondary"
+                      className="flex items-center justify-center px-3 w-16 h-10 rounded-md bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-secondary dark:text-dark-text-secondary"
                       // value={currentActiveObject.fontSize * currentActiveObject.scaleX}  but make it floating 1 point format
-                      value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
-                      onChange={(e) => {
-                        const activeObject = fabricCanvas?.getActiveObject();
-                        if (!activeObject) return;
+                      // value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
+                      value={fontSize}
+                      onKeyDown={(e) => {
+                        // if enter pressed
+                        if (e.key === "Enter") {
+                          const activeObject = fabricCanvas?.getActiveObject();
+                          if (!activeObject) return;
 
-                        if (activeObject.get("type") === "i-text") {
-                          activeObject.set({
-                            fontSize: parseInt(e.target.value),
-                          });
+                          if (activeObject.get("type") === "i-text") {
+                            activeObject.set({
+                              fontSize: fontSize,
+                            });
+                          }
+                          fabricCanvas?.requestRenderAll();
                         }
-                        fabricCanvas?.requestRenderAll();
+                      }}
+                      onChange={(e) => {
+                        setFontSize(parseInt(e.target.value));
                       }}
                     />
 
                     <ToolbarButton
                       onClick={() => {
+                        setFontSize(fontSize + 1);
                         const activeObject = fabricCanvas?.getActiveObject();
                         if (!activeObject) return;
 
@@ -610,7 +626,6 @@ const LayoutPage = (props: Props) => {
                     >
                       <FiPlus />
                     </ToolbarButton>
-
                   </div>
                 </>
               )}
