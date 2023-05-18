@@ -19,6 +19,8 @@ import {
   FiList,
   FiMessageCircle,
   FiMessageSquare,
+  FiMinus,
+  FiPlus,
 } from "react-icons/fi";
 
 import { BiText } from "react-icons/bi";
@@ -259,7 +261,7 @@ const LayoutPage = (props: Props) => {
       const activeObject = canvas.getActiveObject();
 
       // @ts-ignore
-      setCurrentActiveObject(options.selected);
+      setCurrentActiveObject(activeObject);
       setCurrentActiveObjectType(activeObject?.get("type"));
 
       canvas.getActiveObject()?.setControlsVisibility({
@@ -377,7 +379,6 @@ const LayoutPage = (props: Props) => {
     const objectType = activeObject.get("type");
 
     if (objectType === "i-text") {
-      console.log(activeObject);
       if (!activeObject?.isEditing) {
         fabricCanvas?.remove(activeObject);
       }
@@ -398,7 +399,8 @@ const LayoutPage = (props: Props) => {
 
   // detect delete button and remove selected object
   window.addEventListener("keydown", (e) => {
-    if (e.key === "Backspace") {
+    // backspace and not focus on the input
+    if (e.key === "Backspace" && document.activeElement?.tagName !== "INPUT") {
       removeSelectedObject();
       // removeSelectedObjects();
       // removeSelectedObjects();
@@ -481,6 +483,16 @@ const LayoutPage = (props: Props) => {
                 </ToolbarButton>
               )}
 
+              <ToolbarButton
+                onClick={() => {
+                  // get active
+                  const activeObject = currentActiveObject;
+                  console.log(activeObject);
+                }}
+              >
+                Print Active
+              </ToolbarButton>
+
               {currentActiveObject && (
                 <ToolbarButton
                   onClick={() => {
@@ -493,59 +505,114 @@ const LayoutPage = (props: Props) => {
 
               {/* // when focus is text */}
               {currentActiveObject && currentActiveObjectType === "i-text" && (
-                <Menu as="div" className="relative inline-block text-left">
-                  <div>
-                    <Menu.Button 
-                      className="flex flex-row items-center w-full justify-center gap-x-1.5 rounded-md px-3 h-10 shadow-sm hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                <>
+                  <Menu as="div" className="relative inline-block text-left">
+                    <div>
+                      <Menu.Button className="flex flex-row items-center w-full justify-center gap-x-1.5 rounded-md px-3 h-10 shadow-sm hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary">
+                        Fonts
+                        <FiChevronDown
+                          className="-mr-1 h-5 w-5 text-light-text-secondary dark:text-dark-text-secondary"
+                          aria-hidden="true"
+                        />
+                      </Menu.Button>
+                    </div>
+
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
                     >
-                      Fonts
-                      <FiChevronDown
-                        className="-mr-1 h-5 w-5 text-light-text-secondary dark:text-dark-text-secondary"
-                        aria-hidden="true"
-                      />
-                    </Menu.Button>
+                      <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider">
+                        <div className="py-1">
+                          {allFonts.map((font: string, index: number) => (
+                            <Menu.Item key={index}>
+                              {({ active }) => (
+                                <button
+                                  onClick={() => {
+                                    // set active text font
+                                    const activeObject =
+                                      fabricCanvas?.getActiveObject();
+                                    if (!activeObject) return;
+
+                                    if (activeObject.get("type") === "i-text") {
+                                      activeObject.set({
+                                        fontFamily: font,
+                                      });
+                                    }
+                                    fabricCanvas?.requestRenderAll();
+                                  }}
+                                  className={clsx(
+                                    "flex flex-row px-4 py-2 text-sm w-full items-start hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                                  )}
+                                >
+                                  {font}
+                                </button>
+                              )}
+                            </Menu.Item>
+                          ))}
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+
+                  <div className="flex flex-row items-center gap-1">
+                    <ToolbarButton
+                      onClick={() => {
+                        const activeObject = fabricCanvas?.getActiveObject();
+                        if (!activeObject) return;
+
+                        if (activeObject.get("type") === "i-text") {
+                          activeObject.set({
+                            fontSize: activeObject.get("fontSize") - 1,
+                          });
+                        }
+                        fabricCanvas?.requestRenderAll();
+                      }}
+                    >
+                      <FiMinus />
+                    </ToolbarButton>
+
+                    {/* font number input */}
+                    <input
+                      type="number"
+                      className="px-3 w-16 h-10 rounded-md bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-secondary dark:text-dark-text-secondary"
+                      // value={currentActiveObject.fontSize * currentActiveObject.scaleX}  but make it floating 1 point format
+                      value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
+                      onChange={(e) => {
+                        const activeObject = fabricCanvas?.getActiveObject();
+                        if (!activeObject) return;
+
+                        if (activeObject.get("type") === "i-text") {
+                          activeObject.set({
+                            fontSize: parseInt(e.target.value),
+                          });
+                        }
+                        fabricCanvas?.requestRenderAll();
+                      }}
+                    />
+
+                    <ToolbarButton
+                      onClick={() => {
+                        const activeObject = fabricCanvas?.getActiveObject();
+                        if (!activeObject) return;
+
+                        if (activeObject.get("type") === "i-text") {
+                          activeObject.set({
+                            fontSize: activeObject.get("fontSize") + 1,
+                          });
+                        }
+                        fabricCanvas?.requestRenderAll();
+                      }}
+                    >
+                      <FiPlus />
+                    </ToolbarButton>
+
                   </div>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider">
-                      <div className="py-1">
-                        {allFonts.map((font: string, index: number) => (
-                          <Menu.Item key={index}>
-                            {({ active }) => (
-                              <button
-                                onClick={() => {
-                                  // set active text font
-                                  const activeObject = fabricCanvas?.getActiveObject();
-                                  if (!activeObject) return;
-
-                                  if (activeObject.get("type") === "i-text") {
-                                    activeObject.set({
-                                      fontFamily: font,
-                                    });
-                                  }
-                                  fabricCanvas?.requestRenderAll();
-                                }}
-                                className={clsx(
-                                  "flex flex-row px-4 py-2 text-sm w-full items-start hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
-                                )}
-                              >
-                                {font}
-                              </button>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </div>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
+                </>
               )}
 
               <Popover className="relative">
