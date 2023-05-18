@@ -58,6 +58,7 @@ module.exports = {
         // accent: "#972B34", // crimson
         // accentSecondary: "#A14048", // crimson
         transparent: "transparent",
+        test: "#FF0000 dark:#00FF00",
         light: {
           accent: "#E52B12",
           appleBlue: "#007AFF", // blue
