@@ -63,6 +63,10 @@ const ReadPage = (props: Props) => {
 
       const entryId = pathname.split("/")[2];
 
+      if (!entryId) {
+        throw new Error("Failed to get entry id");
+      }
+
       const response = await axios({
         method: "GET",
         url: `/api/entries?id=${entryId}`,

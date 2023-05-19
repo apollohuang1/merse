@@ -6,7 +6,7 @@ import useCreateEntry from "@/hooks/useCreateEntry";
 import { Entry } from "@/models/entry";
 import { User } from "@/models/user";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setCurrentUser, setNotificationContent } from "@/redux-store/store";
+import { setCurrentUser, setEntryAuthor, setNotificationContent } from "@/redux-store/store";
 import { singaporeEntrySample } from "@/util/constants/profile-constants";
 import {
   getFormattedDateFromMongoDBDate,
@@ -444,7 +444,7 @@ const ProfilePage = (props: Props) => {
                     singaporeEntrySample,
                     singaporeEntrySample,
                   ].map((entry: any, index: number) => ( */}
-                    {allEntries.map((entry: any, index: number) => (
+                    {allEntries.map((entry: Entry, index: number) => (
                       <>
                         <div
                           key={index}
@@ -454,11 +454,9 @@ const ProfilePage = (props: Props) => {
                             href={`entry/${entry?._id}`}
                             className="flex-shrink-0"
                           >
-                            {entry?.scenes[0]?.image_base64 ? (
+                            { (entry?.scenes[0]?.image_base64 || entry?.cover?.image_url) ? (
                               <img
-                                src={getImageURLfromBase64(
-                                  entry?.scenes[0]?.image_base64
-                                )}
+                                src={entry?.scenes[0]?.image_base64 ? getImageURLfromBase64(entry?.scenes[0]?.image_base64) : entry?.cover?.image_url}
                                 className="h-full aspect-square object-cover rounded-none"
                               />
                             ) : (

@@ -17,7 +17,7 @@ export interface Entry {
   // storyboard: object | null;
   scenes: Scene[];
   canvas: string | null;
-  cover: object | null;
+  cover: { image_url: string} | null;
   created_at?: Date;
   updated_at?: Date;
   likes: mongoose.Types.ObjectId[];
