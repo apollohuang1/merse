@@ -17,26 +17,23 @@ const Styles = (props: Props) => {
 
   // style state
   const entry = useAppSelector((state) => state.entry);
-  const selectedStyle = useAppSelector((state) => state.entry.style_reference);
   const entryHelper = useAppSelector((state) => state.entryHelper);
 
   const dispatch = useAppDispatch();
 
   const handleStyleSelect = (style: StyleReference) => {
     // dispatch tasks with comic style payload
-
-    // if (style === selectedStyle) {
-    //   dispatch(setStyle(null));
-    //   return;
-    // }
-
+    if (style.id === entry?.style_reference?.id) {
+      dispatch(setStyle(null));
+      return;
+    }
     dispatch(setStyle(style));
   };
 
   useEffect(() => {
     // scroll to exact position with element id in format "style-[number]"
-    if (selectedStyle?.id !== null) {
-      document.getElementById(`style-${selectedStyle?.id}`)?.scrollIntoView({
+    if (entry?.style_reference?.id !== null) {
+      document.getElementById(`style-${entry?.style_reference?.id}`)?.scrollIntoView({
         behavior: "auto",
         block: "center",
       });
@@ -46,7 +43,7 @@ const Styles = (props: Props) => {
   return (
     <div className="flex flex-col overflow-auto">
       {/* top of grid */}
-      <CreateHeader currentRoute={createRoutes[0]} nextDisabled={false} />
+      <CreateHeader currentRoute={createRoutes[0]} nextDisabled={!entry?.style_reference} />
 
       {/* second section of grid */}
       <div className="flex flex-col w-full h-full justify-center items-center px-6">
@@ -58,8 +55,8 @@ const Styles = (props: Props) => {
               id={`style-${index}`}
               className={clsx(
                 "flex relative aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-accent hover:rounded-lg border border-light-divider dark:border-dark-divider rounded-lg",
-                { "ring-2 ring-accent rounded-lg": selectedStyle && selectedStyle.id == index.toString() },
-                { "opacity-30 dark:opacity-50 brightness-[0.7]": selectedStyle && selectedStyle.id != index.toString() }
+                { "ring-2 ring-accent rounded-lg": entry?.style_reference && entry?.style_reference.id == index.toString() },
+                { "opacity-30 dark:opacity-50 brightness-[0.7]": entry?.style_reference && entry?.style_reference.id != index.toString() }
               )}
               onClick={() => {
                 handleStyleSelect({ ...comicStyle, id: index.toString() })
