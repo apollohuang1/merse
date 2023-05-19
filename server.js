@@ -66,15 +66,28 @@ const handleCheckoutSession = async (session) => {
     const customerEmail = session.customer_email;
   
     // find user with email
-    const userResponse = await axios.get(`https://comic.merse.co/api/users?email=${customerEmail}`);
+    const userResponse = await axios({
+      method: 'GET',
+      url: `https://comic.merse.co/api/users?email=${customerEmail}`,
+      headers: {
+        "Authorization" : `Bearer ${process.env.MERSE_API_KEY}`,
+      },
+    })
 
     // update user with fetched _id
-    const updatedUserResponse = await axios.put(`https://comic.merse.co/api/users`, {
-      _id: userResponse.data._id,
-      stripe_customer_id: customerId,
-      stripe_subscription_id: subscriptionId,
-      stripe_customer_email: customerEmail,
-    });
+    const updatedUserResponse = await axios({
+      method: 'PUT',
+      url: `https://comic.merse.co/api/users`,
+      data: {
+        _id: userResponse.data._id,
+        stripe_customer_id: customerId,
+        stripe_subscription_id: subscriptionId,
+        stripe_customer_email: customerEmail,
+      },
+      headers: {
+        "Authorization" : `Bearer ${process.env.MERSE_API_KEY}`,
+      }
+    })
 
   } catch (error) {
     console.log("Failed to handle checkout session, message: ", error.message)
