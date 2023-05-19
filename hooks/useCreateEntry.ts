@@ -40,7 +40,6 @@ const useCreateEntry = () => {
   const entry = useAppSelector((state) => state.entry);
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const auth = useAppSelector((state) => state.auth);
-  const stylePreset = useAppSelector((state) => state.entry.style_preset);
 
   const dispatch = useAppDispatch();
 
@@ -308,7 +307,7 @@ const useCreateEntry = () => {
         //clip_guidance_preset: "FAST_BLUE",
         height: 512,
         width: 512,
-        style_preset: stylePreset,
+        style_preset: entry?.style_reference?.preset,
         samples: 1,
         steps: 50,
       },

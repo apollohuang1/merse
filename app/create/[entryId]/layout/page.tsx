@@ -179,7 +179,7 @@ const LayoutPage = (props: Props) => {
 
     // load json if exist in entry?.canvas
     if (entry?.canvas) {
-      canvas.loadFromJSON(entry?.canvas, () => {
+      canvas.loadFromJSON(entry?.canvas, async (o, object) => {
         canvas.requestRenderAll();
       });
     }
@@ -887,8 +887,7 @@ const LayoutPage = (props: Props) => {
                 }
               )}
               onClick={() => {
-                fabricCanvas
-                  ?.loadFromJSON(selectedTemplate, () => {
+                fabricCanvas?.loadFromJSON(selectedTemplate, () => {
                     dispatch(setCanvas(selectedTemplate));
                     fabricCanvas?.requestRenderAll();
                   })

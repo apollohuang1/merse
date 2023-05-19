@@ -25,9 +25,14 @@ const CreateLeftSideBar = (props: Props) => {
   const { toggleColorScheme } = useColorScheme();
 
   const [isSaving, setIsSaving] = React.useState(false);
-  const [showDiscardAlert, setShowDiscardAlert] =
-    React.useState<boolean>(false);
+  const [showDiscardAlert, setShowDiscardAlert] = React.useState<boolean>(false);
 
+  const createRoutesWithDisable = createRoutes.map((route: CreateRoute) => {
+    return {
+      ...route,
+      disabled: route.title.toLowerCase() !== pathName?.split("/")[3]?.toLowerCase(),
+    };
+  });
 
   return (
     <>
@@ -55,6 +60,7 @@ const CreateLeftSideBar = (props: Props) => {
                   onClick={() => {
                     router.push(`/create/${props?.entryId}/${route?.title.toLowerCase()}`);
                   }}
+                  disabled={false}
                 >
                   <div
                     className={clsx(
@@ -123,7 +129,7 @@ const CreateLeftSideBar = (props: Props) => {
             >
               {isSaving && <Spinner className="w-4 h-4" />}
               <span className="font-semibold text-light-text-primary dark:text-dark-text-primary">
-                {isSaving ? "Saving..." : "Save Draft"}
+                {isSaving ? "Saving..." : "Save"}
               </span>
             </button>
           </div>
