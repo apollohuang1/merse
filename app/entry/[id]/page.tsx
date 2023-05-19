@@ -189,217 +189,220 @@ const ReadPage = (props: Props) => {
     <>
       <div className="flex flex-col w-full h-full items-center overflow-auto">
         {entryData ? (
-          <div className="flex flex-col w-full h-auto items-center max-w-3xl gap-14 pb-64 px-6 pt-6">
-            {/* author profile */}
-            {entryData?.author && (
-              <div className="flex flex-row items-center justify-between w-full">
-                <div className="flex flex-row gap-4 w-full justify-start">
-                  <img
-                    src={entryData?.author?.profile_image_url}
-                    alt="author profile image"
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
+          <div className="flex flex-col w-full h-auto items-center max-w-3xl gap-14 pt-6 pb-64">
 
-                  <div className="flex flex-col">
-                    <span className="font-medium">
-                      {entryData?.author?.name as string}
-                    </span>
-                    <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">{`Created at ${getFormattedDateFromMongoDBDate(
-                      entryData?.created_at
-                    )}`}</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-row gap-2 flex-shrink-0 items-center">
-                  <button
-                    onClick={() => setShowCommentSection(!showCommentSection)}
-                    className="group flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-2 rounded-lg"
-                  >
-                    <FiMessageCircle className="w-6 h-6 text-light-text-tertiary dark:text-dark-text-tertiary" />
-                    <span className="line-clamp-1 font-medium">
-                      {entryData?.comments?.length ?? 0}
-                    </span>
-                  </button>
-
-                  <button
-                    onClick={handleLikeEntry}
-                    className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-2 rounded-lg"
-                  >
-                    <FiHeart
-                      className={clsx(
-                        "w-6 h-6 transition-all hover:scale-105 active:scale-100",
-                        {
-                          "text-light-text-tertiary dark:text-dark-text-tertiary fill-transparent":
-                            isLikedByCurrentUser() == false,
-                        },
-                        {
-                          "fill-light-red dark:fill-dark-red text-light-red dark:text-dark-red":
-                            isLikedByCurrentUser(),
-                        }
-                      )}
+            <div className="flex flex-col w-full gap-14 max-xl:px-6">
+              {/* author profile */}
+              {entryData?.author && (
+                <div className="flex flex-row items-center justify-between w-full">
+                  <div className="flex flex-row gap-4 w-full justify-start">
+                    <img
+                      src={entryData?.author?.profile_image_url}
+                      alt="author profile image"
+                      className="w-12 h-12 rounded-full object-cover"
                     />
-                    <span className="line-clamp-1 font-medium">
-                      {entryData?.likes?.length ?? 0}
-                    </span>
-                  </button>
 
-                  <Menu as="div" className="relative inline-block text-left">
-                    {({ open }) => (
-                      <>
-                        <div>
-                          <Menu.Button
-                            className={clsx(
-                              "group flex w-8 h-8 hover:bg-emerald-500 hover:bg-opacity-10 items-center justify-center rounded-full",
-                              {
-                                "bg-emerald-500 bg-opacity-10": open,
-                              }
-                            )}
-                          >
-                            <FiMoreHorizontal
+                    <div className="flex flex-col">
+                      <span className="font-medium">
+                        {entryData?.author?.name as string}
+                      </span>
+                      <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">{`Created at ${getFormattedDateFromMongoDBDate(
+                        entryData?.created_at
+                      )}`}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row gap-2 flex-shrink-0 items-center">
+                    <button
+                      onClick={() => setShowCommentSection(!showCommentSection)}
+                      className="group flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-2 rounded-lg"
+                    >
+                      <FiMessageCircle className="w-6 h-6 text-light-text-tertiary dark:text-dark-text-tertiary" />
+                      <span className="line-clamp-1 font-medium">
+                        {entryData?.comments?.length ?? 0}
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={handleLikeEntry}
+                      className="flex flex-row gap-2 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary items-center px-2 rounded-lg"
+                    >
+                      <FiHeart
+                        className={clsx(
+                          "w-6 h-6 transition-all hover:scale-105 active:scale-100",
+                          {
+                            "text-light-text-tertiary dark:text-dark-text-tertiary fill-transparent":
+                              isLikedByCurrentUser() == false,
+                          },
+                          {
+                            "fill-light-red dark:fill-dark-red text-light-red dark:text-dark-red":
+                              isLikedByCurrentUser(),
+                          }
+                        )}
+                      />
+                      <span className="line-clamp-1 font-medium">
+                        {entryData?.likes?.length ?? 0}
+                      </span>
+                    </button>
+
+                    <Menu as="div" className="relative inline-block text-left">
+                      {({ open }) => (
+                        <>
+                          <div>
+                            <Menu.Button
                               className={clsx(
-                                "w-5 h-5 group-hover:text-emerald-500",
-                                { "text-emerald-500": open },
+                                "group flex w-8 h-8 hover:bg-emerald-500 hover:bg-opacity-10 items-center justify-center rounded-full",
                                 {
-                                  "text-light-text-secondary dark:text-dark-text-secondary":
-                                    !open,
+                                  "bg-emerald-500 bg-opacity-10": open,
                                 }
                               )}
-                            />
-                          </Menu.Button>
-                        </div>
-
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-150"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-100"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute top-[calc(100%+5px)] z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-md bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-lg">
-                            <div className="py-1">
-
-                              { entryData?.author?._id === auth?.currentUser?._id &&
-                                <>
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <button
-                                      onClick={() => {
-                                        router.push(`/create/${entryData?._id}`)
-                                      }}
-                                        className={clsx(
-                                          "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                                          {
-                                            "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                              active,
-                                          },
-                                          { "": !active }
-                                        )}
-                                      >
-                                        Edit
-                                      </button>
-                                    )}
-                                  </Menu.Item>
-
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <button
-                                        onClick={() => {
-                                            axios({
-                                              method: "DELETE",
-                                              url: `/api/entries?id=${entryData?._id}`,
-                                              headers: {
-                                                "Authorization": `Bearer ${process.env.MERSE_API_KEY}`,
-                                              }
-                                            })
-                                            .then((res) => {
-                                              router.push("/");
-                                            })
-                                            .catch((err) => {
-                                              alert("Something went wrong. Please try again later.");
-                                              console.log(err);
-                                            });
-                                        }}
-                                        className={clsx(
-                                          "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                                          {
-                                            "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                              active,
-                                          },
-                                          { "": !active }
-                                        )}
-                                      >
-                                        Delete
-                                      </button>
-                                    )}
-                                  </Menu.Item>
-                                </>
-                              }
-
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    onClick={() => {
-                                      navigator.clipboard.writeText(
-                                        window.location.href
-                                      );
-
-                                      dispatch(
-                                        setNotificationContent({
-                                          title: "Link Copied",
-                                          message:
-                                            "Entry link copied to clipboard.",
-                                        })
-                                      );
-                                    }}
-                                    className={clsx(
-                                      "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                                      {
-                                        "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                          active,
-                                      },
-                                      { "": !active }
-                                    )}
-                                  >
-                                    Copy Entry Link
-                                  </button>
+                            >
+                              <FiMoreHorizontal
+                                className={clsx(
+                                  "w-5 h-5 group-hover:text-emerald-500",
+                                  { "text-emerald-500": open },
+                                  {
+                                    "text-light-text-secondary dark:text-dark-text-secondary":
+                                      !open,
+                                  }
                                 )}
-                              </Menu.Item>
-                            </div>
-                          </Menu.Items>
-                        </Transition>
-                      </>
-                    )}
-                  </Menu>
-                </div>
-              </div>
-            )}
+                              />
+                            </Menu.Button>
+                          </div>
 
-            {output && (
-              // <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
-              <div className="flex flex-col w-full rounded-xl gap-5">
-                <h1 className="text-4xl font-semibold leading-tight">
-                  {entryData?.title}
-                </h1>
-                {/* <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" /> */}
-                <Divider />
-                {output}
-              </div>
-            )}
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-150"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-100"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="absolute top-[calc(100%+5px)] z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-md bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-lg">
+                              <div className="py-1">
 
-            {entryData?.scenes?.map((scene, index) => {
-              return (
-                <div key={index} className="flex flex-col items-center w-full">
-                  <img
-                    // base64 image url source
-                    src={"data:image/png;base64," + scene.image_base64}
-                    alt="scene"
-                    className="w-full h-full object-cover"
-                  />
+                                { entryData?.author?._id === auth?.currentUser?._id &&
+                                  <>
+                                    <Menu.Item>
+                                      {({ active }) => (
+                                        <button
+                                        onClick={() => {
+                                          router.push(`/create/${entryData?._id}`)
+                                        }}
+                                          className={clsx(
+                                            "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                            {
+                                              "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                                active,
+                                            },
+                                            { "": !active }
+                                          )}
+                                        >
+                                          Edit
+                                        </button>
+                                      )}
+                                    </Menu.Item>
+
+                                    <Menu.Item>
+                                      {({ active }) => (
+                                        <button
+                                          onClick={() => {
+                                              axios({
+                                                method: "DELETE",
+                                                url: `/api/entries?id=${entryData?._id}`,
+                                                headers: {
+                                                  "Authorization": `Bearer ${process.env.MERSE_API_KEY}`,
+                                                }
+                                              })
+                                              .then((res) => {
+                                                router.push("/");
+                                              })
+                                              .catch((err) => {
+                                                alert("Something went wrong. Please try again later.");
+                                                console.log(err);
+                                              });
+                                          }}
+                                          className={clsx(
+                                            "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                            {
+                                              "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                                active,
+                                            },
+                                            { "": !active }
+                                          )}
+                                        >
+                                          Delete
+                                        </button>
+                                      )}
+                                    </Menu.Item>
+                                  </>
+                                }
+
+                                <Menu.Item>
+                                  {({ active }) => (
+                                    <button
+                                      onClick={() => {
+                                        navigator.clipboard.writeText(
+                                          window.location.href
+                                        );
+
+                                        dispatch(
+                                          setNotificationContent({
+                                            title: "Link Copied",
+                                            message:
+                                              "Entry link copied to clipboard.",
+                                          })
+                                        );
+                                      }}
+                                      className={clsx(
+                                        "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                        {
+                                          "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                            active,
+                                        },
+                                        { "": !active }
+                                      )}
+                                    >
+                                      Copy Entry Link
+                                    </button>
+                                  )}
+                                </Menu.Item>
+                              </div>
+                            </Menu.Items>
+                          </Transition>
+                        </>
+                      )}
+                    </Menu>
+                  </div>
                 </div>
-              );
-            })}
+              )}
+
+              {output && (
+                // <div className="flex flex-col w-full bg-light-background-secondary dark:bg-dark-background-secondary p-8 rounded-xl gap-4">
+                <div className="flex flex-col w-full rounded-xl gap-5">
+                  <h1 className="text-4xl font-semibold leading-tight">
+                    {entryData?.title}
+                  </h1>
+                  {/* <div className="w-full h-[1px] border-t border-light-divider dark:border-dark-divider" /> */}
+                  <Divider />
+                  {output}
+                </div>
+              )}
+
+              {entryData?.scenes?.map((scene, index) => {
+                return (
+                  <div key={index} className="flex flex-col items-center w-full">
+                    <img
+                      // base64 image url source
+                      src={"data:image/png;base64," + scene.image_base64}
+                      alt="scene"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                );
+              })}
+            </div>
 
             {/* fabric canvas */}
             {entryData?.canvas && (
