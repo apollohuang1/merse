@@ -204,6 +204,10 @@ const LayoutPage = (props: Props) => {
       });
     });
 
+    canvas.on("object:scaling", function (options) {
+
+    })
+
     canvas.setDimensions({
       width: innerWidth - 250,
       height: innerHeight * 4,
@@ -306,6 +310,7 @@ const LayoutPage = (props: Props) => {
     return () => {
       setFabricCanvas(null);
       canvas.dispose();
+      window.removeEventListener("resize", () => {});
     };
   }, []); // end on canvas init
 
@@ -421,7 +426,7 @@ const LayoutPage = (props: Props) => {
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
-        <CreateHeader currentRoute={createRoutes[3]} />
+        <CreateHeader currentRoute={createRoutes[3]} nextDisabled={true} />
 
         <div className="grid grid-rows-[50px_auto] overflow-hidden">
           {/* tools bar */}

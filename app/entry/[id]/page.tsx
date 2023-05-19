@@ -92,6 +92,9 @@ const ReadPage = (props: Props) => {
   const renderCanvas = (canvasJSON: object) => {
     // render fabric canvas
 
+    console.log("rendering...")
+    console.log(canvasJSON)
+
     window.addEventListener("resize", () => {
       canvas.setDimensions({
         width: innerWidth - 250,
@@ -106,18 +109,17 @@ const ReadPage = (props: Props) => {
       height: innerHeight,
     });
 
-    canvas.backgroundColor = "#ffffff";
-
     setFabricCanvas(canvas);
+
+    canvas.backgroundColor = "transparent";
 
     canvas
       .loadFromJSON(canvasJSON, (o, object) => {
         object.selectable = false;
       })
       .then(() => {
-        // console.log("Canvas loaded successfully");
-        // console.log("canvas: ", canvas);
         canvas.requestRenderAll();
+        console.log("rendered");
       })
       .catch((error) => {
         console.log("error: ", error);
@@ -388,10 +390,7 @@ const ReadPage = (props: Props) => {
 
             {/* fabric canvas */}
             {entryData?.canvas && (
-              <canvas
-                id="canvas"
-                className="w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary"
-              />
+              <canvas id="canvas" />
 
               // <div
               //   id="canvas-parent"

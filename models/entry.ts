@@ -9,10 +9,7 @@ export interface Entry {
   author: User | null;
   // author: mongoose.Types.ObjectId;
   title: string;
-
   style_reference: StyleReference | null;
-  style_preset: string;
-
 // content: object | null;
   content: string | null;
   chat_messages: object[];

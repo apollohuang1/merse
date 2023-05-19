@@ -5,15 +5,15 @@ import MaxWidthContainer from "@/components/create/max-width-container";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
-import { ComicStyle, comicStyles, createRoutes } from "@/util/constants/create-constants";
+import { comicStyles, createRoutes } from "@/util/constants/create-constants";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { setStyle, setStylesScrollPosition } from "@/redux-store/store";
+import { StyleReference } from "@/models/types";
 
 
 type Props = {};
 
 const Styles = (props: Props) => {
-  // const [selectedStyle, setSelectedStyle] = React.useState<ComicStyle | null>(null);
 
   // style state
   const entry = useAppSelector((state) => state.entry);
@@ -22,13 +22,15 @@ const Styles = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const handleStyleSelect = (comicStyle: ComicStyle) => {
+  const handleStyleSelect = (style: StyleReference) => {
     // dispatch tasks with comic style payload
-    if (comicStyle.artist === selectedStyle?.artist) {
-      dispatch(setStyle(null));
-      return;
-    }
-    dispatch(setStyle(comicStyle));
+
+    // if (style === selectedStyle) {
+    //   dispatch(setStyle(null));
+    //   return;
+    // }
+
+    dispatch(setStyle(style));
   };
 
   useEffect(() => {
@@ -44,32 +46,24 @@ const Styles = (props: Props) => {
   return (
     <div className="flex flex-col overflow-auto">
       {/* top of grid */}
-      <CreateHeader currentRoute={createRoutes[0]} />
+      <CreateHeader currentRoute={createRoutes[0]} nextDisabled={false} />
 
       {/* second section of grid */}
       <div className="flex flex-col w-full h-full justify-center items-center px-6">
         {/* created characters list */}
         <div className="grid grid-cols-3 max-lg:grid-cols-2 gap-6 w-full h-full max-w-3xl py-6">
-          {comicStyles.map((comicStyle: ComicStyle, index: number) => (
+          {comicStyles.map((comicStyle: StyleReference, index: number) => (
             <button
               key={index}
               id={`style-${index}`}
               className={clsx(
                 "flex relative aspect-[2/3] hover:scale-[1.04] transition-all hover:z-10 hover:ring-4 hover:ring-accent hover:rounded-lg border border-light-divider dark:border-dark-divider rounded-lg",
-                {
-                  "ring-2 ring-accent rounded-lg":
-                    selectedStyle &&
-                    selectedStyle.artist === comicStyle?.artist,
-                },
-                {
-                  "opacity-30 dark:opacity-50 brightness-[0.7]":
-                    selectedStyle &&
-                    selectedStyle?.artist !== comicStyle?.artist,
-                }
+                { "ring-2 ring-accent rounded-lg": selectedStyle && selectedStyle.id == index.toString() },
+                { "opacity-30 dark:opacity-50 brightness-[0.7]": selectedStyle && selectedStyle.id != index.toString() }
               )}
-              onClick={() =>
+              onClick={() => {
                 handleStyleSelect({ ...comicStyle, id: index.toString() })
-              }
+              }}
             >
               <img
                 src={comicStyle?.artwork?.url}

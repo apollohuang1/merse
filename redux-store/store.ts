@@ -6,7 +6,6 @@ import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import mongoose, { Types } from "mongoose";
 import { ObjectId } from "mongoose";
 import { ChatCompletionRequestMessage } from "openai";
-import { ComicStyle } from "../models/types"; 
 import { StyleReference } from "../models/types";
 
 const initialState: Entry = {
@@ -14,7 +13,6 @@ const initialState: Entry = {
   author: null,
   title: "",
   style_reference: null,
-  style_preset: "",
   content: null,
   characters: [],
   scenes: [],
@@ -51,11 +49,9 @@ const entrySlice = createSlice({
     setEntryAuthor: (state: Entry, action: PayloadAction<User>) => {
       state.author = action.payload;
     },
-    setStyle: (state: Entry, action: PayloadAction<ComicStyle | null>) => {
+    setStyle: (state: Entry, action: PayloadAction<StyleReference | null>) => {
       state.style_reference = action.payload;
-      state.style_preset = action.payload
-        ? action.payload.artist.toLowerCase().replace(" ", "-")
-        : "";
+      // state.style_preset = action.payload ? action.payload.artist.toLowerCase().replace(" ", "-") : "";
     },
     addCharacter: (state: Entry, action: PayloadAction<Character>) => {
       state.characters.push(action.payload);

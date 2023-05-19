@@ -1,15 +1,8 @@
 export type StyleReference = {
-    artist: string;
-    artwork: {
-      url: string;
-    };
-    id?: string;
+  id?: string;
+  artist: string;
+  artwork: {
+    url: string;
   };
-
-export type ComicStyle = {
-    artist: string;
-    artwork: {
-      url: string;
-    };
-    id?: string;
-  };
+  preset?: string;
+};
