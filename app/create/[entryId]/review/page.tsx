@@ -88,12 +88,13 @@ const Review = (props: Props) => {
             </div>
           </div>
 
-          <div className="flex flex-col w-full gap-7">
+          {/* <div className="flex flex-col w-full gap-7">
             {JSON.stringify(entry, null, 2)}
             <br />
             <br />
             {JSON.stringify(entryHelper, null, 2)}
-          </div>
+          </div> */}
+          
         </div>
       </div>
     </div>

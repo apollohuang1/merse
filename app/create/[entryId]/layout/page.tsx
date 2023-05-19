@@ -86,6 +86,8 @@ import Divider from "@/components/divider";
 
 type Props = {};
 
+const canvasWidth = 768;
+
 const LayoutPage = (props: Props) => {
   // redux states
   const entry = useAppSelector((state) => state.entry);
@@ -137,6 +139,7 @@ const LayoutPage = (props: Props) => {
 
   editor?.on("update", (updatedEditor: any) => {
     const updatedContent = updatedEditor?.editor?.getJSON();
+    const output = updatedEditor?.editor?.getHTML();
     dispatch(setContent(updatedContent));
   });
 
@@ -207,8 +210,8 @@ const LayoutPage = (props: Props) => {
     canvas.on("object:scaling", function (options) {});
 
     canvas.setDimensions({
-      width: innerWidth - 250,
-      height: innerHeight * 4,
+      width: canvasWidth, // square ratio
+      height: (canvasWidth) * 7,
     });
 
     // stylings
@@ -243,26 +246,26 @@ const LayoutPage = (props: Props) => {
 
     // observers
 
-    window.addEventListener("resize", () => {
-      console.log("resized width and height to: ", innerWidth, innerHeight);
+    // window.addEventListener("resize", () => {
+    //   console.log("resized width and height to: ", innerWidth, innerHeight);
 
-      var widthValueToSet = innerWidth - 250;
+    //   var widthValueToSet = innerWidth - 250;
 
-      if (innerWidth < 1024) {
-        widthValueToSet = innerWidth - 175;
-      }
+    //   if (innerWidth < 1024) {
+    //     widthValueToSet = innerWidth - 175;
+    //   }
 
-      if (innerWidth < 640) {
-        widthValueToSet = innerWidth;
-      }
+    //   if (innerWidth < 640) {
+    //     widthValueToSet = innerWidth;
+    //   }
 
-      // fabricCanvas?.setDimensions({
-      //   width: widthValueToSet,
-      //   height: innerHeight * 4,
-      // });
+    //   // fabricCanvas?.setDimensions({
+    //   //   width: widthValueToSet,
+    //   //   height: innerHeight * 4,
+    //   // });
 
-      console.log("canvas width and height: ", canvas.width, canvas.height);
-    });
+    //   console.log("canvas width and height: ", canvas.width, canvas.height);
+    // });
 
     canvas.on("selection:created", function (options) {
       const activeObject = canvas.getActiveObject();
@@ -316,9 +319,10 @@ const LayoutPage = (props: Props) => {
   const addImageURLToCanvas = (url: string) => {
     fabric.Image.fromURL(url, { crossOrigin: "anonymous" })
       .then((img) => {
-        img.scaleToWidth(500);
-        img.stroke = "black";
-        img.strokeWidth = 10;
+        img.scaleToWidth(canvasWidth);
+        // img.stroke = "black";
+        // img.strokeWidth = 10;
+        img.left = 0;
         img.preserveAspectRatio = "true";
         fabricCanvas?.add(img);
       })
@@ -707,18 +711,29 @@ const LayoutPage = (props: Props) => {
             </div>
           </div>
 
-          <div className="relative w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary">
-            {/* <canvas ref={canvasEl} width={"100%"} height={"100%"} /> */}
-            <Canvas onLoad={onLoad} saveState />
+          <div className="flex flex-col items-center relative w-full h-full overflow-auto">
+
+            <div className={`flex flex-col w-[${canvasWidth}px] h-[${canvasWidth * 7}px] bg-light-background-secondary`}>
+              <Canvas onLoad={onLoad} saveState />
+            </div>
 
             <button
               onClick={() => {
-                const canvasJSON = fabricCanvas?.toJSON();
-                dispatch(setCanvas(canvasJSON));
+                // const canvasJSON = fabricCanvas?.toJSON();
+                // dispatch(setCanvas(canvasJSON));
+
+                // convert fabriccanvas to base64 image string
+                const canvasImageBase64 = fabricCanvas?.toDataURL({
+                  // @ts-ignore
+                  format: "png",
+                });
+
+                console.log(canvasImageBase64);
+                dispatch(setCanvas(canvasImageBase64))
               }}
               className="fixed bottom-0 right-0 m-4 py-2 px-4 rounded-md shadow-md bg-dark-background-tertiary text-white"
             >
-              Test Save JSON
+              Test Save Image
             </button>
           </div>
         </div>

@@ -42,7 +42,7 @@ const EntrySchema = new mongoose.Schema<Entry>({
   chat_messages: { type: [Object], required: false },
   characters: { type: [Object] , required: false },
   scenes: { type: [SceneSchema], required: false },
-  canvas: { type: Object, required: false },
+  canvas: { type: String, required: false },
   cover: { type: Object, required: false },
   created_at: { type: Date, required: false },
   updated_at: { type: Date, required: false },
