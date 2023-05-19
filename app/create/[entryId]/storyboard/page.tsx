@@ -493,7 +493,7 @@ const Storyboard = (props: Props) => {
               ) : (
                 <>
                   {/* title and editor */}
-                  <div className="flex flex-col w-full h-full overflow-auto">
+                  <div className="flex flex-col w-full h-full overflow-auto pb-[50vh]">
                     {/* title */}
                     <input
                       type="text"
