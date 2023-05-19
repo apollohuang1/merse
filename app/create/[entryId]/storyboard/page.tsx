@@ -553,7 +553,7 @@ const Storyboard = (props: Props) => {
                           editor={editor}
                           tippyOptions={{ duration: 100 }}
                           className={clsx(
-                            "flex flex-row w-[calc(48*9px)] bg-light-background-primary dark:bg-dark-background-primary rounded-lg overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-lg translate-y-[calc(50%+18px)] -translate-x-3"
+                            `flex flex-row w-[calc(48*${floatingMenus.length}px)] bg-light-background-primary dark:bg-dark-background-primary rounded-lg overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-lg translate-y-[calc(50%+18px)] -translate-x-3`
                           )}
                         >
                           {floatingMenus.map((floatingMenu, index) => (
@@ -795,14 +795,14 @@ const bubbleMenus = [
       editor?.chain().focus().toggleBulletList().run(),
     isActive: (editor: Editor) => editor?.isActive("bulletList"),
   },
-  {
-    type: "codeBlock",
-    label: "Code Block",
-    icon: <FiCode />,
-    onClick: (editor: Editor) =>
-      editor?.chain().focus().toggleCodeBlock().run(),
-    isActive: (editor: Editor) => editor?.isActive("codeBlock"),
-  },
+  // {
+  //   type: "codeBlock",
+  //   label: "Code Block",
+  //   icon: <FiCode />,
+  //   onClick: (editor: Editor) =>
+  //     editor?.chain().focus().toggleCodeBlock().run(),
+  //   isActive: (editor: Editor) => editor?.isActive("codeBlock"),
+  // },
   {
     type: "blockquote",
     label: "Blockquote",
