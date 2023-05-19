@@ -23,7 +23,7 @@ import {
   FiPlus,
 } from "react-icons/fi";
 
-import { BiText } from "react-icons/bi";
+import { BiColorFill, BiText } from "react-icons/bi";
 import { CSSProperties } from "react";
 
 import { BsQuote } from "react-icons/bs";
@@ -204,9 +204,7 @@ const LayoutPage = (props: Props) => {
       });
     });
 
-    canvas.on("object:scaling", function (options) {
-
-    })
+    canvas.on("object:scaling", function (options) {});
 
     canvas.setDimensions({
       width: innerWidth - 250,
@@ -258,10 +256,11 @@ const LayoutPage = (props: Props) => {
         widthValueToSet = innerWidth;
       }
 
-      canvas.setDimensions({
-        width: widthValueToSet,
-        height: innerHeight,
-      });
+      // fabricCanvas?.setDimensions({
+      //   width: widthValueToSet,
+      //   height: innerHeight * 4,
+      // });
+
       console.log("canvas width and height: ", canvas.width, canvas.height);
     });
 
@@ -270,7 +269,7 @@ const LayoutPage = (props: Props) => {
 
       // @ts-ignore
       setCurrentActiveObject(activeObject);
-      setCurrentActiveObjectType(activeObject?.get("type"));
+      setCurrentActiveObjectType(activeObject?.get("type") ?? null);
 
       canvas.getActiveObject()?.setControlsVisibility({
         mt: false,
@@ -280,7 +279,7 @@ const LayoutPage = (props: Props) => {
       });
 
       if (activeObject?.get("type") === "i-text") {
-        console.log(activeObject)
+        console.log(activeObject);
         setSelectedFont(activeObject?.get("fontFamily"));
         setFontSize(activeObject?.get("fontSize"));
       }
@@ -389,10 +388,19 @@ const LayoutPage = (props: Props) => {
 
   const removeSelectedObject = () => {
     const activeObject: any = fabricCanvas?.getActiveObject();
+    const activeGroup = fabricCanvas?.getActiveObjects();
     if (!activeObject) return;
 
     const objectType = activeObject.get("type");
 
+    if (activeGroup && activeGroup.length > 1) {
+      // group
+      fabricCanvas?.discardActiveObject();
+      fabricCanvas?.remove(...activeGroup);
+      return
+    }
+
+    // single object
     if (objectType === "i-text") {
       if (!activeObject?.isEditing) {
         fabricCanvas?.remove(activeObject);
@@ -402,23 +410,11 @@ const LayoutPage = (props: Props) => {
     }
   };
 
-  const removeSelectedObjects = () => {
-    const activeGroup = fabricCanvas?.getActiveObjects();
-    if (!activeGroup) return;
-    activeGroup.forEach((object: any) => {
-      fabricCanvas?.remove(object);
-      // fabricCanvas?.requestRenderAll();
-    });
-    fabricCanvas?.requestRenderAll();
-  };
-
   // detect delete button and remove selected object
   window.addEventListener("keydown", (e) => {
     // backspace and not focus on the input
     if (e.key === "Backspace" && document.activeElement?.tagName !== "INPUT") {
       removeSelectedObject();
-      // removeSelectedObjects();
-      // removeSelectedObjects();
     }
   });
 
@@ -443,7 +439,7 @@ const LayoutPage = (props: Props) => {
                   fabricCanvas?.add(newText);
                 }}
               >
-                <BiText />
+                <IoText className="w-4 h-4" />
               </ToolbarButton>
 
               <ToolbarButton
@@ -453,7 +449,7 @@ const LayoutPage = (props: Props) => {
                   addImageURLToCanvas(imageURL);
                 }}
               >
-                <FiImage />
+                <FiImage className="w-4 h-4" />
               </ToolbarButton>
 
               <ToolbarButton
@@ -461,16 +457,16 @@ const LayoutPage = (props: Props) => {
                   addComicBubbleToCanvas();
                 }}
               >
-                <FiMessageCircle />
+                <FiMessageCircle className="w-4 h-4" />
               </ToolbarButton>
 
-              <ToolbarButton
+              {/* <ToolbarButton
                 onClick={() => {
                   addPuuungStoryboardToCanvas();
                 }}
               >
                 Add Puuung
-              </ToolbarButton>
+              </ToolbarButton> */}
             </div>
 
             <div className="flex flex-row gap-1">
@@ -524,7 +520,7 @@ const LayoutPage = (props: Props) => {
                   <Menu as="div" className="relative inline-block text-left">
                     <div>
                       <Menu.Button className="flex flex-row items-center w-full justify-center gap-x-1.5 rounded-md px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary">
-                        { selectedFont }
+                        {selectedFont}
                         <FiChevronDown
                           className="-mr-1 h-5 w-5 text-light-text-secondary dark:text-dark-text-secondary"
                           aria-hidden="true"
@@ -562,10 +558,10 @@ const LayoutPage = (props: Props) => {
                                     setSelectedFont(font);
                                   }}
                                   className={clsx(
-                                    "flex flex-row px-4 py-2 text-sm w-full items-start hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                                    `flex flex-row px-4 py-2 text-sm w-full items-start hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary font-[${font}]`,
                                   )}
                                 >
-                                  {font}
+                                  {font} {selectedFont === font && "✓"}
                                 </button>
                               )}
                             </Menu.Item>
@@ -596,7 +592,7 @@ const LayoutPage = (props: Props) => {
                     {/* font number input */}
                     <input
                       type="number"
-                      className="flex items-center justify-center px-3 w-16 h-10 rounded-md bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-secondary dark:text-dark-text-secondary"
+                      className="flex items-center justify-center px-3 w-16 h-8 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-light-text-secondary dark:text-dark-text-secondary outline-none focus:ring-1 ring-emerald-500"
                       // value={currentActiveObject.fontSize * currentActiveObject.scaleX}  but make it floating 1 point format
                       // value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
                       value={fontSize}
@@ -639,6 +635,8 @@ const LayoutPage = (props: Props) => {
                 </>
               )}
 
+              <div className="flex fllex-col border-r border-light-dividerContrast dark:border-dark-dividerContrast"></div>
+
               <Popover className="relative">
                 {({ open }) => (
                   <>
@@ -649,11 +647,11 @@ const LayoutPage = (props: Props) => {
                         }}
                         isActive={open}
                       >
-                        Background
+                        <BiColorFill className="w-5 h-5" />
                       </ToolbarButton>
                     </Popover.Button>
 
-                    <Popover.Panel className="absolute z-10 left-full">
+                    <Popover.Panel className="absolute z-10 right-[calc(-12px)]">
                       {({ close }) => (
                         <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-xl overflow-clip">
                           <div className="flex flex-row px-3 py-3 justify-between border-b border-b-light-divider dark:border-b-dark-divider">
@@ -699,12 +697,13 @@ const LayoutPage = (props: Props) => {
                 )}
               </Popover>
 
-              <ToolbarButton onClick={() => setShowTemplateSlideOver(true)}>
+              {/* <ToolbarButton onClick={() => setShowTemplateSlideOver(true)}>
                 <div className="flex flex-row items-center gap-1">
                   <FiGrid />
                   Templates
                 </div>
-              </ToolbarButton>
+              </ToolbarButton> */}
+
             </div>
           </div>
 
