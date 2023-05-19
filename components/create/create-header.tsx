@@ -1,12 +1,9 @@
 import useCreateEntry from "@/hooks/useCreateEntry";
 import { CreateRoute } from "@/util/constants/create-constants";
 import clsx from "clsx";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import {
-  FiArrowLeft,
-  FiArrowRight,
   FiChevronLeft,
   FiChevronRight,
 } from "react-icons/fi";

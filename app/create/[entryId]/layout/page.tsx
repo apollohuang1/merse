@@ -426,7 +426,7 @@ const LayoutPage = (props: Props) => {
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
-        <CreateHeader currentRoute={createRoutes[3]} nextDisabled={true} />
+        <CreateHeader currentRoute={createRoutes[3]} nextDisabled={false} />
 
         <div className="grid grid-rows-[50px_auto] overflow-hidden">
           {/* tools bar */}

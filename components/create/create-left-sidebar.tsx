@@ -5,8 +5,8 @@ import React, { useEffect } from "react";
 // next
 import Link from "next/link";
 import clsx from "clsx";
-import { usePathname } from "next/navigation";
-import { CreateRoute, allCreateRoutes } from "@/util/constants/create-constants";
+import { usePathname, useRouter } from "next/navigation";
+import { CreateRoute, createRoutes } from "@/util/constants/create-constants";
 import useColorScheme from "@/hooks/useColorScheme";
 import { Spinner } from "@chakra-ui/react";
 import Alert from "../alert";
@@ -19,6 +19,7 @@ type Props = {
 
 const CreateLeftSideBar = (props: Props) => {
   const pathName = usePathname();
+  const router = useRouter();
 
   const { saveEntry } = useCreateEntry();
   const { toggleColorScheme } = useColorScheme();
@@ -26,6 +27,7 @@ const CreateLeftSideBar = (props: Props) => {
   const [isSaving, setIsSaving] = React.useState(false);
   const [showDiscardAlert, setShowDiscardAlert] =
     React.useState<boolean>(false);
+
 
   return (
     <>
@@ -46,13 +48,15 @@ const CreateLeftSideBar = (props: Props) => {
           </div>
 
           <div className="flex flex-col gap-0">
-            {allCreateRoutes.map((route: CreateRoute, index) => {
+            {createRoutes.map((route: CreateRoute, index) => {
               return (
-                <Link
+                <button
                   key={index}
-                  href={`/create/${props?.entryId}/${route?.title.toLowerCase()}`}
+                  onClick={() => {
+                    router.push(`/create/${props?.entryId}/${route?.title.toLowerCase()}`);
+                  }}
                 >
-                  <button
+                  <div
                     className={clsx(
                       "flex items-center justify-center w-full h-16 transition-all active:opacity-50 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
                       {
@@ -68,8 +72,8 @@ const CreateLeftSideBar = (props: Props) => {
                     )}
                   >
                     <span className="font-semibold">{route?.title}</span>
-                  </button>
-                </Link>
+                  </div>
+                </button>
               );
             })}
           </div>

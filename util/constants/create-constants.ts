@@ -11,7 +11,7 @@ export type CreateRoute = {
   backConfig?: CreateRoute | null;
 };
 
-export const allCreateRoutes: any[] = [
+const allCreateRoutes: any[] = [
   // character, storyboard, cover, styles, review.
   {
     title: "Styles",

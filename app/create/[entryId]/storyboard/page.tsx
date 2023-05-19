@@ -268,7 +268,7 @@ const Storyboard = (props: Props) => {
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
-        <CreateHeader currentRoute={createRoutes[2]} />
+        <CreateHeader currentRoute={createRoutes[2]} nextDisabled={entry?.title === "" || !entry?.content} />
 
         {/* main content (left and right panels columns) */}
         <div
@@ -338,7 +338,8 @@ const Storyboard = (props: Props) => {
                     >
                       Puuung samples (test)
                     </button> */}
-                    <button
+                    
+                    {/* <button
                       className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
                       onClick={() => {
                         dispatch(toggleShowChat());
@@ -349,7 +350,7 @@ const Storyboard = (props: Props) => {
                       }}
                     >
                       Chat
-                    </button>
+                    </button> */}
                   </div>
 
                   {entryHelper.isGeneratingStoryboard ? (
