@@ -54,10 +54,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(oneEntry, { status: 200 });
     // }
-    
+
   } catch (error: any) {
     // return new Response(error, { status: 500 })
-    return NextResponse.json(error, { status: 500 });
+    return NextResponse.json(error.message, { status: 500 });
   }
 }
 
