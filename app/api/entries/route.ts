@@ -52,6 +52,8 @@ export async function GET(request: NextRequest) {
         },
       });
 
+      // "Schema hasn't been registered for model "User". Use mongoose.model(name, schema)"
+
     return NextResponse.json(oneEntry, { status: 200 });
     // }
 
@@ -97,7 +99,6 @@ export async function POST(request: NextRequest) {
     );
 
     if (updatedEntry) {
-      console.log("updatedEntry", updatedEntry);
       // redirect
       return NextResponse.json(
         { updatedEntry: updatedEntry, reason: "update" },

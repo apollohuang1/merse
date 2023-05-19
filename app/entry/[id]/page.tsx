@@ -76,7 +76,7 @@ const ReadPage = (props: Props) => {
       });
 
       setEntryData(response.data);
-      renderCanvas(response.data.canvas);
+      // renderCanvas(response.data.canvas);
     } catch (error: any) {
       console.log("Failed to fetch entry, message: ", error);
     }
@@ -94,11 +94,6 @@ const ReadPage = (props: Props) => {
   );
 
   const renderCanvas = (canvasJSON: object) => {
-    // render fabric canvas
-
-    console.log("rendering...")
-    console.log(canvasJSON)
-
     window.addEventListener("resize", () => {
       canvas.setDimensions({
         width: innerWidth - 250,
@@ -123,7 +118,6 @@ const ReadPage = (props: Props) => {
       })
       .then(() => {
         canvas.requestRenderAll();
-        console.log("rendered");
       })
       .catch((error) => {
         console.log("error: ", error);
