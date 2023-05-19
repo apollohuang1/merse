@@ -301,15 +301,16 @@ const useCreateEntry = () => {
           {
             // text: "A lighthouse on a cliff",
             text: formattedPromptWithStyle,
+            weight: 0.5
           },
         ],
-        cfg_scale: 7,
-        clip_guidance_preset: "FAST_BLUE",
+        //cfg_scale: 7,
+        //clip_guidance_preset: "FAST_BLUE",
         height: 512,
         width: 512,
         style_preset: stylePreset,
         samples: 1,
-        steps: 30,
+        steps: 50,
       },
       headers: {
         "Content-Type": "application/json",
