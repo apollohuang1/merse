@@ -493,7 +493,7 @@ const Storyboard = (props: Props) => {
               ) : (
                 <>
                   {/* title and editor */}
-                  <div className="flex flex-col w-full h-full overflow-auto pb-[50vh]">
+                  <div className="flex flex-col w-full h-full overflow-auto pb-52">
                     {/* title */}
                     <input
                       type="text"
@@ -553,7 +553,7 @@ const Storyboard = (props: Props) => {
                           editor={editor}
                           tippyOptions={{ duration: 100 }}
                           className={clsx(
-                            "flex flex-col bg-light-background-primary dark:bg-dark-background-primary rounded-lg border border-light-divider dark:border-dark-divider w-52 drop-shadow-lg translate-y-[calc(50%+21px)] -translate-x-3"
+                            "flex flex-row w-[calc(48*9px)] bg-light-background-primary dark:bg-dark-background-primary rounded-lg overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-lg translate-y-[calc(50%+18px)] -translate-x-3"
                           )}
                         >
                           {floatingMenus.map((floatingMenu, index) => (
@@ -569,14 +569,11 @@ const Storyboard = (props: Props) => {
                                 }
                               }}
                               className={clsx(
-                                "flex flex-row items-center justify-start outline-none h-12 gap-2 p-4 focus:bg-light-background-tertiary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
+                                "flex flex-row items-center justify-center outline-none w-12 h-10 gap-2 focus:bg-light-background-secondary dark:focus:bg-dark-background-tertiary border-b border-b-light-divider dark:border-b-dark-divider hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
                                 {
                                   " text-accent bg-opacity-30 font-semibold":
                                     floatingMenu.isActive(editor),
                                 },
-                                {
-                                  "rounded-t-lg": index === 0,
-                                }
                               )}
                               id={`floating-menu-${index}`}
                               onKeyDown={(
@@ -596,7 +593,7 @@ const Storyboard = (props: Props) => {
                               }}
                             >
                               {floatingMenu.icon}
-                              <span>{floatingMenu.label}</span>
+                              {/* <span>{floatingMenu.label}</span> */}
                             </button>
                           ))}
                         </FloatingMenu>
