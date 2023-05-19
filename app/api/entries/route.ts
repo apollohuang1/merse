@@ -177,3 +177,32 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: error?.message }, { status: 500 });
   }
 }
+
+
+export async function DELETE(request: NextRequest) {
+  try {
+    await dbConnect();
+
+    // get api key from bear token
+    const token = request.headers.get("authorization");
+
+    // if key is not process.env.MERSE_API_KEY
+    if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const url = new URL(request.url);
+    const _id = url.searchParams.get("id");
+
+    if (!_id) {
+      return NextResponse.json({ error: "No _id provided" }, { status: 400 });
+    }
+
+    const response = await MDBEntry.findOneAndDelete({ _id: _id });
+
+    return NextResponse.json("hello", { status: 200 });
+
+  } catch (error: any) {
+    return NextResponse.json({ error: error?.message }, { status: 500 });
+  }
+}

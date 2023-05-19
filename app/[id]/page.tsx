@@ -215,7 +215,7 @@ const ProfilePage = (props: Props) => {
         return true;
       });
 
-      setAllEntries(filteredEntries)
+      setAllEntries(filteredEntries);
       setIsFetchingEntries(false);
     } catch (error: any) {
       console.log("Failed to fetch entries, message: ", error.message);
@@ -495,10 +495,9 @@ const ProfilePage = (props: Props) => {
                                   )}
                                 </span>
 
-                                { entry?.is_private &&
-                                  <FiLock className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary"/>
-                                }
-
+                                {entry?.is_private && (
+                                  <FiLock className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
+                                )}
                               </div>
 
                               <div className="flex flex-row items-center gap-3">
@@ -560,28 +559,75 @@ const ProfilePage = (props: Props) => {
                                       >
                                         <Menu.Items className="absolute top-full right-1/2 z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-md bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-lg">
                                           <div className="py-1">
+                                            {followingState ===
+                                              FollowingState.SELF && (
+                                              <>
+                                                <Menu.Item>
+                                                  {({ active }) => (
+                                                    <button
+                                                      onClick={() => {
+                                                        router.push(
+                                                          `/create/${entry._id}`
+                                                        );
+                                                      }}
+                                                      className={clsx(
+                                                        "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                                        {
+                                                          "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                                            active,
+                                                        },
+                                                        { "": !active }
+                                                      )}
+                                                    >
+                                                      Edit
+                                                    </button>
+                                                  )}
+                                                </Menu.Item>
 
-                                            { followingState === FollowingState.SELF &&
-                                              <Menu.Item>
-                                                {({ active }) => (
-                                                  <button
-                                                    onClick={() => {
-                                                      router.push(`/create/${entry._id}`)
-                                                    }}
-                                                    className={clsx(
-                                                      "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                                                      {
-                                                        "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                                          active,
-                                                      },
-                                                      { "": !active }
-                                                    )}
-                                                  >
-                                                    Edit
-                                                  </button>
-                                                )}
-                                              </Menu.Item>
-                                            }
+                                                <Menu.Item>
+                                                  {({ active }) => (
+                                                    <button
+                                                      onClick={() => {
+                                                        axios({
+                                                          method: "DELETE",
+                                                          url: `/api/entries?id=${entry?._id}`,
+                                                          headers: {
+                                                            Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+                                                          },
+                                                        })
+                                                          .then((res) => {
+                                                            // remove deleted entry from current array with filter
+                                                            setAllEntries(
+                                                              (prev) =>
+                                                                prev.filter(
+                                                                  (e) =>
+                                                                    e._id !==
+                                                                    entry._id
+                                                                )
+                                                            );
+                                                          })
+                                                          .catch((err) => {
+                                                            alert(
+                                                              "Something went wrong. Please try again later."
+                                                            );
+                                                            console.log(err);
+                                                          });
+                                                      }}
+                                                      className={clsx(
+                                                        "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                                                        {
+                                                          "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                                            active,
+                                                        },
+                                                        { "": !active }
+                                                      )}
+                                                    >
+                                                      Delete
+                                                    </button>
+                                                  )}
+                                                </Menu.Item>
+                                              </>
+                                            )}
 
                                             <Menu.Item>
                                               {({ active }) => (

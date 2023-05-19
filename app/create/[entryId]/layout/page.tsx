@@ -181,11 +181,12 @@ const LayoutPage = (props: Props) => {
     const isDarkMode = localStorage.getItem("theme") === "dark";
 
     // load json if exist in entry?.canvas
-    if (entry?.canvas) {
-      canvas.loadFromJSON(entry?.canvas, async (o, object) => {
-        canvas.requestRenderAll();
-      });
-    }
+
+    // if (entry?.canvas) {
+    //   canvas.loadFromJSON(entry?.canvas, async (o, object) => {
+    //     canvas.requestRenderAll();
+    //   });
+    // }
 
     // const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement);
     // make the fabric.Canvas instance available to your app
@@ -211,13 +212,13 @@ const LayoutPage = (props: Props) => {
 
     canvas.setDimensions({
       width: canvasWidth, // square ratio
-      height: (canvasWidth) * 7,
+      height: canvasWidth * 7,
     });
 
     // stylings
     canvas.selectionBorderColor = "#10b981";
     canvas.selectionColor = "rgba(16, 185, 129, 0.3)";
-    canvas.backgroundColor = "transparent";
+    canvas.backgroundColor = "#FFFFFF";
 
     // detect dark mode class and set background color
     // if (isDarkMode) {
@@ -312,7 +313,7 @@ const LayoutPage = (props: Props) => {
     return () => {
       setFabricCanvas(null);
       canvas.dispose();
-      window.removeEventListener("resize", () => {});
+      // window.removeEventListener("resize", () => {});
     };
   }, []); // end on canvas init
 
@@ -476,7 +477,7 @@ const LayoutPage = (props: Props) => {
             <div className="flex flex-row gap-1">
               {/* if current active ofject is text */}
 
-              {currentActiveObject && currentActiveObjectType === "i-text" && (
+              {/* {currentActiveObject && currentActiveObjectType === "i-text" && (
                 <ToolbarButton
                   onClick={() => {
                     const activeObject = fabricCanvas?.getActiveObject();
@@ -496,7 +497,7 @@ const LayoutPage = (props: Props) => {
                 >
                   Switch Color
                 </ToolbarButton>
-              )}
+              )} */}
 
               {/* <ToolbarButton
                 onClick={() => {
@@ -726,6 +727,9 @@ const LayoutPage = (props: Props) => {
                 const canvasImageBase64 = fabricCanvas?.toDataURL({
                   // @ts-ignore
                   format: "png",
+                  quality: 1,
+                  width: canvasWidth,
+                  height: canvasWidth * 7,
                 });
 
                 console.log(canvasImageBase64);

@@ -306,7 +306,20 @@ const ReadPage = (props: Props) => {
                                     {({ active }) => (
                                       <button
                                         onClick={() => {
-                                          alert("In development.");
+                                            axios({
+                                              method: "DELETE",
+                                              url: `/api/entries?id=${entryData?._id}`,
+                                              headers: {
+                                                "Authorization": `Bearer ${process.env.MERSE_API_KEY}`,
+                                              }
+                                            })
+                                            .then((res) => {
+                                              router.push("/");
+                                            })
+                                            .catch((err) => {
+                                              alert("Something went wrong. Please try again later.");
+                                              console.log(err);
+                                            });
                                         }}
                                         className={clsx(
                                           "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
@@ -390,7 +403,14 @@ const ReadPage = (props: Props) => {
 
             {/* fabric canvas */}
             {entryData?.canvas && (
-              <canvas id="canvas" />
+
+              <img
+                src={entryData?.canvas}
+                alt="canvas"
+                className="w-full object-contain"
+              />
+
+              // <canvas id="canvas" />
 
               // <div
               //   id="canvas-parent"
