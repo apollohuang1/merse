@@ -24,33 +24,37 @@ export async function GET(request: NextRequest) {
       // fetch all entries from user
       const allEntriesFromUser = await MDBEntry.find({
         author: userId,
-      }).populate({
-        path: "author",
-        select: "profile_image_url name username _id",
       })
-      .sort({ created_at: "descending" });
-
-      return NextResponse.json(allEntriesFromUser, { status: 200 });
-    }
-
-    if (entryId) {
-      // populate author, and comments that have user as refs with only profile_image_url, username, and _id
-      // sort date, newest first
-      const oneEntry = await MDBEntry.findById(entryId)
+        // .skip(0)
+        // .limit(10)
         .populate({
           path: "author",
           select: "profile_image_url name username _id",
         })
-        .populate({
-          path: "comments",
-          populate: {
-            path: "author",
-            select: "profile_image_url username _id",
-          },
-        })
+        .sort({ created_at: "descending" });
 
-      return NextResponse.json(oneEntry, { status: 200 });
+      return NextResponse.json(allEntriesFromUser, { status: 200 });
     }
+
+    // if (entryId) {
+    // populate author, and comments that have user as refs with only profile_image_url, username, and _id
+    // sort date, newest first
+    const oneEntry = await MDBEntry.findById(entryId)
+      .populate({
+        path: "author",
+        select: "profile_image_url name username _id",
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+          select: "profile_image_url username _id",
+        },
+      });
+
+    return NextResponse.json(oneEntry, { status: 200 });
+    // }
+    
   } catch (error: any) {
     // return new Response(error, { status: 500 })
     return NextResponse.json(error, { status: 500 });
@@ -95,7 +99,10 @@ export async function POST(request: NextRequest) {
     if (updatedEntry) {
       console.log("updatedEntry", updatedEntry);
       // redirect
-      return NextResponse.json({ updatedEntry: updatedEntry, reason: "update" }, { status: 200 });
+      return NextResponse.json(
+        { updatedEntry: updatedEntry, reason: "update" },
+        { status: 200 }
+      );
     }
 
     const newEntry = new MDBEntry({
@@ -178,7 +185,6 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-
 export async function DELETE(request: NextRequest) {
   try {
     await dbConnect();
@@ -201,7 +207,6 @@ export async function DELETE(request: NextRequest) {
     const response = await MDBEntry.findOneAndDelete({ _id: _id });
 
     return NextResponse.json("hello", { status: 200 });
-
   } catch (error: any) {
     return NextResponse.json({ error: error?.message }, { status: 500 });
   }
