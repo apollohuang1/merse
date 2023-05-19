@@ -310,6 +310,8 @@ const LayoutPage = (props: Props) => {
       // }
     });
 
+    addComicBubbleToCanvas(canvas);
+
     return () => {
       setFabricCanvas(null);
       canvas.dispose();
@@ -332,7 +334,7 @@ const LayoutPage = (props: Props) => {
       });
   };
 
-  const addComicBubbleToCanvas = () => {
+  const addComicBubbleToCanvas = (canvas?: fabric.Canvas) => {
     const ovalPathString = "M 0 0 C 0 -90 210 -90 210 0 C 210 90 0 90 0 0 Z";
 
     const bubblePath = new fabric.Path(ovalPathString, {
@@ -360,9 +362,11 @@ const LayoutPage = (props: Props) => {
       originY: "center",
     });
 
-    // add as a group
-    // const bubbleGroup = new fabric.Group([bubblePath, bubbleText]);
-    // bubbleGroup.bringObjectToFront(bubbleText);
+    if (canvas) {
+      canvas.add(bubblePath);
+      canvas.add(bubbleText);
+    }
+
     fabricCanvas?.add(bubblePath);
     fabricCanvas?.add(bubbleText);
   };
@@ -712,7 +716,7 @@ const LayoutPage = (props: Props) => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center relative w-full h-full overflow-auto">
+          <div className="flex flex-col items-center relative w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary">
 
             <div className={`flex flex-col w-[${canvasWidth}px] h-[${canvasWidth * 7}px] bg-light-background-secondary`}>
               <Canvas onLoad={onLoad} saveState />
