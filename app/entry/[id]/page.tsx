@@ -74,7 +74,7 @@ const ReadPage = (props: Props) => {
       setEntryData(response.data);
       renderCanvas(response.data.canvas);
     } catch (error: any) {
-      console.log("Failed to fetch entry, message: ", error.message);
+      console.log("Failed to fetch entry, message: ", error);
     }
   };
 

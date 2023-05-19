@@ -327,6 +327,7 @@ const LayoutPage = (props: Props) => {
         // img.strokeWidth = 10;
         img.left = 0;
         img.preserveAspectRatio = "true";
+        // img.lockMovementX = true;
         fabricCanvas?.add(img);
       })
       .catch((err) => {

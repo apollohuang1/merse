@@ -27,7 +27,8 @@ export async function GET(request: NextRequest) {
       }).populate({
         path: "author",
         select: "profile_image_url name username _id",
-      });
+      })
+      .sort({ created_at: "descending" });
 
       return NextResponse.json(allEntriesFromUser, { status: 200 });
     }
@@ -47,13 +48,12 @@ export async function GET(request: NextRequest) {
             select: "profile_image_url username _id",
           },
         })
-        .sort({ created_at: "ascending" });
 
       return NextResponse.json(oneEntry, { status: 200 });
     }
   } catch (error: any) {
     // return new Response(error, { status: 500 })
-    return NextResponse.json({ error: error?.message }, { status: 500 });
+    return NextResponse.json(error, { status: 500 });
   }
 }
 
