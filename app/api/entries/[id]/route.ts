@@ -28,7 +28,8 @@ export async function GET(request: NextRequest) {
           path: "author",
           select: "profile_image_url username _id",
         },
-      });
+      })
+      .exec();
 
     return NextResponse.json(entryData, { status: 200 });
     

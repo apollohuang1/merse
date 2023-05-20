@@ -33,7 +33,8 @@ export async function GET(request: NextRequest) {
         path: "author",
         select: "profile_image_url name username _id",
       })
-      .sort({ created_at: "descending" });
+      .sort({ created_at: "descending" })
+      .exec();
 
     return NextResponse.json(allEntriesFromUser, { status: 200 });
 
