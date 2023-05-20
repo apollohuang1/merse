@@ -55,6 +55,12 @@ const useCreateEntry = () => {
 
   const saveEntry = async () => {
     try {
+
+      // guard check if user is the owner
+      if (entry?.autor?._id !== auth?.currentUser?._id) {
+        throw new Error("You are not the owner of this entry.");
+      }
+      
       const response = await axios({
         method: "POST",
         url: "/api/entries",
@@ -64,8 +70,6 @@ const useCreateEntry = () => {
           "Content-Type": "application/json",
         },
       });
-
-      console.log("here: ", response);
 
       if (response.status === 200 && response.data.reason === "update") {
         router.push(`/entry/${response.data.updatedEntry._id}`);

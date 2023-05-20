@@ -2,7 +2,7 @@ import { User } from "@/models/user";
 import mongoose, { Schema, SchemaType } from "mongoose";
 
 const UserSchema = new mongoose.Schema<User>({
-  _id: { type: String, required: true },
+  _id: { type: String, required: true, unique: true },
   username: { type: String, required: false, unique: true, trim: true },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true, trim: true },

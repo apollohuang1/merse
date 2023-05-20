@@ -29,7 +29,7 @@ const ReplySchema = new mongoose.Schema<Reply>({
 
 
 const EntrySchema = new mongoose.Schema<Entry>({
-  _id: { type: String, required: false },
+  _id: { type: String, required: false, unique: true },
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
