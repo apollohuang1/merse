@@ -310,7 +310,27 @@ const LayoutPage = (props: Props) => {
       // }
     });
 
+    // Adding elements and generated images from storyboard
     addComicBubbleToCanvas(canvas);
+
+    // for loop in entry?.scenes
+    for (let i = 0; i < entry?.scenes.length; i++) {
+      const scene = entry?.scenes[i];
+
+      fabric.Image.fromURL("data:image/png;base64," + scene.image_base64, { crossOrigin: "anonymous" })
+        .then((img) => {
+          img.scaleToWidth(canvasWidth);
+          // img.stroke = "black";
+          // img.strokeWidth = 10;
+          img.left = 0;
+          img.preserveAspectRatio = "true";
+          // img.lockMovementX = true;
+          canvas.add(img);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
     return () => {
       setFabricCanvas(null);
@@ -407,7 +427,7 @@ const LayoutPage = (props: Props) => {
       // group
       fabricCanvas?.discardActiveObject();
       fabricCanvas?.remove(...activeGroup);
-      return
+      return;
     }
 
     // single object
@@ -568,7 +588,7 @@ const LayoutPage = (props: Props) => {
                                     setSelectedFont(font);
                                   }}
                                   className={clsx(
-                                    `flex flex-row px-4 py-2 text-sm w-full items-start hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary font-[${font}]`,
+                                    `flex flex-row px-4 py-2 text-sm w-full items-start hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary font-[${font}]`
                                   )}
                                 >
                                   {font} {selectedFont === font && "✓"}
@@ -713,13 +733,15 @@ const LayoutPage = (props: Props) => {
                   Templates
                 </div>
               </ToolbarButton> */}
-
             </div>
           </div>
 
           <div className="flex flex-col items-center relative w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary">
-
-            <div className={`flex flex-col w-[${canvasWidth}px] h-[${canvasWidth * 7}px] bg-light-background-secondary`}>
+            <div
+              className={`flex flex-col w-[${canvasWidth}px] h-[${
+                canvasWidth * 7
+              }px] bg-light-background-secondary`}
+            >
               <Canvas onLoad={onLoad} saveState />
             </div>
 
@@ -738,7 +760,7 @@ const LayoutPage = (props: Props) => {
                 });
 
                 console.log(canvasImageBase64);
-                dispatch(setCanvas(canvasImageBase64))
+                dispatch(setCanvas(canvasImageBase64));
               }}
               className="fixed bottom-0 right-0 m-4 py-2 px-4 rounded-md shadow-md bg-dark-background-tertiary text-white"
             >
@@ -911,7 +933,8 @@ const LayoutPage = (props: Props) => {
                 }
               )}
               onClick={() => {
-                fabricCanvas?.loadFromJSON(selectedTemplate, () => {
+                fabricCanvas
+                  ?.loadFromJSON(selectedTemplate, () => {
                     dispatch(setCanvas(selectedTemplate));
                     fabricCanvas?.requestRenderAll();
                   })

@@ -388,7 +388,7 @@ const ReadPage = (props: Props) => {
                 </div>
               )}
 
-              {entryData?.scenes?.map((scene, index) => {
+              {/* {entryData?.scenes?.map((scene, index) => {
                 return (
                   <div key={index} className="flex flex-col items-center w-full">
                     <img
@@ -399,7 +399,7 @@ const ReadPage = (props: Props) => {
                     />
                   </div>
                 );
-              })}
+              })} */}
             </div>
 
             {/* fabric canvas */}

@@ -57,9 +57,9 @@ const useCreateEntry = () => {
     try {
 
       // guard check if user is the owner
-      if (entry?.autor?._id !== auth?.currentUser?._id) {
-        throw new Error("You are not the owner of this entry.");
-      }
+      // if (entry?.autor?._id !== auth?.currentUser?._id) {
+      //   throw new Error("You are not the owner of this entry.");
+      // }
       
       const response = await axios({
         method: "POST",

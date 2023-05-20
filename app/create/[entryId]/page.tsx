@@ -35,14 +35,14 @@ const CreateEntryIdPage = (props: Props) => {
         },
       });
 
-      if (response.data.author._id !== auth?.currentUser) {
-        dispatch(setNotificationContent({
-          title: "Unauthorized",
-          message: "You are not authorized to view this entry.",
-        }))
-        router.push(`/entry/${entryId}`)
-        return
-      }
+      // if (response.data.author._id !== auth?.currentUser) {
+      //   dispatch(setNotificationContent({
+      //     title: "Unauthorized",
+      //     message: "You are not authorized to view this entry.",
+      //   }))
+      //   router.push(`/entry/${entryId}`)
+      //   return
+      // }
 
       // private to user only
       dispatch(setEntry(response.data));
