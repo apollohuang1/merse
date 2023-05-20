@@ -5,4 +5,5 @@ export type StyleReference = {
     url: string;
   };
   preset?: string;
+  preset_name?: string;
 };

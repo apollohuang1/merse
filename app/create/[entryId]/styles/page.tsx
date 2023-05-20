@@ -42,6 +42,7 @@ const Styles = (props: Props) => {
 
   return (
     <div className="flex flex-col overflow-auto">
+      
       {/* top of grid */}
       <CreateHeader currentRoute={createRoutes[0]} nextDisabled={!entry?.style_reference} />
 
@@ -67,11 +68,14 @@ const Styles = (props: Props) => {
                 className={clsx("w-full h-full object-cover rounded-lg")}
               />
 
-              <div className="absolute flex flex-col w-full h-full items-center justify-end">
-                {/* <span className="text-white text-sm font-bold px-2 rounded-full backdrop-blur-xl bg-[rgb(50,50,50,0.8)]"> */}
-                {/* {style.artist} */}
-                {/* </span> */}
-              </div>
+              { comicStyle.preset_name &&
+                <div className="absolute flex flex-col w-full h-full items-end justify-end p-2">
+                  <span className="text-white text-sm px-3 py-1 rounded-full backdrop-blur-xl bg-[rgb(50,50,50,0.8)]">
+                    {comicStyle.preset_name}
+                  </span>
+                </div>
+              }
+
             </button>
           ))}
 

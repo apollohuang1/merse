@@ -58,6 +58,7 @@ export const comicStyles: StyleReference[] = [
       url: "https://cdn.stability.ai/assets/org-JOoUX4gwv4HV7IzPDsQ3NICY/00000000-0000-0000-0000-000000000000/f50fee1a-e84d-746d-bffa-2388c49cf81f"
     },
     preset: "digital-art",
+    preset_name: "Digital Art",
   },
   {
     artist: "unknown",
@@ -65,6 +66,23 @@ export const comicStyles: StyleReference[] = [
       url: "https://cdn.stability.ai/assets/org-JOoUX4gwv4HV7IzPDsQ3NICY/00000000-0000-0000-0000-000000000000/36c5e39f-4822-f9fa-3154-b0c4ec688e46",
     },
     preset: "comic-book",
+    preset_name: "Comic Book",
+  },
+  {
+    artist: "unknown",
+    artwork: {
+      url: "https://cdn.stability.ai/assets/org-JOoUX4gwv4HV7IzPDsQ3NICY/00000000-0000-0000-0000-000000000000/f9193418-c44d-c6a0-20c7-6eda2000a7da",
+    },
+    preset: "anime",
+    preset_name: "Anime",
+  },
+  {
+    artist: "unknown",
+    artwork: {
+      url: "https://cdn.stability.ai/assets/org-JOoUX4gwv4HV7IzPDsQ3NICY/00000000-0000-0000-0000-000000000000/cd79639e-5ba0-be04-75b8-0eddb535e860"
+    },
+    preset: "low-poly",
+    preset_name: "Low Poly",
   },
   {
     artist: "Quentin Blake",
