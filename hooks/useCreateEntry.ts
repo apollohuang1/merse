@@ -156,8 +156,9 @@ const useCreateEntry = () => {
       );
       console.log(sceneTextsArray);
 
+
       // comment this out to generate only 1 image
-      const base64String = await createImageFromText(sceneTextsArray[0]);
+      // const base64String = await createImageFromText(sceneTextsArray[0]);
 
       // diary text
       const splittedSceneText: string[] = sceneText
@@ -185,30 +186,41 @@ const useCreateEntry = () => {
       );
       console.log(generatedDiaryText);
 
-      // push ONLY 1 scene to storyboard UI
-      const newScene: Scene = {
-        _id: new mongoose.Types.ObjectId().toString(),
-        image_base64: base64String,
-        prompt: sceneTextsArray[0],
-        displayed_text:
-          "Annyeong Emily❤️ Diary text should be here, check out the newScene: Scene interface in useCreateEntry hook :))",
-      };
-      dispatch(addScene(newScene));
-      dispatch(setShowGeneratedStoryboard(true));
+      const splittedDiaryTexts: string[] = generatedDiaryText
+        ?.split("\n")
+        .filter((line) => line.startsWith("Scene "))
+        .map((line) => line.split(":")[1].trim());
+
+      console.log(
+        "###--------------------SPLITTED DIARY TEXT--------------------###"
+      );
+      console.log(splittedDiaryTexts);
 
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       // iterate through splitedSceneText array
-      // for (let i = 0; i < sceneTextsArray.length; i++) {
-      //   const base64String = await createImageFromText(sceneTextsArray[i]);
-      //   const newScene: Scene = {
-      //     _id: new mongoose.Types.ObjectId().toString(),
-      //     image_base64: base64String,
-      //     prompt: sceneTextsArray[1],
-      //     displayed_text: "should be diary text here",
-      //   };
-      //   dispatch(addScene(newScene));
-      //   dispatch(setShowGeneratedStoryboard(true));
-      // }
+      for (let i = 0; i < sceneTextsArray.length; i++) {
+        const base64String = await createImageFromText(sceneTextsArray[i]);
+        const newScene: Scene = {
+          _id: new mongoose.Types.ObjectId().toString(),
+          image_base64: base64String,
+          prompt: sceneTextsArray[1],
+          displayed_text: splittedDiaryTexts[i],
+        };
+        dispatch(addScene(newScene));
+        dispatch(setShowGeneratedStoryboard(true));
+      }
+
+      // // push ONLY 1 scene to storyboard UI
+      // const newScene: Scene = {
+      //   _id: new mongoose.Types.ObjectId().toString(),
+      //   image_base64: base64String,
+      //   prompt: sceneTextsArray[0],
+      //   displayed_text:
+      //     "Annyeong Emily❤️ Diary text should be here, check out the newScene: Scene interface in useCreateEntry hook :))",
+      // };
+      // dispatch(addScene(newScene));
+      // dispatch(setShowGeneratedStoryboard(true));
+
     } catch (error: any) {
       console.log(`Failed to generate storyboard, message: ${error?.message}`);
     } finally {

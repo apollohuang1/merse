@@ -277,7 +277,7 @@ const ReadPage = (props: Props) => {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                           >
-                            <Menu.Items className="absolute top-[calc(100%+5px)] z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-md bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-lg">
+                            <Menu.Items className="absolute top-[calc(100%+5px)] max-[1350px]:right-0 z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-md bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider">
                               <div className="py-1">
 
                                 { entryData?.author?._id === auth?.currentUser?._id &&
