@@ -322,7 +322,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         />
                       }
                       label="Read Sample"
-                      href="/entry/64674e5d92fb8e246a65524e"
+                      href="/entry/6468e2a9d3b0401f6ee8a6a8"
                       isFull={showFullSidebar}
                       isCurrentRoute={pathName === "/entry"}
                     />
