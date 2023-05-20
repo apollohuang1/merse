@@ -69,7 +69,7 @@ const ReadPage = (props: Props) => {
 
       const response = await axios({
         method: "GET",
-        url: `/api/entries?id=${entryId}`,
+        url: `/api/entries/${entryId}`,
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },

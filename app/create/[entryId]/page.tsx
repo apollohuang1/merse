@@ -11,13 +11,11 @@ import React, { useEffect } from "react";
 type Props = {};
 
 const CreateEntryIdPage = (props: Props) => {
-
   const pathname = usePathname();
   const router = useRouter();
 
   const dispatch = useAppDispatch();
   const entry = useAppSelector((state) => state.entry);
-
 
   useEffect(() => {
     // fetch entry data
@@ -30,20 +28,18 @@ const CreateEntryIdPage = (props: Props) => {
     try {
       const response = await axios({
         method: "GET",
-        url: `/api/entries?id=${entryId}`,
+        url: `/api/entries/${entryId}`,
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
       });
-  
-      dispatch(setEntry(response.data));  
 
+      dispatch(setEntry(response.data));
       router.push(location.pathname + "/styles");
-
     } catch (error: any) {
-      console.log(error);
+      console.log("Failed to fetch entry data, message: ", error.message);
     }
-  }
+  };
 
   return (
     <div className="flex flex-cols w-full h-full items-center justify-center">
