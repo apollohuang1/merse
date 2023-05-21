@@ -115,6 +115,12 @@ const Storyboard = (props: Props) => {
   //   name: "example-document",
   // });
 
+  const handleDeleteScene = (index: number) => {
+    const newScenes = [...entry.scenes]; 
+    newScenes.splice(index, 1); 
+    dispatch(setScenes(newScenes)); 
+  };  
+
   const handleEditScene = (index: number) => {
     // Set the index of the scene being edited
     setEditingSceneIndex(index);
@@ -700,12 +706,21 @@ const Storyboard = (props: Props) => {
                   className="object-cover aspect-[4/3]"
                 />
 
+                <div className="absolute top-0 right-0 m-2">
+                  <button
+                    className="w-6 h-6 bg-gray-500 text-white rounded-full"
+                    onClick={() => handleDeleteScene(index)}
+                  >
+                    X
+                  </button>
+                </div>
+
                 <div className="flex p-4 flex-grow flex-col bg-light-background-secondary dark:bg-dark-background-secondary">
                   {editingSceneIndex === index ? (
                     <>
                       <textarea
                         className="w-full mb-2 rounded"
-                        style={{flex: '1', minHeight: '6em', backgroundColor: 'inherit'}}
+                        style={{flex: '1', minHeight: '8em', backgroundColor: 'inherit'}}
                         value={newSceneText}
                         onChange={(e) => setNewSceneText(e.target.value)}
                       />
