@@ -15,6 +15,7 @@ import { singaporeEntrySample } from "@/util/constants/profile-constants";
 import {
   getFormattedDateFromMongoDBDate,
   getImageURLfromBase64,
+  htmlStringToText,
 } from "@/util/helper";
 import { Spinner } from "@chakra-ui/react";
 import { Menu, Transition } from "@headlessui/react";
@@ -489,7 +490,7 @@ const ProfilePage = (props: Props) => {
                             )}
                           </Link>
 
-                          <div className="flex flex-col justify-between w-full h-full gap-1 items-start">
+                          <div className="flex flex-col justify-start w-full h-full gap-1 items-start">
                             <div className="flex flex-row w-full justify-between flex-shrink-0">
                               <div className="flex flex-row items-center gap-2">
                                 {/* author info */}
@@ -700,7 +701,8 @@ const ProfilePage = (props: Props) => {
                               </p>
 
                               <p className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-4 leading-normal">
-                                Lorem ipsum dolor sit amet consectetur
+                                { htmlStringToText(entry.content ?? "") }
+                                {/* Lorem ipsum dolor sit amet consectetur
                                 adipisicing elit. Quisquam, quibusdam. Lorem
                                 ipsum dolor sit amet consectetur adipisicing
                                 elit. Quisquam, quibusdam. Lorem ipsum dolor sit
@@ -711,7 +713,7 @@ const ProfilePage = (props: Props) => {
                                 consectetur adipisicing elit. Quisquam,
                                 quibusdam. Lorem ipsum dolor sit amet
                                 consectetur adipisicing elit. Quisquam,
-                                quibusdam.
+                                quibusdam. */}
                               </p>
                             </Link>
 
