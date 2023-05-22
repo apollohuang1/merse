@@ -39,6 +39,7 @@ import mongoose from "mongoose";
 import { setScrollY, setShowNotifications } from "@/redux-store/store";
 import Notification from "./notification";
 import { useNotifications } from "@/hooks/useNotifications";
+import SlideOver from "./slide-over";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref
@@ -77,6 +78,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathName = usePathname();
 
   const isCreateRoute = pathName?.split("/")[1] === "create";
+
+  const [showNotificationSlideOver, setShowNotificationSlideOver] = useState<boolean>(false);
 
   const { reloadCurrentLocalUser } = useAuth();
 
@@ -265,7 +268,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         />
                       }
                       label="Notifications"
-                      onClick={() => router.push("/notifications")}
+                      onClick={() => setShowNotificationSlideOver(true)}
                       isFull={showFullSidebar}
                       isCurrentRoute={pathName === "/notifications"}
                     />
@@ -513,6 +516,20 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       </div>
 
+      <SlideOver
+        isOpen={showNotificationSlideOver}
+        onOpen={() => {}}
+        onClose={() => setShowNotificationSlideOver(false)}
+        slideFrom="left"
+        // withOverlay={false}
+        leftMargin="250px"
+        size="md"
+        title="Notifications"
+
+      >
+
+      </SlideOver>
+
       <Notification
         title={notificationsStore.title}
         message={notificationsStore.message}
@@ -521,6 +538,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           dispatch(setShowNotifications(false));
         }}
       />
+
     </>
   );
 };

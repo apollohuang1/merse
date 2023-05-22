@@ -20,6 +20,8 @@ const SlideOver: React.FC<{
   withPadding?: boolean;
   // onCancel?: () => void;
   // onSubmit?: () => void;
+  slideFrom?: "left" | "right";
+  leftMargin?: string;
 }> = ({
   children,
   size = "xl",
@@ -32,6 +34,7 @@ const SlideOver: React.FC<{
   withOverlay = true,
   withPadding = true,
   // onSubmit,
+  slideFrom = "right",
 }) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -57,15 +60,15 @@ const SlideOver: React.FC<{
 
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
-            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <div className={`pointer-events-none fixed inset-y-0 ${slideFrom}-0 flex max-w-full ${slideFrom === "right" ? "pl-10" : "pr-10"}`}>
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-300"
-                enterFrom="translate-x-full"
+                enterFrom={`${slideFrom === "left" ? "-" : ""}translate-x-full`}
                 enterTo="translate-x-0"
                 leave="transform transition ease-in-out duration-300"
                 leaveFrom="translate-x-0"
-                leaveTo="translate-x-full"
+                leaveTo={`${slideFrom === "left" ? "-" : ""}translate-x-full`}
               >
                 <Dialog.Panel
                   className={`pointer-events-auto w-screen max-w-${size} border-l border-l-light-divider dark:border-l-dark-divider`}
