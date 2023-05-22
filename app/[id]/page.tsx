@@ -283,10 +283,12 @@ const ProfilePage = (props: Props) => {
   };
 
   const tabs = [
-    { name: "Entries", href: "#entries" },
-    { name: "Collection", href: "#collection" },
-    { name: "About", href: "#about" },
+    { name: "Entries", href: "entries" },
+    { name: "Collection", href: "collection" },
+    { name: "About", href: "about" },
   ];
+
+  const [currentTab, setCurrentTab] = useState<string>("entries");
 
   // add listerner to window.location.hash
   window.addEventListener("hashchange", () => {
@@ -416,29 +418,32 @@ const ProfilePage = (props: Props) => {
             <div className="border-b border-light-divider dark:border-dark-divider">
               <nav className="-mb-px flex" aria-label="Tabs">
                 {tabs.map((tab: any) => (
-                  <Link
+                  <button
                     key={tab.name}
-                    href={tab.href}
+                    // href={`${location.pathname}/${tab.href}`}
+                    onClick={() => {
+                      setCurrentTab(tab.href);
+                    }}
                     className={clsx(
                       "whitespace-nowrap border-b-2 py-4 font-medium px-6 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
                       // when click it adds #tab to link, change tab.current to sync with url
-                      { "border-accent text-accent": activehash === tab.href },
+                      { "border-accent text-accent": currentTab === tab.href },
                       {
                         "border-transparent text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary":
-                          activehash !== tab.href,
+                          currentTab !== tab.href,
                       }
                     )}
                     // aria-current={tab.current ? "page" : undefined}
                   >
                     {tab.name}
-                  </Link>
+                  </button>
                 ))}
               </nav>
 
               {/* <span>{activehash} compared {tabs[0].href}</span> */}
             </div>
 
-            {activehash === "#entries" && (
+            { currentTab === "entries" && (
               <div className="flex flex-col gap-6 w-full">
                 {isFetchingEntries ? (
                   <>

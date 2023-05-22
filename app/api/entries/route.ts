@@ -18,17 +18,18 @@ export async function GET(request: NextRequest) {
     // const get params from fullURL
     const url = new URL(request.url);
     const userId = url.searchParams.get("userId");
-    
+
     if (!userId) {
-      return NextResponse.json({ error: "No userId provided" }, { status: 400 });
+      return NextResponse.json(
+        { error: "No userId provided" },
+        { status: 400 }
+      );
     }
 
     // fetch all entries from user
     const allEntriesFromUser = await MDBEntry.find({
       author: userId,
     })
-      // .skip(0)
-      // .limit(10)
       .populate({
         path: "author",
         select: "profile_image_url name username _id",
@@ -37,7 +38,6 @@ export async function GET(request: NextRequest) {
       .exec();
 
     return NextResponse.json(allEntriesFromUser, { status: 200 });
-
   } catch (error: any) {
     // return new Response(error, { status: 500 })
     return NextResponse.json(error.message, { status: 500 });

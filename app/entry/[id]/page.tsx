@@ -8,7 +8,7 @@ import { JSONContent, generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import parse from "html-react-parser";
-import { Comment, Entry } from "@/models/entry";
+import { Comment, Entry, Scene } from "@/models/entry";
 import Spotify from "@/tiptap/extensions/Spotify";
 import Image from "@tiptap/extension-image";
 import HardBreak from "@tiptap/extension-hard-break";
@@ -52,7 +52,9 @@ const ReadPage = (props: Props) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    fetchEntry();
+    if (pathname) {
+      fetchEntry();
+    }
   }, []);
 
   const fetchEntry = async () => {
@@ -75,7 +77,7 @@ const ReadPage = (props: Props) => {
         },
       });
 
-      // console.log("Entry data: ", response.data);
+      console.log("response: ", response);
 
       setEntryData(response.data);
       // renderCanvas(response.data.canvas);
@@ -190,7 +192,6 @@ const ReadPage = (props: Props) => {
       <div className="flex flex-col w-full h-full items-center overflow-auto">
         {entryData ? (
           <div className="flex flex-col w-full h-auto items-center max-w-3xl gap-14 pt-6 pb-64">
-
             <div className="flex flex-col w-full gap-14 max-xl:px-6">
               {/* author profile */}
               {entryData?.author && (
@@ -281,15 +282,17 @@ const ReadPage = (props: Props) => {
                           >
                             <Menu.Items className="absolute top-[calc(100%+5px)] max-[1350px]:right-0 z-10 w-44 origin-top-right divide-y divide-light-divider dark:divide-dark-divider rounded-md bg-light-background-primary dark:bg-dark-background-secondary focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider">
                               <div className="py-1">
-
-                                { entryData?.author?._id === auth?.currentUser?._id &&
+                                {entryData?.author?._id ===
+                                  auth?.currentUser?._id && (
                                   <>
                                     <Menu.Item>
                                       {({ active }) => (
                                         <button
-                                        onClick={() => {
-                                          router.push(`/create/${entryData?._id}`)
-                                        }}
+                                          onClick={() => {
+                                            router.push(
+                                              `/create/${entryData?._id}`
+                                            );
+                                          }}
                                           className={clsx(
                                             "text-sm flex flex-row items-center justify-start w-full px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
                                             {
@@ -308,18 +311,20 @@ const ReadPage = (props: Props) => {
                                       {({ active }) => (
                                         <button
                                           onClick={() => {
-                                              axios({
-                                                method: "DELETE",
-                                                url: `/api/entries?id=${entryData?._id}`,
-                                                headers: {
-                                                  "Authorization": `Bearer ${process.env.MERSE_API_KEY}`,
-                                                }
-                                              })
+                                            axios({
+                                              method: "DELETE",
+                                              url: `/api/entries?id=${entryData?._id}`,
+                                              headers: {
+                                                Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+                                              },
+                                            })
                                               .then((res) => {
                                                 router.push("/");
                                               })
                                               .catch((err) => {
-                                                alert("Something went wrong. Please try again later.");
+                                                alert(
+                                                  "Something went wrong. Please try again later."
+                                                );
                                                 console.log(err);
                                               });
                                           }}
@@ -337,7 +342,7 @@ const ReadPage = (props: Props) => {
                                       )}
                                     </Menu.Item>
                                   </>
-                                }
+                                )}
 
                                 <Menu.Item>
                                   {({ active }) => (
@@ -390,23 +395,38 @@ const ReadPage = (props: Props) => {
                 </div>
               )}
 
-              {/* {entryData?.scenes?.map((scene, index) => {
+              {entryData?.scenes?.map((scene: Scene, index) => {
                 return (
-                  <div key={index} className="flex flex-col items-center w-full">
+                  <div
+                    key={index}
+                    className="group relative flex flex-col items-center w-full h-full"
+                  >
                     <img
                       // base64 image url source
                       src={"data:image/png;base64," + scene.image_base64}
                       alt="scene"
                       className="w-full h-full object-cover"
                     />
+
+                    { scene.displayed_text && scene.displayed_text !== "" && 
+                      <div className="absolute flex flex-col justify-end w-full h-full">
+                        <div className="group-hover:opacity-100 opacity-0 transition-opacity duration-300 bg-dark-background-secondary bg-opacity-80 backdrop-blur-2xl w-full rounded-none px-3 py-6">
+                          <p className="text-white">
+                            { scene.displayed_text }
+                          </p>
+                        </div>
+                      </div>
+                    }
+
                   </div>
                 );
-              })} */}
+              })}
             </div>
+
+            <Divider />
 
             {/* fabric canvas */}
             {entryData?.canvas && (
-
               <img
                 src={entryData?.canvas}
                 alt="canvas"
