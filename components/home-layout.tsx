@@ -567,10 +567,10 @@ const SidebarMenuButton: React.FC<{
       className={clsx(
         "group flex flex-row items-center gap-3 w-full transition-all rounded-xl",
         { "bg-accent hover:bg-emerald-600": variant === "solid" },
-        // {
-        // "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary":
-        // variant === "normal",
-        // },
+        {
+        "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary duration-200":
+        variant === "normal",
+        },
         { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
         { "flex-row justify-between pl-6 pr-3 h-12": isFull }
       )}

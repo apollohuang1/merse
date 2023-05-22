@@ -694,26 +694,14 @@ const ProfilePage = (props: Props) => {
                             {/* title and description */}
                             <Link
                               href={`/entry/${entry._id}`}
-                              className="flex flex-col"
+                              className="flex flex-col w-full h-full"
                             >
-                              <p className="line-clamp-1 font-semibold text-2xl flex-shrink-0 leading-normal line-clamp-1">
+                              <p className="font-semibold text-2xl flex-shrink-0 leading-normal line-clamp-1">
                                 {entry.title}
                               </p>
-
+                              
                               <p className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-4 leading-normal">
                                 { htmlStringToText(entry.content ?? "") }
-                                {/* Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Quisquam, quibusdam. Lorem
-                                ipsum dolor sit amet consectetur adipisicing
-                                elit. Quisquam, quibusdam. Lorem ipsum dolor sit
-                                amet consectetur adipisicing elit. Quisquam,
-                                quibusdam. Lorem ipsum dolor sit amet
-                                consectetur adipisicing elit. Quisquam,
-                                quibusdam. Lorem ipsum dolor sit amet
-                                consectetur adipisicing elit. Quisquam,
-                                quibusdam. Lorem ipsum dolor sit amet
-                                consectetur adipisicing elit. Quisquam,
-                                quibusdam. */}
                               </p>
                             </Link>
 
