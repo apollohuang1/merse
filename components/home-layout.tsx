@@ -228,7 +228,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   </button>
 
                   {/* navigation menus */}
-                  <div className="flex flex-col gap-1 w-full">
+                  <div className="flex flex-col gap-2 w-full">
                     {/* home */}
                     <SidebarMenuButton
                       icon={
@@ -240,7 +240,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         />
                       }
                       label="Home"
-                      href="/"
+                      onClick={() => router.push("/")}
                       isFull={showFullSidebar}
                       isCurrentRoute={pathName === "/"}
                     />
@@ -265,7 +265,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         />
                       }
                       label="Notifications"
-                      href="/notifications"
+                      onClick={() => router.push("/notifications")}
                       isFull={showFullSidebar}
                       isCurrentRoute={pathName === "/notifications"}
                     />
@@ -280,7 +280,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       /> */}
 
                     {/* subscription */}
-                    <SidebarMenuButton
+                    {/* <SidebarMenuButton
                       icon={
                         <FiFeather
                           className={clsx(
@@ -290,10 +290,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         />
                       }
                       label="Following"
-                      href="/following"
+                      onClick={() => router.push("/following")}
                       isFull={showFullSidebar}
                       isCurrentRoute={pathName === "/following"}
-                    />
+                    /> */}
 
                     {/* subscription */}
                     <SidebarMenuButton
@@ -306,7 +306,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         />
                       }
                       label="Subscription"
-                      href="/subscription"
+                      onClick={() => router.push("/subscription")}
                       isFull={showFullSidebar}
                       isCurrentRoute={pathName === "/subscription"}
                     />
@@ -322,7 +322,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         />
                       }
                       label="Read Sample"
-                      href="/entry/6468e2a9d3b0401f6ee8a6a8"
+                      onClick={() => router.push("/entry/6468e2a9d3b0401f6ee8a6a8")}
                       isFull={showFullSidebar}
                       isCurrentRoute={pathName === "/entry"}
                     />
@@ -528,7 +528,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const SidebarMenuButton: React.FC<{
   icon: React.ReactNode;
   label: string;
-  href: string;
+  onClick?: () => void;
   isFull: boolean;
   variant?: "normal" | "solid";
   isNew?: boolean;
@@ -536,23 +536,16 @@ const SidebarMenuButton: React.FC<{
 }> = ({
   icon,
   label,
-  href,
+  onClick,
   isFull,
   variant = "normal",
   isNew = false,
   isCurrentRoute,
 }) => {
-  const router = useRouter();
 
   return (
-    // <Link
-    //   href={href}
-    //   className="group flex w-full items-center justify-center cursor-pointer"
-    // >
     <button
-      onClick={() => {
-        router.push(href);
-      }}
+      onClick={onClick}
       className={clsx(
         "group flex flex-row items-center gap-3 w-full transition-all rounded-xl",
         { "bg-accent hover:bg-emerald-600": variant === "solid" },
@@ -584,7 +577,6 @@ const SidebarMenuButton: React.FC<{
         </span>
       )}
     </button>
-    // </Link>
   );
 };
 
