@@ -75,6 +75,8 @@ const ReadPage = (props: Props) => {
         },
       });
 
+      // console.log("Entry data: ", response.data);
+
       setEntryData(response.data);
       // renderCanvas(response.data.canvas);
     } catch (error: any) {

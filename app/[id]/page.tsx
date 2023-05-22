@@ -6,7 +6,11 @@ import useCreateEntry from "@/hooks/useCreateEntry";
 import { Entry } from "@/models/entry";
 import { User } from "@/models/user";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
-import { setCurrentUser, setEntryAuthor, setNotificationContent } from "@/redux-store/store";
+import {
+  setCurrentUser,
+  setEntryAuthor,
+  setNotificationContent,
+} from "@/redux-store/store";
 import { singaporeEntrySample } from "@/util/constants/profile-constants";
 import {
   getFormattedDateFromMongoDBDate,
@@ -371,12 +375,21 @@ const ProfilePage = (props: Props) => {
                     {user?.name}
                   </span>
 
-                  {/* username */}
-                  {user?.username && (
-                    <span className="text-light-text-secondary dark:text-dark-text-secondary leading-snug">
-                      @{user?.username}
-                    </span>
-                  )}
+                  <div className="flex flex-row gap-3 items-center">
+                    {/* username */}
+
+                    {user?.username && (
+                      <span className="text-light-text-secondary dark:text-dark-text-secondary leading-snug">
+                        @{user?.username}
+                      </span>
+                    )}
+
+                    { user?.followings?.includes(auth?.currentUser._id) &&
+                      <span className="text-[0.75rem] font-medium px-2 py-[2px] bg-light-background-secondary dark:bg-dark-background-secondary rounded-md text-light-text-secondary dark:text-dark-text-secondary">
+                        Follows You
+                      </span>
+                    }
+                  </div>
                 </div>
 
                 <div className="flex flex-row gap-3">
@@ -454,9 +467,16 @@ const ProfilePage = (props: Props) => {
                             href={`entry/${entry?._id}`}
                             className="flex-shrink-0"
                           >
-                            { (entry?.scenes[0]?.image_base64 || entry?.cover?.image_url) ? (
+                            {entry?.scenes[0]?.image_base64 ||
+                            entry?.cover?.image_url ? (
                               <img
-                                src={entry?.scenes[0]?.image_base64 ? getImageURLfromBase64(entry?.scenes[0]?.image_base64) : entry?.cover?.image_url}
+                                src={
+                                  entry?.scenes[0]?.image_base64
+                                    ? getImageURLfromBase64(
+                                        entry?.scenes[0]?.image_base64
+                                      )
+                                    : entry?.cover?.image_url
+                                }
                                 className="h-full aspect-square object-cover rounded-none"
                               />
                             ) : (

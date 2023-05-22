@@ -44,6 +44,7 @@ const ProfileMenu = (props: Props) => {
   return (
     <>
       <Menu>
+        
         <MenuButton>{props.children}</MenuButton>
 
         <MenuList className="bg-light-background-primary dark:bg-dark-background-secondary w-48 drop-shadow-2xl border border-light-divider dark:border-dark-divider py-2 rounded-md overflow-clip">

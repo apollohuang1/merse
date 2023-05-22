@@ -1,6 +1,7 @@
 import MDBEntry from "@/server/models/MDBEntry";
 import dbConnect from "@/server/utils/dbConnect";
 import { getLastIdFromUrl } from "@/util/helper";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
 
     const entryId = getLastIdFromUrl(request.url);
 
-    const entryData = await MDBEntry.findById(entryId)
+    const entryData = await MDBEntry.findById(new mongoose.Types.ObjectId(entryId))
       .populate({
         path: "author",
         select: "profile_image_url name username _id",
