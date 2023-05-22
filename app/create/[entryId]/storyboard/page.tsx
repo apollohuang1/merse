@@ -65,6 +65,7 @@ import openai, {
 } from "openai";
 import { Transition } from "@headlessui/react";
 
+
 // Collaborative editing
 // import { HocuspocusProvider } from '@hocuspocus/provider';
 // import { WebrtcProvider } from "y-webrtc";
@@ -88,6 +89,12 @@ const Storyboard = (props: Props) => {
   const entry = useAppSelector((state) => state.entry);
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const dispatch = useAppDispatch();
+  
+
+  // edit storyboard scene text
+  const [editingSceneIndex, setEditingSceneIndex] = useState<number | null>(null);
+  const [originalSceneText, setOriginalSceneText] = useState<string>("");
+  const [newSceneText, setNewSceneText] = useState<string>("");
 
   // useRef
   const chatInputRef = React.useRef<HTMLInputElement>(null);
@@ -107,6 +114,52 @@ const Storyboard = (props: Props) => {
   //   url: "ws://127.0.0.1:1234",
   //   name: "example-document",
   // });
+
+  const handleDeleteScene = (index: number) => {
+    const newScenes = [...entry.scenes]; 
+    newScenes.splice(index, 1); 
+    dispatch(setScenes(newScenes)); 
+  };  
+
+  const handleEditScene = (index: number) => {
+    // Set the index of the scene being edited
+    setEditingSceneIndex(index);
+    // Set the newSceneText to be the original text of the scene
+    const originalText = entry.scenes[index]?.displayed_text || entry.scenes[index]?.text || "";
+    setNewSceneText(originalText);
+    // Also store the original text in case we want to revert later
+    setOriginalSceneText(originalText);
+  };  
+  
+  const handleSaveScene = (index: number) => {
+    const updatedScenes = [...(entry?.scenes || [])];
+    updatedScenes[index] = {
+      ...updatedScenes[index],
+      displayed_text: newSceneText,
+    };
+  
+    // Dispatch an action to update the scenes in your Redux store
+    dispatch(setScenes(updatedScenes));
+  
+    // Then clear the editing state
+    setEditingSceneIndex(null);
+    setNewSceneText("");
+  };  
+
+  const handleRevertScene = (index: number) => {
+    const updatedScenes = [...(entry?.scenes || [])];
+    updatedScenes[index] = {
+      ...updatedScenes[index],
+      displayed_text: originalSceneText,
+    };
+  
+    // Dispatch an action to update the scenes in your Redux store
+    dispatch(setScenes(updatedScenes));
+  
+    // Then clear the editing state
+    setEditingSceneIndex(null);
+    setNewSceneText("");
+  };  
 
   const editor = useEditor({
     extensions: [
@@ -638,36 +691,73 @@ const Storyboard = (props: Props) => {
             )}
           >
             <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">
-              {entry?.scenes.map(
-                (scene: Scene & StoryboardSample, index: number) => (
-                  <div
-                    key={index}
-                    className="group relative flex flex-col w-full rounded-lg overflow-clip bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px]"
+            {entry?.scenes.map((scene: Scene & StoryboardSample, index: number) => (
+              <div
+                key={index}
+                className="group relative flex flex-col w-full rounded-lg overflow-clip bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px] pb-4"
+              >
+                <img
+                  src={
+                    scene?.image_base64
+                      ? "data:image/png;base64," + scene.image_base64
+                      : scene?.artwork?.url ?? ""
+                  }
+                  alt="comic book cover"
+                  className="object-cover aspect-[4/3]"
+                />
+
+                <div className="absolute top-0 right-0 m-2">
+                  <button
+                    className="w-6 h-6 bg-gray-500 text-white rounded-full"
+                    onClick={() => handleDeleteScene(index)}
                   >
-                    {/* overlay  */}
-                    {/* <div className="flex absolute w-full h-full items-center justify-center aspect-squar bg-black bg-opacity-30 dark:bg-opacity-30 opacity-0 group-hover:opacity-100 group-active:opacity-50 transition-all rounded-lg cursor-pointer">
-                    <FiEdit2 className="w-9 h-9 text-white" />
-                  </div> */}
+                    X
+                  </button>
+                </div>
 
-                    <img
-                      src={
-                        scene?.image_base64
-                          ? "data:image/png;base64," + scene.image_base64
-                          : scene?.artwork?.url ?? ""
-                      }
-                      alt="comic book cover"
-                      className="object-cover aspect-[4/3]"
-                    />
+                <div className="flex p-4 flex-grow flex-col bg-light-background-secondary dark:bg-dark-background-secondary">
+                  {editingSceneIndex === index ? (
+                    <>
+                      <textarea
+                        className="w-full mb-2 rounded"
+                        style={{flex: '1', minHeight: '8em', backgroundColor: 'inherit'}}
+                        value={newSceneText}
+                        onChange={(e) => setNewSceneText(e.target.value)}
+                      />
+                      <div className="absolute left-0 right-0 bottom-0 flex justify-between items-center p-2">
+                        <button
+                          className="px-2 py-1 text-sm bg-red-500 text-white rounded"
+                          onClick={() => handleRevertScene(index)}
+                        >
+                          Revert
+                        </button>
+                        <button
+                          className="px-2 py-1 text-sm bg-green-500 text-white rounded"
+                          onClick={() => handleSaveScene(index)}
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[4]">
+                      {scene?.displayed_text || scene?.text || ""}
+                    </p>
+                  )}
 
-                    {/* story line in storyboard */}
-                    <div className="flex p-4">
-                      <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                        {scene?.displayed_text || scene?.text || ""}
-                      </p>
-                    </div>
-                  </div>
-                )
-              )}
+                  {/* Edit button */}
+                  {editingSceneIndex !== index && (
+                    <button
+                      className="absolute bottom-0 right-0 mb-4 mr-2 w-6 h-6 text-light-text-primary dark:text-dark-text-primary opacity-50 group-hover:opacity-100 transition-opacity duration-150 ease-in-out"
+                      onClick={() => handleEditScene(index)}
+                    >
+                      <FiEdit2 size={20} />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+
             </div>
           </div>
         </div>
