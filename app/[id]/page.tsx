@@ -389,7 +389,7 @@ const ProfilePage = (props: Props) => {
                       </span>
                     )}
 
-                    { user?.followings?.includes(auth?.currentUser._id) &&
+                    { user?.followings?.includes(auth?.currentUser?._id) &&
                       <span className="text-[0.75rem] font-medium px-2 py-[2px] bg-light-background-secondary dark:bg-dark-background-secondary rounded-md text-light-text-secondary dark:text-dark-text-secondary">
                         Follows You
                       </span>

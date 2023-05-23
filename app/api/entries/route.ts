@@ -2,10 +2,12 @@ import dbConnect from "@/server/utils/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import MDBEntry from "@/server/models/MDBEntry";
+import MDBUser from "@/server/models/MDBUser";
 
 export async function GET(request: NextRequest) {
   try {
-    const db = await dbConnect();
+
+    await dbConnect();
 
     // get api key from bear token
     const token = request.headers.get("authorization");
@@ -33,6 +35,7 @@ export async function GET(request: NextRequest) {
       .populate({
         path: "author",
         select: "profile_image_url name username _id",
+        model: MDBUser,
       })
       .sort({ created_at: "descending" })
       .exec();

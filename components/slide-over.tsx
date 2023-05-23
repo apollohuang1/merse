@@ -71,7 +71,7 @@ const SlideOver: React.FC<{
                 leaveTo={`${slideFrom === "left" ? "-translate-x-full" : "translate-x-full"}`}
               >
                 <Dialog.Panel
-                  className={`pointer-events-auto w-screen max-w-${size} border-l border-l-light-divider dark:border-l-dark-divider`}
+                  className={`pointer-events-auto w-screen max-w-${size} border-x border-light-divider dark:border-dark-divider drop-shadow-2xl`}
                 >
                   <div className="flex h-full flex-col overflow-y-scroll shadow-xl bg-light-background-primary dark:bg-dark-background-primary">
                     <div className="p-6 border-b border-light-divider dark:border-dark-divider">

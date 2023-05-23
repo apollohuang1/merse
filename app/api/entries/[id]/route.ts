@@ -1,4 +1,5 @@
 import MDBEntry from "@/server/models/MDBEntry";
+import MDBUser from "@/server/models/MDBUser";
 import dbConnect from "@/server/utils/dbConnect";
 import { getLastIdFromUrl } from "@/util/helper";
 import mongoose from "mongoose";
@@ -22,12 +23,14 @@ export async function GET(request: NextRequest) {
       .populate({
         path: "author",
         select: "profile_image_url name username _id",
+        model: MDBUser,
       })
       .populate({
         path: "comments",
         populate: {
           path: "author",
           select: "profile_image_url username _id",
+          model: MDBUser
         },
       })
       .exec();

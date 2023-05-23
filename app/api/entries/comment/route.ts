@@ -1,5 +1,6 @@
 import { Comment, Entry } from "@/models/entry";
 import MDBEntry from "@/server/models/MDBEntry";
+import MDBUser from "@/server/models/MDBUser";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -61,6 +62,7 @@ export async function POST(request: NextRequest) {
       populate: {
         path: "author",
         select: "username name profile_image_url _id",
+        model: MDBUser
       },
     })
     .exec();

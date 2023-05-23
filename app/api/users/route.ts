@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
         existingUser.joined_at = new Date();
         await existingUser.save();
       }
-
+      
       return NextResponse.json(existingUser, { status: 200 });
     }
 

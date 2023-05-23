@@ -37,9 +37,11 @@ import axios from "axios";
 import { User } from "@/models/user";
 import mongoose from "mongoose";
 import { setScrollY, setShowNotifications } from "@/redux-store/store";
-import Notification from "./notification";
 import { useNotifications } from "@/hooks/useNotifications";
 import SlideOver from "./slide-over";
+import { Notification } from "@/models/notification";
+import NotificationAlert from "./notification";
+import { getRealTimeDateFormat } from "@/util/helper";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref
@@ -79,15 +81,33 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const isCreateRoute = pathName?.split("/")[1] === "create";
 
-  const [showNotificationSlideOver, setShowNotificationSlideOver] = useState<boolean>(false);
+  const [showNotificationSlideOver, setShowNotificationSlideOver] =
+    useState<boolean>(false);
 
   const { reloadCurrentLocalUser } = useAuth();
+
+  const [allNotifications, setAllNotifications] = useState<Notification[]>([]);
 
   const handleInputChange = (e: any) => {
     const queryText = e.target.value;
     setSearchText(queryText);
     debouncedHandleInputChange(queryText);
-    // console.log("search result response :)))");
+  };
+
+  const fetchNotifications = async (currentUserId: string) => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `/api/notifications/${currentUserId}`,
+        headers: {
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+        },
+      });
+
+      setAllNotifications(response.data);
+    } catch (error: any) {
+      console.log("Failed to fetch notifications, message: " + error.message);
+    }
   };
 
   const debouncedHandleInputChange = debounce(async (query: string) => {
@@ -116,7 +136,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     reloadCurrentLocalUser()
-      .then((user) => {})
+      .then((user: any) => {
+        fetchNotifications(user._id);
+      })
       .catch((error: any) => {
         console.log("No authenticated user found, message: " + error.message);
 
@@ -128,7 +150,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // log scroll value
     const handleScroll = () => {
       const scrollValue = document.getElementById("scroll-observer")?.scrollTop;
@@ -325,7 +347,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         />
                       }
                       label="Read Sample"
-                      onClick={() => router.push("/entry/6468e2a9d3b0401f6ee8a6a8")}
+                      onClick={() =>
+                        router.push("/entry/6468e2a9d3b0401f6ee8a6a8")
+                      }
                       isFull={showFullSidebar}
                       isCurrentRoute={pathName === "/entry"}
                     />
@@ -388,7 +412,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       <Combobox
                         value={selectedSearchResult}
                         onChange={(result: User) => {
-
                           if (result.username || result._id) {
                             router.push(`/${result.username || result._id}`);
                           }
@@ -527,10 +550,32 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         size="md"
         title="Notifications"
       >
+        <div className="flex flex-col bg-red divide-light-divider dark:divide-dark-divider">
+          {allNotifications.map((noti: Notification, index) => {
+            return (
+              <div key={index} className="flex flex-row items-center justify-between gap-3 border-none border-light-divider dark:border-dark-divider py-3">
+                <div className="flex flex-row gap-3 items-center">
+                  <img
+                    src={noti?.sender?.profile_image_url}
+                    className="h-8 w-8 rounded-full"
+                  />
+                  <span>
+                    <span className="font-medium">{noti?.sender?.username}</span>
+                    <span> followed you</span>
+                  </span>
+                </div>
 
+                {/* date in format like now, 1 min ago, ghour ago, day ago, bla bla, or date */}
+                {/* <span className="text-light-text-secondary dark:text-dark-text-secondary">
+                  { getRealTimeDateFormat(noti?.created_at)}
+                </span> */}
+              </div>
+            );
+          })}
+        </div>
       </SlideOver>
 
-      <Notification
+      <NotificationAlert
         title={notificationsStore.title}
         message={notificationsStore.message}
         isOpen={notificationsStore?.showNotifications}
@@ -538,7 +583,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           dispatch(setShowNotifications(false));
         }}
       />
-
     </>
   );
 };
@@ -560,7 +604,6 @@ const SidebarMenuButton: React.FC<{
   isNew = false,
   isCurrentRoute,
 }) => {
-
   return (
     <button
       onClick={onClick}
@@ -568,8 +611,8 @@ const SidebarMenuButton: React.FC<{
         "group flex flex-row items-center gap-3 w-full transition-all rounded-xl",
         { "bg-accent hover:bg-emerald-600": variant === "solid" },
         {
-        "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary duration-200":
-        variant === "normal",
+          "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary duration-200":
+            variant === "normal",
         },
         { "flex-col justify-center h-12 w-12 aspect-square": !isFull },
         { "flex-row justify-between pl-6 pr-3 h-12": isFull }

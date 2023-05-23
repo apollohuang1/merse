@@ -88,7 +88,7 @@ const Subscription = (props: Props) => {
   // Redirect to manage billing/subscription
   const createStripePortalSession = async () => {
     const portalSession = await stripe.billingPortal.sessions.create({
-      customer: auth?.currentUser.stripe_customer_id,
+      customer: auth?.currentUser?.stripe_customer_id,
       return_url: process.env.NEXT_PUBLIC_BASE_URL + "/subscription", // This is the url to which the customer will be redirected when they are done managing their billing with the portal.
     });
     window.location.href = portalSession.url as string;
@@ -99,7 +99,7 @@ const Subscription = (props: Props) => {
     try {
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({
-        customer_email: auth?.currentUser.email,
+        customer_email: auth?.currentUser?.email,
         line_items: [
           {
             // Provide the exact Price ID (for example, pr_1234) of the product you want to sell

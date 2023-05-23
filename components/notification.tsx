@@ -9,7 +9,7 @@ type Props = {
   message: string;
 };
 
-const Notification = (props: Props) => {
+const NotificationAlert = (props: Props) => {
 
   // close the notification after 3 seconds
   useEffect(() => {
@@ -81,4 +81,4 @@ const Notification = (props: Props) => {
   );
 };
 
-export default Notification;
+export default NotificationAlert;

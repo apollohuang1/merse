@@ -21,7 +21,7 @@ const ProfileMenu = (props: Props) => {
       label: "Profile",
       onClick: () => {
         if (auth?.currentUser) {
-          router.push(`/${auth.currentUser.username || auth.currentUser._id}`);
+          router.push(`/${auth?.currentUser?.username || auth?.currentUser?._id}`);
         }
       },
     },

@@ -1,3 +1,5 @@
+import { Notification } from "@/models/notification";
+import MDBNotification from "@/server/models/MDBNotification";
 import MDBUser from "@/server/models/MDBUser";
 import dbConnect from "@/server/utils/dbConnect";
 import { getLastIdFromUrl } from "@/util/helper";
@@ -64,6 +66,15 @@ export async function POST(request: NextRequest) {
         user.followings.push(targetUserId);
         targetUser.followers.push(userId);
 
+        // create new notification MDBNotification
+        const notificationData = await MDBNotification.create({
+          type: 'follow',
+          sender: userId,
+          recipient: targetUserId,
+          createdAt: new Date(),
+          read: false
+        });
+
         await user.save();
         await targetUser.save();
         return NextResponse.json({ message: 'User followed successfully' }, { status: 200 });
@@ -72,6 +83,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'You are already following this user' }, { status: 400 });
       }
     } else if (action === 'unfollow') {
+
       user.followings = user.followings.filter((id: any) => id.toString() !== targetUserId);
       targetUser.followers = targetUser.followers.filter((id: any) => id.toString() !== userId);
 
@@ -83,7 +95,8 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error: any) {
-    // console.log(error.message);
+    console.log("here")
+    console.log(error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
