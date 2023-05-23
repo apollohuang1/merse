@@ -37,13 +37,9 @@ export async function GET(request: NextRequest) {
     })
     .sort({ createdAt: -1 });
 
-    console.log("here you go")
-
     return NextResponse.json(notifications, { status: 200 });
 
   } catch (error: any) {
-    console.log("here you go")
-    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

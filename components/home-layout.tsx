@@ -553,14 +553,30 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className="flex flex-col bg-red divide-light-divider dark:divide-dark-divider">
           {allNotifications.map((noti: Notification, index) => {
             return (
-              <div key={index} className="flex flex-row items-center justify-between gap-3 border-none border-light-divider dark:border-dark-divider py-3">
+              <div
+                key={index}
+                className="flex flex-row items-center justify-between gap-3 border-none border-light-divider dark:border-dark-divider py-3"
+              >
                 <div className="flex flex-row gap-3 items-center">
-                  <img
-                    src={noti?.sender?.profile_image_url}
-                    className="h-8 w-8 rounded-full"
-                  />
+                  <button>
+                    <img
+                      src={noti?.sender?.profile_image_url}
+                      className="h-8 w-8 rounded-full"
+                      onClick={() => {
+                        router.push(
+                          `/${noti?.sender?.username || noti?.sender?._id}`
+                        );
+                      }}
+                    />
+                  </button>
+
                   <span>
-                    <span className="font-medium">{noti?.sender?.username}</span>
+                    <Link
+                      href={`/${noti?.sender?.username || noti?.sender?._id}`}
+                      className="font-medium hover:underline"
+                    >
+                      {noti?.sender?.username}
+                    </Link>
                     <span> followed you</span>
                   </span>
                 </div>
