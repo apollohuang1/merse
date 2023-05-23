@@ -82,6 +82,17 @@ const ProfilePage = (props: Props) => {
 
   async function followUser(targetUserId: string) {
     try {
+
+      // set displayed user follower count
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser;
+        return {
+          ...prevUser,
+          followers: [...prevUser.followers, auth?.currentUser?._id],
+        };
+      });
+      setFollowingState(FollowingState.FOLLOWING);
+
       const response = await axios({
         method: "POST",
         url: `/api/users/follow`,
@@ -94,36 +105,23 @@ const ProfilePage = (props: Props) => {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
       });
-
-      setFollowingState(FollowingState.FOLLOWING);
-
-      // set displayed user follower count
+    } catch (error: any) {
+      console.log("Failed to follow user, message: ", error.message);
       setUser((prevUser) => {
         if (!prevUser) return prevUser;
         return {
           ...prevUser,
-          followers: [...prevUser.followers, auth?.currentUser?._id],
+          followers: prevUser.followers.filter(
+            (follower) => follower !== auth?.currentUser?._id
+          ),
         };
       });
-    } catch (error: any) {
-      console.log("Failed to follow user, message: ", error.message);
+      setFollowingState(FollowingState.NOT_FOLLOWING);
     }
   }
 
   const unfollowUser = async (targetUserId: string) => {
     try {
-      const response = await axios({
-        method: "POST",
-        url: `/api/users/follow`,
-        data: {
-          action: "unfollow",
-          userId: auth?.currentUser?._id,
-          targetUserId: targetUserId,
-        },
-        headers: {
-          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
-        },
-      });
 
       setFollowingState(FollowingState.NOT_FOLLOWING);
 
@@ -137,7 +135,28 @@ const ProfilePage = (props: Props) => {
           ),
         };
       });
+
+      const response = await axios({
+        method: "POST",
+        url: `/api/users/follow`,
+        data: {
+          action: "unfollow",
+          userId: auth?.currentUser?._id,
+          targetUserId: targetUserId,
+        },
+        headers: {
+          Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
+        },
+      });
     } catch (error: any) {
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser;
+        return {
+          ...prevUser,
+          followers: [...prevUser.followers, auth?.currentUser?._id],
+        };
+      });
+      setFollowingState(FollowingState.FOLLOWING);
       console.log("Failed to unfollow user, message: ", error.message);
     }
   };
