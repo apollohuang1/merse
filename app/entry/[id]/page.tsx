@@ -212,7 +212,7 @@ const ReadPage = (props: Props) => {
 
                     <div className="flex flex-col">
                       <Link 
-                        className="font-medium"
+                        className="font-medium hover:underline"
                         href={`/${entryData?.author?.username || entryData?.author?._id}`}
                       >
                         {entryData?.author?.name as string}

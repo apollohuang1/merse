@@ -406,23 +406,28 @@ const Storyboard = (props: Props) => {
                     </button> */}
                   </div>
 
-                  {entryHelper.isGeneratingStoryboard ? (
-                    <div className="flex flex-row gap-2 items-center h-8">
-                      <Spinner speed={"0.8s"} className="w-4 h-4" />
-                      <span className="text-sm">Generating...</span>
-                    </div>
-                  ) : (
-                    <div className="flex flex-row gap-2 items-center h-8">
-                      <button
-                        className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
-                        onClick={() => {
-                          generateStoryboard(editor);
-                        }}
-                      >
-                        Generate
-                      </button>
-                    </div>
+                  { entry?.scenes?.length === 0 && (
+                    <>
+                      {entryHelper.isGeneratingStoryboard ? (
+                        <div className="flex flex-row gap-2 items-center h-8">
+                          <Spinner speed={"0.8s"} className="w-4 h-4" />
+                          <span className="text-sm">Generating...</span>
+                        </div>
+                      ) : (
+                        <div className="flex flex-row gap-2 items-center h-8">
+                          <button
+                            className="text-accent h-10 rounded-full font-medium px-4 hover:bg-emerald-500 hover:bg-opacity-10"
+                            onClick={() => {
+                              generateStoryboard(editor);
+                            }}
+                          >
+                            Generate
+                          </button>
+                        </div>
+                      )}
+                    </>
                   )}
+                  
                 </div>
               </div>
 

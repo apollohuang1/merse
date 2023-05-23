@@ -212,7 +212,7 @@ const LayoutPage = (props: Props) => {
 
     canvas.setDimensions({
       width: canvasWidth, // square ratio
-      height: canvasWidth * 7,
+      height: entry?.scenes.length * canvasWidth === 0 ? canvasWidth * 7 : entry?.scenes.length * canvasWidth,
     });
 
     // stylings
@@ -317,12 +317,15 @@ const LayoutPage = (props: Props) => {
     for (let i = 0; i < entry?.scenes.length; i++) {
       const scene = entry?.scenes[i];
 
+      const distanceFromTop = i * canvasWidth * 7; // square
+
       fabric.Image.fromURL("data:image/png;base64," + scene.image_base64, { crossOrigin: "anonymous" })
         .then((img) => {
           img.scaleToWidth(canvasWidth);
           // img.stroke = "black";
           // img.strokeWidth = 10;
           img.left = 0;
+          img.top = distanceFromTop;
           img.preserveAspectRatio = "true";
           // img.lockMovementX = true;
           canvas.add(img);
