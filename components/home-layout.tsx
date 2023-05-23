@@ -547,7 +547,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         slideFrom="left"
         withOverlay={false}
         leftMargin="250px"
-        size="md"
+        size="sm"
         title="Notifications"
       >
         <div className="flex flex-col bg-red divide-light-divider dark:divide-dark-divider">
