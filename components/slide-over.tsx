@@ -64,11 +64,11 @@ const SlideOver: React.FC<{
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-300"
-                enterFrom={`${slideFrom === "left" ? "-" : ""}translate-x-full`}
+                enterFrom={`${slideFrom === "left" ? "-translate-x-full" : "translate-x-full"}`}
                 enterTo="translate-x-0"
                 leave="transform transition ease-in-out duration-300"
                 leaveFrom="translate-x-0"
-                leaveTo={`${slideFrom === "left" ? "-" : ""}translate-x-full`}
+                leaveTo={`${slideFrom === "left" ? "-translate-x-full" : "translate-x-full"}`}
               >
                 <Dialog.Panel
                   className={`pointer-events-auto w-screen max-w-${size} border-l border-l-light-divider dark:border-l-dark-divider`}

@@ -172,7 +172,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           {auth?.currentUser && (
             <div
               className={clsx(
-                "flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-r border-r-light-divider dark:border-dark-divider max-sm:hidden",
+                "flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary items-center justify-start border-none border-r-light-divider dark:border-dark-divider max-sm:hidden",
                 { hidden: isCreateRoute }
               )}
             >
@@ -388,6 +388,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       <Combobox
                         value={selectedSearchResult}
                         onChange={(result: User) => {
+
                           if (result.username || result._id) {
                             router.push(`/${result.username || result._id}`);
                           }
@@ -521,11 +522,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         onOpen={() => {}}
         onClose={() => setShowNotificationSlideOver(false)}
         slideFrom="left"
-        // withOverlay={false}
+        withOverlay={false}
         leftMargin="250px"
         size="md"
         title="Notifications"
-
       >
 
       </SlideOver>

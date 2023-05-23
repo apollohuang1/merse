@@ -2,7 +2,8 @@ import { User } from "@/models/user";
 import mongoose, { Schema, SchemaType } from "mongoose";
 
 const UserSchema = new mongoose.Schema<User>({
-  _id: { type: String, required: true, unique: true },
+  // _id: { type: Schema.Types.ObjectId, required: true, unique: true },
+  _id: { type: String, required: false, unique: true },
   username: { type: String, required: false, unique: true, trim: true },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true, trim: true },
@@ -18,3 +19,4 @@ const UserSchema = new mongoose.Schema<User>({
 });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);
+// export default mongoose.model("User", UserSchema);

@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(userData, { status: 200 });
   } catch (error: any) {
-    console.log("Failed to generate image:", error?.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.log("Failed to fetch user data", error?.message);
+    return NextResponse.json({error: error.message, test: "lmao"}, { status: 500 });
   }
 }

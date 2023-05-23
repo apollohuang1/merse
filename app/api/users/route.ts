@@ -85,7 +85,8 @@ export async function POST(request: NextRequest) {
     const savedUser = await newUser.save();
     return NextResponse.json(savedUser, { status: 200 });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.log(error.message);
+    return NextResponse.json(error, { status: 500 });
   }
 }
 

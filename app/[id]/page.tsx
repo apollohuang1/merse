@@ -145,6 +145,7 @@ const ProfilePage = (props: Props) => {
   const fetchUser = async () => {
     return new Promise(async (resolve, reject) => {
       try {
+
         // const id = pathname;
         if (!pathname) return;
         const usernameOrId = pathname.split("/")[1];
@@ -162,8 +163,10 @@ const ProfilePage = (props: Props) => {
         // await fetchAllEntries(response.data._id);
         resolve(response.data);
       } catch (error: any) {
+        console.log("jhere")
+        console.log(error.response)
         console.log("Failed to fetch user, message: ", error.message);
-        window.location.href = "/";
+        // window.location.href = "/";
       }
     });
   };
@@ -177,7 +180,7 @@ const ProfilePage = (props: Props) => {
         fetchAllEntries(user._id);
       })
       .catch((error: any) => {
-        // console.log("Failed to fetch user, message: ", error.message);
+        console.log("Failed to fetch user, message: ", error.message);
       });
   }, []);
 
@@ -364,8 +367,7 @@ const ProfilePage = (props: Props) => {
                     )}
                   >
                     {followingState === FollowingState.FOLLOWING && "Following"}
-                    {followingState === FollowingState.NOT_FOLLOWING &&
-                      "Follow"}
+                    {followingState === FollowingState.NOT_FOLLOWING && "Follow"}
                     {followingState === FollowingState.SELF && "Edit Profile"}
                   </button>
                 )}
