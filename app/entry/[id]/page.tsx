@@ -77,8 +77,6 @@ const ReadPage = (props: Props) => {
         },
       });
 
-      console.log("response: ", response);
-
       setEntryData(response.data);
       // renderCanvas(response.data.canvas);
     } catch (error: any) {
@@ -139,7 +137,7 @@ const ReadPage = (props: Props) => {
 
       const updatedLikes = await likeEntry(
         auth?.currentUser?._id,
-        entryData?._id,
+        entryData,
         isLikedByCurrentUser() ? "unlike" : "like"
       );
 

@@ -1,16 +1,19 @@
+import { Entry } from "@/models/entry"
 import axios from "axios"
 
 
 export const useReadEntry = () => {
 
-  const likeEntry = async (userId: string, entryId: string, action: "like" | "unlike") => {
+  const likeEntry = async (userId: string, entry: Entry, action: "like" | "unlike") => {
     try {
       const response = await axios({
         method: "POST",
-        url: `/api/entries/like/${entryId}`,
+        url: `/api/entries/like/${entry._id}`,
         data: {
           action: action,
-          userId: userId
+          userId: userId,
+          entryId: entry._id,
+          entryAuthorId: entry?.author?._id
         },
         headers: {
           "Authorization": `Bearer ${process.env.MERSE_API_KEY}`

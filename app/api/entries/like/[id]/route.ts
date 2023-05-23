@@ -1,12 +1,17 @@
 import MDBEntry from "@/server/models/MDBEntry";
+import MDBNotification from "@/server/models/MDBNotification";
 import dbConnect from "@/server/utils/dbConnect";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-
+/**
+ *
+ * @param request
+ * @param param1
+ * @returns
+ */
 export async function POST(request: NextRequest, { params }: any) {
   try {
-
     // get api key from bear token
     const token = request.headers.get("authorization");
 
@@ -20,7 +25,10 @@ export async function POST(request: NextRequest, { params }: any) {
 
     // guard id
     if (!params?.id) {
-      return NextResponse.json({ error: "No entry id provided, please add [id] in request url." }, { status: 400 });
+      return NextResponse.json(
+        { error: "No entry id provided, please add [id] in request url." },
+        { status: 400 }
+      );
     }
 
     if (!body) {
@@ -28,38 +36,63 @@ export async function POST(request: NextRequest, { params }: any) {
     }
 
     if (!body.action) {
-      return NextResponse.json({ error: "No action provided in body" }, { status: 400 });
+      return NextResponse.json(
+        { error: "No action provided in body" },
+        { status: 400 }
+      );
     }
 
     const action: "like" | "unlike" = body.action;
 
     // push likes that is user reference but if user already liked, then unlike
-
-
     const addToSetConfig = {
       $addToSet: {
         likes: new mongoose.Types.ObjectId(body.userId),
       },
-    }
-    
+    };
+
     const pullConfig = {
       $pull: {
         likes: new mongoose.Types.ObjectId(body.userId),
       },
-    }
+    };
 
     const updatedDocument = await MDBEntry.findByIdAndUpdate(
       params.id,
-      action === "like" ? addToSetConfig : pullConfig, 
+      action === "like" ? addToSetConfig : pullConfig,
       { new: true }
-    )
+    );
+
+    if (body.userId !== body.entryAuthorId) {
+      if (action === "like") {
+        // trigget MDBNotification
+        await MDBNotification.create({
+          type: "like-entry",
+          sender: body.userId,
+          recipient: body.entryAuthorId,
+          createdAt: new Date(),
+          entryId: body.entryId,
+          read: false,
+        });
+      } else {
+        // unlike, delete many
+        await MDBNotification.deleteMany({
+          type: "like-entry",
+          sender: body.userId,
+          recipient: body.entryAuthorId,
+          entryId: body.entryId,
+        });
+      }
+    }
 
     if (!updatedDocument) {
-      return NextResponse.json({ error: "No entry found with id: " + params.id }, { status: 404 });
+      return NextResponse.json(
+        { error: "No entry found with id: " + params.id },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(updatedDocument.likes, { status: 200 });
-
   } catch (error: any) {
     return NextResponse.json(error?.message, { status: 500 });
   }

@@ -6,7 +6,7 @@ import { StyleReference } from "./types";
 export interface Entry {
   _id: string;
   // author: IUser | mongoose.Types.ObjectId;
-  author: User | null;
+  author: User;
   // author: mongoose.Types.ObjectId;
   title: string;
   style_reference: StyleReference | null;

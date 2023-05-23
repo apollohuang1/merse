@@ -11,4 +11,5 @@ export interface Notification {
   body?: string;
   created_at: Date;
   read?: boolean;
+  entryId?: string;
 }

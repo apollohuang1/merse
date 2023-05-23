@@ -27,6 +27,10 @@ const notificationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  entryId: {
+    type: String,
+    required: false
+  },
   read: {
     type: Boolean,
     default: false

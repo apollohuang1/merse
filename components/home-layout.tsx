@@ -171,10 +171,16 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const handleNotificationRowClick = (notification: Notification) => {
     switch (notification.type) {
       case "follow":
-        router.push(`/${notification?.sender?.username || notification?.sender?._id}`);
+        router.push(
+          `/${notification?.sender?.username || notification?.sender?._id}`
+        );
+        break;
+      case "like-entry":
+        // router.push(`/entry/${notification?.entry?._id}`);
+        alert("navigate to entry");
         break;
     }
-  }
+  };
 
   return (
     <>
@@ -564,9 +570,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           {allNotifications.map((notification: Notification, index) => {
             return (
               <div
-                // onClick={() => {
-                //   handleNotificationRowClick(notification);
-                // }}
                 key={index}
                 className="flex flex-row items-center justify-between gap-3 border-none border-light-divider dark:border-dark-divider px-3 py-6 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
               >
@@ -577,7 +580,10 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       className="h-8 w-8 rounded-full"
                       onClick={() => {
                         router.push(
-                          `/${notification?.sender?.username || notification?.sender?._id}`
+                          `/${
+                            notification?.sender?.username ||
+                            notification?.sender?._id
+                          }`
                         );
                       }}
                     />
@@ -585,12 +591,34 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                   <span>
                     <Link
-                      href={`/${notification?.sender?.username || notification?.sender?._id}`}
+                      href={`/${
+                        notification?.sender?.username ||
+                        notification?.sender?._id
+                      }`}
                       className="font-medium hover:underline"
                     >
                       {notification?.sender?.username}
                     </Link>
-                    <span> followed you</span>
+
+                    {notification?.type === "follow" && (
+                      <Link
+                        href={`/${
+                          notification?.sender?.username ||
+                          notification?.sender?._id
+                        }`}
+                      >
+                        {" "}
+                        followed you
+                      </Link>
+                    )}
+
+                    {notification?.type === "like-entry" &&
+                      notification?.entryId && (
+                        <Link href={`/entry/${notification?.entryId}`}>
+                          {" "}
+                          liked your journal entry
+                        </Link>
+                      )}
                   </span>
                 </div>
 
@@ -598,7 +626,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 {/* <span className="text-light-text-secondary dark:text-dark-text-secondary">
                   { getRealTimeDateFormat(noti?.created_at)}
                 </span> */}
-
               </div>
             );
           })}
