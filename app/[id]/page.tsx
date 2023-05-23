@@ -367,7 +367,8 @@ const ProfilePage = (props: Props) => {
                     )}
                   >
                     {followingState === FollowingState.FOLLOWING && "Following"}
-                    {followingState === FollowingState.NOT_FOLLOWING && "Follow"}
+                    {followingState === FollowingState.NOT_FOLLOWING && !user?.followings?.includes(auth?.currentUser?._id) && "Follow"}
+                    {followingState === FollowingState.NOT_FOLLOWING && user?.followings?.includes(auth?.currentUser?._id) && "Follow Back"}
                     {followingState === FollowingState.SELF && "Edit Profile"}
                   </button>
                 )}
