@@ -197,16 +197,26 @@ const ReadPage = (props: Props) => {
               {entryData?.author && (
                 <div className="flex flex-row items-center justify-between w-full">
                   <div className="flex flex-row gap-4 w-full justify-start">
-                    <img
-                      src={entryData?.author?.profile_image_url}
-                      alt="author profile image"
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
+
+                    <button 
+                      onClick={() => {
+                        router.push(`/${entryData?.author?.username || entryData?.author?._id}`);
+                      }}
+                    >
+                      <img
+                        src={entryData?.author?.profile_image_url}
+                        alt="author profile image"
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    </button>
 
                     <div className="flex flex-col">
-                      <span className="font-medium">
+                      <Link 
+                        className="font-medium"
+                        href={`/${entryData?.author?.username || entryData?.author?._id}`}
+                      >
                         {entryData?.author?.name as string}
-                      </span>
+                      </Link>
                       <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">{`Created at ${getFormattedDateFromMongoDBDate(
                         entryData?.created_at
                       )}`}</span>

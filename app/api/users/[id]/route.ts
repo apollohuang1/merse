@@ -1,6 +1,7 @@
 import MDBUser from "@/server/models/MDBUser";
 import dbConnect from "@/server/utils/dbConnect";
 import { getLastIdFromUrl } from "@/util/helper";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -19,28 +20,26 @@ export async function GET(request: NextRequest) {
     // get the final route from pathname
     const usernameOrId = getLastIdFromUrl(request.url);
 
-    const query = {
-      $or: [
-        { username: usernameOrId },
-        { _id: usernameOrId }
-      ],
-    };
+    var query;
+
+    if (mongoose.isValidObjectId(usernameOrId)) {
+      query = {
+        $or: [
+          { username: usernameOrId },
+          { _id: new mongoose.Types.ObjectId(usernameOrId) }
+        ],
+      };
+    } else {
+      query = {
+        username: usernameOrId
+      };
+    }
 
     const userData = await MDBUser.findOne(query);
-
-    // find user by username or id
-    // const userData = await MDBUser.find({
-    //   $or: [
-    //     { username: usernameOrId },
-    //     { _id: usernameOrId }
-    //   ]
-    // })
-
-    // const userData = await MDBUser.findById(userId);
 
     return NextResponse.json(userData, { status: 200 });
   } catch (error: any) {
     console.log("Failed to fetch user data", error?.message);
-    return NextResponse.json({error: error.message, test: "lmao"}, { status: 500 });
+    return NextResponse.json(error.message, { status: 500 });
   }
 }
