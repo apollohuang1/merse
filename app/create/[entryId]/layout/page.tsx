@@ -317,7 +317,7 @@ const LayoutPage = (props: Props) => {
     for (let i = 0; i < entry?.scenes.length; i++) {
       const scene = entry?.scenes[i];
 
-      const distanceFromTop = i * canvasWidth * 7; // square
+      const distanceFromTop = i * canvasWidth; // square
 
       fabric.Image.fromURL("data:image/png;base64," + scene.image_base64, { crossOrigin: "anonymous" })
         .then((img) => {

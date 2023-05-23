@@ -546,6 +546,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         onClose={() => setShowNotificationSlideOver(false)}
         slideFrom="left"
         withOverlay={false}
+        withCloseButton={true}
         leftMargin="250px"
         size="sm"
         title="Notifications"

@@ -138,9 +138,9 @@ const useCreateEntry = () => {
       );
       console.log(generatedText);
 
-      const sceneText: string = getStripTextsArray(generatedText);
+      const sceneText: string = getStripText(generatedText);
 
-      if (!sceneText) {
+      if (!sceneText || sceneText === "") {
         throw new Error("No scene text generated");
       }
 
@@ -227,6 +227,7 @@ const useCreateEntry = () => {
 
     } catch (error: any) {
       console.log(`Failed to generate storyboard, message: ${error?.message}`);
+      console.log(error)
     } finally {
       stopGeneratingStoryboard();
     }
@@ -451,7 +452,7 @@ const useCreateEntry = () => {
     return text;
   };
 
-  const getStripTextsArray = (input: string): string => {
+  const getStripText = (input: string): string => {
     const regex = /\(([^)]+)\)/g;
     const paragraphs = input.split(/\r?\n/);
     let matches = [];
