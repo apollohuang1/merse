@@ -66,8 +66,13 @@ export async function POST(request: NextRequest) {
         user.followings.push(targetUserId);
         targetUser.followers.push(userId);
 
-        // create new notification MDBNotification
-        const notificationData = await MDBNotification.create({
+        // if follow notification already exist, delete all of the follow type that check if sender and recipient matches.
+        const notification = await MDBNotification.findOne({ type: 'follow', sender: userId, recipient: targetUserId});
+        if (notification) {
+          await MDBNotification.deleteMany({ type: 'follow', sender: userId, recipient: targetUserId });
+        }
+
+        await MDBNotification.create({
           type: 'follow',
           sender: userId,
           recipient: targetUserId,
@@ -86,6 +91,8 @@ export async function POST(request: NextRequest) {
 
       user.followings = user.followings.filter((id: any) => id.toString() !== targetUserId);
       targetUser.followers = targetUser.followers.filter((id: any) => id.toString() !== userId);
+
+      await MDBNotification.deleteMany({ type: 'follow', sender: userId, recipient: targetUserId });
 
       await user.save();
       await targetUser.save();

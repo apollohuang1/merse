@@ -159,7 +159,7 @@ const ProfilePage = (props: Props) => {
         });
 
         setUser(response.data);
-        
+
         // await fetchAllEntries(response.data._id);
         resolve(response.data);
       } catch (error: any) {
