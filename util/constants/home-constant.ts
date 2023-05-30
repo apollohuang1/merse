@@ -45,8 +45,7 @@ export const sampleArtists: SampleArtist[] = [
     name: "Mark",
     username: "mark",
     _id: "6436f3032b67ae01b9c884bb",
-    profile_image_url:
-      "https://pbs.twimg.com/profile_images/1631949874001498113/At1b9Wrr_400x400.jpg",
+    profile_image_url: "https://pbs.twimg.com/profile_images/1660337859507920896/RHcrAUsz_400x400.jpg",
   },
   {
     name: "Emily",
