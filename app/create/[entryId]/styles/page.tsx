@@ -79,14 +79,14 @@ const Styles = (props: Props) => {
             </button>
           ))}
 
-          <button className="group flex w-full h-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg">
+          {/* <button className="group flex w-full h-full aspect-square hover:bg-light-background-secondary hover:dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider items-center justify-center active:opacity-70 rounded-lg">
             <div className="flex flex-row gap-2 items-center">
               <FiPlus className="w-5 h-5 text-light-text-secondary dark:text-dark-text-secondary group-active:scale-90 transition-all" />
               <span className="text-light-text-secondary dark:text-dark-text-secondary">
                 Create Style
               </span>
             </div>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
