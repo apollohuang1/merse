@@ -231,7 +231,7 @@ const ProfilePage = (props: Props) => {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
         },
       });
-      console.log("response.data: ", response.data);
+      // console.log("response.data: ", response.data);
       const reponseData = response.data as Entry[];
 
       // I have some entries that contains { is_private: bool } field, and if entry?.suthor?._id === auth?.currentUser?._id, then show it
@@ -242,9 +242,16 @@ const ProfilePage = (props: Props) => {
         return true;
       });
 
-      setAllEntries(filteredEntries);
+      const sortedDateEntries = filteredEntries.sort(
+        (a, b) => new Date(b.created_at ?? Date.now()).getTime() - new Date(a.created_at ?? Date.now()).getTime()
+      );
+
+      setAllEntries(sortedDateEntries);
+
+      // setAllEntries(filteredEntries);
       setIsFetchingEntries(false);
     } catch (error: any) {
+      // console.log(error)
       console.log("Failed to fetch entries, message: ", error.message);
     }
   };

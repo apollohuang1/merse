@@ -30,14 +30,15 @@ export async function GET(request: NextRequest) {
 
     // fetch all entries from user
     const allEntriesFromUser = await MDBEntry.find({
-      author: userId,
+      // author: objectid userid
+      author: new mongoose.Types.ObjectId(userId),
     })
       .populate({
         path: "author",
         select: "profile_image_url name username _id",
         model: MDBUser,
       })
-      .sort({ created_at: "descending" })
+      // .sort({ created_at: "descending" })
       .exec();
 
     return NextResponse.json(allEntriesFromUser, { status: 200 });
