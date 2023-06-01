@@ -41,7 +41,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 
 // ChakraUI
-import { Spinner, calc } from "@chakra-ui/react";
+import { AlertDescription, Spinner, calc } from "@chakra-ui/react";
 
 // import editorStyles from "../../../styles/editor.module.css";
 import clsx from "clsx";
@@ -171,6 +171,9 @@ const LayoutPage = (props: Props) => {
     string | null
   >(null);
 
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isAddingBubble, setIsAddingBubble] = useState<boolean>(false);
+
   // tool bars
   const [selectedFont, setSelectedFont] = useState<string>("");
   const [fontSize, setFontSize] = useState<number>(16);
@@ -211,10 +214,10 @@ const LayoutPage = (props: Props) => {
     canvas.on("object:scaling", function (options) {});
 
     canvas.setDimensions({
-      // width: canvasWidth, // square ratio
-      width: innerWidth - 250,
+      width: canvasWidth, // square ratio
+      // width: innerWidth - 250,
       // height: innerHeight - 100,
-      height: entry?.scenes.length * canvasWidth === 0 ? canvasWidth * 7 : entry?.scenes.length * canvasWidth,
+      height: entry?.scenes.length * canvasWidth === 0 ? canvasWidth * 7 : (entry?.scenes.length * canvasWidth) + 1,
     });
 
     // stylings
@@ -325,7 +328,7 @@ const LayoutPage = (props: Props) => {
         
 
     // Adding elements and generated images from storyboard
-    addComicBubbleToCanvas(canvas);
+    // addComicBubbleToCanvas(canvas);
 
     // for loop in entry?.scenes
     for (let i = 0; i < entry?.scenes.length; i++) {
@@ -341,6 +344,9 @@ const LayoutPage = (props: Props) => {
           img.left = 0;
           img.top = distanceFromTop;
           img.preserveAspectRatio = "true";
+          // get to the middle horizontally
+          img.left = (canvasWidth - img.getScaledWidth()) / 2;
+
           // img.lockMovementX = true;
           canvas.add(img);
         })
@@ -354,6 +360,7 @@ const LayoutPage = (props: Props) => {
       canvas.dispose();
       // window.removeEventListener("resize", () => {});
     };
+
   }, []); // end on canvas init
 
   const addImageURLToCanvas = (url: string) => {
@@ -372,41 +379,42 @@ const LayoutPage = (props: Props) => {
       });
   };
 
+  // const addComicBubbleToCanvas = (canvas: fabric.Canvas, positionX: number, positionY: number) => {
   const addComicBubbleToCanvas = (canvas?: fabric.Canvas) => {
-    const ovalPathString = "M 0 0 C 0 -90 210 -90 210 0 C 210 90 0 90 0 0 Z";
-
-    const bubblePath = new fabric.Path(ovalPathString, {
-      // left: fabricCanvas?.width as number / 2,
-      // top: fabricCanvas?.height as number / 2,
-      left: 150,
-      top: 150,
-      fill: "#fff",
-      stroke: "#000",
-      strokeWidth: 2,
-      originX: "center",
-      originY: "center",
-      width: 1000,
-      height: 1000,
-    });
-    const bubbleText = new fabric.Textbox("Add comic dialogue", {
-      left: bubblePath.left,
-      top: bubblePath.top,
-      fill: "#000",
-      fontSize: 24,
-      width: bubblePath.width / 2,
-      height: bubblePath.height / 2,
-      textAlign: "center",
-      originX: "center",
-      originY: "center",
-    });
-
-    if (canvas) {
-      canvas.add(bubblePath);
-      canvas.add(bubbleText);
-    }
-
-    fabricCanvas?.add(bubblePath);
-    fabricCanvas?.add(bubbleText);
+      const ovalPathString = "M 0 0 C 0 -90 210 -90 210 0 C 210 90 0 90 0 0 Z";
+  
+      const bubblePath = new fabric.Path(ovalPathString, {
+        // left: fabricCanvas?.width as number / 2,
+        // top: fabricCanvas?.height as number / 2,
+        left: 150,
+        top: 150,
+        fill: "#fff",
+        stroke: "#000",
+        strokeWidth: 2,
+        width: 1000,
+        height: 1000,
+        originX: "center",
+        originY: "center",
+      });
+      const bubbleText = new fabric.Textbox("Add comic dialogue", {
+        left: bubblePath.left,
+        top: bubblePath.top,
+        fill: "#000",
+        fontSize: 24,
+        width: bubblePath.width / 2,
+        height: bubblePath.height / 2,
+        textAlign: "center",
+        originX: "center",
+        originY: "center",
+      });
+  
+      if (canvas) {
+        canvas.add(bubblePath);
+        canvas.add(bubbleText);
+      }
+  
+      fabricCanvas?.add(bubblePath);
+      fabricCanvas?.add(bubbleText);
   };
 
   const addPuuungStoryboardToCanvas = () => {
@@ -465,11 +473,22 @@ const LayoutPage = (props: Props) => {
     }
   });
 
+  // mouse down
+  // fabricCanvas?.on("mouse:down", (options) => {
+  //   if (isAddingBubble) {
+  //     const mousePosition = fabricCanvas?.getPointer(options.e);
+  //     console.log("paste bubble at position" + mousePosition?.x + " " + mousePosition?.y)
+  //     addComicBubbleToCanvas(fabricCanvas, mousePosition?.x as number, mousePosition?.y as number);
+  //   }
+  //   setIsAddingBubble(false);
+  // });
+
+
   return (
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
-        <CreateHeader currentRoute={createRoutes[3]} nextDisabled={false} />
+        <CreateHeader currentRoute={createRoutes[2]} nextDisabled={false} />
 
         <div className="grid grid-rows-[50px_auto] overflow-hidden">
           {/* tools bar */}
@@ -766,6 +785,10 @@ const LayoutPage = (props: Props) => {
               onClick={() => {
                 // const canvasJSON = fabricCanvas?.toJSON();
                 // dispatch(setCanvas(canvasJSON));
+
+                // deselect object
+                fabricCanvas?.discardActiveObject();
+                fabricCanvas?.requestRenderAll();
 
                 // convert fabriccanvas to base64 image string
                 const canvasImageBase64 = fabricCanvas?.toDataURL({

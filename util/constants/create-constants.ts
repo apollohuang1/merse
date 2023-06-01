@@ -17,10 +17,10 @@ const allCreateRoutes: any[] = [
     title: "Styles",
     description: "Add styles to your story.",
   },
-  {
-    title: "Characters",
-    description: "Add characters to your story.",
-  },
+  // {
+  //   title: "Characters",
+  //   description: "Add characters to your story.",
+  // },
   {
     title: "Storyboard",
     description: "Add storyboard to your story.",
@@ -84,48 +84,48 @@ export const comicStyles: StyleReference[] = [
     preset: "low-poly",
     preset_name: "Low Poly",
   },
-  // {
-  //   artist: "Quentin Blake",
-  //   artwork: {
-  //     url: "https://i.pinimg.com/564x/2a/dc/57/2adc578f2878df6a5fdf21f7d130aa7a.jpg",
-  //   },
-  // },
-  // {
-  //   artist: "Barry Blitt",
-  //   artwork: {
-  //     url: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/origin-story-barry-blitt.jpg",
-  //   },
-  // },
-  // {
-  //   artist: "Rebecca Sugar",
-  //   artwork: {
-  //     url: "https://d2lzb5v10mb0lj.cloudfront.net/common/salestools/previews/3005077/3005077p2.jpg",
-  //   },
-  // },
-  // {
-  //   artist: "Chris Ware",
-  //   artwork: {
-  //     url: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/looking-up-chris-ware.jpg",
-  //   },
-  // },
-  // {
-  //   artist: "Jon Klassen",
-  //   artwork: {
-  //     url: "https://i.pinimg.com/564x/81/49/57/8149576b7911c6a4d34997d7a8adfaca.jpg",
-  //   },
-  // },
-  // {
-  //   artist: "Roz Chast",
-  //   artwork: {
-  //     url: "https://media.newyorker.com/photos/610c6b381c677cbbf716f0d5/master/w_2560%2Cc_limit/210816_CVN_Chast_Beach_Mom_STORY.jpg",
-  //   },
-  // },
-  // {
-  //   artist: "Neal Adams",
-  //   artwork: {
-  //     url: "https://m.media-amazon.com/images/I/91QmRn+-PnL.jpg",
-  //   },
-  // },
+  {
+    artist: "Quentin Blake",
+    artwork: {
+      url: "https://i.pinimg.com/564x/2a/dc/57/2adc578f2878df6a5fdf21f7d130aa7a.jpg",
+    },
+  },
+  {
+    artist: "Barry Blitt",
+    artwork: {
+      url: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/origin-story-barry-blitt.jpg",
+    },
+  },
+  {
+    artist: "Rebecca Sugar",
+    artwork: {
+      url: "https://d2lzb5v10mb0lj.cloudfront.net/common/salestools/previews/3005077/3005077p2.jpg",
+    },
+  },
+  {
+    artist: "Chris Ware",
+    artwork: {
+      url: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/looking-up-chris-ware.jpg",
+    },
+  },
+  {
+    artist: "Jon Klassen",
+    artwork: {
+      url: "https://i.pinimg.com/564x/81/49/57/8149576b7911c6a4d34997d7a8adfaca.jpg",
+    },
+  },
+  {
+    artist: "Roz Chast",
+    artwork: {
+      url: "https://media.newyorker.com/photos/610c6b381c677cbbf716f0d5/master/w_2560%2Cc_limit/210816_CVN_Chast_Beach_Mom_STORY.jpg",
+    },
+  },
+  {
+    artist: "Neal Adams",
+    artwork: {
+      url: "https://m.media-amazon.com/images/I/91QmRn+-PnL.jpg",
+    },
+  },
   // // { artist: "Charles Addams" },
   // // { artist: "Artgerm" },
   // // { artist: "AssasinMonkey" },

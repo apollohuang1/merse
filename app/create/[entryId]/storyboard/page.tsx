@@ -321,7 +321,7 @@ const Storyboard = (props: Props) => {
     <>
       <div className="grid grid-rows-[100px_auto] overflow-auto">
         {/* navigation header */}
-        <CreateHeader currentRoute={createRoutes[2]} nextDisabled={entry?.title === "" || !entry?.content} />
+        <CreateHeader currentRoute={createRoutes[1]} nextDisabled={entry?.title === "" || !entry?.content} />
 
         {/* main content (left and right panels columns) */}
         <div
