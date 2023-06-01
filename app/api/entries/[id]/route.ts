@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
     const entryId = getLastIdFromUrl(request.url);
 
     const entryData = await MDBEntry.findById(new mongoose.Types.ObjectId(entryId))
+      .lean()
       .populate({
         path: "author",
         select: "profile_image_url name username _id",

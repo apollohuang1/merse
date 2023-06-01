@@ -107,6 +107,8 @@ export async function PUT(request: NextRequest) {
     }
 
     const updatedUser = await MDBUser.findOneAndUpdate(filter, body, { new: true });
+
+    console.log("Updated user: ", updatedUser);
     
     return NextResponse.json(updatedUser, { status: 200 });
 

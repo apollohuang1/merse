@@ -74,6 +74,8 @@ const handleCheckoutSession = async (session) => {
       },
     })
 
+    console.log("Changing stripe user data: ", userResponse);
+
     // update user with fetched _id
     const updatedUserResponse = await axios({
       method: 'PUT',
@@ -88,6 +90,8 @@ const handleCheckoutSession = async (session) => {
         "Authorization" : `Bearer ${process.env.MERSE_API_KEY}`,
       }
     })
+
+    console.log("After changing stripe user data: ", userResponse);
 
   } catch (error) {
     console.log("Failed to handle checkout session, message: ", error.message)
