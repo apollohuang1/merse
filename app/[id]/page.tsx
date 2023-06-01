@@ -246,6 +246,8 @@ const ProfilePage = (props: Props) => {
         (a, b) => new Date(b.created_at ?? Date.now()).getTime() - new Date(a.created_at ?? Date.now()).getTime()
       );
 
+      console.log("sortedDateEntries: ", sortedDateEntries);
+
       setAllEntries(sortedDateEntries);
 
       // setAllEntries(filteredEntries);
@@ -502,8 +504,7 @@ const ProfilePage = (props: Props) => {
                             href={`entry/${entry?._id}`}
                             className="flex-shrink-0"
                           >
-                            {entry?.scenes[0]?.image_base64 ||
-                            entry?.cover?.image_url ? (
+                            {/* { (entry?.scenes[0]?.image_base64 || entry?.cover?.image_url) ? (
                               <img
                                 src={
                                   entry?.scenes[0]?.image_base64
@@ -514,9 +515,9 @@ const ProfilePage = (props: Props) => {
                                 }
                                 className="h-full aspect-square object-cover rounded-none"
                               />
-                            ) : (
+                            ) : ( */}
                               <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary"></div>
-                            )}
+                            {/* )} */}
                           </Link>
 
                           <div className="flex flex-col justify-start w-full h-full gap-1 items-start">

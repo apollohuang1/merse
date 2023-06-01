@@ -211,7 +211,9 @@ const LayoutPage = (props: Props) => {
     canvas.on("object:scaling", function (options) {});
 
     canvas.setDimensions({
-      width: canvasWidth, // square ratio
+      // width: canvasWidth, // square ratio
+      width: innerWidth - 250,
+      // height: innerHeight - 100,
       height: entry?.scenes.length * canvasWidth === 0 ? canvasWidth * 7 : entry?.scenes.length * canvasWidth,
     });
 
@@ -309,6 +311,18 @@ const LayoutPage = (props: Props) => {
       // return;
       // }
     });
+
+    // canvas.on('mouse:wheel', function(opt) {
+    //   var delta = opt.e.deltaY;
+    //   var zoom = canvas.getZoom();
+    //   zoom *= 0.999 ** delta;
+    //   if (zoom > 20) zoom = 20;
+    //   if (zoom < 0.01) zoom = 0.01;
+    //   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+    //   opt.e.preventDefault();
+    //   opt.e.stopPropagation();
+    // });
+        
 
     // Adding elements and generated images from storyboard
     addComicBubbleToCanvas(canvas);

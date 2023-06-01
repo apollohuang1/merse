@@ -6,7 +6,6 @@ import MDBUser from "@/server/models/MDBUser";
 
 export async function GET(request: NextRequest) {
   try {
-
     await dbConnect();
 
     // get api key from bear token
@@ -31,8 +30,10 @@ export async function GET(request: NextRequest) {
     // fetch all entries from user
     const allEntriesFromUser = await MDBEntry.find({
       // author: objectid userid
-      author: new mongoose.Types.ObjectId(userId),
+      author: userId,
     })
+      .lean()
+      .select("_id author title content created_at likes comments is_private")
       .populate({
         path: "author",
         select: "profile_image_url name username _id",
