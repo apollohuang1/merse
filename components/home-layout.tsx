@@ -335,7 +335,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     /> */}
 
                     {/* subscription */}
-                    <SidebarMenuButton
+                    {/* <SidebarMenuButton
                       icon={
                         <FiZap
                           className={clsx(
@@ -348,7 +348,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       onClick={() => router.push("/subscription")}
                       isFull={showFullSidebar}
                       isCurrentRoute={pathName === "/subscription"}
-                    />
+                    /> */}
 
                     {/* read */}
                     <SidebarMenuButton

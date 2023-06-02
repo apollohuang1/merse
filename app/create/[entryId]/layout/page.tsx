@@ -84,6 +84,8 @@ import { Menu, Popover, Transition } from "@headlessui/react";
 import SlideOver from "@/components/slide-over";
 import Divider from "@/components/divider";
 
+import { Excalidraw } from "@excalidraw/excalidraw";
+
 type Props = {};
 
 const canvasWidth = 768;
@@ -773,13 +775,15 @@ const LayoutPage = (props: Props) => {
           </div>
 
           <div className="flex flex-col items-center relative w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary">
-            <div
+
+            <Excalidraw />
+            {/* <div
               className={`flex flex-col w-[${canvasWidth}px] h-[${
                 canvasWidth * 7
               }px] bg-light-background-secondary`}
             >
               <Canvas onLoad={onLoad} saveState />
-            </div>
+            </div> */}
 
             <button
               onClick={() => {
