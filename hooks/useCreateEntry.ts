@@ -101,19 +101,19 @@ const useCreateEntry = () => {
       }
 
       // people who are allowed to generate storyboards
-      // const manualWhitelistedEmails = [
-      //   "markrachapoom@gmail.com",
-      //   "emily.park@berkeley.edu",
-      //   "jyoti.rani@berkeley.edu",
-      // ];
+      const manualWhitelistedEmails = [
+        "markrachapoom@gmail.com",
+        "emily.park@berkeley.edu",
+        "jyoti.rani@berkeley.edu",
+      ];
 
-      // if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
-      //   // alert to let people know we're still developing
-      //   alert(
-      //     "Sorry, we're still developing this feature. We will let you know when it's ready!"
-      //   );
-      //   throw new Error("User not whitelisted");
-      // }
+      if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
+        // alert to let people know we're still developing
+        alert(
+          "Sorry, we're still developing this feature. We will let you know when it's ready!"
+        );
+        throw new Error("User not whitelisted");
+      }
 
       if (!editor || editor?.isEmpty) {
         throw new Error("Editor is null");
