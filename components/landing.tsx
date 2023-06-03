@@ -27,6 +27,7 @@ import {
 } from "@/util/constants/home-constant";
 import parse from "html-react-parser";
 import { Transition } from "@headlessui/react";
+import clsx from "clsx";
 
 type Props = {};
 
@@ -378,7 +379,9 @@ const Landing = (props: Props) => {
                 <FiArrowLeft className="text-light-text-secondary dark:text-dark-text-secondary" />
               </button>
 
-              <span className="text-light-text-secondary dark:text-dark-text-secondary">{registeringUserData?.email}</span>
+              <span className="text-light-text-secondary dark:text-dark-text-secondary">
+                {registeringUserData?.email}
+              </span>
             </div>
 
             <div className="flex flex-col gap-3 w-full">
@@ -422,11 +425,15 @@ const Landing = (props: Props) => {
                   />
                 </label>
 
-                <label className="text-left">
+                <div className="text-left flex flex-col items-start">
                   <span className="text-sm font-medium">Username</span>
                   <input
                     type="text"
-                    className="w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent"
+                    className={clsx(
+                      "w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 rounded-md border border-light-divider dark:border-dark-divider bg-transparent",
+                      { "focus:ring-light-red dark:focus:ring-dark-red" : registeringUserData?.username.length > 15 },
+                      { "focus:ring-accent" : registeringUserData?.username.length <= 15 },
+                    )}
                     value={registeringUserData?.username ?? ""}
                     placeholder="Username"
                     onChange={(e) => {
@@ -436,7 +443,12 @@ const Landing = (props: Props) => {
                       });
                     }}
                   />
-                </label>
+                  <div className="flex flex-row justify-end w-full pt-1">
+                    <span className="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+                      {registeringUserData?.username.length ?? 0}/15
+                    </span>
+                  </div>
+                </div>
 
                 <label className="text-left">
                   <span className="text-sm font-medium">Banner Image URL</span>
@@ -478,7 +490,6 @@ const Landing = (props: Props) => {
             >
               Create Account
             </button>
-
           </div>
         )}
       </Modal>
