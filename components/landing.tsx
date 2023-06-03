@@ -430,9 +430,8 @@ const Landing = (props: Props) => {
                   <input
                     type="text"
                     className={clsx(
-                      "w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 rounded-md border border-light-divider dark:border-dark-divider bg-transparent",
-                      { "focus:ring-light-red dark:focus:ring-dark-red" : registeringUserData?.username.length > 15 },
-                      { "focus:ring-accent" : registeringUserData?.username.length <= 15 },
+                      "w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent",
+                      { "focus:ring-light-red dark:focus:ring-dark-red" : registeringUserData?.username?.length > 15 },
                     )}
                     value={registeringUserData?.username ?? ""}
                     placeholder="Username"
@@ -445,7 +444,7 @@ const Landing = (props: Props) => {
                   />
                   <div className="flex flex-row justify-end w-full pt-1">
                     <span className="text-xs text-light-text-secondary dark:text-dark-text-secondary">
-                      {registeringUserData?.username.length ?? 0}/15
+                      {registeringUserData?.username?.length ?? 0}/15
                     </span>
                   </div>
                 </div>

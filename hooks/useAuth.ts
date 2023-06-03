@@ -150,12 +150,12 @@ const useAuth = () => {
         throw new Error("No registering user data found");
       }
 
-      const isUsernameValid = getUsernameValidity(registeringUserData?.username as string);
+      const isUsernameValid = getUsernameValidity(registeringUserData?.username);
 
       if (isUsernameValid === false) {
         // /^[a-zA-Z0-9_]{1,15}$/
         // if username length is less than 1 or greater than 15, throw
-        if (registeringUserData?.username.length < 1 || registeringUserData?.username.length > 15) {
+        if (registeringUserData?.username?.length < 1 || registeringUserData?.username?.length > 15) {
           alert("Username must be between 1 and 15 characters");
           throw new Error("Username is invalid");
         }
