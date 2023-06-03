@@ -132,6 +132,17 @@ const ReadPage = (props: Props) => {
 
   const handleLikeEntry = async () => {
     try {
+
+      // add yourself to like
+      if (!entryData?.likes?.includes(auth?.currentUser?._id) && !isLikedByCurrentUser()) {
+        setEntryData((prev: any) => {
+          return {
+            ...prev,
+            likes: isLikedByCurrentUser() ? prev?.likes?.filter((like: any) => like !== auth?.currentUser?._id) : [...prev?.likes, auth?.currentUser?._id],
+          };
+        })
+      }
+
       // guards
       if (!entryData?._id || !auth?.currentUser?._id) return;
 
