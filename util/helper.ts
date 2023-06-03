@@ -1,10 +1,5 @@
 // Helpers
 
-export const getUsernameValidity = (username: string) => {
-  const usernameRegex = /^[a-zA-Z0-9_]{1,15}$/;
-  return usernameRegex.test(username);
-}
-
 export const getImageURLfromBase64 = (base64: string) => {
   return `data:image/jpeg;base64,${base64}`;
 }
