@@ -88,6 +88,14 @@ const Review = (props: Props) => {
             </div>
           </div>
 
+          {entry?.canvas && (
+              <img
+                src={entry?.canvas}
+                alt="canvas"
+                className="w-full object-contain"
+              />
+          )}
+
           {/* <div className="flex flex-col w-full gap-7">
             {JSON.stringify(entry, null, 2)}
             <br />
