@@ -18,6 +18,7 @@ const SlideOver: React.FC<{
   footer?: React.ReactNode;
   withOverlay?: boolean;
   withPadding?: boolean;
+  withBlurBackground?: boolean;
   // onCancel?: () => void;
   // onSubmit?: () => void;
   slideFrom?: "left" | "right";
@@ -33,12 +34,12 @@ const SlideOver: React.FC<{
   footer,
   withOverlay = true,
   withPadding = true,
+  withBlurBackground = false,
   // onSubmit,
   slideFrom = "right",
 }) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-
       <Dialog
         as="div"
         className="relative text-light-text-primary dark:text-dark-text-primary z-50"
@@ -55,26 +56,41 @@ const SlideOver: React.FC<{
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black dark:bg-white bg-opacity-50 dark:bg-opacity-30 transition-opacity" />
+            <div className="fixed inset-0 bg-black dark:bg-[rgb(23,23,24,0.8)] bg-opacity-30 dark:opacity-70 transition-opacity" />
           </Transition.Child>
         )}
 
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
-            <div className={`pointer-events-none fixed inset-y-0 ${slideFrom}-0 flex max-w-full ${slideFrom === "right" ? "pl-10" : "pr-10"}`}>
+            <div
+              className={`pointer-events-none fixed inset-y-0 ${slideFrom}-0 flex max-w-full ${
+                slideFrom === "right" ? "pl-10" : "pr-10"
+              }`}
+            >
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-300"
-                enterFrom={`${slideFrom === "left" ? "-translate-x-full" : "translate-x-full"}`}
+                enterFrom={`${
+                  slideFrom === "left"
+                    ? "-translate-x-full"
+                    : "translate-x-full"
+                }`}
                 enterTo="translate-x-0"
                 leave="transform transition ease-in-out duration-300"
                 leaveFrom="translate-x-0"
-                leaveTo={`${slideFrom === "left" ? "-translate-x-full" : "translate-x-full"}`}
+                leaveTo={`${
+                  slideFrom === "left"
+                    ? "-translate-x-full"
+                    : "translate-x-full"
+                }`}
               >
                 <Dialog.Panel
-                  className={`pointer-events-auto w-screen max-w-${size} border-x border-light-divider dark:border-dark-divider drop-shadow-2xl`}
+                  className={clsx(
+                    `pointer-events-auto w-screen max-w-${size} border-x border-light-divider dark:border-dark-divider drop-shadow-2xl bg-light-background-primary dark:bg-dark-background-primary overflow-clip`,
+                    { "bg-[rgb(255,255,255,0.8)] dark:bg-[rgb(22,22,23,0.8)] backdrop-blur-2xl" : withBlurBackground },
+                  )}
                 >
-                  <div className="flex h-full flex-col overflow-y-scroll shadow-xl bg-light-background-primary dark:bg-dark-background-primary">
+                  <div className="flex h-full flex-col overflow-y-scroll shadow-xl">
                     <div className="p-6 border-b border-light-divider dark:border-dark-divider">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className=" text-xl font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary">
@@ -85,7 +101,7 @@ const SlideOver: React.FC<{
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
-                              className="rounded-full p-2 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary text-light-text-secondary dark:text-dark-text-secondary hover:text-gray-500"
+                              className="rounded-full p-2 hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary text-light-text-secondary dark:text-dark-text-secondary hover:text-gray-500"
                               onClick={() => onClose()}
                             >
                               <span className="sr-only">Close panel</span>
@@ -96,12 +112,11 @@ const SlideOver: React.FC<{
                       </div>
                     </div>
 
-                    <div 
+                    <div
                       id="comments-slide-over"
-                      className={clsx(
-                        "flex-1 overflow-auto",
-                        { "p-6 sm:px-6" : withPadding}
-                      )}
+                      className={clsx("flex-1 overflow-auto", {
+                        "p-6 sm:px-6": withPadding,
+                      })}
                     >
                       {children}
                     </div>
