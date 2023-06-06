@@ -88,7 +88,7 @@ const SlideOver: React.FC<{
                   className={clsx(
                     `pointer-events-auto w-screen max-w-${size} border-x border-light-divider dark:border-dark-divider drop-shadow-2xl overflow-clip`,
                     { "bg-[rgb(255,255,255,0.8)] dark:bg-[rgb(23,23,23,0.8)] backdrop-blur-2xl" : withBlurBackground },
-                    // { "bg-light-background-primary dark:bg-dark-background-primary": !withBlurBackground}
+                    { "bg-light-background-primary dark:bg-dark-background-primary": !withBlurBackground}
                   )}
                 >
                   <div className="flex h-full flex-col overflow-y-scroll shadow-xl">
