@@ -226,8 +226,9 @@ const LayoutPage = (props: Props) => {
     });
 
     // stylings
-    canvas.selectionBorderColor = "#10b981";
-    canvas.selectionColor = "rgba(16, 185, 129, 0.3)";
+    // canvas.selectionBorderColor = "#10b981"; // emerald green
+    canvas.selectionBorderColor = "#2E9AFA"; // blue
+    canvas.selectionColor = "#2E9AFA30";
     // canvas.backgroundColor = "#FFFFFF";
     canvas.backgroundColor = "transparent";
 
@@ -241,29 +242,16 @@ const LayoutPage = (props: Props) => {
     // const gridSize = 32;
     const gridSize = 20;
 
-    // fabric js pinch to zoom only, scroll does not apply when zoomed in
-
-    // canvas.on("mouse:wheel", function (opt) {
-    //   var delta = opt.e.deltaY;
-    //   var zoom = canvas.getZoom();
-    //   zoom *= 0.999 ** delta;
-    //   if (zoom > 20) zoom = 20;
-    //   if (zoom < 0.01) zoom = 0.01;
-    //   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-    //   opt.e.preventDefault();
-    //   opt.e.stopPropagation();
-    // });
-
+    // pinch to zoom
     canvas.on("mouse:wheel", function (opt) {
       opt.e.preventDefault();
       opt.e.stopPropagation();
       if (opt.e.ctrlKey) {
-        console.log("pinch");
         var delta = opt.e.deltaY;
         var zoom = canvas.getZoom();
         zoom *= 0.99 ** delta;
         if (zoom > 20) zoom = 20;
-        if (zoom < 0.01) zoom = 0.01;
+        if (zoom < 0.1) zoom = 0.1;
         const point = new fabric.Point(opt.e.offsetX, opt.e.offsetY);
         canvas.zoomToPoint(point, zoom);
       } else {
@@ -274,21 +262,6 @@ const LayoutPage = (props: Props) => {
         canvas.requestRenderAll();
       }
     });
-
-    // for (let i = 0; i < canvas.width; i += gridSize) {
-    //   for (let j = 0; j < canvas.height; j += gridSize) {
-    //     const circle = new fabric.Circle({
-    //       left: i,
-    //       top: j,
-    //       radius: 1.5,
-    //       fill: isDarkMode ? "#ffffff" : "#000000",
-    //       opacity: 0.1,
-    //       selectable: false,
-    //       evented: false
-    //     });
-    //     canvas.add(circle);
-    //   }
-    // }
 
     // observers
 
@@ -334,8 +307,13 @@ const LayoutPage = (props: Props) => {
       }
 
       activeObject?.set({
-        borderColor: "#10b981",
-        borderScaleFactor: 2, // actually border width :)
+        // borderColor: "#10b981",
+        borderColor: "#2E9AFA",
+        borderScaleFactor: 1, // actual border width :)
+        cornerSize: 7,
+        cornerStrokeColor: "#2E9AFA",
+        cornerColor: "white",
+        transparentCorners: false,
       });
     });
 
@@ -354,20 +332,6 @@ const LayoutPage = (props: Props) => {
       // return;
       // }
     });
-
-    // canvas.on('mouse:wheel', function(opt) {
-    //   var delta = opt.e.deltaY;
-    //   var zoom = canvas.getZoom();
-    //   zoom *= 0.999 ** delta;
-    //   if (zoom > 20) zoom = 20;
-    //   if (zoom < 0.01) zoom = 0.01;
-    //   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-    //   opt.e.preventDefault();
-    //   opt.e.stopPropagation();
-    // });
-
-    // Adding elements and generated images from storyboard
-    // addComicBubbleToCanvas(canvas);
 
     // for loop in entry?.scenes
     for (let i = 0; i < entry?.scenes.length; i++) {
@@ -529,7 +493,7 @@ const LayoutPage = (props: Props) => {
         {/* navigation header */}
         <CreateHeader currentRoute={createRoutes[2]} nextDisabled={false} />
 
-        <div className="grid grid-rows-[50px_auto] overflow-hidden">
+        <div className="grid grid-rows-[50px_auto] overflow-hidden w-full h-full">
           {/* tools bar */}
           <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider px-3">
             <div className="flex flex-row gap-1">
@@ -811,41 +775,51 @@ const LayoutPage = (props: Props) => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center relative w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary">
+          <div className="relative flex flex-col w-full h-auto bg-light-background-secondary dark:bg-dark-background-secondary">
             {/* <div className={`flex flex-col w-[${canvasWidth}px] h-[${canvasWidth * 7}px] bg-light-background-secondary`}> */}
+            {/* <div className={`flex flex-col w-full h-[${canvasWidth * 7}px] bg-green-500`}> */}
+
             <div
-              className={`flex flex-col w-full h-[${
-                canvasWidth * 7
-              }px] bg-transparent`}
+              className={`absolute flex flex-col w-full h-full overflow-auto`}
             >
               <Canvas onLoad={onLoad} saveState />
             </div>
 
-            <button
-              onClick={() => {
-                // const canvasJSON = fabricCanvas?.toJSON();
-                // dispatch(setCanvas(canvasJSON));
+            <div className="absolute flex flex-col inset-0 w-full h-full pointer-events-none p-6 justify-end">
+              <div className="flex flex-col w-full h-full justify-between">
 
-                // deselect object
-                fabricCanvas?.discardActiveObject();
-                fabricCanvas?.requestRenderAll();
+              <div className="flex flex-row w-full items-center justify-end">
+              </div>
 
-                // convert fabriccanvas to base64 image string
-                const canvasImageBase64 = fabricCanvas?.toDataURL({
-                  // @ts-ignore
-                  format: "png",
-                  quality: 1,
-                  width: canvasWidth,
-                  height: canvasWidth * 7,
-                });
+                <div className="flex flex-row w-full items-center justify-end">
+                  <button
+                    onClick={() => {
+                      // const canvasJSON = fabricCanvas?.toJSON();
+                      // dispatch(setCanvas(canvasJSON));
 
-                console.log(canvasImageBase64);
-                dispatch(setCanvas(canvasImageBase64));
-              }}
-              className="fixed bottom-0 right-0 m-4 py-2 px-4 rounded-md shadow-md bg-dark-background-tertiary text-white"
-            >
-              Test Save Image
-            </button>
+                      // deselect object
+                      fabricCanvas?.discardActiveObject();
+                      fabricCanvas?.requestRenderAll();
+
+                      // convert fabriccanvas to base64 image string
+                      const canvasImageBase64 = fabricCanvas?.toDataURL({
+                        // @ts-ignore
+                        format: "png",
+                        quality: 1,
+                        width: canvasWidth,
+                        height: canvasWidth * 7,
+                      });
+
+                      console.log(canvasImageBase64);
+                      dispatch(setCanvas(canvasImageBase64));
+                    }}
+                    className="flex rounded-md shadow-md bg-dark-background-tertiary text-white pointer-events-auto px-4 py-2"
+                  >
+                    Test Save Image
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
