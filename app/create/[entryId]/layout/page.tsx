@@ -182,9 +182,10 @@ const LayoutPage = (props: Props) => {
 
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
 
+  const [zoomValue, setZoomValue] = useState<number>(1);
+
   const onLoad = useCallback((canvas: fabric.Canvas) => {
     const isDarkMode = localStorage.getItem("theme") === "dark";
-
     // load json if exist in entry?.canvas
 
     // if (entry?.canvas) {
@@ -229,8 +230,8 @@ const LayoutPage = (props: Props) => {
     // canvas.selectionBorderColor = "#10b981"; // emerald green
     canvas.selectionBorderColor = "#2E9AFA"; // blue
     canvas.selectionColor = "#2E9AFA30";
-    // canvas.backgroundColor = "#FFFFFF";
-    canvas.backgroundColor = "transparent";
+    canvas.backgroundColor = "#F5F5F5";
+    // canvas.backgroundColor = "transparent";
 
     // detect dark mode class and set background color
     // if (isDarkMode) {
@@ -250,10 +251,13 @@ const LayoutPage = (props: Props) => {
         var delta = opt.e.deltaY;
         var zoom = canvas.getZoom();
         zoom *= 0.99 ** delta;
-        if (zoom > 20) zoom = 20;
-        if (zoom < 0.1) zoom = 0.1;
+        const maxZoom = 500; // in percent
+        const minZoom = 10; // in percent
+        if (zoom > maxZoom / 100) zoom = maxZoom / 100; // 500%
+        if (zoom < minZoom / 100) zoom = minZoom / 100; // 10%
         const point = new fabric.Point(opt.e.offsetX, opt.e.offsetY);
         canvas.zoomToPoint(point, zoom);
+        setZoomValue(zoom * 100);
       } else {
         var e = opt.e;
         var vpt = canvas.viewportTransform;
@@ -727,13 +731,14 @@ const LayoutPage = (props: Props) => {
                             <button
                               onClick={() => {
                                 fabricCanvas?.set({
-                                  backgroundColor: "transparent",
+                                  // backgroundColor: "transparent",
+                                  backgroundColor: "#F5F5F5",
                                 });
                                 fabricCanvas?.requestRenderAll();
                               }}
                               className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
                             >
-                              Transparent
+                              Default
                             </button>
 
                             <button
@@ -787,11 +792,31 @@ const LayoutPage = (props: Props) => {
 
             <div className="absolute flex flex-col inset-0 w-full h-full pointer-events-none p-6 justify-end">
               <div className="flex flex-col w-full h-full justify-between">
+                <div className="flex flex-row w-full items-center justify-end"></div>
 
-              <div className="flex flex-row w-full items-center justify-end">
-              </div>
+                <div className="flex flex-row w-full items-center justify-between pointer-events-auto">
 
-                <div className="flex flex-row w-full items-center justify-end">
+                  {/* zoom controller */}
+                  <div className="flex flex-row text-light-text-secondary dark:text-dark-text-secondary items-center backdrop-blur-xl bg-light-background-primary dark:bg-dark-background-primary bg-opacity-80 drop-shadow-2xl rounded-full h-10 overflow-clip divide-none divide-light-divider dark:divide-dark-divider">
+                    <button
+                      onClick={() => {}}
+                      className="flex px-3 h-full items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                    >
+                      <FiMinus className="w-4 h-4" />
+                    </button>
+
+                    <div className="flex flex-row items-center justify-center text-sm w-10 h-full text-light-text-primary dark:text-dark-text-primary">
+                      <span>{zoomValue.toFixed(0)}%</span>
+                    </div>
+
+                    <button
+                      onClick={() => {}}
+                      className="flex px-3 h-full items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                    >
+                      <FiPlus className="w-4 h-4" />
+                    </button>
+                  </div>
+
                   <button
                     onClick={() => {
                       // const canvasJSON = fabricCanvas?.toJSON();
