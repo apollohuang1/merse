@@ -216,16 +216,20 @@ const LayoutPage = (props: Props) => {
     canvas.on("object:scaling", function (options) {});
 
     canvas.setDimensions({
-      width: canvasWidth, // square ratio
+      // width: canvasWidth, // square ratio
       // width: innerWidth - 250,
-      // height: innerHeight - 100,
-      height: entry?.scenes.length * canvasWidth === 0 ? canvasWidth * 7 : (entry?.scenes.length * canvasWidth) + 1,
+      width: innerWidth,
+      height:
+        entry?.scenes.length * canvasWidth === 0
+          ? canvasWidth * 7
+          : entry?.scenes.length * canvasWidth + 1,
     });
 
     // stylings
     canvas.selectionBorderColor = "#10b981";
     canvas.selectionColor = "rgba(16, 185, 129, 0.3)";
-    canvas.backgroundColor = "#FFFFFF";
+    // canvas.backgroundColor = "#FFFFFF";
+    canvas.backgroundColor = "transparent";
 
     // detect dark mode class and set background color
     // if (isDarkMode) {
@@ -236,6 +240,40 @@ const LayoutPage = (props: Props) => {
 
     // const gridSize = 32;
     const gridSize = 20;
+
+    // fabric js pinch to zoom only, scroll does not apply when zoomed in
+
+    // canvas.on("mouse:wheel", function (opt) {
+    //   var delta = opt.e.deltaY;
+    //   var zoom = canvas.getZoom();
+    //   zoom *= 0.999 ** delta;
+    //   if (zoom > 20) zoom = 20;
+    //   if (zoom < 0.01) zoom = 0.01;
+    //   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+    //   opt.e.preventDefault();
+    //   opt.e.stopPropagation();
+    // });
+
+    canvas.on("mouse:wheel", function (opt) {
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
+      if (opt.e.ctrlKey) {
+        console.log("pinch");
+        var delta = opt.e.deltaY;
+        var zoom = canvas.getZoom();
+        zoom *= 0.99 ** delta;
+        if (zoom > 20) zoom = 20;
+        if (zoom < 0.01) zoom = 0.01;
+        const point = new fabric.Point(opt.e.offsetX, opt.e.offsetY);
+        canvas.zoomToPoint(point, zoom);
+      } else {
+        var e = opt.e;
+        var vpt = canvas.viewportTransform;
+        vpt[4] -= e.deltaX;
+        vpt[5] -= e.deltaY;
+        canvas.requestRenderAll();
+      }
+    });
 
     // for (let i = 0; i < canvas.width; i += gridSize) {
     //   for (let j = 0; j < canvas.height; j += gridSize) {
@@ -327,7 +365,6 @@ const LayoutPage = (props: Props) => {
     //   opt.e.preventDefault();
     //   opt.e.stopPropagation();
     // });
-        
 
     // Adding elements and generated images from storyboard
     // addComicBubbleToCanvas(canvas);
@@ -338,7 +375,9 @@ const LayoutPage = (props: Props) => {
 
       const distanceFromTop = i * canvasWidth; // square
 
-      fabric.Image.fromURL("data:image/png;base64," + scene.image_base64, { crossOrigin: "anonymous" })
+      fabric.Image.fromURL("data:image/png;base64," + scene.image_base64, {
+        crossOrigin: "anonymous",
+      })
         .then((img) => {
           img.scaleToWidth(canvasWidth);
           // img.stroke = "black";
@@ -362,7 +401,6 @@ const LayoutPage = (props: Props) => {
       canvas.dispose();
       // window.removeEventListener("resize", () => {});
     };
-
   }, []); // end on canvas init
 
   const addImageURLToCanvas = (url: string) => {
@@ -383,40 +421,40 @@ const LayoutPage = (props: Props) => {
 
   // const addComicBubbleToCanvas = (canvas: fabric.Canvas, positionX: number, positionY: number) => {
   const addComicBubbleToCanvas = (canvas?: fabric.Canvas) => {
-      const ovalPathString = "M 0 0 C 0 -90 210 -90 210 0 C 210 90 0 90 0 0 Z";
-  
-      const bubblePath = new fabric.Path(ovalPathString, {
-        // left: fabricCanvas?.width as number / 2,
-        // top: fabricCanvas?.height as number / 2,
-        left: 150,
-        top: 150,
-        fill: "#fff",
-        stroke: "#000",
-        strokeWidth: 2,
-        width: 1000,
-        height: 1000,
-        originX: "center",
-        originY: "center",
-      });
-      const bubbleText = new fabric.Textbox("Add comic dialogue", {
-        left: bubblePath.left,
-        top: bubblePath.top,
-        fill: "#000",
-        fontSize: 24,
-        width: bubblePath.width / 2,
-        height: bubblePath.height / 2,
-        textAlign: "center",
-        originX: "center",
-        originY: "center",
-      });
-  
-      if (canvas) {
-        canvas.add(bubblePath);
-        canvas.add(bubbleText);
-      }
-  
-      fabricCanvas?.add(bubblePath);
-      fabricCanvas?.add(bubbleText);
+    const ovalPathString = "M 0 0 C 0 -90 210 -90 210 0 C 210 90 0 90 0 0 Z";
+
+    const bubblePath = new fabric.Path(ovalPathString, {
+      // left: fabricCanvas?.width as number / 2,
+      // top: fabricCanvas?.height as number / 2,
+      left: 150,
+      top: 150,
+      fill: "#fff",
+      stroke: "#000",
+      strokeWidth: 2,
+      width: 1000,
+      height: 1000,
+      originX: "center",
+      originY: "center",
+    });
+    const bubbleText = new fabric.Textbox("Add comic dialogue", {
+      left: bubblePath.left,
+      top: bubblePath.top,
+      fill: "#000",
+      fontSize: 24,
+      width: bubblePath.width / 2,
+      height: bubblePath.height / 2,
+      textAlign: "center",
+      originX: "center",
+      originY: "center",
+    });
+
+    if (canvas) {
+      canvas.add(bubblePath);
+      canvas.add(bubbleText);
+    }
+
+    fabricCanvas?.add(bubblePath);
+    fabricCanvas?.add(bubbleText);
   };
 
   const addPuuungStoryboardToCanvas = () => {
@@ -484,7 +522,6 @@ const LayoutPage = (props: Props) => {
   //   }
   //   setIsAddingBubble(false);
   // });
-
 
   return (
     <>
@@ -775,15 +812,14 @@ const LayoutPage = (props: Props) => {
           </div>
 
           <div className="flex flex-col items-center relative w-full h-full overflow-auto bg-light-background-secondary dark:bg-dark-background-secondary">
-
-            <Excalidraw />
-            {/* <div
-              className={`flex flex-col w-[${canvasWidth}px] h-[${
+            {/* <div className={`flex flex-col w-[${canvasWidth}px] h-[${canvasWidth * 7}px] bg-light-background-secondary`}> */}
+            <div
+              className={`flex flex-col w-full h-[${
                 canvasWidth * 7
-              }px] bg-light-background-secondary`}
+              }px] bg-transparent`}
             >
               <Canvas onLoad={onLoad} saveState />
-            </div> */}
+            </div>
 
             <button
               onClick={() => {

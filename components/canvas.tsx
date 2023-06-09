@@ -70,5 +70,5 @@ export const Canvas = React.forwardRef<
   }
 >(({ onLoad, saveState }, ref) => {
   const [canvasRef, setCanvasElRef] = useCanvas(ref, onLoad, saveState);
-  return <canvas ref={setCanvasElRef} width={"100%"} height={"100%"} />;
+  return <canvas ref={setCanvasElRef} width={"100%"} height={"100%"} className='flex w-full h-full'/>;
 });
