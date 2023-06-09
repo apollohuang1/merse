@@ -32,9 +32,16 @@ import {
   FiPlus,
 } from "react-icons/fi";
 
+//calendar imports
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import 'react-big-calendar/lib/css/react-big-calendar.css' //don't use css?
+import moment from 'moment'
+import { isEqual } from 'date-fns';
+
 type Props = {};
 
 const ProfilePage = (props: Props) => {
+  const localizer = momentLocalizer(moment)
   const router = useRouter();
   const pathname = usePathname();
   const createEntryUtils = useCreateEntry();
@@ -66,6 +73,17 @@ const ProfilePage = (props: Props) => {
     useState<boolean>(false);
   const [isProfileInputFocused, setIsProfileInputFocused] =
     useState<boolean>(false);
+  const dayPropGetter = (date: Date) => {
+    if (isEqual(date, new Date(2023, 5, 8))) { // we can change this later (based on gpt prompting moods) with variables!!
+      return {
+        style: {
+          backgroundColor: 'rgba(250, 253, 203, 0.6)', //happy mood! 💙
+        },
+      };
+    } else {
+      return {};
+    }
+  }    
 
   // async function followUser(userId, targetUserId) {
   //   const user = await User.findById(userId);
@@ -315,6 +333,7 @@ const ProfilePage = (props: Props) => {
   };
 
   const tabs = [
+    { name: "Calendar", href: "calendar" },
     { name: "Entries", href: "entries" },
     { name: "Collection", href: "collection" },
     { name: "About", href: "about" },
@@ -474,6 +493,20 @@ const ProfilePage = (props: Props) => {
 
               {/* <span>{activehash} compared {tabs[0].href}</span> */}
             </div>
+
+            { currentTab === "calendar" && (
+              <div className="h-[500px]">
+                <Calendar
+                  localizer={localizer}
+                  events={[]}
+                  startAccessor="start"
+                  endAccessor="end"
+                  defaultView="month"
+                  views={["month"]}
+                  dayPropGetter={dayPropGetter}
+                />
+              </div>
+            )}
 
             { currentTab === "entries" && (
               <div className="flex flex-col gap-6 w-full">
@@ -986,6 +1019,7 @@ const ProfilePage = (props: Props) => {
         </div>
       </SlideOver>
     </>
+    
   );
 };
 
