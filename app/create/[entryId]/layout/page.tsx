@@ -11,6 +11,7 @@ import React, {
 import {
   FiBold,
   FiChevronDown,
+  FiChevronUp,
   FiCode,
   FiEdit2,
   FiGrid,
@@ -199,32 +200,44 @@ const LayoutPage = (props: Props) => {
     setFabricCanvas(canvas);
 
     // snap to grid
-    canvas.on("object:moving", function (options) {
-      // check if object is image
-      if (
-        options.target.get("type") !== "image" &&
-        options.target.get("type") !== "activeselection"
-      ) {
-        return;
-      }
+    // canvas.on("object:moving", function (options) {
+    //   // check if object is image
+    //   if (
+    //     options.target.get("type") !== "image" &&
+    //     options.target.get("type") !== "activeselection"
+    //   ) {
+    //     return;
+    //   }
 
-      options.target.set({
-        left: Math.round(options.target.left / gridSize) * gridSize,
-        top: Math.round(options.target.top / gridSize) * gridSize,
-      });
-    });
+    //   options.target.set({
+    //     left: Math.round(options.target.left / gridSize) * gridSize,
+    //     top: Math.round(options.target.top / gridSize) * gridSize,
+    //   });
+    // });
 
     canvas.on("object:scaling", function (options) {});
 
     canvas.setDimensions({
       // width: canvasWidth, // square ratio
-      // width: innerWidth - 250,
-      width: innerWidth,
-      height:
-        entry?.scenes.length * canvasWidth === 0
-          ? canvasWidth * 7
-          : entry?.scenes.length * canvasWidth + 1,
+      width: innerWidth - 250,
+      // width: innerWidth,
+      height: entry?.scenes.length * canvasWidth === 0 ? canvasWidth * 7 : entry?.scenes.length * canvasWidth + 1,
     });
+
+    // add rectangle from 0,0 to 0,800
+    const rect = new fabric.Rect({
+      left: 0,
+      top: 0,
+      width: canvasWidth,
+      height: entry?.scenes.length * canvasWidth === 0 ? canvasWidth * 7 : entry?.scenes.length * canvasWidth + 1,
+      fill: "#FFFFFF",
+      strokeWidth: 1,
+      stroke: "#EFEFEF",
+      selectable: true,
+      hasControls: false,
+      evented: false,
+    });
+    canvas.add(rect);
 
     // stylings
     // canvas.selectionBorderColor = "#10b981"; // emerald green
@@ -262,6 +275,12 @@ const LayoutPage = (props: Props) => {
         var e = opt.e;
         var vpt = canvas.viewportTransform;
         vpt[4] -= e.deltaX;
+        if (vpt[4] <= 0) {
+          vpt[4] = 0;
+        } else if (vpt[4] >= canvas.width) {
+          vpt[4] = canvas.width;
+        }
+        console.log("vpt[4]: ", vpt[4]);
         vpt[5] -= e.deltaY;
         canvas.requestRenderAll();
       }
@@ -493,14 +512,18 @@ const LayoutPage = (props: Props) => {
 
   return (
     <>
-      <div className="grid grid-rows-[100px_auto] overflow-auto">
+      <div className="grid grid-rows-[64px_auto] overflow-auto">
+
         {/* navigation header */}
         <CreateHeader currentRoute={createRoutes[2]} nextDisabled={false} />
 
-        <div className="grid grid-rows-[50px_auto] overflow-hidden w-full h-full">
+        {/* <div className="grid grid-rows-[42px_auto] overflow-hidden w-full h-full"> */}
+        <div className="flex flex-col overflow-hidden w-full h-full">
+
           {/* tools bar */}
-          <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider px-3">
-            <div className="flex flex-row gap-1">
+          <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider hidden">
+
+            <div className="flex flex-row h-full">
               <ToolbarButton
                 onClick={() => {
                   const newText = new fabric.Textbox("Add Text", {
@@ -542,7 +565,7 @@ const LayoutPage = (props: Props) => {
               </ToolbarButton> */}
             </div>
 
-            <div className="flex flex-row gap-1">
+            <div className="flex flex-row gap-0 h-full">
               {/* if current active ofject is text */}
 
               {/* {currentActiveObject && currentActiveObjectType === "i-text" && (
@@ -567,15 +590,17 @@ const LayoutPage = (props: Props) => {
                 </ToolbarButton>
               )} */}
 
-              {/* <ToolbarButton
+              <ToolbarButton
                 onClick={() => {
-                  // get active
-                  const activeObject = currentActiveObject;
-                  console.log(activeObject);
+                  // get all layers
+                  const layers = fabricCanvas?.getObjects();
+                  if (!layers) return;
+
+                  console.log(layers);
                 }}
               >
-                Print Active
-              </ToolbarButton> */}
+                Print Layers
+              </ToolbarButton>
 
               {currentActiveObject && (
                 <ToolbarButton
@@ -592,7 +617,7 @@ const LayoutPage = (props: Props) => {
                 <>
                   <Menu as="div" className="relative inline-block text-left">
                     <div>
-                      <Menu.Button className="flex flex-row items-center w-full justify-center gap-x-1.5 rounded-md px-3 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary">
+                      <Menu.Button className="flex flex-row items-center w-full text-sm justify-center gap-x-1.5 rounded-none px-4 h-10 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary">
                         {selectedFont}
                         <FiChevronDown
                           className="-mr-1 h-5 w-5 text-light-text-secondary dark:text-dark-text-secondary"
@@ -713,7 +738,7 @@ const LayoutPage = (props: Props) => {
               <Popover className="relative">
                 {({ open }) => (
                   <>
-                    <Popover.Button className="outline-none">
+                    <Popover.Button className="outline-none h-full">
                       <ToolbarButton
                         onClick={() => {
                           setShowColorPicker(!showColorPicker);
@@ -779,39 +804,46 @@ const LayoutPage = (props: Props) => {
               </ToolbarButton> */}
             </div>
           </div>
-
-          <div className="relative flex flex-col w-full h-auto bg-light-background-secondary dark:bg-dark-background-secondary">
-            {/* <div className={`flex flex-col w-[${canvasWidth}px] h-[${canvasWidth * 7}px] bg-light-background-secondary`}> */}
-            {/* <div className={`flex flex-col w-full h-[${canvasWidth * 7}px] bg-green-500`}> */}
+          
+          {/* <div className="relative flex flex-col w-full h-auto bg-light-background-secondary dark:bg-dark-background-secondary"> */}
+          <div className="relative flex flex-col w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary">
 
             <div
-              className={`absolute flex flex-col w-full h-full overflow-auto`}
+              // className={`absolute flex flex-col w-full h-full overflow-auto`}
+              className={`flex flex-col w-full h-full overflow-auto`}
             >
-              <Canvas onLoad={onLoad} saveState />
+              <Excalidraw />
+              {/* <Canvas onLoad={onLoad} saveState /> */}
             </div>
 
-            <div className="absolute flex flex-col inset-0 w-full h-full pointer-events-none p-6 justify-end">
+            <div className="absolute flex flex-col inset-0 w-full h-full pointer-events-none p-6 justify-end hidden">
               <div className="flex flex-col w-full h-full justify-between">
                 <div className="flex flex-row w-full items-center justify-end"></div>
 
                 <div className="flex flex-row w-full items-center justify-between pointer-events-auto">
 
                   {/* zoom controller */}
-                  <div className="flex flex-row text-light-text-secondary dark:text-dark-text-secondary items-center backdrop-blur-xl bg-light-background-primary dark:bg-dark-background-primary bg-opacity-80 drop-shadow-2xl rounded-full h-10 overflow-clip divide-none divide-light-divider dark:divide-dark-divider">
+                  <div className="flex flex-row text-light-text-secondary dark:text-dark-text-secondary items-center backdrop-blur-xl bg-light-background-primary dark:bg-dark-background-primary bg-opacity-80 dark:bg-opacity-80 drop-shadow-2xl rounded-xl h-8 overflow-clip divide-none divide-light-divider dark:divide-dark-divider">
                     <button
                       onClick={() => {}}
-                      className="flex px-3 h-full items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                      className="flex px-2 h-full items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
                     >
                       <FiMinus className="w-4 h-4" />
                     </button>
 
-                    <div className="flex flex-row items-center justify-center text-sm w-10 h-full text-light-text-primary dark:text-dark-text-primary">
+                    <button
+                      onClick={() => {
+                        fabricCanvas?.setZoom(1);
+                        setZoomValue(100);
+                      }}
+                      className="flex flex-row items-center justify-center text-xs w-8 h-full text-light-text-primary dark:text-dark-text-primary select-none"
+                    >
                       <span>{zoomValue.toFixed(0)}%</span>
-                    </div>
+                    </button>
 
                     <button
                       onClick={() => {}}
-                      className="flex px-3 h-full items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                      className="flex px-2 h-full items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
                     >
                       <FiPlus className="w-4 h-4" />
                     </button>
@@ -832,7 +864,9 @@ const LayoutPage = (props: Props) => {
                         format: "png",
                         quality: 1,
                         width: canvasWidth,
-                        height: canvasWidth * 7,
+                        height: entry?.scenes.length * canvasWidth === 0 ? canvasWidth * 7 : entry?.scenes.length * canvasWidth + 1,
+                        top: 0,
+                        left: 0,
                       });
 
                       console.log(canvasImageBase64);
@@ -842,6 +876,7 @@ const LayoutPage = (props: Props) => {
                   >
                     Test Save Image
                   </button>
+
                 </div>
               </div>
             </div>
@@ -1044,7 +1079,7 @@ const ToolbarButton: React.FC<{
     <button
       onClick={onClick}
       className={clsx(
-        "relative flex flex-row items-center justify-center h-10 px-3 rounded-md hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
+        "relative flex flex-row items-center justify-center h-full text-sm px-3 rounded-none hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
         {
           "bg-light-background-secondary dark:bg-dark-background-secondary":
             isActive,

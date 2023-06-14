@@ -25,9 +25,9 @@ const CreateHeader = (props: Props) => {
           <h1 className="text-2xl font-bold">
             {props.currentRoute?.title ?? "Title"}
           </h1>
-          <p className="text-light-text-secondary font-light">
+          {/* <p className="text-light-text-secondary font-light">
             {props.currentRoute?.description ?? "Description"}
-          </p>
+          </p> */}
         </div>
 
         <div className="flex flex-row gap-4">
