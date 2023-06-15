@@ -522,7 +522,6 @@ const LayoutPage = (props: Props) => {
 
           {/* tools bar */}
           <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider hidden">
-
             <div className="flex flex-row h-full">
               <ToolbarButton
                 onClick={() => {
