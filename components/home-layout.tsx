@@ -241,7 +241,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <button
                     onClick={() => {
                       router.push(
-                        `/create/${new mongoose.Types.ObjectId().toHexString()}/styles`
+                        // `/create/${new mongoose.Types.ObjectId().toHexString()}/styles`
+                        `/create/${new mongoose.Types.ObjectId().toHexString()}`
                       );
                     }}
                     className={clsx(

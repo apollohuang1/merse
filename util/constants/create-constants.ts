@@ -4,6 +4,7 @@ import { StyleReference } from "@/models/types";
 export const allFonts = ["Times New Roman", "Pacifico", "VT323", "Quicksand", "Inconsolata", "Arial", "Helvetica"];
 
 export type CreateRoute = {
+  step: number;
   pathname: string;
   title: string;
   description: string;
@@ -40,11 +41,12 @@ const allCreateRoutes: any[] = [
 ];
 
 // create all routes with back config and next config
-export const createRoutes: CreateRoute[] = allCreateRoutes.map((route, i) => {
+export const createRoutes: CreateRoute[] = allCreateRoutes.map((route: CreateRoute, i: number) => {
   const nextRoute = allCreateRoutes[i + 1] || null;
   const backRoute = allCreateRoutes[i - 1] || null;
   return {
     ...route,
+    step: i,
     nextConfig: nextRoute,
     backConfig: backRoute,
   };
