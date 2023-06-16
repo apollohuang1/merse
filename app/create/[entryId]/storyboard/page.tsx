@@ -234,6 +234,8 @@ const Storyboard = (props: Props) => {
         "markrachapoom@gmail.com",
         "emily.park@berkeley.edu",
         "jyoti.rani@berkeley.edu",
+        "jylee@sequoiacap.com",
+        "ccurnin@sequoiacap.com"
       ];
 
       if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
