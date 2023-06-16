@@ -12,6 +12,7 @@ import { Spinner } from "@chakra-ui/react";
 import Alert from "../alert";
 import useCreateEntry from "@/hooks/useCreateEntry";
 import { FiChevronLeft, FiSun } from "react-icons/fi";
+import { useAppSelector } from "@/redux-store/hooks";
 
 type Props = {
   entryId: string;
@@ -27,6 +28,9 @@ const CreateLeftSideBar = (props: Props) => {
   const [isSaving, setIsSaving] = React.useState(false);
   const [showDiscardAlert, setShowDiscardAlert] =
     React.useState<boolean>(false);
+
+  const entry = useAppSelector((state) => state.entry);
+  const entryHelper = useAppSelector((state) => state.entryHelper);
 
   const createRoutesWithDisable = createRoutes.map((route: CreateRoute) => {
     return {
@@ -53,7 +57,7 @@ const CreateLeftSideBar = (props: Props) => {
           </div>
 
           <div className="flex flex-col gap-0">
-            {createRoutes.map((route: CreateRoute, index) => {
+            {createRoutes.map((route: CreateRoute, index: number) => {
               return (
                 <button
                   key={index}
@@ -69,13 +73,11 @@ const CreateLeftSideBar = (props: Props) => {
                       "flex items-center justify-center w-full h-16 transition-all active:opacity-50 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary",
                       {
                         "bg-light-background-secondary dark:bg-dark-background-secondary text-light-text-primary dark:text-dark-text-primary transition-all text-lg border-r-[3px] border-r-accent":
-                          route.title.toLowerCase() ===
-                          pathName?.split("/")[3]?.toLowerCase(),
+                          index === entryHelper?.currentStep,
                       },
                       {
                         "text-light-text-tertiary dark:text-dark-text-tertiary":
-                          route.title.toLowerCase() !==
-                          pathName?.split("/")[3]?.toLowerCase(),
+                        index !== entryHelper?.currentStep,
                       }
                     )}
                   >

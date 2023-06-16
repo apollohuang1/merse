@@ -8,6 +8,8 @@ import Storyboard from "@/components/create/storyboard";
 import StylesRoute from "@/components/create/styles";
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
+  decrementStep,
+  incrementStep,
   setContent,
   setEntry,
   setNotificationContent,
@@ -30,9 +32,8 @@ const CreateEntryIdPage = (props: Props) => {
 
   const dispatch = useAppDispatch();
   const entry = useAppSelector((state) => state.entry);
+  const entryHelper = useAppSelector((state) => state.entryHelper);
   const auth = useAppSelector((state) => state.auth);
-
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
 
   useEffect(() => {
     // fetch entry data
@@ -78,7 +79,7 @@ const CreateEntryIdPage = (props: Props) => {
         <div className="flex flex-row justify-between items-start py-4 w-full h-full max-w-3xl">
           <div className="flex flex-col max-w-sm">
             <h1 className="text-2xl font-bold">
-              { createRoutes[currentStep]?.title }
+              { createRoutes[entryHelper?.currentStep]?.title }
             </h1>
             {/* <p className="text-light-text-secondary font-light">
             {props.currentRoute?.description ?? "Description"}
@@ -87,22 +88,22 @@ const CreateEntryIdPage = (props: Props) => {
 
           <div className="flex flex-row gap-4">
             {/* back button */}
-            {createRoutes[currentStep]?.backConfig && (
+            {createRoutes[entryHelper?.currentStep]?.backConfig && (
               <button
                 onClick={() => {
-                  setCurrentStep(prev => prev - 1);
+                  dispatch(decrementStep());
                 }}
                 className="group inline-flex items-center justify-center rounded-2xl text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all hover:scale-105 active:scale-100 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary"
               >
                 <FiChevronLeft className="text-light-text-primary dark:text-dark-text-primary transition-all hover:duration-300" />
-                <span>{createRoutes[currentStep]?.backConfig?.title ?? "Back"}</span>
+                <span>{createRoutes[entryHelper?.currentStep]?.backConfig?.title ?? "Back"}</span>
               </button>
             )}
 
-            {createRoutes[currentStep]?.nextConfig ? (
+            {createRoutes[entryHelper?.currentStep]?.nextConfig ? (
               <button
                 onClick={() => {
-                  setCurrentStep(prev => prev + 1);
+                  dispatch(incrementStep());
                 }}
                 className={clsx(
                   "group inline-flex items-center justify-center rounded-2xl text-sm gap-1 text-light-text-primary dark:text-dark-text-primary border border-light-divider dark:border-dark-divider w-32 h-10 transition-all bg-light-background-secondary dark:bg-dark-background-secondary"
@@ -113,8 +114,8 @@ const CreateEntryIdPage = (props: Props) => {
                 )}
                 // disabled={props.nextDisabled}
               >
-                <span>{createRoutes[currentStep]?.nextConfig?.title ?? "Finish"}</span>
-                {createRoutes[currentStep]?.nextConfig && (
+                <span>{createRoutes[entryHelper?.currentStep]?.nextConfig?.title ?? "Finish"}</span>
+                {createRoutes[entryHelper?.currentStep]?.nextConfig && (
                   <FiChevronRight className="text-light-text-primary dark:text-dark-text-primary transition-all hover:duration-300" />
                 )}
               </button>
@@ -126,11 +127,11 @@ const CreateEntryIdPage = (props: Props) => {
         </div>
       </div>
 
-      {currentStep === 0 && <StylesRoute />}
-      {currentStep === 1 && <Storyboard />}
-      {currentStep === 2 && <Layout />}
-      {currentStep === 3 && <Cover />}
-      {currentStep === 4 && <Review />}
+      {entryHelper?.currentStep === 0 && <StylesRoute />}
+      {entryHelper?.currentStep === 1 && <Storyboard />}
+      {entryHelper?.currentStep === 2 && <Layout />}
+      {entryHelper?.currentStep === 3 && <Cover />}
+      {entryHelper?.currentStep === 4 && <Review />}
 
     </div>
   );

@@ -103,12 +103,19 @@ const entrySlice = createSlice({
 const entryHelperSlice = createSlice({
   name: "entryHelper",
   initialState: {
+    currentStep: 0,
     stylesScrollPosition: 0,
     showGeneratedStoryboard: false,
     isGeneratingStoryboard: false,
     showChat: false,
   },
   reducers: {
+    incrementStep: (state) => {
+      state.currentStep += 1;
+    },
+    decrementStep: (state) => {
+      state.currentStep -= 1;
+    },
     setStylesScrollPosition: (state, action: PayloadAction<number>) => {
       state.stylesScrollPosition = action.payload;
     },
@@ -205,6 +212,8 @@ export const {
 } = entrySlice.actions;
 
 export const {
+  incrementStep,
+  decrementStep,
   setStylesScrollPosition,
   setShowGeneratedStoryboard,
   setIsGeneratingStoryboard,
