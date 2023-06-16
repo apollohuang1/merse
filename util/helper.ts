@@ -19,7 +19,7 @@ export const getFormattedDate = (dateNumber: number) => {
 }
 
 // convert 2023-04-28T19:18:03.259Z string to the same above
-export const getFormattedDateFromMongoDBDate = (date: Date | undefined, format: "f:19 October, 2002" | "f:Oct 19") => {
+export const getFormattedDateFromMongoDBDate = (date: Date | undefined, format?: "f:19 October, 2002" | "f:Oct 19") => {
   if (!date) return "";
 
   if (format === "f:19 October, 2002") {
