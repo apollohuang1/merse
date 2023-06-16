@@ -41,7 +41,7 @@ import { useNotifications } from "@/hooks/useNotifications";
 import SlideOver from "./slide-over";
 import { Notification } from "@/models/notification";
 import NotificationAlert from "./notification";
-import { getRealTimeDateFormat } from "@/util/helper";
+import { getFormattedDateFromMongoDBDate, getRealTimeDateFormat } from "@/util/helper";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref
@@ -590,55 +590,60 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             return (
               <div
                 key={index}
-                className="flex flex-row items-center justify-between gap-3 border-none border-light-divider dark:border-dark-divider px-3 py-6 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                className="flex flex-row items-center justify-between gap-3 border-none border-light-divider dark:border-dark-divider px-6 py-6 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
               >
-                <div className="flex flex-row gap-3 items-center">
-                  <button>
-                    <img
-                      src={notification?.sender?.profile_image_url}
-                      className="h-8 w-8 rounded-full"
-                      onClick={() => {
-                        router.push(
-                          `/${
-                            notification?.sender?.username ||
-                            notification?.sender?._id
-                          }`
-                        );
-                      }}
-                    />
-                  </button>
+                <div className="flex flex-row w-full gap-3 items-center justify-between">
+                  <div className="flex flex-row gap-3 items-center">
+                    <button>
+                      <img
+                        src={notification?.sender?.profile_image_url}
+                        className="h-8 w-8 rounded-full"
+                        onClick={() => {
+                          router.push(
+                            `/${
+                              notification?.sender?.username ||
+                              notification?.sender?._id
+                            }`
+                          );
+                        }}
+                      />
+                    </button>
 
-                  <span>
-                    <Link
-                      href={`/${
-                        notification?.sender?.username ||
-                        notification?.sender?._id
-                      }`}
-                      className="font-medium hover:underline"
-                    >
-                      {notification?.sender?.username}
-                    </Link>
-
-                    {notification?.type === "follow" && (
+                    <span>
                       <Link
                         href={`/${
                           notification?.sender?.username ||
                           notification?.sender?._id
                         }`}
+                        className="font-medium hover:underline"
                       >
-                        {" "}
-                        followed you
+                        {notification?.sender?.username}
                       </Link>
-                    )}
 
-                    {notification?.type === "like-entry" &&
-                      notification?.entryId && (
-                        <Link href={`/entry/${notification?.entryId}`}>
+                      {notification?.type === "follow" && (
+                        <Link
+                          href={`/${
+                            notification?.sender?.username ||
+                            notification?.sender?._id
+                          }`}
+                        >
                           {" "}
-                          liked your journal entry
+                          followed you
                         </Link>
                       )}
-                  </span>
+
+                      {notification?.type === "like-entry" &&
+                        notification?.entryId && (
+                          <Link href={`/entry/${notification?.entryId}`}>
+                            {" "}
+                            liked your journal entry
+                          </Link>
+                        )}
+                    </span>
+                  </div>
+
+                  <span className="text-xs text-light-text-secondary dark:text-dark-text-secondary font-medium line-clamp-1 flex-shrink-0">{getFormattedDateFromMongoDBDate(notification?.created_at, "f:Oct 19")}</span>
+
                 </div>
 
                 {/* date in format like now, 1 min ago, ghour ago, day ago, bla bla, or date */}
