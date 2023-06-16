@@ -25,21 +25,21 @@ const CreateLeftSideBar = (props: Props) => {
   const { toggleColorScheme } = useColorScheme();
 
   const [isSaving, setIsSaving] = React.useState(false);
-  const [showDiscardAlert, setShowDiscardAlert] = React.useState<boolean>(false);
+  const [showDiscardAlert, setShowDiscardAlert] =
+    React.useState<boolean>(false);
 
   const createRoutesWithDisable = createRoutes.map((route: CreateRoute) => {
     return {
       ...route,
-      disabled: route.title.toLowerCase() !== pathName?.split("/")[3]?.toLowerCase(),
+      disabled:
+        route.title.toLowerCase() !== pathName?.split("/")[3]?.toLowerCase(),
     };
   });
 
   return (
     <>
       <div className="flex flex-col justify-between w-full h-full border-r border-x-light-divider dark:border-x-dark-divider ">
-
         <div className="flex flex-col">
-
           <div className="flex h-16 w-full items-center justify-center border-b border-b-light-divider dark:border-dark-divider mb-16">
             <button
               onClick={() => {
@@ -47,7 +47,7 @@ const CreateLeftSideBar = (props: Props) => {
               }}
               className="flex flex-row h-full w-full px-6 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary items-center justify-center gap-1"
             >
-              <FiChevronLeft className="w-5 h-5 font-medium"/>
+              <FiChevronLeft className="w-5 h-5 font-medium" />
               <span>Home</span>
             </button>
           </div>
@@ -58,7 +58,9 @@ const CreateLeftSideBar = (props: Props) => {
                 <button
                   key={index}
                   onClick={() => {
-                    router.push(`/create/${props?.entryId}/${route?.title.toLowerCase()}`);
+                    router.push(
+                      `/create/${props?.entryId}/${route?.title.toLowerCase()}`
+                    );
                   }}
                   disabled={false}
                 >
@@ -86,6 +88,22 @@ const CreateLeftSideBar = (props: Props) => {
         </div>
 
         <div className="flex flex-col gap-0">
+
+          <div className=" p-5 border-t border-light-divider dark:border-dark-divider">
+            <span className="text-sm font-light text-light-text-secondary dark:text-dark-text-secondary">
+              ⚠️ We’re using{" "}
+              <a
+                href="https://stability.ai/stablediffusion"
+                // className="underline text-light-text-primary dark:text-dark-text-primary"
+                target="_blank"
+                className="underline text-emerald-500"
+              >
+                Stable Diffusion XL
+              </a>{" "}
+              as a placeholder while model training on our own.
+            </span>
+          </div>
+
           <button
             onClick={() => {
               toggleColorScheme();

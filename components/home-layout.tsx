@@ -383,17 +383,26 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <div className="flex flex-col">
                     <div className=" p-5 border-t border-light-divider dark:border-dark-divider">
                       <span className="text-sm font-light text-light-text-secondary dark:text-dark-text-secondary">
-                        ⚠️ We’re using <a href="https://stability.ai/stablediffusion" className="underline text-light-text-primary dark:text-dark-text-primary">Stable Diffusion XL</a> as a placeholder while model training on our own.
+                        ⚠️ We’re using{" "}
+                        <a
+                          href="https://stability.ai/stablediffusion"
+                          target="_blank"
+                          // className="underline text-light-text-primary dark:text-dark-text-primary"
+                          className="underline text-emerald-500"
+                        >
+                          Stable Diffusion XL
+                        </a>{" "}
+                        as a placeholder while model training on our own.
                       </span>
                     </div>
-                    
+
                     <div className=" p-5 border-t border-light-divider dark:border-dark-divider">
-                    <span className="text-sm font-light text-light-text-secondary dark:text-dark-text-secondary">
-                      Product in development.
-                      <br />
-                      Browse our site and stay tuned for its release :))
-                    </span>
-                  </div>
+                      <span className="text-sm font-light text-light-text-secondary dark:text-dark-text-secondary">
+                        Product in development.
+                        <br />
+                        Browse our site and stay tuned for its release :))
+                      </span>
+                    </div>
                   </div>
                 )}
               </div>
