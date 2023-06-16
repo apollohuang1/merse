@@ -202,7 +202,8 @@ const useCreateEntry = () => {
 
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       // iterate through splitedSceneText array
-      for (let i = 0; i < sceneTextsArray.length; i++) {
+      // for (let i = 0; i < sceneTextsArray.length; i++) {
+      for (let i = 0; i < 2; i++) {
         const base64String = await createImageFromText(sceneTextsArray[i]);
         const newScene: Scene = {
           _id: new mongoose.Types.ObjectId().toString(),
