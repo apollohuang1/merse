@@ -29,7 +29,7 @@ const ProfileMenu = (props: Props) => {
       icon: <FiBookOpen />,
       label: "Create Comic",
       onClick: () => {
-        window.location.href = `/create/${new mongoose.Types.ObjectId().toHexString()}/styles`;
+        window.location.href = `/create/${new mongoose.Types.ObjectId().toHexString()}`;
       },
     },
     {

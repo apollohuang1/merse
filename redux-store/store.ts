@@ -110,6 +110,9 @@ const entryHelperSlice = createSlice({
     showChat: false,
   },
   reducers: {
+    setStep: (state, action: PayloadAction<number>) => {
+      state.currentStep = action.payload;
+    },
     incrementStep: (state) => {
       state.currentStep += 1;
     },
@@ -212,6 +215,7 @@ export const {
 } = entrySlice.actions;
 
 export const {
+  setStep,
   incrementStep,
   decrementStep,
   setStylesScrollPosition,

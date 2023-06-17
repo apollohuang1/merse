@@ -12,7 +12,8 @@ import { Spinner } from "@chakra-ui/react";
 import Alert from "../alert";
 import useCreateEntry from "@/hooks/useCreateEntry";
 import { FiChevronLeft, FiSun } from "react-icons/fi";
-import { useAppSelector } from "@/redux-store/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
+import { setStep } from "@/redux-store/store";
 
 type Props = {
   entryId: string;
@@ -31,6 +32,8 @@ const CreateLeftSideBar = (props: Props) => {
 
   const entry = useAppSelector((state) => state.entry);
   const entryHelper = useAppSelector((state) => state.entryHelper);
+
+  const dispatch = useAppDispatch();
 
   const createRoutesWithDisable = createRoutes.map((route: CreateRoute) => {
     return {
@@ -62,9 +65,10 @@ const CreateLeftSideBar = (props: Props) => {
                 <button
                   key={index}
                   onClick={() => {
-                    router.push(
-                      `/create/${props?.entryId}/${route?.title.toLowerCase()}`
-                    );
+                    dispatch(setStep(index));
+                    // router.push(
+                    //   `/create/${props?.entryId}/${route?.title.toLowerCase()}`
+                    // );
                   }}
                   disabled={false}
                 >
