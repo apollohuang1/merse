@@ -116,6 +116,15 @@ const Storyboard = (props: Props) => {
   const [customPromptText, setCustomPromptText] = React.useState<string>("");
   const [isGeneratingCustomScene, setIsGeneratingCustomScene] =
     React.useState<boolean>(false);
+
+  type VariantGenerationProcess = {
+    sceneIndex: number;
+    isGenerating: boolean;
+  };
+
+  const [currentVariantsProcessThread, setCurrentVariantsProcessThread] =
+    React.useState<VariantGenerationProcess[]>([]);
+
   const [isEnterPressed, setIsEnterPressed] = React.useState<boolean>(false);
 
   interface ImageVariant {
@@ -133,11 +142,10 @@ const Storyboard = (props: Props) => {
   // });
 
   const handleDeleteScene = (index: number) => {
-
-    setImageVariants(prevVariants => {
+    setImageVariants((prevVariants) => {
       let newVariants = [...prevVariants];
-      newVariants = newVariants.filter(iv => iv.sceneIndex !== index);
-      newVariants = newVariants.map(iv =>
+      newVariants = newVariants.filter((iv) => iv.sceneIndex !== index);
+      newVariants = newVariants.map((iv) =>
         iv.sceneIndex > index ? { ...iv, sceneIndex: iv.sceneIndex - 1 } : iv
       );
       return newVariants;
@@ -174,7 +182,14 @@ const Storyboard = (props: Props) => {
     setNewSceneText("");
   };
 
-  const handleRegenerateImagesVariants = async (index: number) => {
+  const handleGenerateImagesVariants = async (index: number) => {
+    // Set the current variant generation process
+    setCurrentVariantsProcessThread((prevState) => {
+      const newState = [...prevState];
+      newState.push({ sceneIndex: index, isGenerating: true });
+      return newState;
+    });
+
     const updated_image_base64_variants: string[] = [];
 
     // for loop 4 times
@@ -189,6 +204,7 @@ const Storyboard = (props: Props) => {
     const existingEntryIndex = imageVariants.findIndex(
       (iv) => iv.sceneIndex === index
     );
+
     if (existingEntryIndex >= 0) {
       setImageVariants((prevState) => {
         const newState = [...prevState];
@@ -207,6 +223,12 @@ const Storyboard = (props: Props) => {
         },
       ]);
     }
+
+    // remove the current variant generation process with index
+    setCurrentVariantsProcessThread((prevState) => {
+      const newState = [...prevState];
+      return newState.filter((v) => v.sceneIndex !== index);
+    });
   };
 
   const handleVariantClick = (sceneIndex: number, variantIndex: number) => {
@@ -774,7 +796,7 @@ const Storyboard = (props: Props) => {
                 (scene: Scene & StoryboardSample, index: number) => (
                   <div
                     key={index}
-                    className="group relative flex flex-col w-full h-auto rounded-lg overflow-clip bg-light-background-tertiary dark:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider min-w-[400px] pb-4"
+                    className="group relative flex flex-col w-full h-auto rounded-none overflow-clip bg-light-background-tertiary dark:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider min-w-[400px] pb-4"
                   >
                     <div className="flex flex-col">
                       <img
@@ -784,66 +806,112 @@ const Storyboard = (props: Props) => {
                         //     : scene?.artwork?.url ?? ""
                         // }
                         src={
-                          (imageVariants.find(iv => iv.sceneIndex === index)?.selectedVariantIndex !== undefined
-                            && imageVariants.find(iv => iv.sceneIndex === index)?.variants[imageVariants.find(iv => iv.sceneIndex === index)?.selectedVariantIndex!] !== undefined
-                            ? `data:image/png;base64,${imageVariants.find(iv => iv.sceneIndex === index)?.variants[imageVariants.find(iv => iv.sceneIndex === index)?.selectedVariantIndex!]}`
+                          imageVariants.find((iv) => iv.sceneIndex === index)
+                            ?.selectedVariantIndex !== undefined &&
+                          imageVariants.find((iv) => iv.sceneIndex === index)
+                            ?.variants[
+                            imageVariants.find((iv) => iv.sceneIndex === index)
+                              ?.selectedVariantIndex!
+                          ] !== undefined
+                            ? `data:image/png;base64,${
+                                imageVariants.find(
+                                  (iv) => iv.sceneIndex === index
+                                )?.variants[
+                                  imageVariants.find(
+                                    (iv) => iv.sceneIndex === index
+                                  )?.selectedVariantIndex!
+                                ]
+                              }`
                             : scene?.image_base64
-                              ? "data:image/png;base64," + scene.image_base64
-                              : ""
-                          )
+                            ? "data:image/png;base64," + scene.image_base64
+                            : ""
                         }
                         alt="comic book cover"
                         className="object-cover aspect-[4/3]"
                       />
 
                       {/* image variants */}
-                      {imageVariants.some((iv) => iv.sceneIndex === index) && (
+                      {(imageVariants.find((iv) => iv.sceneIndex === index) || currentVariantsProcessThread.find((iv) => iv.sceneIndex === index)?.isGenerating) && (
+                        // image variants
                         <div className="flex flex-row w-full h-20 p-2 gap-2">
-                          {imageVariants
-                            .find((iv) => iv.sceneIndex === index)
-                            ?.variants.map((variant, imageIndex) => (
-                              <button
+                          {currentVariantsProcessThread.find(
+                            (iv) => iv.sceneIndex === index
+                          )?.isGenerating ? (
+                            // map 4 times
+                            Array.from(Array(4).keys()).map((_, imageIndex) => (
+                              <div
                                 key={imageIndex}
-                                onClick={() => {
-                                  handleVariantClick(index, imageIndex);
-                                }}
                                 className={clsx(
-                                  "relative w-full h-full rounded-md overflow-clip",
-                                  { "ring-1 ring-emerald-500" : imageVariants.find((iv) => iv.sceneIndex === index)?.selectedVariantIndex === imageIndex }
+                                  "w-full h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary rounded-md overflow-clip animate-pulse"
                                 )}
-                              >
-                                <img
-                                  src={`data:image/png;base64,${variant}`}
-                                  alt={`comic variant image ${imageIndex + 1}`}
-                                  className={clsx(
-                                    "w-full h-full object-cover aspect-square"
-                                    // { "opacity-30 dark:opacity-30 brightness-[0.7]" : imageIndex !== 2}
-                                  )}
-                                />
+                              />
+                            ))
+                          ) : (
+                            <>
+                              {imageVariants
+                                .find((iv) => iv.sceneIndex === index)
+                                ?.variants.map((variant, imageIndex) => (
+                                  <button
+                                    key={imageIndex}
+                                    onClick={() => {
+                                      handleVariantClick(index, imageIndex);
+                                    }}
+                                    className={clsx(
+                                      "relative w-full h-full rounded-lg overflow-clip",
+                                      {
+                                        "ring-1 ring-emerald-500":
+                                          imageVariants.find(
+                                            (iv) => iv.sceneIndex === index
+                                          )?.selectedVariantIndex ===
+                                          imageIndex,
+                                      }
+                                    )}
+                                  >
+                                    <img
+                                      src={`data:image/png;base64,${variant}`}
+                                      alt={`comic variant image ${
+                                        imageIndex + 1
+                                      }`}
+                                      className={clsx(
+                                        "w-full h-full object-cover aspect-square"
+                                        // { "opacity-30 dark:opacity-30 brightness-[0.7]" : imageIndex !== 2}
+                                      )}
+                                    />
 
-                                {/* overlay */}
-                                {imageVariants.find(
-                                  (iv) => iv.sceneIndex === index
-                                )?.selectedVariantIndex === imageIndex && (
-                                  <div className="absolute flex inset-0 bg-[rgb(0,0,0,0.5)] dark:bg-[rgb(0,0,0,0.6)] w-full h-full items-center justify-center">
-                                    <FiCheckCircle className="text-emerald-500 text-xl" />
-                                  </div>
-                                )}
-                              </button>
-                            ))}
+                                    {/* overlay */}
+                                    {imageVariants.find(
+                                      (iv) => iv.sceneIndex === index
+                                    )?.selectedVariantIndex === imageIndex && (
+                                      <div className="absolute flex inset-0 bg-[rgb(0,0,0,0.5)] dark:bg-[rgb(0,0,0,0.6)] w-full h-full items-center justify-center">
+                                        <FiCheckCircle className="text-emerald-500 text-xl" />
+                                      </div>
+                                    )}
+                                  </button>
+                                ))}
+                            </>
+                          )}
                         </div>
                       )}
                     </div>
 
                     <div className="absolute flex flex-row w-full items-center justify-between p-2">
-                      <button
-                        onClick={() => {
-                          handleRegenerateImagesVariants(index);
-                        }}
-                        className="flex px-3 h-8 rounded-full items-center justify-center bg-emerald-500 bg-opacity-80 backdrop-blur-xl text-sm font-medium text-dark-text-primary borderborder-dark-dividerContrast"
-                      >
-                        Create variants
-                      </button>
+                      {currentVariantsProcessThread.find(
+                        (iv) => iv.sceneIndex === index
+                      )?.isGenerating ? (
+                        <div className="flex flex-row px-3 h-8 rounded-full items-center justify-center bg-black bg-opacity-50 backdrop-blur-xl text-sm font-medium text-dark-text-primary borderborder-dark-dividerContrast">
+                          <Spinner className="w-3 h-3 mr-2" />
+                          Creating variants...
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            handleGenerateImagesVariants(index);
+                          }}
+                          className="flex flex-row px-3 h-8 rounded-full items-center justify-center bg-emerald-500 bg-opacity-80 backdrop-blur-xl text-sm font-medium text-dark-text-primary borderborder-dark-dividerContrast"
+                        >
+                          Create variants
+                        </button>
+                      )}
 
                       <button
                         className="flex w-8 h-8 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary text-white rounded-full items-center justify-center"
@@ -915,14 +983,15 @@ const Storyboard = (props: Props) => {
             </div>
 
             {/* regenerate container */}
-            <form className="flex flex-col sticky bottom-0 w-full gap-3 border border-light-divider dark:border-dark-divider rounded-t-lg p-3 bg-light-background-primary dark:bg-dark-background-primary backdrop-blur-xl">
+            <form className="flex flex-col sticky bottom-0 w-full gap-3 border border-light-divider dark:border-dark-divider rounded-t-xl p-3 bg-light-background-secondary dark:bg-dark-background-secondary backdrop-blur-xl">
+              
               <input
                 value={customPromptText}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setCustomPromptText(e.target.value);
                 }}
                 placeholder="Enter new scene prompt..."
-                className="placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary h-12 border border-light-divider dark:border-dark-divider bg-transparent outline-none p-3 rounded-lg focus:ring-1 ring-emerald-500 disabled:opacity-50"
+                className="placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary h-12 border border-light-dividerContrast dark:border-dark-dividerContrast bg-transparent outline-none p-3 rounded-lg focus:ring-1 ring-emerald-500 disabled:opacity-50"
                 disabled={isGeneratingCustomScene}
               />
 
@@ -947,7 +1016,7 @@ const Storyboard = (props: Props) => {
                     });
                 }}
                 disabled={customPromptText === "" || isGeneratingCustomScene}
-                className="flex flex-row w-full items-center justify-center h-12 bg-light-background-secondary dark:bg-dark-background-secondary flex-shrink-0 rounded-lg hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all border border-light-divider dark:border-dark-divider"
+                className="flex flex-row w-full items-center justify-center h-12 bg-light-background-tertiary dark:bg-dark-background-tertiary flex-shrink-0 rounded-xl hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all border border-light-divider dark:border-dark-divider hover:bg-opacity-50 dark:hover:bg-opacity-50 hover:transition-all"
               >
                 {isGeneratingCustomScene ? (
                   <div className="flex flex-row items-center gap-2">
