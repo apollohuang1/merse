@@ -228,6 +228,18 @@ const useCreateEntry = () => {
     }
   };
 
+  const addSceneFromCustomPrompt = async (prompt: string) => {
+    const imageBase64String = await createImageFromText(prompt);
+    const newScene: Scene = {
+      _id: new mongoose.Types.ObjectId().toString(),
+      image_base64: imageBase64String,
+      prompt: prompt,
+      displayed_text: prompt,
+      image_base64_variants: [],
+    };
+    dispatch(addScene(newScene));
+  }
+
   /**
    * Universal function for chatgpt response that returns a string promise (resolve and reject)
    * @param input text to be sent :)
@@ -471,6 +483,8 @@ const useCreateEntry = () => {
 
   return {
     generateStoryboard,
+    createImageFromText,
+    addSceneFromCustomPrompt,
     convertTiptapJSONToText,
     getOpenAIInsertedText,
     saveEntry,

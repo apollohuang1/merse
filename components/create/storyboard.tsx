@@ -5,12 +5,16 @@ import React, { FormEventHandler, useEffect, useState } from "react";
 import {
   FiArrowUp,
   FiBold,
+  FiCheck,
+  FiCheckCircle,
   FiCode,
   FiEdit2,
   FiImage,
   FiItalic,
   FiList,
   FiMoreHorizontal,
+  FiPlus,
+  FiX,
 } from "react-icons/fi";
 import { BsQuote, BsSpotify } from "react-icons/bs";
 import { IoText } from "react-icons/io5";
@@ -82,7 +86,8 @@ type Props = {};
 
 const Storyboard = (props: Props) => {
   // hooks
-  const { generateStoryboard } = useCreateEntry();
+  const { generateStoryboard, createImageFromText, addSceneFromCustomPrompt } =
+    useCreateEntry();
 
   // redux states
   const auth = useAppSelector((state) => state.auth);
@@ -108,6 +113,9 @@ const Storyboard = (props: Props) => {
   const [isChatResponseLoading, setIsChatResponseLoading] =
     React.useState<boolean>(false);
 
+  const [customPromptText, setCustomPromptText] = React.useState<string>("");
+  const [isGeneratingCustomScene, setIsGeneratingCustomScene] =
+    React.useState<boolean>(false);
   const [isEnterPressed, setIsEnterPressed] = React.useState<boolean>(false);
 
   // Set up the Hocuspocus WebSocket provider
@@ -146,6 +154,27 @@ const Storyboard = (props: Props) => {
     // Then clear the editing state
     setEditingSceneIndex(null);
     setNewSceneText("");
+  };
+
+  const handleRegenerateImagesVariants = async (index: number) => {
+    const updated_image_base64_variants: string[] = [];
+
+    // for loop 4 times
+    for (let i = 0; i < 4; i++) {
+      const base64String = await createImageFromText(
+        entry.scenes[index].prompt
+      );
+      updated_image_base64_variants.push(base64String);
+    }
+
+    const updatedScenes = [...(entry?.scenes || [])];
+    updatedScenes[index] = {
+      ...updatedScenes[index],
+      image_base64_variants: updated_image_base64_variants,
+    };
+
+    // Dispatch an action to update the scenes in your Redux store
+    dispatch(setScenes(updatedScenes));
   };
 
   const handleRevertScene = (index: number) => {
@@ -231,7 +260,6 @@ const Storyboard = (props: Props) => {
 
   const handleSendMessage = async () => {
     try {
-
       if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
         // alert to let people know we're still developing
         alert(
@@ -290,6 +318,19 @@ const Storyboard = (props: Props) => {
       setIsChatResponseLoading(false);
       console.log(error);
     }
+  };
+
+  const rightPanelScrollToBottom = () => {
+    setTimeout(() => {
+      // scroll down to bottom with div id right-panel-scroll smoothly
+      const element = document.getElementById("right-panel-scroll");
+      if (element) {
+        element.scrollTo({
+          top: element.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    }, 0);
   };
 
   useEffect(() => {
@@ -677,85 +718,192 @@ const Storyboard = (props: Props) => {
 
         {/* right panel */}
         <div
+          id="right-panel-scroll"
           className={clsx(
-            "flex flex-col h-full items-center duration-300 overflow-auto gap-4 flex-shrink-0",
+            "flex flex-col h-full items-center duration-300 gap-4 flex-shrink-0 overflow-auto",
             { "w-0 opacity-0": !entryHelper.showGeneratedStoryboard },
             { "w-[400px]": entryHelper.showGeneratedStoryboard }
           )}
         >
-          <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col">
-            {entry?.scenes.map(
-              (scene: Scene & StoryboardSample, index: number) => (
-                <div
-                  key={index}
-                  className="group relative flex flex-col w-full rounded-lg overflow-clip bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider aspect-auto min-w-[400px] pb-4"
-                >
-                  <img
-                    src={
-                      scene?.image_base64
-                        ? "data:image/png;base64," + scene.image_base64
-                        : scene?.artwork?.url ?? ""
-                    }
-                    alt="comic book cover"
-                    className="object-cover aspect-[4/3]"
-                  />
+          <div className="flex flex-col w-full h-full gap-3">
+            <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col flex-1">
+              {entry?.scenes.map(
+                (scene: Scene & StoryboardSample, index: number) => (
+                  <div
+                    key={index}
+                    className="group relative flex flex-col w-full h-auto rounded-lg overflow-clip bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider min-w-[400px] pb-4"
+                  >
+                    <div className="flex flex-col">
+                      <img
+                        src={
+                          scene?.image_base64
+                            ? "data:image/png;base64," + scene.image_base64
+                            : scene?.artwork?.url ?? ""
+                        }
+                        alt="comic book cover"
+                        className="object-cover aspect-[4/3]"
+                      />
 
-                  <div className="absolute top-0 right-0 m-2">
-                    <button
-                      className="w-6 h-6 bg-gray-500 text-white rounded-full"
-                      onClick={() => handleDeleteScene(index)}
-                    >
-                      X
-                    </button>
-                  </div>
+                      {/* image variants */}
+                      {(scene?.image_base64_variants ?? []).length > 0 && (
+                        <div className="grid grid-cols-5 w-full h-20">
+                          {[1, 2, 3, 4].map((image, index) => (
+                            <button
+                              key={index}
+                              onClick={() => {
+                                console.log("click");
+                              }}
+                              className="relative w-full h-full"
+                            >
+                              <img
+                                src={
+                                  "data:image/png;base64," +
+                                  (scene?.image_base64_variants ?? [])[index]
+                                }
+                                alt={`comic variant image ${index + 1}}`}
+                                className={clsx(
+                                  "w-full h-full object-cover"
+                                  // { "opacity-30 dark:opacity-30 brightness-[0.7]" : index !== 2}
+                                )}
+                              />
 
-                  <div className="flex p-4 flex-grow flex-col bg-light-background-secondary dark:bg-dark-background-secondary">
-                    {editingSceneIndex === index ? (
-                      <>
-                        <textarea
-                          className="w-full mb-2 rounded"
-                          style={{
-                            flex: "1",
-                            minHeight: "8em",
-                            backgroundColor: "inherit",
-                          }}
-                          value={newSceneText}
-                          onChange={(e) => setNewSceneText(e.target.value)}
-                        />
-                        <div className="absolute left-0 right-0 bottom-0 flex justify-between items-center p-2">
-                          <button
-                            className="px-2 py-1 text-sm bg-red-500 text-white rounded"
-                            onClick={() => handleRevertScene(index)}
-                          >
-                            Revert
-                          </button>
-                          <button
-                            className="px-2 py-1 text-sm bg-green-500 text-white rounded"
-                            onClick={() => handleSaveScene(index)}
-                          >
-                            Save
-                          </button>
+                              {/* overlay */}
+                              <div className="absolute flex inset-0 bg-[rgb(0,0,0,0.5)] dark:bg-[rgb(0,0,0,0.7)] w-full h-full items-center justify-center">
+                                <FiCheckCircle className="text-emerald-500 text-lg" />
+                              </div>
+                            </button>
+                          ))}
                         </div>
-                      </>
-                    ) : (
-                      <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[4]">
-                        {scene?.displayed_text || scene?.text || ""}
-                      </p>
-                    )}
+                      )}
+                    </div>
 
-                    {/* Edit button */}
-                    {editingSceneIndex !== index && (
+                    <div className="absolute flex flex-row w-full items-center justify-between p-2">
                       <button
-                        className="absolute bottom-0 right-0 mb-4 mr-2 w-6 h-6 text-light-text-primary dark:text-dark-text-primary opacity-50 group-hover:opacity-100 transition-opacity duration-150 ease-in-out"
-                        onClick={() => handleEditScene(index)}
+                        onClick={() => {
+                          handleRegenerateImagesVariants(index);
+                        }}
+                        className="flex px-3 h-8 rounded-full items-center justify-center bg-emerald-500 bg-opacity-80 backdrop-blur-xl text-sm font-medium text-dark-text-primary borderborder-dark-dividerContrast"
                       >
-                        <FiEdit2 size={20} />
+                        Regenerate
                       </button>
-                    )}
+
+                      <button
+                        className="flex w-8 h-8 bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary text-white rounded-full items-center justify-center"
+                        onClick={() => handleDeleteScene(index)}
+                      >
+                        <FiX className="text-light-text-secondary dark:text-dark-text-secondary" />
+                      </button>
+                    </div>
+
+                    <div className="flex p-4 flex-grow flex-col bg-light-background-secondary dark:bg-dark-background-secondary">
+                      {editingSceneIndex === index ? (
+                        <>
+                          <textarea
+                            className="w-full mb-2 rounded"
+                            style={{
+                              flex: "1",
+                              minHeight: "8em",
+                              backgroundColor: "inherit",
+                            }}
+                            value={newSceneText}
+                            onChange={(e) => setNewSceneText(e.target.value)}
+                          />
+                          <div className="absolute left-0 right-0 bottom-0 flex justify-between items-center p-2">
+                            <button
+                              className="px-2 py-1 text-sm bg-red-500 text-white rounded"
+                              onClick={() => handleRevertScene(index)}
+                            >
+                              Revert
+                            </button>
+                            <button
+                              className="px-2 py-1 text-sm bg-green-500 text-white rounded"
+                              onClick={() => handleSaveScene(index)}
+                            >
+                              Save
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[4]">
+                          {scene?.displayed_text || scene?.text || ""}
+                        </p>
+                      )}
+
+                      {/* Edit button */}
+                      {editingSceneIndex !== index && (
+                        <button
+                          className="absolute bottom-0 right-0 mb-4 mr-2 w-6 h-6 text-light-text-primary dark:text-dark-text-primary opacity-50 group-hover:opacity-100 transition-opacity duration-150 ease-in-out"
+                          onClick={() => handleEditScene(index)}
+                        >
+                          <FiEdit2 size={20} />
+                        </button>
+                      )}
+                    </div>
                   </div>
+                )
+              )}
+
+              {isGeneratingCustomScene && (
+                <div className="flex flex-row gap-6 w-full h-40 aspect-square bg-light-background-secondary dark:bg-dark-background-secondary items-center justify-center animate-pulse p-6 text-light-text-secondary dark:text-dark-text-secondary text-center">
+                  {/* <Spinner className="w-5 h-5 flex-shrink-0" /> */}
+                  <p>
+                    Generating new scene with prompt:{" "}
+                    <br/>
+                    <span className="font-semibold text-light-text-primary dark:text-dark-text-primary">
+                      {customPromptText}
+                    </span>
+                  </p>
                 </div>
-              )
-            )}
+              )}
+            </div>
+
+            {/* regenerate container */}
+            <div className="flex flex-col sticky bottom-0 w-full gap-3 border border-light-divider dark:border-dark-divider rounded-t-lg p-3 bg-light-background-primary dark:bg-dark-background-primary backdrop-blur-xl">
+              <input
+                value={customPromptText}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setCustomPromptText(e.target.value);
+                }}
+                placeholder="Enter new scene prompt..."
+                className="placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary h-12 border border-light-divider dark:border-dark-divider bg-transparent outline-none p-3 rounded-lg focus:ring-1 ring-emerald-500 disabled:opacity-50"
+                disabled={isGeneratingCustomScene}
+              />
+
+              <button
+                onClick={() => {
+                  rightPanelScrollToBottom();
+                  setIsGeneratingCustomScene(true);
+                  addSceneFromCustomPrompt(customPromptText)
+                    .then(() => {
+                      rightPanelScrollToBottom();
+                      setCustomPromptText("");
+                    })
+                    .catch((err) => {
+                      console.log(
+                        "Failed to add scene from custom prompt",
+                        err
+                      );
+                    })
+                    .finally(() => {
+                      setIsGeneratingCustomScene(false);
+                    });
+                }}
+                disabled={customPromptText === "" || isGeneratingCustomScene}
+                className="flex flex-row w-full items-center justify-center h-12 bg-light-background-secondary dark:bg-dark-background-secondary flex-shrink-0 rounded-lg hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary transition-all border border-light-divider dark:border-dark-divider"
+              >
+                {isGeneratingCustomScene ? (
+                  <div className="flex flex-row items-center gap-2">
+                    <Spinner className="w-4 h-4" />
+                    Generating...
+                  </div>
+                ) : (
+                  <div className="flex flex-row items-center gap-2">
+                    <FiPlus />
+                    Add Scene with Custom Prompt
+                  </div>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>

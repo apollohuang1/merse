@@ -55,4 +55,6 @@ export interface Scene {
   image_base64: string;
   prompt: string;
   displayed_text: string;
+  image_base64_variants?: string[];
+  selected_variant?: number;
 }
