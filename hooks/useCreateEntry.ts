@@ -235,7 +235,6 @@ const useCreateEntry = () => {
       image_base64: imageBase64String,
       prompt: prompt,
       displayed_text: prompt,
-      image_base64_variants: [],
     };
     dispatch(addScene(newScene));
   }

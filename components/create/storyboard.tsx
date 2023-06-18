@@ -35,7 +35,7 @@ import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 
 // ChakraUI
-import { Spinner } from "@chakra-ui/react";
+import { NumberIncrementStepperProps, Spinner } from "@chakra-ui/react";
 
 // import editorStyles from "../../../styles/editor.module.css";
 import clsx from "clsx";
@@ -118,6 +118,14 @@ const Storyboard = (props: Props) => {
     React.useState<boolean>(false);
   const [isEnterPressed, setIsEnterPressed] = React.useState<boolean>(false);
 
+  interface ImageVariant {
+    sceneIndex: number;
+    variants: string[]; // array to hold the URLs or identifiers of generated image variants
+    selectedVariantIndex: number | null; // index of the selected variant, null if no variant is selected
+  }
+
+  const [imageVariants, setImageVariants] = useState<ImageVariant[]>([]);
+
   // Set up the Hocuspocus WebSocket provider
   // const provider = new HocuspocusProvider({
   //   url: "ws://127.0.0.1:1234",
@@ -167,14 +175,39 @@ const Storyboard = (props: Props) => {
       updated_image_base64_variants.push(base64String);
     }
 
-    const updatedScenes = [...(entry?.scenes || [])];
-    updatedScenes[index] = {
-      ...updatedScenes[index],
-      image_base64_variants: updated_image_base64_variants,
-    };
+    // Update local state
+    const existingEntryIndex = imageVariants.findIndex(
+      (iv) => iv.sceneIndex === index
+    );
+    if (existingEntryIndex >= 0) {
+      setImageVariants((prevState) => {
+        const newState = [...prevState];
+        newState[existingEntryIndex].variants = updated_image_base64_variants;
+        // Reset selectedVariantIndex to null because we're generating new variants
+        newState[existingEntryIndex].selectedVariantIndex = null;
+        return newState;
+      });
+    } else {
+      setImageVariants((prevState) => [
+        ...prevState,
+        {
+          sceneIndex: index,
+          variants: updated_image_base64_variants,
+          selectedVariantIndex: null,
+        },
+      ]);
+    }
+  };
 
-    // Dispatch an action to update the scenes in your Redux store
-    dispatch(setScenes(updatedScenes));
+  const handleVariantClick = (sceneIndex: number, variantIndex: number) => {
+    setImageVariants((prevState) => {
+      const newState = [...prevState];
+      const sceneVariant = newState.find((iv) => iv.sceneIndex === sceneIndex);
+      if (sceneVariant) {
+        sceneVariant.selectedVariantIndex = variantIndex;
+      }
+      return newState;
+    });
   };
 
   const handleRevertScene = (index: number) => {
@@ -735,44 +768,54 @@ const Storyboard = (props: Props) => {
                   >
                     <div className="flex flex-col">
                       <img
+                        // src={
+                        //   scene?.image_base64
+                        //     ? "data:image/png;base64," + scene.image_base64
+                        //     : scene?.artwork?.url ?? ""
+                        // }
                         src={
-                          scene?.image_base64
-                            ? "data:image/png;base64," + scene.image_base64
-                            : scene?.artwork?.url ?? ""
+                          (imageVariants.find(iv => iv.sceneIndex === index)?.selectedVariantIndex !== undefined
+                            ? `data:image/png;base64,${imageVariants.find(iv => iv.sceneIndex === index)?.variants[imageVariants.find(iv => iv.sceneIndex === index)?.selectedVariantIndex!]}`
+                            : scene?.image_base64
+                              ? "data:image/png;base64," + scene.image_base64
+                              : ""
+                          )
                         }
                         alt="comic book cover"
                         className="object-cover aspect-[4/3]"
                       />
 
                       {/* image variants */}
-                      {(scene?.image_base64_variants ?? []).length > 0 && (
-                        <div className="grid grid-cols-5 w-full h-20">
-                          {[1, 2, 3, 4].map((image, index) => (
-                            <button
-                              key={index}
-                              onClick={() => {
-                                console.log("click");
-                              }}
-                              className="relative w-full h-full"
-                            >
-                              <img
-                                src={
-                                  "data:image/png;base64," +
-                                  (scene?.image_base64_variants ?? [])[index]
-                                }
-                                alt={`comic variant image ${index + 1}}`}
-                                className={clsx(
-                                  "w-full h-full object-cover"
-                                  // { "opacity-30 dark:opacity-30 brightness-[0.7]" : index !== 2}
-                                )}
-                              />
+                      {imageVariants.some((iv) => iv.sceneIndex === index) && (
+                        <div className="grid grid-cols-4 w-full h-20">
+                          {imageVariants
+                            .find((iv) => iv.sceneIndex === index)
+                            ?.variants.map((variant, imageIndex) => (
+                              <button
+                                key={imageIndex}
+                                onClick={() => {
+                                  handleVariantClick(index, imageIndex);
+                                }}
+                                className="relative w-full h-full"
+                              >
+                                <img
+                                  src={`data:image/png;base64,${variant}`}
+                                  alt={`comic variant image ${imageIndex + 1}`}
+                                  className={clsx(
+                                    "w-full h-full object-cover"
+                                    // { "opacity-30 dark:opacity-30 brightness-[0.7]" : imageIndex !== 2}
+                                  )}
+                                />
 
-                              {/* overlay */}
-                              <div className="absolute flex inset-0 bg-[rgb(0,0,0,0.5)] dark:bg-[rgb(0,0,0,0.7)] w-full h-full items-center justify-center">
-                                <FiCheckCircle className="text-emerald-500 text-lg" />
-                              </div>
-                            </button>
-                          ))}
+                                {/* overlay */}
+                                { imageVariants
+                                    .find((iv) => iv.sceneIndex === index)?.selectedVariantIndex === imageIndex && (
+                                  <div className="absolute flex inset-0 bg-[rgb(0,0,0,0.5)] dark:bg-[rgb(0,0,0,0.6)] w-full h-full items-center justify-center">
+                                    <FiCheckCircle className="text-emerald-500 text-xl" />
+                                  </div>
+                                )}
+                              </button>
+                            ))}
                         </div>
                       )}
                     </div>
@@ -784,7 +827,7 @@ const Storyboard = (props: Props) => {
                         }}
                         className="flex px-3 h-8 rounded-full items-center justify-center bg-emerald-500 bg-opacity-80 backdrop-blur-xl text-sm font-medium text-dark-text-primary borderborder-dark-dividerContrast"
                       >
-                        Create Variants
+                        Create variants
                       </button>
 
                       <button
@@ -847,8 +890,7 @@ const Storyboard = (props: Props) => {
                 <div className="flex flex-row gap-6 w-full h-40 aspect-square bg-light-background-secondary dark:bg-dark-background-secondary items-center justify-center animate-pulse p-6 text-light-text-secondary dark:text-dark-text-secondary text-center">
                   {/* <Spinner className="w-5 h-5 flex-shrink-0" /> */}
                   <p>
-                    Generating new scene with prompt:{" "}
-                    <br/>
+                    Generating new scene with prompt: <br />
                     <span className="font-semibold text-light-text-primary dark:text-dark-text-primary">
                       {customPromptText}
                     </span>
