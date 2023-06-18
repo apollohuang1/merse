@@ -91,19 +91,6 @@ const ProfilePage = (props: Props) => {
     }
   };
 
-  // async function followUser(userId, targetUserId) {
-  //   const user = await User.findById(userId);
-  //   const targetUser = await User.findById(targetUserId);
-
-  //   if (!user.followings.includes(targetUserId)) {
-  //     user.followings.push(targetUserId);
-  //     targetUser.followers.push(userId);
-
-  //     await user.save();
-  //     await targetUser.save();
-  //   }
-  // }
-
   async function followUser(targetUserId: string) {
     try {
       // set displayed user follower count
@@ -237,7 +224,7 @@ const ProfilePage = (props: Props) => {
       return;
     }
 
-    if (user?.followers.includes(auth?.currentUser?._id)) {
+    if (user?.followers.some((follower) => follower._id === auth?.currentUser?._id)) {
       setFollowingState(FollowingState.FOLLOWING);
     } else {
       setFollowingState(FollowingState.NOT_FOLLOWING);
@@ -422,10 +409,10 @@ const ProfilePage = (props: Props) => {
                   >
                     {followingState === FollowingState.FOLLOWING && "Following"}
                     {followingState === FollowingState.NOT_FOLLOWING &&
-                      !user?.followings?.includes(auth?.currentUser?._id) &&
+                    !user?.followings?.some((user) => user._id === auth?.currentUser?._id) &&
                       "Follow"}
                     {followingState === FollowingState.NOT_FOLLOWING &&
-                      user?.followings?.includes(auth?.currentUser?._id) &&
+                      user?.followings?.some((user) => user._id === auth?.currentUser?._id) &&
                       "Follow Back"}
                     {followingState === FollowingState.SELF && "Edit Profile"}
                   </button>
@@ -448,7 +435,7 @@ const ProfilePage = (props: Props) => {
                       </span>
                     )}
 
-                    {user?.followings?.includes(auth?.currentUser?._id) && (
+                    {user?.followings?.some((user) => user._id === auth?.currentUser?._id) && (
                       <span className="text-[0.75rem] font-medium px-2 py-[2px] bg-light-background-secondary dark:bg-dark-background-secondary rounded-md text-light-text-secondary dark:text-dark-text-secondary">
                         Follows You
                       </span>
