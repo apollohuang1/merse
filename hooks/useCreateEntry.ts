@@ -32,6 +32,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux-store/store";
+import { manualWhitelistedEmails } from "@/util/constants/create-constants";
 
 // Hook for creating new entries
 const useCreateEntry = () => {
@@ -99,13 +100,6 @@ const useCreateEntry = () => {
         );
         throw new Error("User not logged in");
       }
-
-      // people who are allowed to generate storyboards
-      const manualWhitelistedEmails = [
-        "markrachapoom@gmail.com",
-        "emily.park@berkeley.edu",
-        "jyoti.rani@berkeley.edu",
-      ];
 
       if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
         // alert to let people know we're still developing

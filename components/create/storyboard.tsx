@@ -40,6 +40,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import {
   StoryboardSample,
   createRoutes,
+  manualWhitelistedEmails,
   storyboardSamples,
 } from "@/util/constants/create-constants";
 
@@ -230,14 +231,6 @@ const Storyboard = (props: Props) => {
 
   const handleSendMessage = async () => {
     try {
-      // people who are allowed to generate storyboards
-      const manualWhitelistedEmails = [
-        "markrachapoom@gmail.com",
-        "emily.park@berkeley.edu",
-        "jyoti.rani@berkeley.edu",
-        "jylee@sequoiacap.com",
-        "ccurnin@sequoiacap.com",
-      ];
 
       if (!manualWhitelistedEmails.includes(auth?.currentUser?.email)) {
         // alert to let people know we're still developing

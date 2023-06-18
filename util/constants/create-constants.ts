@@ -1,6 +1,15 @@
 import createImageFromText from "@/hooks/useCreateEntry";
 import { StyleReference } from "@/models/types";
 
+// people who are allowed to generate storyboards
+export const manualWhitelistedEmails = [
+  "markrachapoom@gmail.com",
+  "emily.park@berkeley.edu",
+  "jyoti.rani@berkeley.edu",
+  "jylee@sequoiacap.com",
+  "ccurnin@sequoiacap.com",
+];
+
 export const allFonts = ["Times New Roman", "Pacifico", "VT323", "Quicksand", "Inconsolata", "Arial", "Helvetica"];
 
 export type CreateRoute = {
