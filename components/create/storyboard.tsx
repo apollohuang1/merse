@@ -983,15 +983,15 @@ const Storyboard = (props: Props) => {
             </div>
 
             {/* regenerate container */}
-            <form className="flex flex-col sticky bottom-0 w-full gap-3 border border-light-divider dark:border-dark-divider rounded-t-xl p-3 bg-light-background-secondary dark:bg-dark-background-secondary backdrop-blur-xl">
-              
+            <form className="flex flex-col sticky bottom-0 w-full gap-3 border border-light-divider dark:border-dark-divider rounded-t-xl p-3 bg-light-background-secondary dark:bg-dark-background-secondary bg-opacity-90 dark:bg-opacity-90 backdrop-blur-xl">
+
               <input
                 value={customPromptText}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setCustomPromptText(e.target.value);
                 }}
                 placeholder="Enter new scene prompt..."
-                className="placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary h-12 border border-light-dividerContrast dark:border-dark-dividerContrast bg-transparent outline-none p-3 rounded-lg focus:ring-1 ring-emerald-500 disabled:opacity-50"
+                className="placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary h-12 border border-light-dividerContrast dark:border-dark-dividerContrast outline-none p-3 rounded-lg focus:ring-1 ring-emerald-500 disabled:opacity-50 bg-light-background-secondary dark:bg-dark-background-secondary"
                 disabled={isGeneratingCustomScene}
               />
 
