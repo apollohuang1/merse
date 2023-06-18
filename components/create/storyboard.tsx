@@ -133,6 +133,16 @@ const Storyboard = (props: Props) => {
   // });
 
   const handleDeleteScene = (index: number) => {
+
+    setImageVariants(prevVariants => {
+      let newVariants = [...prevVariants];
+      newVariants = newVariants.filter(iv => iv.sceneIndex !== index);
+      newVariants = newVariants.map(iv =>
+        iv.sceneIndex > index ? { ...iv, sceneIndex: iv.sceneIndex - 1 } : iv
+      );
+      return newVariants;
+    });
+
     const newScenes = [...entry.scenes];
     newScenes.splice(index, 1);
     dispatch(setScenes(newScenes));
@@ -759,12 +769,12 @@ const Storyboard = (props: Props) => {
           )}
         >
           <div className="flex flex-col w-full h-full gap-3">
-            <div className="flex flex-col w-full gap-4 max-xl:flex max-xl:flex-col flex-1">
+            <div className="flex flex-col w-full gap-10 max-xl:flex max-xl:flex-col flex-1">
               {entry?.scenes.map(
                 (scene: Scene & StoryboardSample, index: number) => (
                   <div
                     key={index}
-                    className="group relative flex flex-col w-full h-auto rounded-lg overflow-clip bg-light-background-secondary dark:bg-dark-background-secondary border border-light-divider dark:border-dark-divider min-w-[400px] pb-4"
+                    className="group relative flex flex-col w-full h-auto rounded-lg overflow-clip bg-light-background-tertiary dark:bg-dark-background-tertiary border border-light-divider dark:border-dark-divider min-w-[400px] pb-4"
                   >
                     <div className="flex flex-col">
                       <img
@@ -775,6 +785,7 @@ const Storyboard = (props: Props) => {
                         // }
                         src={
                           (imageVariants.find(iv => iv.sceneIndex === index)?.selectedVariantIndex !== undefined
+                            && imageVariants.find(iv => iv.sceneIndex === index)?.variants[imageVariants.find(iv => iv.sceneIndex === index)?.selectedVariantIndex!] !== undefined
                             ? `data:image/png;base64,${imageVariants.find(iv => iv.sceneIndex === index)?.variants[imageVariants.find(iv => iv.sceneIndex === index)?.selectedVariantIndex!]}`
                             : scene?.image_base64
                               ? "data:image/png;base64," + scene.image_base64
@@ -787,7 +798,7 @@ const Storyboard = (props: Props) => {
 
                       {/* image variants */}
                       {imageVariants.some((iv) => iv.sceneIndex === index) && (
-                        <div className="grid grid-cols-4 w-full h-20">
+                        <div className="flex flex-row w-full h-20 p-2 gap-2">
                           {imageVariants
                             .find((iv) => iv.sceneIndex === index)
                             ?.variants.map((variant, imageIndex) => (
@@ -796,20 +807,24 @@ const Storyboard = (props: Props) => {
                                 onClick={() => {
                                   handleVariantClick(index, imageIndex);
                                 }}
-                                className="relative w-full h-full"
+                                className={clsx(
+                                  "relative w-full h-full rounded-md overflow-clip",
+                                  { "ring-1 ring-emerald-500" : imageVariants.find((iv) => iv.sceneIndex === index)?.selectedVariantIndex === imageIndex }
+                                )}
                               >
                                 <img
                                   src={`data:image/png;base64,${variant}`}
                                   alt={`comic variant image ${imageIndex + 1}`}
                                   className={clsx(
-                                    "w-full h-full object-cover"
+                                    "w-full h-full object-cover aspect-square"
                                     // { "opacity-30 dark:opacity-30 brightness-[0.7]" : imageIndex !== 2}
                                   )}
                                 />
 
                                 {/* overlay */}
-                                { imageVariants
-                                    .find((iv) => iv.sceneIndex === index)?.selectedVariantIndex === imageIndex && (
+                                {imageVariants.find(
+                                  (iv) => iv.sceneIndex === index
+                                )?.selectedVariantIndex === imageIndex && (
                                   <div className="absolute flex inset-0 bg-[rgb(0,0,0,0.5)] dark:bg-[rgb(0,0,0,0.6)] w-full h-full items-center justify-center">
                                     <FiCheckCircle className="text-emerald-500 text-xl" />
                                   </div>
@@ -838,7 +853,7 @@ const Storyboard = (props: Props) => {
                       </button>
                     </div>
 
-                    <div className="flex p-4 flex-grow flex-col bg-light-background-secondary dark:bg-dark-background-secondary">
+                    <div className="flex p-4 flex-grow flex-col">
                       {editingSceneIndex === index ? (
                         <>
                           <textarea
@@ -887,7 +902,7 @@ const Storyboard = (props: Props) => {
               )}
 
               {isGeneratingCustomScene && (
-                <div className="flex flex-row gap-6 w-full h-40 aspect-square bg-light-background-secondary dark:bg-dark-background-secondary items-center justify-center animate-pulse p-6 text-light-text-secondary dark:text-dark-text-secondary text-center">
+                <div className="flex flex-row gap-6 w-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary items-center justify-center animate-pulse p-6 text-light-text-secondary dark:text-dark-text-secondary text-center">
                   {/* <Spinner className="w-5 h-5 flex-shrink-0" /> */}
                   <p>
                     Generating new scene with prompt: <br />
