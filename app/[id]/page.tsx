@@ -817,8 +817,8 @@ const ProfilePage = (props: Props) => {
         withPadding={false}
       >
         <div className="flex flex-col">
-          {user?.followers.map((follower, index: number) => (
-            <UserRowInfo key={index} user={follower} />
+          {user?.followers.map((user, index: number) => (
+            <UserRowInfo key={index} user={user} />
           ))}
         </div>
       </SlideOver>
@@ -834,8 +834,8 @@ const ProfilePage = (props: Props) => {
         withPadding={false}
       >
         <div className="flex flex-col">
-          {user?.followers.map((follower, index: number) => (
-            <UserRowInfo key={index} user={follower} />
+          {user?.followings.map((user, index: number) => (
+            <UserRowInfo key={index} user={user} />
           ))}
         </div>
       </SlideOver>
