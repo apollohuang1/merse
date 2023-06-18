@@ -721,8 +721,8 @@ const Storyboard = (props: Props) => {
           id="right-panel-scroll"
           className={clsx(
             "flex flex-col h-full items-center duration-300 gap-4 flex-shrink-0 overflow-auto",
-            { "w-0 opacity-0": !entryHelper.showGeneratedStoryboard },
-            { "w-[400px]": entryHelper.showGeneratedStoryboard }
+            { "w-0 opacity-0": entryHelper.showGeneratedStoryboard },
+            { "w-[400px]": !entryHelper.showGeneratedStoryboard }
           )}
         >
           <div className="flex flex-col w-full h-full gap-3">
@@ -784,7 +784,7 @@ const Storyboard = (props: Props) => {
                         }}
                         className="flex px-3 h-8 rounded-full items-center justify-center bg-emerald-500 bg-opacity-80 backdrop-blur-xl text-sm font-medium text-dark-text-primary borderborder-dark-dividerContrast"
                       >
-                        Regenerate
+                        Create Variants
                       </button>
 
                       <button
@@ -858,7 +858,7 @@ const Storyboard = (props: Props) => {
             </div>
 
             {/* regenerate container */}
-            <div className="flex flex-col sticky bottom-0 w-full gap-3 border border-light-divider dark:border-dark-divider rounded-t-lg p-3 bg-light-background-primary dark:bg-dark-background-primary backdrop-blur-xl">
+            <form className="flex flex-col sticky bottom-0 w-full gap-3 border border-light-divider dark:border-dark-divider rounded-t-lg p-3 bg-light-background-primary dark:bg-dark-background-primary backdrop-blur-xl">
               <input
                 value={customPromptText}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -870,6 +870,7 @@ const Storyboard = (props: Props) => {
               />
 
               <button
+                type="submit"
                 onClick={() => {
                   rightPanelScrollToBottom();
                   setIsGeneratingCustomScene(true);
@@ -903,7 +904,7 @@ const Storyboard = (props: Props) => {
                   </div>
                 )}
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
