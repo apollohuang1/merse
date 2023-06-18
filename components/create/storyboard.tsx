@@ -764,7 +764,7 @@ const Storyboard = (props: Props) => {
           id="right-panel-scroll"
           className={clsx(
             "flex flex-col h-full items-center duration-300 gap-4 flex-shrink-0 overflow-auto",
-            { "w-0 opacity-0": ~entryHelper.showGeneratedStoryboard },
+            { "w-0 opacity-0": !entryHelper.showGeneratedStoryboard },
             { "w-[400px]": entryHelper.showGeneratedStoryboard }
           )}
         >
