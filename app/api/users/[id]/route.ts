@@ -6,17 +6,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-
     // get api key from bear token
-   const token = request.headers.get("authorization");
+    const token = request.headers.get("authorization");
 
-   // if key is not process.env.MERSE_API_KEY
-   if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
-     return new Response("Unauthorized", { status: 401 });
-   }
+    // if key is not process.env.MERSE_API_KEY
+    if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+      return new Response("Unauthorized", { status: 401 });
+    }
 
     await dbConnect();
-    
+
     // get the final route from pathname
     const usernameOrId = getLastIdFromUrl(request.url);
 
@@ -26,16 +25,28 @@ export async function GET(request: NextRequest) {
       query = {
         $or: [
           { username: usernameOrId },
-          { _id: new mongoose.Types.ObjectId(usernameOrId) }
+          { _id: new mongoose.Types.ObjectId(usernameOrId) },
         ],
       };
     } else {
       query = {
-        username: usernameOrId
+        username: usernameOrId,
       };
     }
 
-    const userData = await MDBUser.findOne(query);
+    const userData = await MDBUser.findOne(query)
+      .lean()
+      .populate({
+        path: "followers",
+        select: "username name profile_image_url",
+        model: MDBUser,
+      })
+      .populate({
+        path: "followings",
+        select: "username name profile_image_url",
+        model: MDBUser,
+      })
+      .exec();
 
     return NextResponse.json(userData, { status: 200 });
   } catch (error: any) {

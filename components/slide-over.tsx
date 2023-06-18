@@ -56,7 +56,8 @@ const SlideOver: React.FC<{
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black dark:bg-[rgb(23,23,23,0.8)] bg-opacity-30 dark:opacity-70 transition-opacity" />
+            {/* <div className="fixed inset-0 bg-black dark:bg-[rgb(23,23,23,0.8)] bg-opacity-30 dark:opacity-70 transition-opacity" /> */}
+            <div className="fixed inset-0 bg-black bg-opacity-30 transition-opacity" />
           </Transition.Child>
         )}
 
@@ -87,8 +88,14 @@ const SlideOver: React.FC<{
                 <Dialog.Panel
                   className={clsx(
                     `pointer-events-auto w-screen max-w-${size} border-x border-light-divider dark:border-dark-divider drop-shadow-2xl overflow-clip`,
-                    { "bg-[rgb(255,255,255,0.8)] dark:bg-[rgb(23,23,23,0.8)] backdrop-blur-2xl" : withBlurBackground },
-                    { "bg-light-background-primary dark:bg-dark-background-primary": !withBlurBackground}
+                    {
+                      "bg-[rgb(255,255,255,0.8)] dark:bg-[rgb(23,23,23,0.8)] backdrop-blur-2xl":
+                        withBlurBackground,
+                    },
+                    {
+                      "bg-light-background-primary dark:bg-dark-background-primary":
+                        !withBlurBackground,
+                    }
                   )}
                 >
                   <div className="flex h-full flex-col overflow-y-scroll shadow-xl">

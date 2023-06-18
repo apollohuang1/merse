@@ -33,15 +33,15 @@ import {
 } from "react-icons/fi";
 
 //calendar imports
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-import 'react-big-calendar/lib/css/react-big-calendar.css' //don't use css?
-import moment from 'moment'
-import { isEqual } from 'date-fns';
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css"; //don't use css?
+import moment from "moment";
+import { isEqual } from "date-fns";
 
 type Props = {};
 
 const ProfilePage = (props: Props) => {
-  const localizer = momentLocalizer(moment)
+  const localizer = momentLocalizer(moment);
   const router = useRouter();
   const pathname = usePathname();
   const createEntryUtils = useCreateEntry();
@@ -73,17 +73,23 @@ const ProfilePage = (props: Props) => {
     useState<boolean>(false);
   const [isProfileInputFocused, setIsProfileInputFocused] =
     useState<boolean>(false);
+  const [showFollowersSlideover, setShowFollowersSlideover] =
+    useState<boolean>(false);
+  const [showFollowingSlideover, setShowFollowingSlideover] =
+    useState<boolean>(false);
+
   const dayPropGetter = (date: Date) => {
-    if (isEqual(date, new Date(2023, 5, 8))) { // we can change this later (based on gpt prompting moods) with variables!!
+    if (isEqual(date, new Date(2023, 5, 8))) {
+      // we can change this later (based on gpt prompting moods) with variables!!
       return {
         style: {
-          backgroundColor: 'rgba(250, 253, 203, 0.6)', //happy mood! 💙
+          backgroundColor: "rgba(250, 253, 203, 0.6)", //happy mood! 💙
         },
       };
     } else {
       return {};
     }
-  }    
+  };
 
   // async function followUser(userId, targetUserId) {
   //   const user = await User.findById(userId);
@@ -100,7 +106,6 @@ const ProfilePage = (props: Props) => {
 
   async function followUser(targetUserId: string) {
     try {
-
       // set displayed user follower count
       setUser((prevUser) => {
         if (!prevUser) return prevUser;
@@ -140,7 +145,6 @@ const ProfilePage = (props: Props) => {
 
   const unfollowUser = async (targetUserId: string) => {
     try {
-
       setFollowingState(FollowingState.NOT_FOLLOWING);
 
       // set displayed user follower count
@@ -182,7 +186,6 @@ const ProfilePage = (props: Props) => {
   const fetchUser = async () => {
     return new Promise(async (resolve, reject) => {
       try {
-
         // const id = pathname;
         if (!pathname) return;
         const usernameOrId = pathname.split("/")[1];
@@ -199,9 +202,11 @@ const ProfilePage = (props: Props) => {
 
         // await fetchAllEntries(response.data._id);
         resolve(response.data);
+
+        console.log("fetched user", response.data);
       } catch (error: any) {
-        console.log("jhere")
-        console.log(error)
+        console.log("jhere");
+        console.log(error);
         console.log("Failed to fetch user, message: ", error.message);
         // window.location.href = "/";
       }
@@ -261,7 +266,9 @@ const ProfilePage = (props: Props) => {
       });
 
       const sortedDateEntries = filteredEntries.sort(
-        (a, b) => new Date(b.created_at ?? Date.now()).getTime() - new Date(a.created_at ?? Date.now()).getTime()
+        (a, b) =>
+          new Date(b.created_at ?? Date.now()).getTime() -
+          new Date(a.created_at ?? Date.now()).getTime()
       );
 
       console.log("sortedDateEntries: ", sortedDateEntries);
@@ -414,8 +421,12 @@ const ProfilePage = (props: Props) => {
                     )}
                   >
                     {followingState === FollowingState.FOLLOWING && "Following"}
-                    {followingState === FollowingState.NOT_FOLLOWING && !user?.followings?.includes(auth?.currentUser?._id) && "Follow"}
-                    {followingState === FollowingState.NOT_FOLLOWING && user?.followings?.includes(auth?.currentUser?._id) && "Follow Back"}
+                    {followingState === FollowingState.NOT_FOLLOWING &&
+                      !user?.followings?.includes(auth?.currentUser?._id) &&
+                      "Follow"}
+                    {followingState === FollowingState.NOT_FOLLOWING &&
+                      user?.followings?.includes(auth?.currentUser?._id) &&
+                      "Follow Back"}
                     {followingState === FollowingState.SELF && "Edit Profile"}
                   </button>
                 )}
@@ -437,27 +448,36 @@ const ProfilePage = (props: Props) => {
                       </span>
                     )}
 
-                    { user?.followings?.includes(auth?.currentUser?._id) &&
+                    {user?.followings?.includes(auth?.currentUser?._id) && (
                       <span className="text-[0.75rem] font-medium px-2 py-[2px] bg-light-background-secondary dark:bg-dark-background-secondary rounded-md text-light-text-secondary dark:text-dark-text-secondary">
                         Follows You
                       </span>
-                    }
+                    )}
                   </div>
                 </div>
 
                 <div className="flex flex-row gap-3">
-                  <span>
+                  <button
+                    onClick={() => {
+                      setShowFollowersSlideover(true);
+                    }}
+                  >
                     {user?.followers?.length}{" "}
                     <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">
                       Followers
                     </span>
-                  </span>
-                  {/* <span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setShowFollowingSlideover(true);
+                    }}
+                  >
                     {user?.followings?.length}{" "}
                     <span className="text-base text-light-text-secondary dark:text-dark-text-secondary">
                       Following
                     </span>
-                  </span> */}
+                  </button>
                 </div>
 
                 {user?.bio && user?.bio !== "" && (
@@ -494,7 +514,7 @@ const ProfilePage = (props: Props) => {
               {/* <span>{activehash} compared {tabs[0].href}</span> */}
             </div>
 
-            { currentTab === "calendar" && (
+            {currentTab === "calendar" && (
               <div className="h-[500px]">
                 <Calendar
                   localizer={localizer}
@@ -508,7 +528,7 @@ const ProfilePage = (props: Props) => {
               </div>
             )}
 
-            { currentTab === "entries" && (
+            {currentTab === "entries" && (
               <div className="flex flex-col gap-6 w-full">
                 {isFetchingEntries ? (
                   <>
@@ -549,7 +569,7 @@ const ProfilePage = (props: Props) => {
                                 className="h-full aspect-square object-cover rounded-none"
                               />
                             ) : ( */}
-                              <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary"></div>
+                            <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary"></div>
                             {/* )} */}
                           </Link>
 
@@ -762,9 +782,9 @@ const ProfilePage = (props: Props) => {
                               <p className="font-semibold text-2xl flex-shrink-0 leading-normal line-clamp-1">
                                 {entry.title}
                               </p>
-                              
+
                               <p className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-4 leading-normal">
-                                { htmlStringToText(entry.content ?? "") }
+                                {htmlStringToText(entry.content ?? "")}
                               </p>
                             </Link>
 
@@ -785,6 +805,40 @@ const ProfilePage = (props: Props) => {
           </div>
         </div>
       </div>
+
+      {/* Followers Slideover */}
+      <SlideOver
+        isOpen={showFollowersSlideover}
+        size="sm"
+        onClose={() => {
+          setShowFollowersSlideover(false);
+        }}
+        title={"Followers"}
+        withPadding={false}
+      >
+        <div className="flex flex-col">
+          {user?.followers.map((follower, index: number) => (
+            <UserRowInfo key={index} user={follower} />
+          ))}
+        </div>
+      </SlideOver>
+
+      {/* Following Slideover */}
+      <SlideOver
+        isOpen={showFollowingSlideover}
+        size="sm"
+        onClose={() => {
+          setShowFollowingSlideover(false);
+        }}
+        title={"Following"}
+        withPadding={false}
+      >
+        <div className="flex flex-col">
+          {user?.followers.map((follower, index: number) => (
+            <UserRowInfo key={index} user={follower} />
+          ))}
+        </div>
+      </SlideOver>
 
       {/* creating new character slideover */}
       <SlideOver
@@ -1019,7 +1073,46 @@ const ProfilePage = (props: Props) => {
         </div>
       </SlideOver>
     </>
-    
+  );
+};
+
+// User Row Info React Component
+const UserRowInfo: React.FC<{ user: User }> = ({ user }) => {
+
+  const router = useRouter();
+
+  return (
+    <button
+      onClick={() => {
+        router.push(`/${user?.username || user?._id}`);
+      }}
+      className="flex flex-row items-center justify-between gap-3 border-none border-light-divider dark:border-dark-divider px-6 py-6 hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+    >
+      <div className="flex flex-row w-full gap-3 items-center justify-between">
+        <div className="flex flex-row gap-3 items-center">
+          <button>
+            <img
+              src={user?.profile_image_url}
+              className="h-10 w-10 rounded-full"
+            />
+          </button>
+
+          <div className="flex flex-col gap-0 items-start">
+            <span className="font-medium leading-tight">
+              {user?.name}
+            </span>
+            <span className="text-light-text-secondary dark:text-dark-text-secondary leading-tight">
+              @{user?.username}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* date in format like now, 1 min ago, ghour ago, day ago, bla bla, or date */}
+      {/* <span className="text-light-text-secondary dark:text-dark-text-secondary">
+              { getRealTimeDateFormat(noti?.created_at)}
+            </span> */}
+    </button>
   );
 };
 
