@@ -234,9 +234,16 @@ const Storyboard = (props: Props) => {
   const handleVariantClick = (sceneIndex: number, variantIndex: number) => {
     setImageVariants((prevState) => {
       const newState = [...prevState];
+      // exact selected scene in storyboard
       const sceneVariant = newState.find((iv) => iv.sceneIndex === sceneIndex);
+
       if (sceneVariant) {
-        sceneVariant.selectedVariantIndex = variantIndex;
+        // if selected, unselect
+        if (sceneVariant.selectedVariantIndex === variantIndex) {
+          sceneVariant.selectedVariantIndex = null;
+        } else {
+          sceneVariant.selectedVariantIndex = variantIndex;
+        }
       }
       return newState;
     });
@@ -269,6 +276,7 @@ const Storyboard = (props: Props) => {
       }),
       Placeholder.configure({
         placeholder: "Press tab or click to select a menu item...",
+        // placeholder: "Press '/' for commands, or '++' for AI autocomplete..."
       }),
       Image.configure({
         inline: true,
