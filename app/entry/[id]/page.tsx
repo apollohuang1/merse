@@ -9,7 +9,7 @@ import StarterKit from "@tiptap/starter-kit";
 
 import parse from "html-react-parser";
 import { Comment, Entry, Scene } from "@/models/entry";
-import Spotify from "@/tiptap/extensions/Spotify";
+import Spotify from "@/components/editor/extensions/spotify";
 import Image from "@tiptap/extension-image";
 import HardBreak from "@tiptap/extension-hard-break";
 import {

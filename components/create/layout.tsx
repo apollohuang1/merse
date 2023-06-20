@@ -696,6 +696,7 @@ const Layout = (props: Props) => {
                     onKeyDown={(e) => {
                       // if enter pressed
                       if (e.key === "Enter") {
+                        e.preventDefault();
                         const activeObject = fabricCanvas?.getActiveObject();
                         if (!activeObject) return;
 

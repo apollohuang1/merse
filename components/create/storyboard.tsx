@@ -61,7 +61,7 @@ import {
 import useCreateEntry from "@/hooks/useCreateEntry";
 import Blockquote from "@tiptap/extension-blockquote";
 import { Scene } from "@/models/entry";
-import Spotify from "@/tiptap/extensions/Spotify";
+import Spotify from "@/components/editor/extensions/spotify";
 
 import openai, {
   Configuration,
@@ -69,6 +69,8 @@ import openai, {
   OpenAIApi,
 } from "openai";
 import { Transition } from "@headlessui/react";
+import SlashCommand from "../editor/extensions/slash-commands";
+import { TiptapEditorProps } from "../editor/editor-props";
 
 // Collaborative editing
 // import { HocuspocusProvider } from '@hocuspocus/provider';
@@ -275,8 +277,14 @@ const Storyboard = (props: Props) => {
         },
       }),
       Placeholder.configure({
-        placeholder: "Press tab or click to select a menu item...",
-        // placeholder: "Press '/' for commands, or '++' for AI autocomplete..."
+        placeholder: ({ node }) => {
+          if (node.type.name === "heading") {
+            return `Heading ${node.attrs.level}`;
+          }
+          // return "Press '/' for commands, or '++' for AI autocomplete...";
+          return "Press '/' for commands...";
+        },
+        includeChildren: true,
       }),
       Image.configure({
         inline: true,
@@ -291,6 +299,7 @@ const Storyboard = (props: Props) => {
       }),
       HardBreak,
       Spotify,
+      SlashCommand,
       // Collaboration.configure({
       //   document: provider.document,
       // }),
@@ -302,12 +311,13 @@ const Storyboard = (props: Props) => {
       //   },
       // }),
     ],
-    editorProps: {
-      attributes: {
-        class:
-          "outline-none w-full h-full bg-transparent min-h-[calc(100vh-300px)] highlight selection:bg-[#3cc9a3] selection:bg-opacity-25",
-      },
-    },
+    // editorProps: {
+    //   attributes: {
+    //     class:
+    //       "outline-none w-full h-full bg-transparent min-h-[calc(100vh-300px)] highlight selection:bg-[#3cc9a3] selection:bg-opacity-25",
+    //   },
+    // },
+    editorProps: TiptapEditorProps
   });
 
   // useEffect(() => {
@@ -667,7 +677,7 @@ const Storyboard = (props: Props) => {
                       dispatch(setTitle(updatedTitle));
                     }}
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      // press enter, shife focus to editor
+                      // press enter, if document with id "title" is focused, shift focus to editor
                       if (e.key === "Enter") {
                         e.preventDefault();
                         // push content down one block and focus on the first block
@@ -713,7 +723,7 @@ const Storyboard = (props: Props) => {
                         editor={editor}
                         tippyOptions={{ duration: 100 }}
                         className={clsx(
-                          `flex flex-row w-[calc(48*${floatingMenus.length}px)] bg-light-background-primary dark:bg-dark-background-primary rounded-lg overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-lg translate-y-[calc(50%+18px)] -translate-x-3`
+                          `flex flex-row w-[calc(48*${floatingMenus.length}px)] bg-light-background-primary dark:bg-dark-background-primary rounded-lg overflow-clip border border-light-divider dark:border-dark-divider drop-shadow-lg translate-y-[calc(50%+18px)] -translate-x-3 hidden`
                         )}
                       >
                         {floatingMenus.map((floatingMenu, index) => (
@@ -753,7 +763,6 @@ const Storyboard = (props: Props) => {
                             }}
                           >
                             {floatingMenu.icon}
-                            {/* <span>{floatingMenu.label}</span> */}
                           </button>
                         ))}
                       </FloatingMenu>
