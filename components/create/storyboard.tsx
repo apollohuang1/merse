@@ -267,6 +267,7 @@ const Storyboard = (props: Props) => {
   };
 
   const editor = useEditor({
+    editorProps: TiptapEditorProps,
     extensions: [
       StarterKit.configure({
         heading: {
@@ -317,7 +318,6 @@ const Storyboard = (props: Props) => {
     //       "outline-none w-full h-full bg-transparent min-h-[calc(100vh-300px)] highlight selection:bg-[#3cc9a3] selection:bg-opacity-25",
     //   },
     // },
-    editorProps: TiptapEditorProps
   });
 
   // useEffect(() => {

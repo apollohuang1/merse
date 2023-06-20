@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import { Spinner } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
 import { IoText } from "react-icons/io5";
+import { BsQuote, BsSpotify } from "react-icons/bs";
 
 interface CommandItemProps {
   title: string;
@@ -86,7 +87,7 @@ const getSuggestionItems = ({ query }: { query: string }) => {
       icon: <IoText size={18} />,
       command: ({ editor, range }: Command) => {
         editor.chain().focus().deleteRange(range).setParagraph().run();
-      }
+      },
     },
     {
       title: "Heading 1",
@@ -162,6 +163,40 @@ const getSuggestionItems = ({ query }: { query: string }) => {
         editor.chain().focus().deleteRange(range).toggleOrderedList().run();
       },
     },
+    {
+      title: "Blockquote",
+      description: "Create a blockquote.",
+      icon: <BsQuote size={18} />,
+      command: ({ editor, range }: Command) => {
+        editor.chain().focus().deleteRange(range).toggleBlockquote().run();
+      },
+    },
+    // {
+    //   title: "Spotify",
+    //   description: "Embed a Spotify playlist or track.",
+    //   icon: <BsSpotify size={18} />,
+    //   command: ({ editor, range }: Command) => {
+    //     // window prompt to fill spotify embed url
+    //     const inputSpotifyLink = window.prompt("Enter Spotify Embed URL");
+
+    //     if (!inputSpotifyLink) {
+    //       return;
+    //     }
+
+    //     const spotifyLinkRegex =
+    //       /^https:\/\/open\.spotify\.com\/(playlist|track)\/[a-zA-Z0-9?=._-]+$/;
+
+    //     if (spotifyLinkRegex.test(inputSpotifyLink)) {
+    //       const embedLink = inputSpotifyLink
+    //         .replace("open.spotify.com", "open.spotify.com/embed")
+    //         .replace("?", "?utm_source=generator&");
+    //       // @ts-ignore
+    //       editor?.commands?.setSpotifyEmbed({ embedLink });
+    //     } else {
+    //       toast.error("Invalid Spotify embed URL.");
+    //     }
+    //   },
+    // },
   ].filter((item) => {
     if (typeof query === "string" && query.length > 0) {
       return item.title.toLowerCase().includes(query.toLowerCase());
