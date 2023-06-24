@@ -188,7 +188,7 @@ const Layout = (props: Props) => {
   const [fontSize, setFontSize] = useState<number>(16);
 
   const [canvasBackgroundHex, setCanvasBackgroundHex] =
-    useState<string>("#f5f5f5");
+    useState<string>("#FFFFFF");
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
   const [zoomValue, setZoomValue] = useState<number>(100);
 
@@ -270,7 +270,7 @@ const Layout = (props: Props) => {
       fontSize: 14,
       fontFamily: "Helvetica",
       strokeWidth: 0,
-      fill: "#848484",
+      fill: "#C6C6C6",
       selectable: false,
       hasControls: false,
       evented: false,
@@ -558,6 +558,19 @@ const Layout = (props: Props) => {
     fabricCanvas?.requestRenderAll();
   };
 
+  const handleCanvasBackgroundColorReverted = () => {
+
+    // get all layers
+    const layers = fabricCanvas?.getObjects();
+    if (!layers) return;
+
+    // set rect bg color
+    const currentCanvasColor = layers[0].get("fill");
+    setCanvasBackgroundHex(currentCanvasColor);
+
+    fabricCanvas?.requestRenderAll();
+  };
+
   // detect delete button and remove selected object
   window.addEventListener("keydown", (e) => {
     // backspace and not focus on the input
@@ -653,7 +666,7 @@ const Layout = (props: Props) => {
                 </ToolbarButton>
               )} */}
 
-            <ToolbarButton
+            {/* <ToolbarButton
               onClick={() => {
                 // get all layers
                 const layers = fabricCanvas?.getObjects();
@@ -661,7 +674,7 @@ const Layout = (props: Props) => {
               }}
             >
               <span className="text-sm">Print Layers</span>
-            </ToolbarButton>
+            </ToolbarButton> */}
 
             {/* <div className="flex fllex-col border-r border-light-divider dark:border-dark-divider"></div> */}
 
@@ -762,9 +775,8 @@ const Layout = (props: Props) => {
 
             <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary pointer-events-auto border-l border-light-divider dark:border-dark-divider">
               {/* background colors pickers */}
-              <div className="flex flex-col w-full h-auto p-3 gap-3 border-b border-light-divider dark:border-dark-divider">
-                <span className="text-sm">Background</span>
-
+              
+              <SideBarContainer title="Canvas">
                 <div className="flex flex-row gap-3 items-center">
                   <Popover className="relative">
                     {({ open }) => (
@@ -783,10 +795,13 @@ const Layout = (props: Props) => {
                           {({ close }) => (
                             <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary drop-shadow-2xl rounded-md overflow-clip">
                               <div className="flex flex-row px-3 py-3 justify-between border-b border-b-light-divider">
-
                                 <button
-                                  onClick={() => handleCanvasBackgroundColorChanged("#FFFFFF")}
-                                  className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
+                                  onClick={() =>
+                                    handleCanvasBackgroundColorChanged(
+                                      "#FFFFFF"
+                                    )
+                                  }
+                                  className="font-medium text-sm text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
                                 >
                                   Default
                                 </button>
@@ -795,7 +810,7 @@ const Layout = (props: Props) => {
                                   onClick={() => {
                                     close();
                                   }}
-                                  className="text-accent font-medium hover:text-emerald-600"
+                                  className="text-accent font-medium hover:text-emerald-600 text-sm"
                                 >
                                   Done
                                 </button>
@@ -805,7 +820,11 @@ const Layout = (props: Props) => {
                                 <SwatchesPicker
                                   // className="flex shadow-none bg-light-background-primary dark:bg-dark-background-primary"
                                   // className={createStyles.colorPicker}
-                                  onChangeComplete={(color: any) => handleCanvasBackgroundColorChanged(color.hex)}
+                                  onChangeComplete={(color: any) =>
+                                    handleCanvasBackgroundColorChanged(
+                                      color.hex
+                                    )
+                                  }
                                 />
                               </div>
                             </div>
@@ -816,8 +835,8 @@ const Layout = (props: Props) => {
                   </Popover>
 
                   <input
-                    value={canvasBackgroundHex}
-                    className="bg-transparent outline-none rounded-sm px-2 py-1 text-sm text-light-text-primary dark:text-dark-text-primary focus:ring-1 ring-emerald-500"
+                    value={canvasBackgroundHex.toUpperCase()}
+                    className="outline-none w-full focus:ring-1 focus:ring-emerald-500 px-2 py-1 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-sm"
                     onChange={(e) => {
                       setCanvasBackgroundHex(e.target.value);
                     }}
@@ -829,51 +848,30 @@ const Layout = (props: Props) => {
                         if (!/^#[0-9A-F]{6}$/i.test(canvasBackgroundHex)) {
                           // check if it's value hex even without #
                           if (/^[0-9A-F]{6}$/i.test(canvasBackgroundHex)) {
-                            setCanvasBackgroundHex(`#${canvasBackgroundHex}`);
-                            fabricCanvas?.set({
-                              backgroundColor: `#${canvasBackgroundHex}`,
-                            });
-                            fabricCanvas?.requestRenderAll();
+                            handleCanvasBackgroundColorChanged(
+                              "#" + canvasBackgroundHex
+                            );
                             return;
                           }
 
                           // revert
-                          setCanvasBackgroundHex(
-                            fabricCanvas?.get("backgroundColor") as string
-                          );
+                          handleCanvasBackgroundColorReverted();
                           return;
                         }
-
-                        fabricCanvas?.set({
-                          backgroundColor: canvasBackgroundHex,
-                        });
-                        fabricCanvas?.requestRenderAll();
+                        handleCanvasBackgroundColorChanged(canvasBackgroundHex);
                       }
                     }}
                   />
                 </div>
-              </div>
+              </SideBarContainer>
 
-              <div className="flex flex-col p-3">
+              {/* <div className="flex flex-col p-3 border-b border-light-divider dark:border-dark-divider">
                 <span>Canvas</span>
-              </div>
-
-              {currentActiveObject && (
-                <div className="flex flex-col border-b border-light-divider dark:border-dark-divider p-3">
-                  <button
-                    onClick={() => {
-                      bringSelectedObjectToFront();
-                    }}
-                  >
-                    <span className="text-sm">Bring to Front</span>
-                  </button>
-                </div>
-              )}
+              </div> */}
 
               {/* text class edit */}
               {currentActiveObject && currentActiveObjectType === "i-text" && (
-                <div className="flex flex-col w-full h-auto p-3 border-b border-light-divider dark:border-dark-divider items-start gap-3">
-                  <span className="text-sm">Text</span>
+                <SideBarContainer title="Text">
                   <div className="flex flex-row gap-3 w-full">
                     <Menu
                       as="div"
@@ -896,7 +894,7 @@ const Layout = (props: Props) => {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider">
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-light-background-primary dark:bg-dark-background-secondary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider">
                           <div className="py-1">
                             {allFonts.map((font: string, index: number) => (
                               <Menu.Item key={index}>
@@ -935,7 +933,7 @@ const Layout = (props: Props) => {
                     {/* font number input */}
                     <input
                       type="number"
-                      className="flex items-center justify-center px-3 w-16 h-7 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-sm text-light-text-secondary dark:text-dark-text-secondary outline-none focus:ring-1 ring-emerald-500"
+                      className="flex items-center justify-center px-3 w-16 h-7 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-sm outline-none focus:ring-1 ring-emerald-500"
                       // value={currentActiveObject.fontSize * currentActiveObject.scaleX}  but make it floating 1 point format
                       // value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
                       value={fontSize}
@@ -959,6 +957,42 @@ const Layout = (props: Props) => {
                       }}
                     />
                   </div>
+                </SideBarContainer>
+              )}
+
+              {currentActiveObject && currentActiveObjectType === "image" && (
+                <SideBarContainer title="Image">
+                  <div className="flex flex-row gap-3 text-sm items-center">
+                    <div className="flex flex-row gap-3 items-center">
+                      W
+                      <input
+                        value={currentActiveObject?.width}
+                        type="text"
+                        className="outline-none w-full focus:ring-1 focus:ring-emerald-500 px-2 py-1 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary"
+                      />
+                    </div>
+
+                    <div className="flex flex-row gap-3 items-center">
+                      H
+                      <input
+                        value={currentActiveObject?.height}
+                        type="text"
+                        className="outline-none w-full focus:ring-1 focus:ring-emerald-500 px-2 py-1 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary"
+                      />
+                    </div>
+                  </div>
+                </SideBarContainer>
+              )}
+
+              {currentActiveObject && (
+                <div className="flex flex-col border-b border-light-divider dark:border-dark-divider p-3">
+                  <button
+                    onClick={() => {
+                      bringSelectedObjectToFront();
+                    }}
+                  >
+                    <span className="text-sm">Bring to Front</span>
+                  </button>
                 </div>
               )}
             </div>
@@ -1151,6 +1185,19 @@ const ToolbarButton: React.FC<{
     >
       {children}
     </button>
+  );
+};
+
+const SideBarContainer: React.FC<{
+  title: string;
+  children: React.ReactNode;
+}> = ({ title, children }) => {
+  return (
+    <div className="flex flex-col w-full h-auto p-4 border-b border-light-divider dark:border-dark-divider items-start gap-4">
+      <span className="text-sm font-semibold">{title}</span>
+
+      {children}
+    </div>
   );
 };
 
