@@ -187,7 +187,8 @@ const Layout = (props: Props) => {
   const [selectedFont, setSelectedFont] = useState<string>("");
   const [fontSize, setFontSize] = useState<number>(16);
 
-  const [canvasBackgroundHex, setCanvasBackgroundHex] = useState<string>("#f5f5f5");
+  const [canvasBackgroundHex, setCanvasBackgroundHex] =
+    useState<string>("#f5f5f5");
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
   const [zoomValue, setZoomValue] = useState<number>(1);
 
@@ -250,7 +251,24 @@ const Layout = (props: Props) => {
       hasControls: false,
       evented: false,
     });
+
+    const canvasTextOnTopOfRect = new fabric.Textbox("Comic Canvas", {
+      left: 0,
+      top: rect.top - 34,
+      width: canvasWidth,
+      height: 100,
+      fontSize: 32,
+      fontFamily: "Inter",
+      strokeWidth: 0,
+      fill: "#848484",
+      fontWeight: 'medium',
+      selectable: false,
+      hasControls: false,
+      evented: false,
+    });
+
     canvas.add(rect);
+    canvas.add(canvasTextOnTopOfRect);
 
     // stylings
     // canvas.selectionBorderColor = "#10b981"; // emerald green
@@ -631,7 +649,6 @@ const Layout = (props: Props) => {
         </div>
 
         <div className="relative flex flex-col w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary">
-
           <div className={`absolute flex flex-col w-full h-full overflow-auto`}>
             <Canvas onLoad={onLoad} saveState />
           </div>
@@ -639,18 +656,17 @@ const Layout = (props: Props) => {
           <div className="absolute grid grid-cols-[auto_250px] w-full h-full pointer-events-none">
             <div></div>
 
-            <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary pointer-events-auto">
+            <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary pointer-events-auto border-l border-light-divider dark:border-dark-divider">
               {/* background colors pickers */}
               <div className="flex flex-col w-full h-auto p-3 gap-3 border-b border-light-divider dark:border-dark-divider">
 
                 <span className="text-sm">Background</span>
 
-                <div className="flex flex-row gap-3 items-center"> 
-
+                <div className="flex flex-row gap-3 items-center">
                   <Popover className="relative">
                     {({ open }) => (
                       <>
-                        <Popover.Button 
+                        <Popover.Button
                           onClick={() => {
                             setShowColorPicker(!showColorPicker);
                           }}
@@ -658,8 +674,7 @@ const Layout = (props: Props) => {
                           style={{
                             backgroundColor: canvasBackgroundHex,
                           }}
-                        >
-                        </Popover.Button>
+                        ></Popover.Button>
 
                         <Popover.Panel className="absolute z-10 right-[calc(-12px)]">
                           {({ close }) => (
@@ -711,20 +726,33 @@ const Layout = (props: Props) => {
 
                   <input
                     value={canvasBackgroundHex}
-                    className="bg-transparent outline-none rounded-md px-2 py-1 text-sm font-medium text-light-text-primary dark:text-dark-text-primary focus:ring-1 ring-emerald-500"
+                    className="bg-transparent outline-none rounded-sm px-2 py-1 text-sm text-light-text-primary dark:text-dark-text-primary focus:ring-1 ring-emerald-500"
                     onChange={(e) => {
                       setCanvasBackgroundHex(e.target.value);
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         // check if the input is valid hex
+
+                        // if the input starts with # then check the Regex, and if not, still check for value and convert to hex with #
                         if (!/^#[0-9A-F]{6}$/i.test(canvasBackgroundHex)) {
+                          // check if it's value hex even without #
+                          if (/^[0-9A-F]{6}$/i.test(canvasBackgroundHex)) {
+                            setCanvasBackgroundHex(`#${canvasBackgroundHex}`);
+                            fabricCanvas?.set({
+                              backgroundColor: `#${canvasBackgroundHex}`,
+                            });
+                            fabricCanvas?.requestRenderAll();
+                            return;
+                          }
+
                           // revert
                           setCanvasBackgroundHex(
                             fabricCanvas?.get("backgroundColor") as string
                           );
                           return;
                         }
+
                         fabricCanvas?.set({
                           backgroundColor: canvasBackgroundHex,
                         });
@@ -733,7 +761,6 @@ const Layout = (props: Props) => {
                     }}
                   />
                 </div>
-                
               </div>
 
               {/* text class edit */}
@@ -741,82 +768,70 @@ const Layout = (props: Props) => {
                 <div className="flex flex-col w-full h-auto p-3 border-b border-light-divider dark:border-dark-divider items-start gap-3">
                   <span className="text-sm">Text</span>
 
-                  <Menu as="div" className="relative inline-block text-left">
-                    <div>
-                      <Menu.Button className="flex flex-row items-center w-full text-sm justify-center gap-x-1.5 px-4 h-10 hover:bg-light-background-secondary  dark:hover:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-md">
-                        {selectedFont}
+                  <div className="flex flex-row gap-3 w-full">
+
+                    <Menu as="div" className="relative inline-block text-left w-full">
+                      
+                      <Menu.Button className="flex flex-1 flex-row items-center w-full flex-shrink-0 text-sm justify-center gap-x-1.5 px-4 h-8 hover:bg-light-background-secondary  dark:hover:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-md">
+
+                        <span className="line-clamp-1">
+                          {selectedFont}
+                        </span>
                         <FiChevronDown
-                          className="-mr-1 h-5 w-5 text-light-text-secondary dark:text-dark-text-secondary"
+                          className="-mr-1 h-4 w-4 text-light-text-tertiary dark:text-dark-text-tertiary"
                           aria-hidden="true"
                         />
                       </Menu.Button>
-                    </div>
 
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider">
-                        <div className="py-1">
-                          {allFonts.map((font: string, index: number) => (
-                            <Menu.Item key={index}>
-                              {({ active }) => (
-                                <button
-                                  onClick={() => {
-                                    // set active text font
-                                    const activeObject =
-                                      fabricCanvas?.getActiveObject();
-                                    if (!activeObject) return;
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider">
+                          <div className="py-1">
+                            {allFonts.map((font: string, index: number) => (
+                              <Menu.Item key={index}>
+                                {({ active }) => (
+                                  <button
+                                    onClick={() => {
+                                      // set active text font
+                                      const activeObject =
+                                        fabricCanvas?.getActiveObject();
+                                      if (!activeObject) return;
 
-                                    if (activeObject.get("type") === "i-text") {
-                                      activeObject.set({
-                                        fontFamily: font,
-                                      });
-                                    }
-                                    fabricCanvas?.requestRenderAll();
-                                    setSelectedFont(font);
-                                  }}
-                                  className={clsx(
-                                    `flex flex-row px-4 py-2 text-sm w-full items-start hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary font-[${font}]`
-                                  )}
-                                >
-                                  {font} {selectedFont === font && "✓"}
-                                </button>
-                              )}
-                            </Menu.Item>
-                          ))}
-                        </div>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-
-                  <div className="flex flex-row gap-3">
-                    <button
-                      onClick={() => {
-                        setFontSize((prev) => prev - 1);
-                        const activeObject = fabricCanvas?.getActiveObject();
-                        if (!activeObject) return;
-
-                        if (activeObject.get("type") === "i-text") {
-                          activeObject.set({
-                            fontSize: activeObject.get("fontSize") - 1,
-                          });
-                        }
-                        fabricCanvas?.requestRenderAll();
-                      }}
-                    >
-                      <FiMinus />
-                    </button>
+                                      if (
+                                        activeObject.get("type") === "i-text"
+                                      ) {
+                                        activeObject.set({
+                                          fontFamily: font,
+                                        });
+                                      }
+                                      fabricCanvas?.requestRenderAll();
+                                      setSelectedFont(font);
+                                    }}
+                                    className={clsx(
+                                      `flex flex-row px-4 py-2 text-sm w-full items-center justify-start hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary font-[${font}]`
+                                    )}
+                                  >
+                                    {font} {selectedFont === font && "✓"}
+                                  </button>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
 
                     {/* font number input */}
                     <input
                       type="number"
-                      className="flex items-center justify-center px-3 w-16 h-8 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-light-text-secondary dark:text-dark-text-secondary outline-none focus:ring-1 ring-emerald-500"
+                      className="flex items-center justify-center px-3 w-16 h-7 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-sm text-light-text-secondary dark:text-dark-text-secondary outline-none focus:ring-1 ring-emerald-500"
                       // value={currentActiveObject.fontSize * currentActiveObject.scaleX}  but make it floating 1 point format
                       // value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
                       value={fontSize}
@@ -839,23 +854,6 @@ const Layout = (props: Props) => {
                         setFontSize(parseInt(e.target.value));
                       }}
                     />
-
-                    <button
-                      onClick={() => {
-                        setFontSize(fontSize + 1);
-                        const activeObject = fabricCanvas?.getActiveObject();
-                        if (!activeObject) return;
-
-                        if (activeObject.get("type") === "i-text") {
-                          activeObject.set({
-                            fontSize: activeObject.get("fontSize") + 1,
-                          });
-                        }
-                        fabricCanvas?.requestRenderAll();
-                      }}
-                    >
-                      <FiPlus />
-                    </button>
                   </div>
                 </div>
               )}
