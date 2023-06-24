@@ -254,14 +254,13 @@ const Layout = (props: Props) => {
 
     const canvasTextOnTopOfRect = new fabric.Textbox("Comic Canvas", {
       left: 0,
-      top: rect.top - 34,
+      top: rect.top - 21,
       width: canvasWidth,
       height: 100,
-      fontSize: 32,
+      fontSize: 16,
       fontFamily: "Inter",
       strokeWidth: 0,
       fill: "#848484",
-      fontWeight: 'medium',
       selectable: false,
       hasControls: false,
       evented: false,
@@ -624,7 +623,7 @@ const Layout = (props: Props) => {
                 console.log(layers);
               }}
             >
-              Print Layers
+              <span className="text-sm">Print Layers</span>
             </ToolbarButton>
 
             {currentActiveObject && (
@@ -633,7 +632,7 @@ const Layout = (props: Props) => {
                   bringSelectedObjectToFront();
                 }}
               >
-                Bring to Front
+                <span className="text-sm">Bring to Front</span>
               </ToolbarButton>
             )}
 
@@ -654,12 +653,78 @@ const Layout = (props: Props) => {
           </div>
 
           <div className="absolute grid grid-cols-[auto_250px] w-full h-full pointer-events-none">
-            <div></div>
+            <div className="relative w-full h-full">
+              {/* floating elements on top of canvas */}
+              <div className="absolute flex flex-col inset-0 w-full h-full pointer-events-none p-6 justify-end">
+                <div className="flex flex-col w-full h-full justify-between">
+                  <div className="flex flex-row w-full items-center justify-end"></div>
+
+                  <div className="flex flex-row w-full items-center justify-between pointer-events-auto">
+                    {/* zoom controller */}
+                    <div className="flex flex-row text-light-text-secondary dark:text-dark-text-secondary items-center backdrop-blur-xl bg-light-background-primary dark:bg-dark-background-primary bg-opacity-80 dark:bg-opacity-80 drop-shadow-2xl rounded-xl h-8 overflow-clip divide-none divide-light-divider dark:divide-dark-divider">
+                      <button
+                        onClick={() => {}}
+                        className="flex px-2 h-full items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                      >
+                        <FiMinus className="w-4 h-4" />
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          fabricCanvas?.setZoom(1);
+                          setZoomValue(100);
+                        }}
+                        className="flex flex-row items-center justify-center text-xs w-8 h-full text-light-text-primary dark:text-dark-text-primary select-none"
+                      >
+                        <span>{zoomValue.toFixed(0)}%</span>
+                      </button>
+
+                      <button
+                        onClick={() => {}}
+                        className="flex px-2 h-full items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
+                      >
+                        <FiPlus className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        // const canvasJSON = fabricCanvas?.toJSON();
+                        // dispatch(setCanvas(canvasJSON));
+
+                        // deselect object
+                        fabricCanvas?.discardActiveObject();
+                        fabricCanvas?.requestRenderAll();
+
+                        // convert fabriccanvas to base64 image string
+                        const canvasImageBase64 = fabricCanvas?.toDataURL({
+                          // @ts-ignore
+                          format: "png",
+                          quality: 1,
+                          width: canvasWidth,
+                          height:
+                            entry?.scenes.length * canvasWidth === 0
+                              ? canvasWidth * 7
+                              : entry?.scenes.length * canvasWidth + 1,
+                          top: 0,
+                          left: 0,
+                        });
+
+                        console.log(canvasImageBase64);
+                        dispatch(setCanvas(canvasImageBase64));
+                      }}
+                      className="flex rounded-md shadow-md bg-dark-background-tertiary text-white pointer-events-auto px-4 py-2 hidden"
+                    >
+                      Test Save Image
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary pointer-events-auto border-l border-light-divider dark:border-dark-divider">
               {/* background colors pickers */}
               <div className="flex flex-col w-full h-auto p-3 gap-3 border-b border-light-divider dark:border-dark-divider">
-
                 <span className="text-sm">Background</span>
 
                 <div className="flex flex-row gap-3 items-center">
@@ -678,7 +743,7 @@ const Layout = (props: Props) => {
 
                         <Popover.Panel className="absolute z-10 right-[calc(-12px)]">
                           {({ close }) => (
-                            <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-xl overflow-clip">
+                            <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-none overflow-clip">
                               <div className="flex flex-row px-3 py-3 justify-between border-b border-b-light-divider dark:border-b-dark-divider">
                                 <button
                                   onClick={() => {
@@ -769,14 +834,12 @@ const Layout = (props: Props) => {
                   <span className="text-sm">Text</span>
 
                   <div className="flex flex-row gap-3 w-full">
-
-                    <Menu as="div" className="relative inline-block text-left w-full">
-                      
+                    <Menu
+                      as="div"
+                      className="relative inline-block text-left w-full"
+                    >
                       <Menu.Button className="flex flex-1 flex-row items-center w-full flex-shrink-0 text-sm justify-center gap-x-1.5 px-4 h-8 hover:bg-light-background-secondary  dark:hover:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-md">
-
-                        <span className="line-clamp-1">
-                          {selectedFont}
-                        </span>
+                        <span className="line-clamp-1">{selectedFont}</span>
                         <FiChevronDown
                           className="-mr-1 h-4 w-4 text-light-text-tertiary dark:text-dark-text-tertiary"
                           aria-hidden="true"
