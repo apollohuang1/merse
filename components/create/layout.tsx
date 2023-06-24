@@ -276,6 +276,8 @@ const Layout = (props: Props) => {
       evented: false,
     });
 
+    console.log(rect);
+
     canvas.add(rect);
     canvas.add(canvasTextOnTopOfRect);
 
@@ -541,6 +543,21 @@ const Layout = (props: Props) => {
     }
   };
 
+  const handleCanvasBackgroundColorChanged = (hex: string) => {
+    setCanvasBackgroundHex(hex);
+
+    // get all layers
+    const layers = fabricCanvas?.getObjects();
+    if (!layers) return;
+
+    // set rect bg color
+    layers[0].set({
+      fill: hex,
+    });
+
+    fabricCanvas?.requestRenderAll();
+  };
+
   // detect delete button and remove selected object
   window.addEventListener("keydown", (e) => {
     // backspace and not focus on the input
@@ -574,7 +591,7 @@ const Layout = (props: Props) => {
                   top: 50,
                 });
                 // newText.backgroundColor = "white";
-                newText.set({ 
+                newText.set({
                   fill: "black",
                   clipPath: rectClipPath,
                 });
@@ -636,17 +653,15 @@ const Layout = (props: Props) => {
                 </ToolbarButton>
               )} */}
 
-            {/* <ToolbarButton
+            <ToolbarButton
               onClick={() => {
                 // get all layers
                 const layers = fabricCanvas?.getObjects();
                 if (!layers) return;
-
-                console.log(layers);
               }}
             >
               <span className="text-sm">Print Layers</span>
-            </ToolbarButton> */}
+            </ToolbarButton>
 
             {/* <div className="flex fllex-col border-r border-light-divider dark:border-dark-divider"></div> */}
 
@@ -768,15 +783,9 @@ const Layout = (props: Props) => {
                           {({ close }) => (
                             <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary drop-shadow-2xl rounded-md overflow-clip">
                               <div className="flex flex-row px-3 py-3 justify-between border-b border-b-light-divider">
+
                                 <button
-                                  onClick={() => {
-                                    setCanvasBackgroundHex("#F5F5F5");
-                                    fabricCanvas?.set({
-                                      // backgroundColor: "transparent",
-                                      backgroundColor: "#F5F5F5",
-                                    });
-                                    fabricCanvas?.requestRenderAll();
-                                  }}
+                                  onClick={() => handleCanvasBackgroundColorChanged("#FFFFFF")}
                                   className="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
                                 >
                                   Default
@@ -796,13 +805,7 @@ const Layout = (props: Props) => {
                                 <SwatchesPicker
                                   // className="flex shadow-none bg-light-background-primary dark:bg-dark-background-primary"
                                   // className={createStyles.colorPicker}
-                                  onChangeComplete={(color: any) => {
-                                    setCanvasBackgroundHex(color.hex);
-                                    fabricCanvas?.set({
-                                      backgroundColor: color.hex,
-                                    });
-                                    fabricCanvas?.requestRenderAll();
-                                  }}
+                                  onChangeComplete={(color: any) => handleCanvasBackgroundColorChanged(color.hex)}
                                 />
                               </div>
                             </div>
@@ -851,8 +854,12 @@ const Layout = (props: Props) => {
                 </div>
               </div>
 
+              <div className="flex flex-col p-3">
+                <span>Canvas</span>
+              </div>
+
               {currentActiveObject && (
-                <div className="flex flex-col border-b border-light-divider dark:border-dark-divider">
+                <div className="flex flex-col border-b border-light-divider dark:border-dark-divider p-3">
                   <button
                     onClick={() => {
                       bringSelectedObjectToFront();
