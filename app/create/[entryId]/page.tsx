@@ -73,7 +73,7 @@ const CreateEntryIdPage = (props: Props) => {
     <div className="grid grid-rows-[64px_auto] overflow-auto">
       {/* <div className="flex flex-cols w-full h-full items-center justify-center"> */}
       {/* <Spinner className="w-6 h-6" /> */}
-
+  
       {/* navigation create header */}
       <div className="flex flex-row w-full sticky top-0 z-20 backdrop-blur-xl dark:backdrop-blur-xl bg-opacity-80 dark:bg-opacity-90 bg-light-background-primary dark:bg-dark-background-primary justify-center px-6 border-none border-light-divider dark:border-dark-divider">
         <div className="flex flex-row justify-between items-center py-4 w-full h-full max-w-3xl">
@@ -85,7 +85,7 @@ const CreateEntryIdPage = (props: Props) => {
             {props.currentRoute?.description ?? "Description"}
           </p> */}
           </div>
-
+  
           <div className="flex flex-row gap-4">
             {/* back button */}
             {createRoutes[entryHelper?.currentStep]?.backConfig && (
@@ -99,7 +99,7 @@ const CreateEntryIdPage = (props: Props) => {
                 <span>{createRoutes[entryHelper?.currentStep]?.backConfig?.title ?? "Back"}</span>
               </button>
             )}
-
+  
             {createRoutes[entryHelper?.currentStep]?.nextConfig ? (
               <button
                 onClick={() => {
@@ -126,15 +126,16 @@ const CreateEntryIdPage = (props: Props) => {
           </div>
         </div>
       </div>
-
+  
       {entryHelper?.currentStep === 0 && <StylesRoute />}
       {entryHelper?.currentStep === 1 && <Storyboard />}
       {entryHelper?.currentStep === 2 && <Layout />}
       {entryHelper?.currentStep === 3 && <Cover />}
       {entryHelper?.currentStep === 4 && <Review />}
-
+  
     </div>
   );
+  
 };
 
 export default CreateEntryIdPage;

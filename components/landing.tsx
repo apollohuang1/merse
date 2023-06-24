@@ -97,7 +97,8 @@ const Landing = (props: Props) => {
               <div className="flex flex-col leading-6 items-center text-center">
                 <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
                   {/* Transform Journals into Comics, Effortlessly */}
-                  Journaling-to-Comic Made Simple
+                  {/* Journaling-to-Comic Made Simple */}
+                  Personalized Comic Made Simple
                 </h1>
 
                 <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">

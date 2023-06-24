@@ -83,8 +83,10 @@ export default function RootLayout({
       <div className="flex max-sm:hidden">
         <CreateLeftSideBar entryId={pathname?.split("/")[2] ? pathname?.split("/")[2] : "123"} />
       </div>
-
+  
       {children}
     </div>
   );
+
+  
 }
