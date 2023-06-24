@@ -190,7 +190,17 @@ const Layout = (props: Props) => {
   const [canvasBackgroundHex, setCanvasBackgroundHex] =
     useState<string>("#f5f5f5");
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
-  const [zoomValue, setZoomValue] = useState<number>(1);
+  const [zoomValue, setZoomValue] = useState<number>(100);
+
+  // add rectangle from 0,0 to 0,800
+
+  const rectClipPath = new fabric.Rect({
+    left: 0,
+    top: 0,
+    width: canvasWidth,
+    height: canvasWidth * 7,
+    absolutePositioned: true,
+  });
 
   const onLoad = useCallback((canvas: fabric.Canvas) => {
     const isDarkMode = localStorage.getItem("theme") === "dark";
@@ -254,11 +264,11 @@ const Layout = (props: Props) => {
 
     const canvasTextOnTopOfRect = new fabric.Textbox("Comic Canvas", {
       left: 0,
-      top: rect.top - 21,
+      top: rect.top - 18,
       width: canvasWidth,
       height: 100,
-      fontSize: 16,
-      fontFamily: "Inter",
+      fontSize: 14,
+      fontFamily: "Helvetica",
       strokeWidth: 0,
       fill: "#848484",
       selectable: false,
@@ -274,11 +284,10 @@ const Layout = (props: Props) => {
     canvas.selectionBorderColor = "#2E9AFA"; // blue
     canvas.selectionColor = "#2E9AFA30";
     canvas.backgroundColor = "#F5F5F5";
-    
-    var vpt = canvas.viewportTransform;
-    vpt[4] += (innerWidth - 500) - ((innerWidth - 500) / 2) - (canvasWidth / 2);
-    vpt[5] += 100;
 
+    var vpt = canvas.viewportTransform;
+    vpt[4] += innerWidth - 500 - (innerWidth - 500) / 2 - canvasWidth / 2;
+    vpt[5] += 100;
 
     // canvas.backgroundColor = "transparent";
 
@@ -311,12 +320,11 @@ const Layout = (props: Props) => {
         var e = opt.e;
         var vpt = canvas.viewportTransform;
         vpt[4] -= e.deltaX;
+        console.log("vpt[4]: ", vpt[4]);
+        console.log("can width: ", canvas.width);
         if (vpt[4] <= 0) {
           vpt[4] = 0;
-        } else if (vpt[4] >= canvas.width) {
-          vpt[4] = canvas.width;
         }
-        console.log("vpt[4]: ", vpt[4]);
         vpt[5] -= e.deltaY;
         canvas.requestRenderAll();
       }
@@ -408,6 +416,7 @@ const Layout = (props: Props) => {
           img.left = 0;
           img.top = distanceFromTop;
           img.preserveAspectRatio = "true";
+          img.clipPath = rectClipPath;
           // get to the middle horizontally
           img.left = (canvasWidth - img.getScaledWidth()) / 2;
 
@@ -434,6 +443,7 @@ const Layout = (props: Props) => {
         // img.strokeWidth = 10;
         img.left = 0;
         img.preserveAspectRatio = "true";
+        img.clipPath = rectClipPath;
         // img.lockMovementX = true;
         fabricCanvas?.add(img);
       })
@@ -458,7 +468,9 @@ const Layout = (props: Props) => {
       height: 1000,
       originX: "center",
       originY: "center",
+      clipPath: rectClipPath,
     });
+
     const bubbleText = new fabric.Textbox("Add comic dialogue", {
       left: bubblePath.left,
       top: bubblePath.top,
@@ -469,6 +481,7 @@ const Layout = (props: Props) => {
       textAlign: "center",
       originX: "center",
       originY: "center",
+      clipPath: rectClipPath,
     });
 
     if (canvas) {
@@ -552,7 +565,7 @@ const Layout = (props: Props) => {
         {/* <div className="flex flex-col overflow-hidden w-full h-screen"> */}
 
         {/* tool bar */}
-        <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-b border-y-light-divider dark:border-y-dark-divider px-3">
+        <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider px-3">
           <div className="flex flex-row h-full">
             <ToolbarButton
               onClick={() => {
@@ -561,7 +574,10 @@ const Layout = (props: Props) => {
                   top: 50,
                 });
                 // newText.backgroundColor = "white";
-                newText.set({ fill: "black" });
+                newText.set({ 
+                  fill: "black",
+                  clipPath: rectClipPath,
+                });
                 fabricCanvas?.add(newText);
               }}
             >
@@ -620,7 +636,7 @@ const Layout = (props: Props) => {
                 </ToolbarButton>
               )} */}
 
-            <ToolbarButton
+            {/* <ToolbarButton
               onClick={() => {
                 // get all layers
                 const layers = fabricCanvas?.getObjects();
@@ -630,19 +646,9 @@ const Layout = (props: Props) => {
               }}
             >
               <span className="text-sm">Print Layers</span>
-            </ToolbarButton>
+            </ToolbarButton> */}
 
-            {currentActiveObject && (
-              <ToolbarButton
-                onClick={() => {
-                  bringSelectedObjectToFront();
-                }}
-              >
-                <span className="text-sm">Bring to Front</span>
-              </ToolbarButton>
-            )}
-
-            <div className="flex fllex-col border-r border-light-divider dark:border-dark-divider"></div>
+            {/* <div className="flex fllex-col border-r border-light-divider dark:border-dark-divider"></div> */}
 
             {/* <ToolbarButton onClick={() => setShowTemplateSlideOver(true)}>
                 <div className="flex flex-row items-center gap-1">
@@ -679,6 +685,17 @@ const Layout = (props: Props) => {
                         onClick={() => {
                           fabricCanvas?.setZoom(1);
                           setZoomValue(100);
+                          var vpt = fabricCanvas?.viewportTransform;
+                          if (vpt) {
+                            vpt[4] = 0;
+                            vpt[5] = 0;
+                            vpt[4] +=
+                              innerWidth -
+                              500 -
+                              (innerWidth - 500) / 2 -
+                              canvasWidth / 2;
+                            vpt[5] += 100;
+                          }
                         }}
                         className="flex flex-row items-center justify-center text-xs w-8 h-full text-light-text-primary dark:text-dark-text-primary select-none"
                       >
@@ -834,11 +851,22 @@ const Layout = (props: Props) => {
                 </div>
               </div>
 
+              {currentActiveObject && (
+                <div className="flex flex-col border-b border-light-divider dark:border-dark-divider">
+                  <button
+                    onClick={() => {
+                      bringSelectedObjectToFront();
+                    }}
+                  >
+                    <span className="text-sm">Bring to Front</span>
+                  </button>
+                </div>
+              )}
+
               {/* text class edit */}
               {currentActiveObject && currentActiveObjectType === "i-text" && (
                 <div className="flex flex-col w-full h-auto p-3 border-b border-light-divider dark:border-dark-divider items-start gap-3">
                   <span className="text-sm">Text</span>
-
                   <div className="flex flex-row gap-3 w-full">
                     <Menu
                       as="div"
