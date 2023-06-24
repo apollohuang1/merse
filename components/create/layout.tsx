@@ -227,7 +227,7 @@ const Layout = (props: Props) => {
     canvas.setDimensions({
       // width: canvasWidth, // square ratio
       // width: innerWidth - 250,
-      width: innerWidth,
+      width: innerWidth - 500,
       height:
         entry?.scenes.length * canvasWidth === 0
           ? canvasWidth * 7
@@ -274,6 +274,12 @@ const Layout = (props: Props) => {
     canvas.selectionBorderColor = "#2E9AFA"; // blue
     canvas.selectionColor = "#2E9AFA30";
     canvas.backgroundColor = "#F5F5F5";
+    
+    var vpt = canvas.viewportTransform;
+    vpt[4] += (innerWidth - 500) - ((innerWidth - 500) / 2) - (canvasWidth / 2);
+    vpt[5] += 100;
+
+
     // canvas.backgroundColor = "transparent";
 
     // detect dark mode class and set background color
@@ -743,8 +749,8 @@ const Layout = (props: Props) => {
 
                         <Popover.Panel className="absolute z-10 right-[calc(-12px)]">
                           {({ close }) => (
-                            <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary dark:bg-dark-background-primary drop-shadow-2xl rounded-none overflow-clip">
-                              <div className="flex flex-row px-3 py-3 justify-between border-b border-b-light-divider dark:border-b-dark-divider">
+                            <div className="flex flex-col absolute z-10 top-3 right-3 bg-light-background-primary drop-shadow-2xl rounded-md overflow-clip">
+                              <div className="flex flex-row px-3 py-3 justify-between border-b border-b-light-divider">
                                 <button
                                   onClick={() => {
                                     setCanvasBackgroundHex("#F5F5F5");
