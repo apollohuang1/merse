@@ -21,11 +21,13 @@ import {
   FiImage,
   FiItalic,
   FiList,
+  FiLock,
   FiMessageCircle,
   FiMessageSquare,
   FiMinus,
   FiPlus,
   FiSun,
+  FiUnlock,
 } from "react-icons/fi";
 
 import { BiColorFill, BiText } from "react-icons/bi";
@@ -194,6 +196,10 @@ const Layout = (props: Props) => {
   // tool bars
   const [selectedFont, setSelectedFont] = useState<string>("");
   const [fontSize, setFontSize] = useState<number>(16);
+  const [imageWidth, setImageWidth] = useState<number>(0);
+  const [imageHeight, setImageHeight] = useState<number>(0);
+  const [isAspectRatioLocked, setIsAspectRatioLocked] =
+    useState<boolean>(false);
 
   const [canvasBackgroundHex, setCanvasBackgroundHex] =
     useState<string>("#FFFFFF");
@@ -286,8 +292,6 @@ const Layout = (props: Props) => {
         evented: false,
       }
     );
-
-    console.log(rect);
 
     canvas.add(rect);
     canvas.add(canvasTextOnTopOfRect);
@@ -1121,7 +1125,6 @@ const Layout = (props: Props) => {
             </div>
 
             <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary pointer-events-auto border-l border-light-divider dark:border-dark-divider">
-
               {/* background colors pickers */}
               {currentActiveGroup?.map((object: any, index: number) => (
                 <></>
@@ -1225,10 +1228,7 @@ const Layout = (props: Props) => {
                 <SideBarContainer title="Text">
                   <div className="flex flex-col gap-3 w-full">
                     <div className="flex flex-row gap-3 w-full">
-                      <Menu
-                        as="div"
-                        className="relative flex text-left w-full"
-                      >
+                      <Menu as="div" className="relative flex text-left w-full">
                         <Menu.Button className="flex flex-1 flex-row items-center flex-shrink-0 text-sm justify-center gap-x-1.5 px-4 h-8 hover:bg-light-background-secondary  dark:hover:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-md">
                           <span className="line-clamp-1">{selectedFont}</span>
                           <FiChevronDown
@@ -1370,20 +1370,79 @@ const Layout = (props: Props) => {
                     <div className="flex flex-row gap-3 items-center">
                       W
                       <input
-                        value={currentActiveObject?.width}
                         type="text"
+                        value={imageWidth}
                         className="outline-none w-full focus:ring-1 focus:ring-emerald-500 px-2 py-1 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary"
+                        onChange={(e: any) => {
+                          setImageWidth(e.target.value);
+                        }}
+                        onKeyDown={(e: any) => {
+                          // if enter pressed
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+
+                            if (isAspectRatioLocked) {
+                              setImageHeight((parseInt(e.target.value)));
+                              currentActiveObject?.set({
+                                height: parseInt(e.target.value),
+                              });                              
+                            }
+
+                            currentActiveObject?.set({
+                              width: parseInt(e.target.value),
+                            });
+                            fabricCanvas?.requestRenderAll();
+                          }
+                        }}
                       />
                     </div>
 
                     <div className="flex flex-row gap-3 items-center">
                       H
                       <input
-                        value={currentActiveObject?.height}
                         type="text"
+                        value={imageHeight}
                         className="outline-none w-full focus:ring-1 focus:ring-emerald-500 px-2 py-1 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary"
+                        onChange={(e: any) => {
+                          setImageHeight(e.target.value);
+                        }}
+                        onKeyDown={(e: any) => {
+                          // if enter pressed
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+
+                            if (isAspectRatioLocked) {
+                              setImageWidth((parseInt(e.target.value)));
+                              currentActiveObject?.set({
+                                width: parseInt(e.target.value),
+                              });                              
+                            }
+
+                            currentActiveObject?.set({
+                              height: parseInt(e.target.value),
+                            });
+                            fabricCanvas?.requestRenderAll();
+                          }
+                        }}
                       />
                     </div>
+
+                    <button
+                      onClick={() => {
+                        setIsAspectRatioLocked(!isAspectRatioLocked);
+                      }}
+                      className={clsx(
+                        "flex items-center justify-center h-full w-auto aspect-square rounded-md",
+                        { "bg-emerald-500 bg-opacity-20 text-emerald-500" : isAspectRatioLocked },
+                        { "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary" : !isAspectRatioLocked }
+                      )}
+                    >
+                      {isAspectRatioLocked ? (
+                        <FiLock className="w-3 h-3" />
+                      ) : (
+                        <FiUnlock className="w-3 h-3" />
+                      )}
+                    </button>
                   </div>
                 </SideBarContainer>
               )}
