@@ -275,22 +275,19 @@ const Layout = (props: Props) => {
       evented: false,
     });
 
-    const canvasTextOnTopOfRect = new fabric.Textbox(
-      "Comic Canvas (width: 800px)",
-      {
-        left: 0,
-        top: rect.top - 18,
-        width: canvasWidth,
-        height: 100,
-        fontSize: 14,
-        fontFamily: "Helvetica",
-        strokeWidth: 0,
-        fill: "#C6C6C6",
-        selectable: false,
-        hasControls: false,
-        evented: false,
-      }
-    );
+    const canvasTextOnTopOfRect = new fabric.Textbox("Comic Canvas", {
+      left: 0,
+      top: rect.top - 18,
+      width: canvasWidth,
+      height: 100,
+      fontSize: 14,
+      fontFamily: "Helvetica",
+      strokeWidth: 0,
+      fill: "#C6C6C6",
+      selectable: false,
+      hasControls: false,
+      evented: false,
+    });
 
     canvas.add(rect);
     canvas.add(canvasTextOnTopOfRect);
@@ -1311,41 +1308,29 @@ const Layout = (props: Props) => {
                     </div>
 
                     <div className="flex flex-row items-center gap-3">
-                      <button
-                        onClick={() => {
-                          currentActiveObject.set({
-                            textAlign: "left",
-                          });
-                          fabricCanvas?.requestRenderAll();
-                        }}
-                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                      >
-                        <FiAlignLeft />
-                      </button>
 
-                      <button
-                        onClick={() => {
-                          currentActiveObject.set({
-                            textAlign: "center",
-                          });
-                          fabricCanvas?.requestRenderAll();
-                        }}
-                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                      >
-                        <FiAlignCenter />
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          currentActiveObject.set({
-                            textAlign: "right",
-                          });
-                          fabricCanvas?.requestRenderAll();
-                        }}
-                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                      >
-                        <FiAlignRight />
-                      </button>
+                      { ["left", "center", "right"].map((textAlign: string, index: number) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            const activeObject = fabricCanvas?.getActiveObject();
+                            activeObject?.set({
+                              textAlign: textAlign,
+                            });
+                            fabricCanvas?.requestRenderAll();
+                            setCurrentActiveObject({...activeObject, textAlign: textAlign});
+                          }}
+                          className={clsx(
+                            "flex items-center justify-center w-8 h-8 rounded-md",
+                            { "bg-light-background-secondary dark:bg-dark-background-tertiary" : currentActiveObject.textAlign === textAlign },
+                            { "hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary opacity-50" : currentActiveObject.textAlign !== textAlign },
+                          )}
+                        >
+                          { textAlign === "left" && <FiAlignLeft /> }
+                          { textAlign === "center" && <FiAlignCenter /> }
+                          { textAlign === "right" && <FiAlignRight /> }
+                        </button>
+                      ))}
 
                       {/* <button
                           onClick={() => {
@@ -1381,10 +1366,10 @@ const Layout = (props: Props) => {
                             e.preventDefault();
 
                             if (isAspectRatioLocked) {
-                              setImageHeight((parseInt(e.target.value)));
+                              setImageHeight(parseInt(e.target.value));
                               currentActiveObject?.set({
                                 height: parseInt(e.target.value),
-                              });                              
+                              });
                             }
 
                             currentActiveObject?.set({
@@ -1411,10 +1396,10 @@ const Layout = (props: Props) => {
                             e.preventDefault();
 
                             if (isAspectRatioLocked) {
-                              setImageWidth((parseInt(e.target.value)));
+                              setImageWidth(parseInt(e.target.value));
                               currentActiveObject?.set({
                                 width: parseInt(e.target.value),
-                              });                              
+                              });
                             }
 
                             currentActiveObject?.set({
@@ -1432,8 +1417,14 @@ const Layout = (props: Props) => {
                       }}
                       className={clsx(
                         "flex items-center justify-center h-full w-auto aspect-square rounded-md",
-                        { "bg-emerald-500 bg-opacity-20 text-emerald-500" : isAspectRatioLocked },
-                        { "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary" : !isAspectRatioLocked }
+                        {
+                          "bg-emerald-500 bg-opacity-20 text-emerald-500":
+                            isAspectRatioLocked,
+                        },
+                        {
+                          "hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary":
+                            !isAspectRatioLocked,
+                        }
                       )}
                     >
                       {isAspectRatioLocked ? (
