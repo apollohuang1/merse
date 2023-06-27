@@ -184,6 +184,10 @@ const Layout = (props: Props) => {
     string | null
   >(null);
 
+  const [currentActiveGroup, setCurrentActiveGroup] = useState<any[] | null>(
+    null
+  );
+
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isAddingBubble, setIsAddingBubble] = useState<boolean>(false);
 
@@ -266,19 +270,22 @@ const Layout = (props: Props) => {
       evented: false,
     });
 
-    const canvasTextOnTopOfRect = new fabric.Textbox("Comic Canvas", {
-      left: 0,
-      top: rect.top - 18,
-      width: canvasWidth,
-      height: 100,
-      fontSize: 14,
-      fontFamily: "Helvetica",
-      strokeWidth: 0,
-      fill: "#C6C6C6",
-      selectable: false,
-      hasControls: false,
-      evented: false,
-    });
+    const canvasTextOnTopOfRect = new fabric.Textbox(
+      "Comic Canvas (width: 800px)",
+      {
+        left: 0,
+        top: rect.top - 18,
+        width: canvasWidth,
+        height: 100,
+        fontSize: 14,
+        fontFamily: "Helvetica",
+        strokeWidth: 0,
+        fill: "#C6C6C6",
+        selectable: false,
+        hasControls: false,
+        evented: false,
+      }
+    );
 
     console.log(rect);
 
@@ -287,6 +294,7 @@ const Layout = (props: Props) => {
 
     // stylings
     // canvas.selectionBorderColor = "#10b981"; // emerald green
+    canvas.preserveObjectStacking = true;
     canvas.selectionBorderColor = "#2E9AFA"; // blue
     canvas.selectionColor = "#2E9AFA30";
     canvas.backgroundColor = "#F5F5F5";
@@ -361,10 +369,16 @@ const Layout = (props: Props) => {
 
     canvas.on("selection:created", function (options) {
       const activeObject = canvas.getActiveObject();
+      const activeGroup = canvas.getActiveObjects();
 
       // @ts-ignore
       setCurrentActiveObject(activeObject);
       setCurrentActiveObjectType(activeObject?.get("type") ?? null);
+      setCurrentActiveGroup(activeGroup);
+
+      console.log("group: ", activeGroup);
+
+      console.log(activeObject?.get("type"));
 
       canvas.getActiveObject()?.setControlsVisibility({
         mt: false,
@@ -374,7 +388,6 @@ const Layout = (props: Props) => {
       });
 
       if (activeObject?.get("type") === "i-text") {
-        console.log(activeObject);
         setSelectedFont(activeObject?.get("fontFamily"));
         setFontSize(activeObject?.get("fontSize"));
       }
@@ -393,6 +406,7 @@ const Layout = (props: Props) => {
     canvas.on("selection:cleared", function (options) {
       setCurrentActiveObject(null);
       setCurrentActiveObjectType(null);
+      setCurrentActiveGroup(null);
     });
 
     // snap when resizing
@@ -404,6 +418,324 @@ const Layout = (props: Props) => {
       // if (options.target.get("type") !== "image") {
       // return;
       // }
+    });
+
+    // Initialize the guide lines but don't add them to the canvas yet
+    const horizontalGuideLine = new fabric.Line([0, 0, 0, 0], {
+      stroke: "red",
+      selectable: false,
+      evented: false,
+    });
+
+    const verticalGuideLine = new fabric.Line([0, 0, 0, 0], {
+      stroke: "red",
+      selectable: false,
+      evented: false,
+    });
+
+    let isMouseDown = false;
+    let horizontalAlignment = false;
+    let verticalAlignment = false;
+
+    // Detect when the mouse button is pressed
+    canvas.on("mouse:down", function (options) {
+      isMouseDown = true;
+    });
+
+    // Detect when the mouse button is released
+    canvas.on("mouse:up", function (options) {
+      isMouseDown = false;
+
+      // Remove the guide lines from the canvas
+      if (canvas.getObjects().includes(horizontalGuideLine)) {
+        canvas.remove(horizontalGuideLine);
+      }
+
+      if (canvas.getObjects().includes(verticalGuideLine)) {
+        canvas.remove(verticalGuideLine);
+      }
+    });
+
+    // Setup the moving event
+    canvas.on("object:moving", function (options) {
+      if (!isMouseDown) return;
+
+      const movingObject = options.target;
+
+      horizontalAlignment = false;
+      verticalAlignment = false;
+
+      canvas.getObjects().forEach(function (object) {
+        if (object === movingObject) return; // Skip the object that is currently moving
+
+        // Adjust the threshold according to your requirements
+        const threshold = 10;
+
+        // List of conditions and corresponding actions for alignment
+        const conditionsAndActions = [
+          // Left edge alignment
+          {
+            alignment: "vertical",
+            condition: Math.abs(object.left - movingObject.left) <= threshold,
+            action: () => {
+              movingObject.set({ left: object.left });
+              verticalAlignment = true;
+              verticalGuideLine.set({
+                x1: object.left,
+                y1: 0,
+                x2: object.left,
+                y2: canvas.height,
+              });
+            },
+          },
+          // Top edge alignment
+          {
+            alignment: "horizontal",
+            condition: Math.abs(object.top - movingObject.top) <= threshold,
+            action: () => {
+              movingObject.set({ top: object.top });
+              horizontalAlignment = true;
+              horizontalGuideLine.set({
+                x1: 0,
+                y1: object.top,
+                x2: canvas.width,
+                y2: object.top,
+              });
+            },
+          },
+          // Right edge alignment
+          {
+            alignment: "vertical",
+            condition:
+              Math.abs(
+                object.left +
+                  object.width -
+                  (movingObject.left + movingObject.width)
+              ) <= threshold,
+            action: () => {
+              movingObject.set({
+                left: object.left + object.width - movingObject.width,
+              });
+              verticalAlignment = true;
+              verticalGuideLine.set({
+                x1: object.left + object.width,
+                y1: 0,
+                x2: object.left + object.width,
+                y2: canvas.height,
+              });
+            },
+          },
+          // Bottom edge alignment
+          {
+            alignment: "horizontal",
+            condition:
+              Math.abs(
+                object.top +
+                  object.height -
+                  (movingObject.top + movingObject.height)
+              ) <= threshold,
+            action: () => {
+              movingObject.set({
+                top: object.top + object.height - movingObject.height,
+              });
+              horizontalAlignment = true;
+              horizontalGuideLine.set({
+                x1: 0,
+                y1: object.top + object.height,
+                x2: canvas.width,
+                y2: object.top + object.height,
+              });
+            },
+          },
+          // MovingObject's left edge alignment with object's right edge
+          {
+            alignment: "vertical",
+            condition:
+              Math.abs(object.left + object.width - movingObject.left) <=
+              threshold,
+            action: () => {
+              movingObject.set({ left: object.left + object.width });
+              verticalAlignment = true;
+              verticalGuideLine.set({
+                x1: object.left + object.width,
+                y1: 0,
+                x2: object.left + object.width,
+                y2: canvas.height,
+              });
+            },
+          },
+          // MovingObject's top edge alignment with object's bottom edge
+          {
+            alignment: "horizontal",
+            condition:
+              Math.abs(object.top + object.height - movingObject.top) <=
+              threshold,
+            action: () => {
+              movingObject.set({ top: object.top + object.height });
+              horizontalAlignment = true;
+              horizontalGuideLine.set({
+                x1: 0,
+                y1: object.top + object.height,
+                x2: canvas.width,
+                y2: object.top + object.height,
+              });
+            },
+          },
+          // MovingObject's right edge alignment with object's left edge
+          {
+            alignment: "vertical",
+            condition:
+              Math.abs(
+                object.left - (movingObject.left + movingObject.width)
+              ) <= threshold,
+            action: () => {
+              movingObject.set({ left: object.left - movingObject.width });
+              verticalAlignment = true;
+              verticalGuideLine.set({
+                x1: object.left,
+                y1: 0,
+                x2: object.left,
+                y2: canvas.height,
+              });
+            },
+          },
+          // MovingObject's bottom edge alignment with object's top edge
+          {
+            alignment: "horizontal",
+            condition:
+              Math.abs(object.top - (movingObject.top + movingObject.height)) <=
+              threshold,
+            action: () => {
+              movingObject.set({ top: object.top - movingObject.height });
+              horizontalAlignment = true;
+              horizontalGuideLine.set({
+                x1: 0,
+                y1: object.top,
+                x2: canvas.width,
+                y2: object.top,
+              });
+            },
+          },
+          // Horizontal center alignment
+          {
+            alignment: "horizontal",
+            condition:
+              Math.abs(
+                object.left +
+                  object.width / 2 -
+                  (movingObject.left + movingObject.width / 2)
+              ) <= threshold,
+            action: () => {
+              movingObject.set({
+                left: object.left + object.width / 2 - movingObject.width / 2,
+              });
+              verticalAlignment = true;
+              verticalGuideLine.set({
+                x1: object.left + object.width / 2,
+                y1: 0,
+                x2: object.left + object.width / 2,
+                y2: canvas.height,
+              });
+            },
+          },
+          // Vertical center alignment
+          {
+            alignment: "vertical",
+            condition:
+              Math.abs(
+                object.top +
+                  object.height / 2 -
+                  (movingObject.top + movingObject.height / 2)
+              ) <= threshold,
+            action: () => {
+              movingObject.set({
+                top: object.top + object.height / 2 - movingObject.height / 2,
+              });
+              horizontalAlignment = true;
+              horizontalGuideLine.set({
+                x1: 0,
+                y1: object.top + object.height / 2,
+                x2: canvas.width,
+                y2: object.top + object.height / 2,
+              });
+            },
+          },
+          // Horizontal center alignment
+          {
+            alignment: "horizontal",
+            condition:
+              Math.abs(
+                object.left +
+                  object.width / 2 -
+                  (movingObject.left + movingObject.width / 2)
+              ) <= threshold,
+            action: () => {
+              movingObject.set({
+                left: object.left + object.width / 2 - movingObject.width / 2,
+              });
+              verticalAlignment = true;
+              verticalGuideLine.set({
+                x1: object.left + object.width / 2,
+                y1: 0,
+                x2: object.left + object.width / 2,
+                y2: canvas.height,
+              });
+            },
+          },
+          // Vertical center alignment
+          {
+            alignment: "vertical",
+            condition:
+              Math.abs(
+                object.top +
+                  object.height / 2 -
+                  (movingObject.top + movingObject.height / 2)
+              ) <= threshold,
+            action: () => {
+              movingObject.set({
+                top: object.top + object.height / 2 - movingObject.height / 2,
+              });
+              horizontalAlignment = true;
+              horizontalGuideLine.set({
+                x1: 0,
+                y1: object.top + object.height / 2,
+                x2: canvas.width,
+                y2: object.top + object.height / 2,
+              });
+            },
+          },
+        ];
+
+        conditionsAndActions.forEach(({alignment, condition, action }) => {
+          if (condition) {
+            if (alignment === 'horizontal') {
+              horizontalAlignment = true;
+            } else if (alignment === 'vertical') {
+              verticalAlignment = true;
+            }
+            action();
+          }
+        });
+
+        // Force render
+        movingObject.setCoords();
+        canvas.requestRenderAll();
+      });
+
+      // Add guide lines to canvas if they are not already there
+      if (
+        horizontalAlignment &&
+        !canvas.getObjects().includes(horizontalGuideLine)
+      ) {
+        canvas.add(horizontalGuideLine);
+      }
+
+      if (
+        verticalAlignment &&
+        !canvas.getObjects().includes(verticalGuideLine)
+      ) {
+        canvas.add(verticalGuideLine);
+      }
     });
 
     // for loop in entry?.scenes
@@ -439,7 +771,11 @@ const Layout = (props: Props) => {
       canvas.dispose();
       // window.removeEventListener("resize", () => {});
     };
-  }, []); // end on canvas init
+  }, []);
+
+  // ---------------------------- end canvas init ----------------------------
+
+  // ---------------------------- methods ------------------------------------
 
   const addImageURLToCanvas = (url: string) => {
     fabric.Image.fromURL(url, { crossOrigin: "anonymous" })
@@ -563,7 +899,6 @@ const Layout = (props: Props) => {
   };
 
   const handleCanvasBackgroundColorReverted = () => {
-
     // get all layers
     const layers = fabricCanvas?.getObjects();
     if (!layers) return;
@@ -601,6 +936,14 @@ const Layout = (props: Props) => {
         {/* tool bar */}
         <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider px-3">
           <div className="flex flex-row h-full">
+            {/* <ToolbarButton
+              onClick={() => {
+
+              }}
+            >
+              <FiSun className="w-4 h-4" />
+            </ToolbarButton> */}
+
             <ToolbarButton
               onClick={() => {
                 const newText = new fabric.Textbox("Add Text", {
@@ -779,7 +1122,160 @@ const Layout = (props: Props) => {
 
             <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary pointer-events-auto border-l border-light-divider dark:border-dark-divider">
               {/* background colors pickers */}
-              
+              {currentActiveGroup?.map((object: any, index: number) => (
+                <>
+                  {/* text class edit */}
+                  {object?.type === "i-text" && (
+                    <SideBarContainer title="Text">
+                      <div className="flex flex-col gap-3">
+                        <div className="flex flex-row gap-3 w-full">
+                          <Menu
+                            as="div"
+                            className="relative inline-block text-left w-full"
+                          >
+                            <Menu.Button className="flex flex-1 flex-row items-center w-full flex-shrink-0 text-sm justify-center gap-x-1.5 px-4 h-8 hover:bg-light-background-secondary  dark:hover:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-md">
+                              <span className="line-clamp-1">
+                                {selectedFont}
+                              </span>
+                              <FiChevronDown
+                                className="-mr-1 h-4 w-4 text-light-text-tertiary dark:text-dark-text-tertiary"
+                                aria-hidden="true"
+                              />
+                            </Menu.Button>
+
+                            <Transition
+                              as={Fragment}
+                              enter="transition ease-out duration-100"
+                              enterFrom="transform opacity-0 scale-95"
+                              enterTo="transform opacity-100 scale-100"
+                              leave="transition ease-in duration-75"
+                              leaveFrom="transform opacity-100 scale-100"
+                              leaveTo="transform opacity-0 scale-95"
+                            >
+                              <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-light-background-primary dark:bg-dark-background-secondary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-2xl">
+                                <div className="py-1">
+                                  {allFonts.map(
+                                    (font: string, index: number) => (
+                                      <Menu.Item key={index}>
+                                        {({ active }) => (
+                                          <button
+                                            onClick={() => {
+                                              // set active text font
+                                              const activeObject =
+                                                fabricCanvas?.getActiveObject();
+                                              if (!activeObject) return;
+
+                                              if (
+                                                activeObject.get("type") ===
+                                                "i-text"
+                                              ) {
+                                                activeObject.set({
+                                                  fontFamily: font,
+                                                });
+                                              }
+                                              fabricCanvas?.requestRenderAll();
+                                              setSelectedFont(font);
+                                            }}
+                                            className={clsx(
+                                              `flex flex-row px-4 py-2 text-sm w-full items-center justify-start hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary font-[${font}]`
+                                            )}
+                                          >
+                                            {font}{" "}
+                                            {selectedFont === font && "✓"}
+                                          </button>
+                                        )}
+                                      </Menu.Item>
+                                    )
+                                  )}
+                                </div>
+                              </Menu.Items>
+                            </Transition>
+                          </Menu>
+
+                          {/* font number input */}
+                          <input
+                            type="number"
+                            className="flex items-center justify-center px-3 w-16 h-7 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-sm outline-none focus:ring-1 ring-emerald-500"
+                            // value={currentActiveObject.fontSize * currentActiveObject.scaleX}  but make it floating 1 point format
+                            // value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
+                            value={fontSize}
+                            onKeyDown={(e) => {
+                              // if enter pressed
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                const activeObject =
+                                  fabricCanvas?.getActiveObject();
+                                if (!activeObject) return;
+
+                                if (activeObject.get("type") === "i-text") {
+                                  activeObject.set({
+                                    fontSize: fontSize,
+                                  });
+                                }
+                                fabricCanvas?.requestRenderAll();
+                              }
+                            }}
+                            onChange={(e) => {
+                              setFontSize(parseInt(e.target.value));
+                            }}
+                          />
+                        </div>
+
+                        <div className="flex flex-row items-center gap-3">
+                          <button
+                            onClick={() => {
+                              currentActiveObject.set({
+                                textAlign: "left",
+                              });
+                              fabricCanvas?.requestRenderAll();
+                            }}
+                            className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
+                          >
+                            <FiAlignLeft />
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              currentActiveObject.set({
+                                textAlign: "center",
+                              });
+                              fabricCanvas?.requestRenderAll();
+                            }}
+                            className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
+                          >
+                            <FiAlignCenter />
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              currentActiveObject.set({
+                                textAlign: "right",
+                              });
+                              fabricCanvas?.requestRenderAll();
+                            }}
+                            className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
+                          >
+                            <FiAlignRight />
+                          </button>
+
+                          {/* <button
+                        onClick={() => {
+                          currentActiveObject.set({
+                            fontWeight: "bold"
+                          })
+                          fabricCanvas?.requestRenderAll();
+                        }}
+                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
+                      >
+                        <Bold className="w-3 h-3"/>
+                      </button> */}
+                        </div>
+                      </div>
+                    </SideBarContainer>
+                  )}
+                </>
+              ))}
+
               <SideBarContainer title="Canvas">
                 <div className="flex flex-row gap-3 items-center">
                   <Popover className="relative">
@@ -872,150 +1368,6 @@ const Layout = (props: Props) => {
               {/* <div className="flex flex-col p-3 border-b border-light-divider dark:border-dark-divider">
                 <span>Canvas</span>
               </div> */}
-
-              {/* text class edit */}
-              {currentActiveObject && currentActiveObjectType === "i-text" && (
-                <SideBarContainer title="Text">
-                  <div className="flex flex-col gap-3">
-                    <div className="flex flex-row gap-3 w-full">
-                      <Menu
-                        as="div"
-                        className="relative inline-block text-left w-full"
-                      >
-                        <Menu.Button className="flex flex-1 flex-row items-center w-full flex-shrink-0 text-sm justify-center gap-x-1.5 px-4 h-8 hover:bg-light-background-secondary  dark:hover:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-md">
-                          <span className="line-clamp-1">{selectedFont}</span>
-                          <FiChevronDown
-                            className="-mr-1 h-4 w-4 text-light-text-tertiary dark:text-dark-text-tertiary"
-                            aria-hidden="true"
-                          />
-                        </Menu.Button>
-
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-light-background-primary dark:bg-dark-background-secondary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-2xl">
-                            <div className="py-1">
-                              {allFonts.map((font: string, index: number) => (
-                                <Menu.Item key={index}>
-                                  {({ active }) => (
-                                    <button
-                                      onClick={() => {
-                                        // set active text font
-                                        const activeObject =
-                                          fabricCanvas?.getActiveObject();
-                                        if (!activeObject) return;
-
-                                        if (
-                                          activeObject.get("type") === "i-text"
-                                        ) {
-                                          activeObject.set({
-                                            fontFamily: font,
-                                          });
-                                        }
-                                        fabricCanvas?.requestRenderAll();
-                                        setSelectedFont(font);
-                                      }}
-                                      className={clsx(
-                                        `flex flex-row px-4 py-2 text-sm w-full items-center justify-start hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary font-[${font}]`
-                                      )}
-                                    >
-                                      {font} {selectedFont === font && "✓"}
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                              ))}
-                            </div>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
-
-                      {/* font number input */}
-                      <input
-                        type="number"
-                        className="flex items-center justify-center px-3 w-16 h-7 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-sm outline-none focus:ring-1 ring-emerald-500"
-                        // value={currentActiveObject.fontSize * currentActiveObject.scaleX}  but make it floating 1 point format
-                        // value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
-                        value={fontSize}
-                        onKeyDown={(e) => {
-                          // if enter pressed
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            const activeObject = fabricCanvas?.getActiveObject();
-                            if (!activeObject) return;
-
-                            if (activeObject.get("type") === "i-text") {
-                              activeObject.set({
-                                fontSize: fontSize,
-                              });
-                            }
-                            fabricCanvas?.requestRenderAll();
-                          }
-                        }}
-                        onChange={(e) => {
-                          setFontSize(parseInt(e.target.value));
-                        }}
-                      />
-                    </div>
-
-                    <div className="flex flex-row items-center gap-3">
-                      <button 
-                        onClick={() => {
-                          currentActiveObject.set({
-                            textAlign: "left"
-                          })
-                          fabricCanvas?.requestRenderAll();
-                        }}
-                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                      >
-                        <FiAlignLeft />
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          currentActiveObject.set({
-                            textAlign: "center"
-                          })
-                          fabricCanvas?.requestRenderAll();
-                        }}
-                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                      >
-                        <FiAlignCenter />
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          currentActiveObject.set({
-                            textAlign: "right"
-                          })
-                          fabricCanvas?.requestRenderAll();
-                        }}
-                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                      >
-                        <FiAlignRight />
-                      </button>
-
-                      {/* <button
-                        onClick={() => {
-                          currentActiveObject.set({
-                            fontWeight: "bold"
-                          })
-                          fabricCanvas?.requestRenderAll();
-                        }}
-                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                      >
-                        <Bold className="w-3 h-3"/>
-                      </button> */}
-                      
-                    </div>
-                  </div>
-                </SideBarContainer>
-              )}
 
               {currentActiveObject && currentActiveObjectType === "image" && (
                 <SideBarContainer title="Image">
