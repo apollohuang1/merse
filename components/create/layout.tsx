@@ -178,7 +178,6 @@ const Layout = (props: Props) => {
 
   const canvasEl = React.useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<fabric.Canvas | null>(null);
-  const [clipboard, setClipboard] = useState(null);
   const [currentActiveObject, setCurrentActiveObject] = useState<any | null>(
     null
   );
@@ -301,7 +300,7 @@ const Layout = (props: Props) => {
     canvas.preserveObjectStacking = true;
     canvas.selectionBorderColor = "#2E9AFA"; // blue
     canvas.selectionColor = "#2E9AFA30";
-    canvas.backgroundColor = "#F5F5F5";
+    // canvas.backgroundColor = "#F5F5F5";
 
     var vpt = canvas.viewportTransform;
     vpt[4] += innerWidth - 500 - (innerWidth - 500) / 2 - canvasWidth / 2;
