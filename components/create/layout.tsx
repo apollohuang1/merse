@@ -706,11 +706,11 @@ const Layout = (props: Props) => {
           },
         ];
 
-        conditionsAndActions.forEach(({alignment, condition, action }) => {
+        conditionsAndActions.forEach(({ alignment, condition, action }) => {
           if (condition) {
-            if (alignment === 'horizontal') {
+            if (alignment === "horizontal") {
               horizontalAlignment = true;
-            } else if (alignment === 'vertical') {
+            } else if (alignment === "vertical") {
               verticalAlignment = true;
             }
             action();
@@ -1121,159 +1121,10 @@ const Layout = (props: Props) => {
             </div>
 
             <div className="flex flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary pointer-events-auto border-l border-light-divider dark:border-dark-divider">
+
               {/* background colors pickers */}
               {currentActiveGroup?.map((object: any, index: number) => (
-                <>
-                  {/* text class edit */}
-                  {object?.type === "i-text" && (
-                    <SideBarContainer title="Text">
-                      <div className="flex flex-col gap-3">
-                        <div className="flex flex-row gap-3 w-full">
-                          <Menu
-                            as="div"
-                            className="relative inline-block text-left w-full"
-                          >
-                            <Menu.Button className="flex flex-1 flex-row items-center w-full flex-shrink-0 text-sm justify-center gap-x-1.5 px-4 h-8 hover:bg-light-background-secondary  dark:hover:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-md">
-                              <span className="line-clamp-1">
-                                {selectedFont}
-                              </span>
-                              <FiChevronDown
-                                className="-mr-1 h-4 w-4 text-light-text-tertiary dark:text-dark-text-tertiary"
-                                aria-hidden="true"
-                              />
-                            </Menu.Button>
-
-                            <Transition
-                              as={Fragment}
-                              enter="transition ease-out duration-100"
-                              enterFrom="transform opacity-0 scale-95"
-                              enterTo="transform opacity-100 scale-100"
-                              leave="transition ease-in duration-75"
-                              leaveFrom="transform opacity-100 scale-100"
-                              leaveTo="transform opacity-0 scale-95"
-                            >
-                              <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-light-background-primary dark:bg-dark-background-secondary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-2xl">
-                                <div className="py-1">
-                                  {allFonts.map(
-                                    (font: string, index: number) => (
-                                      <Menu.Item key={index}>
-                                        {({ active }) => (
-                                          <button
-                                            onClick={() => {
-                                              // set active text font
-                                              const activeObject =
-                                                fabricCanvas?.getActiveObject();
-                                              if (!activeObject) return;
-
-                                              if (
-                                                activeObject.get("type") ===
-                                                "i-text"
-                                              ) {
-                                                activeObject.set({
-                                                  fontFamily: font,
-                                                });
-                                              }
-                                              fabricCanvas?.requestRenderAll();
-                                              setSelectedFont(font);
-                                            }}
-                                            className={clsx(
-                                              `flex flex-row px-4 py-2 text-sm w-full items-center justify-start hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary font-[${font}]`
-                                            )}
-                                          >
-                                            {font}{" "}
-                                            {selectedFont === font && "✓"}
-                                          </button>
-                                        )}
-                                      </Menu.Item>
-                                    )
-                                  )}
-                                </div>
-                              </Menu.Items>
-                            </Transition>
-                          </Menu>
-
-                          {/* font number input */}
-                          <input
-                            type="number"
-                            className="flex items-center justify-center px-3 w-16 h-7 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-sm outline-none focus:ring-1 ring-emerald-500"
-                            // value={currentActiveObject.fontSize * currentActiveObject.scaleX}  but make it floating 1 point format
-                            // value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
-                            value={fontSize}
-                            onKeyDown={(e) => {
-                              // if enter pressed
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                const activeObject =
-                                  fabricCanvas?.getActiveObject();
-                                if (!activeObject) return;
-
-                                if (activeObject.get("type") === "i-text") {
-                                  activeObject.set({
-                                    fontSize: fontSize,
-                                  });
-                                }
-                                fabricCanvas?.requestRenderAll();
-                              }
-                            }}
-                            onChange={(e) => {
-                              setFontSize(parseInt(e.target.value));
-                            }}
-                          />
-                        </div>
-
-                        <div className="flex flex-row items-center gap-3">
-                          <button
-                            onClick={() => {
-                              currentActiveObject.set({
-                                textAlign: "left",
-                              });
-                              fabricCanvas?.requestRenderAll();
-                            }}
-                            className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                          >
-                            <FiAlignLeft />
-                          </button>
-
-                          <button
-                            onClick={() => {
-                              currentActiveObject.set({
-                                textAlign: "center",
-                              });
-                              fabricCanvas?.requestRenderAll();
-                            }}
-                            className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                          >
-                            <FiAlignCenter />
-                          </button>
-
-                          <button
-                            onClick={() => {
-                              currentActiveObject.set({
-                                textAlign: "right",
-                              });
-                              fabricCanvas?.requestRenderAll();
-                            }}
-                            className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                          >
-                            <FiAlignRight />
-                          </button>
-
-                          {/* <button
-                        onClick={() => {
-                          currentActiveObject.set({
-                            fontWeight: "bold"
-                          })
-                          fabricCanvas?.requestRenderAll();
-                        }}
-                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
-                      >
-                        <Bold className="w-3 h-3"/>
-                      </button> */}
-                        </div>
-                      </div>
-                    </SideBarContainer>
-                  )}
-                </>
+                <></>
               ))}
 
               <SideBarContainer title="Canvas">
@@ -1368,6 +1219,150 @@ const Layout = (props: Props) => {
               {/* <div className="flex flex-col p-3 border-b border-light-divider dark:border-dark-divider">
                 <span>Canvas</span>
               </div> */}
+
+              {/* text class edit */}
+              {currentActiveObject && currentActiveObjectType === "i-text" && (
+                <SideBarContainer title="Text">
+                  <div className="flex flex-col gap-3 w-full">
+                    <div className="flex flex-row gap-3 w-full">
+                      <Menu
+                        as="div"
+                        className="relative flex text-left w-full"
+                      >
+                        <Menu.Button className="flex flex-1 flex-row items-center flex-shrink-0 text-sm justify-center gap-x-1.5 px-4 h-8 hover:bg-light-background-secondary  dark:hover:bg-dark-background-secondary border border-light-divider dark:border-dark-divider rounded-md">
+                          <span className="line-clamp-1">{selectedFont}</span>
+                          <FiChevronDown
+                            className="-mr-1 h-4 w-4 text-light-text-tertiary dark:text-dark-text-tertiary"
+                            aria-hidden="true"
+                          />
+                        </Menu.Button>
+
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-light-background-primary dark:bg-dark-background-secondary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-2xl">
+                            <div className="py-1">
+                              {allFonts.map((font: string, index: number) => (
+                                <Menu.Item key={index}>
+                                  {({ active }) => (
+                                    <button
+                                      onClick={() => {
+                                        // set active text font
+                                        const activeObject =
+                                          fabricCanvas?.getActiveObject();
+                                        if (!activeObject) return;
+
+                                        if (
+                                          activeObject.get("type") === "i-text"
+                                        ) {
+                                          activeObject.set({
+                                            fontFamily: font,
+                                          });
+                                        }
+                                        fabricCanvas?.requestRenderAll();
+                                        setSelectedFont(font);
+                                      }}
+                                      className={clsx(
+                                        `flex flex-row px-4 py-2 text-sm w-full items-center justify-start hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary font-[${font}]`
+                                      )}
+                                    >
+                                      {font} {selectedFont === font && "✓"}
+                                    </button>
+                                  )}
+                                </Menu.Item>
+                              ))}
+                            </div>
+                          </Menu.Items>
+                        </Transition>
+                      </Menu>
+
+                      {/* font number input */}
+                      <input
+                        type="number"
+                        className="flex items-center justify-center px-3 w-16 h-7 rounded-md bg-light-background-secondary dark:bg-dark-background-tertiary text-sm outline-none focus:ring-1 ring-emerald-500"
+                        // value={currentActiveObject.fontSize * currentActiveObject.scaleX}  but make it floating 1 point format
+                        // value={(currentActiveObject.fontSize * currentActiveObject.scaleX).toFixed(0).toString()}
+                        value={fontSize}
+                        onKeyDown={(e) => {
+                          // if enter pressed
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            const activeObject =
+                              fabricCanvas?.getActiveObject();
+                            if (!activeObject) return;
+
+                            if (activeObject.get("type") === "i-text") {
+                              activeObject.set({
+                                fontSize: fontSize,
+                              });
+                            }
+                            fabricCanvas?.requestRenderAll();
+                          }
+                        }}
+                        onChange={(e) => {
+                          setFontSize(parseInt(e.target.value));
+                        }}
+                      />
+                    </div>
+
+                    <div className="flex flex-row items-center gap-3">
+                      <button
+                        onClick={() => {
+                          currentActiveObject.set({
+                            textAlign: "left",
+                          });
+                          fabricCanvas?.requestRenderAll();
+                        }}
+                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
+                      >
+                        <FiAlignLeft />
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          currentActiveObject.set({
+                            textAlign: "center",
+                          });
+                          fabricCanvas?.requestRenderAll();
+                        }}
+                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
+                      >
+                        <FiAlignCenter />
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          currentActiveObject.set({
+                            textAlign: "right",
+                          });
+                          fabricCanvas?.requestRenderAll();
+                        }}
+                        className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
+                      >
+                        <FiAlignRight />
+                      </button>
+
+                      {/* <button
+                          onClick={() => {
+                            currentActiveObject.set({
+                              fontWeight: "bold"
+                            })
+                            fabricCanvas?.requestRenderAll();
+                          }}
+                          className="flex items-center justify-center w-8 h-8 hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary rounded-md"
+                        >
+                          <Bold className="w-3 h-3"/>
+                        </button> */}
+                    </div>
+                  </div>
+                </SideBarContainer>
+              )}
 
               {currentActiveObject && currentActiveObjectType === "image" && (
                 <SideBarContainer title="Image">
@@ -1604,7 +1599,6 @@ const SideBarContainer: React.FC<{
   return (
     <div className="flex flex-col w-full h-auto p-4 border-b border-light-divider dark:border-dark-divider items-start gap-4">
       <span className="text-sm font-semibold">{title}</span>
-
       {children}
     </div>
   );
