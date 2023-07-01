@@ -268,7 +268,7 @@ const Layout = (props: Props) => {
       //     : entry?.scenes.length * canvasWidth + 1,
       height: canvasWidth * 7,
       fill: "#FFFFFF",
-      strokeWidth: 1,
+      strokeWidth: 0,
       stroke: "#EFEFEF",
       selectable: false,
       hasControls: false,
@@ -295,9 +295,8 @@ const Layout = (props: Props) => {
     // stylings
     // canvas.selectionBorderColor = "#10b981"; // emerald green
     canvas.preserveObjectStacking = true;
-    canvas.selectionBorderColor = "#2E9AFA"; // blue
-    canvas.selectionColor = "#2E9AFA30";
-    // canvas.backgroundColor = "#F5F5F5";
+    canvas.selectionBorderColor = "#10b98165"; // blue
+    canvas.selectionColor = "#10b98110"; // blue
 
     var vpt = canvas.viewportTransform;
     vpt[4] += innerWidth - 500 - (innerWidth - 500) / 2 - canvasWidth / 2;
@@ -422,13 +421,15 @@ const Layout = (props: Props) => {
 
     // Initialize the guide lines but don't add them to the canvas yet
     const horizontalGuideLine = new fabric.Line([0, 0, 0, 0], {
-      stroke: "red",
+      stroke: "#FF3B30",
+      strokeWidth: 1,
       selectable: false,
       evented: false,
     });
 
     const verticalGuideLine = new fabric.Line([0, 0, 0, 0], {
-      stroke: "red",
+      stroke: "#FF3B30",
+      strokeWidth: 1,
       selectable: false,
       evented: false,
     });
@@ -455,6 +456,7 @@ const Layout = (props: Props) => {
         canvas.remove(verticalGuideLine);
       }
     });
+
 
     // Setup the moving event
     canvas.on("object:moving", function (options) {
@@ -934,16 +936,8 @@ const Layout = (props: Props) => {
         {/* <div className="flex flex-col overflow-hidden w-full h-screen"> */}
 
         {/* tool bar */}
-        <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider px-3">
+        <div className="flex flex-row items-center justify-between w-full h-full bg-light-background-primary dark:bg-dark-background-primary border-y border-y-light-divider dark:border-y-dark-divider">
           <div className="flex flex-row h-full">
-            {/* <ToolbarButton
-              onClick={() => {
-
-              }}
-            >
-              <FiSun className="w-4 h-4" />
-            </ToolbarButton> */}
-
             <ToolbarButton
               onClick={() => {
                 const newText = new fabric.Textbox("Add Text", {
@@ -1048,7 +1042,7 @@ const Layout = (props: Props) => {
 
                   <div className="flex flex-row w-full items-center justify-between pointer-events-auto">
                     {/* zoom controller */}
-                    <div className="flex flex-row text-light-text-secondary dark:text-dark-text-secondary items-center backdrop-blur-xl bg-light-background-primary dark:bg-dark-background-primary bg-opacity-80 dark:bg-opacity-80 drop-shadow-2xl rounded-xl h-8 overflow-clip divide-none divide-light-divider dark:divide-dark-divider">
+                    <div className="flex flex-row text-light-text-secondary dark:text-dark-text-secondary items-center backdrop-blur-xl bg-light-background-primary dark:bg-dark-background-primary bg-opacity-80 dark:bg-opacity-80 drop-shadow-2xl rounded-xl h-8 overflow-clip divide-none divide-light-divider dark:divide-dark-divider border border-light-divider dark:border-dark-divider">
                       <button
                         onClick={() => {}}
                         className="flex px-2 h-full items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary"
@@ -1151,7 +1145,7 @@ const Layout = (props: Props) => {
                                       "#FFFFFF"
                                     )
                                   }
-                                  className="font-medium text-sm text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary"
+                                  className="font-medium text-sm text-light-text-secondary hover:text-light-text-primary"
                                 >
                                   Default
                                 </button>
