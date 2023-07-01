@@ -1035,7 +1035,7 @@ const Layout = (props: Props) => {
         </div>
 
         <div className="relative flex flex-col w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary">
-          <div className={`absolute flex flex-col w-full h-full overflow-auto`}>
+          <div className={`absolute flex flex-col w-full h-full overflow-auto bg-[url('/grid-light.svg')] dark:bg-[url('/grid-dark.svg')]`}>
             <Canvas onLoad={onLoad} saveState />
           </div>
 
@@ -1308,29 +1308,40 @@ const Layout = (props: Props) => {
                     </div>
 
                     <div className="flex flex-row items-center gap-3">
-
-                      { ["left", "center", "right"].map((textAlign: string, index: number) => (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            const activeObject = fabricCanvas?.getActiveObject();
-                            activeObject?.set({
-                              textAlign: textAlign,
-                            });
-                            fabricCanvas?.requestRenderAll();
-                            setCurrentActiveObject({...activeObject, textAlign: textAlign});
-                          }}
-                          className={clsx(
-                            "flex items-center justify-center w-8 h-8 rounded-md",
-                            { "bg-light-background-secondary dark:bg-dark-background-tertiary" : currentActiveObject.textAlign === textAlign },
-                            { "hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary opacity-50" : currentActiveObject.textAlign !== textAlign },
-                          )}
-                        >
-                          { textAlign === "left" && <FiAlignLeft /> }
-                          { textAlign === "center" && <FiAlignCenter /> }
-                          { textAlign === "right" && <FiAlignRight /> }
-                        </button>
-                      ))}
+                      {["left", "center", "right"].map(
+                        (textAlign: string, index: number) => (
+                          <button
+                            key={index}
+                            onClick={() => {
+                              const activeObject =
+                                fabricCanvas?.getActiveObject();
+                              activeObject?.set({
+                                textAlign: textAlign,
+                              });
+                              fabricCanvas?.requestRenderAll();
+                              setCurrentActiveObject({
+                                ...activeObject,
+                                textAlign: textAlign,
+                              });
+                            }}
+                            className={clsx(
+                              "flex items-center justify-center w-8 h-8 rounded-md",
+                              {
+                                "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                  currentActiveObject.textAlign === textAlign,
+                              },
+                              {
+                                "hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary opacity-50":
+                                  currentActiveObject.textAlign !== textAlign,
+                              }
+                            )}
+                          >
+                            {textAlign === "left" && <FiAlignLeft />}
+                            {textAlign === "center" && <FiAlignCenter />}
+                            {textAlign === "right" && <FiAlignRight />}
+                          </button>
+                        )
+                      )}
 
                       {/* <button
                           onClick={() => {
