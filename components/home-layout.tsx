@@ -41,7 +41,10 @@ import { useNotifications } from "@/hooks/useNotifications";
 import SlideOver from "./slide-over";
 import { Notification } from "@/models/notification";
 import NotificationAlert from "./notification";
-import { getFormattedDateFromMongoDBDate, getRealTimeDateFormat } from "@/util/helper";
+import {
+  getFormattedDateFromMongoDBDate,
+  getRealTimeDateFormat,
+} from "@/util/helper";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref
@@ -237,6 +240,31 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <div className="flex flex-col justify-between h-full">
                 {/* side menus */}
                 <div className="flex flex-col w-full gap-5 items-center p-3">
+                  {/* publish button */}
+                  <button
+                    onClick={() => {}}
+                    className={clsx(
+                      "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
+                      {
+                        "flex-col justify-center h-12 w-12 aspect-square":
+                          !showFullSidebar,
+                      },
+                      {
+                        "flex-row justify-between pl-6 pr-3 h-12":
+                          showFullSidebar,
+                      }
+                    )}
+                  >
+                    <div className="flex flex-row items-center gap-3">
+                      <FiEdit className="h-[18px] w-[18px]" />
+                      {showFullSidebar && (
+                        <span className="flex flex-shrink-0 font-normal">
+                          Publish
+                        </span>
+                      )}
+                    </div>
+                  </button>
+
                   {/* create button */}
                   <button
                     onClick={() => {
@@ -258,7 +286,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     )}
                   >
                     <div className="flex flex-row items-center gap-3">
-                      <FiEdit className="h-[18px] w-[18px]" />
+                      <FiPlus className="h-[18px] w-[18px]" />
                       {showFullSidebar && (
                         <span className="flex flex-shrink-0 font-normal">
                           Create
@@ -643,8 +671,12 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     </span>
                   </div>
 
-                  <span className="text-xs text-light-text-secondary dark:text-dark-text-secondary font-medium line-clamp-1 flex-shrink-0">{getFormattedDateFromMongoDBDate(notification?.created_at, "f:Oct 19")}</span>
-
+                  <span className="text-xs text-light-text-secondary dark:text-dark-text-secondary font-medium line-clamp-1 flex-shrink-0">
+                    {getFormattedDateFromMongoDBDate(
+                      notification?.created_at,
+                      "f:Oct 19"
+                    )}
+                  </span>
                 </div>
 
                 {/* date in format like now, 1 min ago, ghour ago, day ago, bla bla, or date */}
