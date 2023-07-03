@@ -63,6 +63,33 @@ export const sampleArtists: SampleArtist[] = [
   },
 ];
 
+export const genres = [
+  "Action",
+  "Adventure",
+  "Comedy",
+  "Crime",
+  "Drama",
+  "Fantasy",
+  "Historical",
+  "Historical fiction",
+  "Horror",
+  "Magical realism",
+  "Mystery",
+  "Paranoid fiction",
+  "Philosophical",
+  "Political",
+  "Romance",
+  "Saga",
+  "Satire",
+  "Science fiction",
+  "Social",
+  "Speculative",
+  "Thriller",
+  "Urban",
+  "Western",
+];
+
+
 interface SampleEpisode {
   image_url: string;
 }
