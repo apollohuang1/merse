@@ -8,6 +8,7 @@ import {
   FiBell,
   FiChevronLeft,
   FiChevronRight,
+  FiGrid,
   FiSearch,
   FiSun,
 } from "react-icons/fi";
@@ -33,7 +34,7 @@ const Home = (props: Props) => {
       {/* main content */}
       <div className="flex flex-col w-full h-full gap-0 max-sm:gap-3 items-center">
         {/* artist updates */}
-        <div className="flex flex-row gap-5 max-sm:gap-4 overflow-x-auto px-6 w-full py-3">
+        <div className="flex flex-row gap-5 max-sm:gap-4 overflow-x-auto px-6 w-full py-3 no-scrollbar">
           {sampleArtists.map((artist, index) => {
             return (
               <button
@@ -60,19 +61,32 @@ const Home = (props: Props) => {
         </div>
 
         {/* categories */}
-        <div className="sticky top-[56px] flex flex-row gap-3 max-sm:gap-4 overflow-x-auto px-6 py-3 w-full z-10 bg-light-background-primary dark:bg-dark-background-primary">
+        <div className="sticky top-[56px] flex flex-row gap-3 max-sm:gap-4 overflow-x-auto px-6 py-3 w-full z-10 bg-light-background-primary dark:bg-dark-background-primary no-scrollbar">
           {["All", ...genres].map((genre, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentGenre(genre)}
-              className={clsx(
-                "flex flex-row flex-1 flex-shrink-0 items-center border border-light-dividerContrast dark:border-dark-dividerContrast rounded-full py-2 px-3",
-                { "bg-emerald-500 text-dark-text-primary" : currentGenre === genre }
-              )}
-            >
-              <span className="text-sm whitespace-nowrap">{genre}</span>
+            <button key={index} onClick={() => setCurrentGenre(genre)}>
+              <span
+                className={clsx(
+                  "flex flex-row flex-1 flex-shrink-0 items-center justify-center text-sm whitespace-nowrap border border-light-dividerContrast dark:border-dark-dividerContrast rounded-full py-2 px-4 min-w-[64px]",
+                  {
+                    "bg-emerald-500 text-dark-text-primary":
+                      currentGenre === genre,
+                  }
+                )}
+              >
+                {genre}
+              </span>
             </button>
           ))}
+
+          <button onClick={() => {}}>
+            <span
+              className={clsx(
+                "flex flex-row flex-1 flex-shrink-0 items-center justify-center text-sm whitespace-nowrap border border-light-dividerContrast dark:border-dark-dividerContrast rounded-full py-2 px-4 min-w-[64px]",
+              )}
+            >
+              More
+            </span>
+          </button>
         </div>
 
         <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 w-full gap-6 items-center justify-between overflow-auto px-6 py-3">

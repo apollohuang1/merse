@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  
   button {
     /* @apply hover:bg-light-background-tertiary hover:dark:bg-dark-background-tertiary transition-all; */
     @apply ease-in duration-100 active:bg-opacity-50 active:opacity-50 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
-  span, p {
+  span,
+  p {
     /* @apply text-light-text-primary dark:text-dark-text-primary; */
   }
 
@@ -24,9 +24,9 @@
   }
 
   /* style for list */
-  ul { 
-    @apply list-outside list-disc ml-4
- }
+  ul {
+    @apply list-outside list-disc ml-4;
+  }
 
   ol {
     @apply list-decimal list-inside;
@@ -36,6 +36,22 @@
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+}
+
+/* add the code bellow */
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
   }
 }
 
@@ -49,7 +65,7 @@
 
 /* Display Placeholders on every new line. */
 .ProseMirror p.is-empty::before {
-  color: #C4C4C6;
+  color: #c4c4c6;
   content: attr(data-placeholder);
   float: left;
   height: 0;
@@ -57,7 +73,7 @@
 }
 
 .dark .ProseMirror p.is-empty::before {
-  color: #47474A;
+  color: #47474a;
   content: attr(data-placeholder);
   float: left;
   height: 0;

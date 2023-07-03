@@ -64,6 +64,7 @@ export const sampleArtists: SampleArtist[] = [
 ];
 
 export const genres = [
+  "Life Journal",
   "Action",
   "Adventure",
   "Comedy",
@@ -71,22 +72,15 @@ export const genres = [
   "Drama",
   "Fantasy",
   "Historical",
-  "Historical fiction",
   "Horror",
-  "Magical realism",
   "Mystery",
-  "Paranoid fiction",
   "Philosophical",
-  "Political",
   "Romance",
-  "Saga",
-  "Satire",
-  "Science fiction",
-  "Social",
-  "Speculative",
   "Thriller",
-  "Urban",
-  "Western",
+  "Super Hero",
+  "Sci-Fi",
+  "Sports",
+  "Heartwarming",
 ];
 
 

@@ -240,7 +240,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <div className="flex flex-col justify-between h-full">
                 {/* side menus */}
                 <div className="flex flex-col w-full gap-5 items-center p-3">
-
                   {/* create button */}
                   <button
                     onClick={() => {
@@ -296,7 +295,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       )}
                     </div>
 
-                    <span className="flex items-center justify-center text-xs font-medium text-light-text-secondary dark:text-dark-text-secondary py-1 px-2 rounded-full">Soon</span>
+                    {/* <span className="flex items-center justify-center text-xs font-medium text-light-text-secondary dark:text-dark-text-secondary py-1 px-2 rounded-full">Coming Soon</span> */}
                   </button>
 
                   {/* navigation menus */}
