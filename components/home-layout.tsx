@@ -240,30 +240,6 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <div className="flex flex-col justify-between h-full">
                 {/* side menus */}
                 <div className="flex flex-col w-full gap-5 items-center p-3">
-                  {/* publish button */}
-                  <button
-                    onClick={() => {}}
-                    className={clsx(
-                      "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
-                      {
-                        "flex-col justify-center h-12 w-12 aspect-square":
-                          !showFullSidebar,
-                      },
-                      {
-                        "flex-row justify-between pl-6 pr-3 h-12":
-                          showFullSidebar,
-                      }
-                    )}
-                  >
-                    <div className="flex flex-row items-center gap-3">
-                      <FiEdit className="h-[18px] w-[18px]" />
-                      {showFullSidebar && (
-                        <span className="flex flex-shrink-0 font-normal">
-                          Publish
-                        </span>
-                      )}
-                    </div>
-                  </button>
 
                   {/* create button */}
                   <button
@@ -293,6 +269,34 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         </span>
                       )}
                     </div>
+                  </button>
+
+                  {/* publish button */}
+                  <button
+                    onClick={() => {}}
+                    className={clsx(
+                      "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
+                      {
+                        "flex-col justify-center h-12 w-12 aspect-square":
+                          !showFullSidebar,
+                      },
+                      {
+                        "flex-row justify-between pl-6 pr-3 h-12":
+                          showFullSidebar,
+                      }
+                    )}
+                    disabled
+                  >
+                    <div className="flex flex-row items-center gap-3">
+                      <FiEdit className="h-[18px] w-[18px]" />
+                      {showFullSidebar && (
+                        <span className="flex flex-shrink-0 font-normal">
+                          Publish
+                        </span>
+                      )}
+                    </div>
+
+                    <span className="flex items-center justify-center text-xs font-medium text-light-text-secondary dark:text-dark-text-secondary py-1 px-2 rounded-full">Soon</span>
                   </button>
 
                   {/* navigation menus */}
