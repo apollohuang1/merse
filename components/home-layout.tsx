@@ -20,6 +20,7 @@ import {
   FiSearch,
   FiSidebar,
   FiSun,
+  FiUpload,
   FiX,
   FiZap,
 } from "react-icons/fi";
@@ -32,7 +33,7 @@ import Divider from "./divider";
 import { Combobox, Transition } from "@headlessui/react";
 import { sampleArtists } from "@/util/constants/home-constant";
 import { HiXCircle } from "react-icons/hi";
-import { debounce } from "lodash";
+import { debounce, set } from "lodash";
 import axios from "axios";
 import { User } from "@/models/user";
 import mongoose from "mongoose";
@@ -45,6 +46,7 @@ import {
   getFormattedDateFromMongoDBDate,
   getRealTimeDateFormat,
 } from "@/util/helper";
+import Modal from "./modal";
 
 const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // input ref
@@ -85,6 +87,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isCreateRoute = pathName?.split("/")[1] === "create";
 
   const [showNotificationSlideOver, setShowNotificationSlideOver] =
+    useState<boolean>(false);
+  const [showCreateOptionModal, setShowCreateOptionModal] =
     useState<boolean>(false);
 
   const { reloadCurrentLocalUser } = useAuth();
@@ -243,10 +247,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   {/* create button */}
                   <button
                     onClick={() => {
-                      router.push(
-                        // `/create/${new mongoose.Types.ObjectId().toHexString()}/styles`
-                        `/create/${new mongoose.Types.ObjectId().toHexString()}`
-                      );
+                      // router.push(`/create/${new mongoose.Types.ObjectId().toHexString()}`);
+                      setShowCreateOptionModal(true);
                     }}
                     className={clsx(
                       "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
@@ -700,7 +702,54 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           dispatch(setShowNotifications(false));
         }}
       />
+
+      <Modal
+        title="Create New Episode"
+        isOpen={showCreateOptionModal}
+        onClose={() => setShowCreateOptionModal(false)}
+        withPaddingTop={false}
+      >
+        <div className="flex flex-row w-full gap-6 text-light-text-primary dark:text-dark-text-primary">
+          <CreateOptionButton
+            icon={<FiEdit className="w-7 h-7" />}
+            label="Create with our built-in tool"
+            onClick={() => {
+              router.push(`/create/${new mongoose.Types.ObjectId().toHexString()}`);
+              setShowCreateOptionModal(false);
+            }}
+          />
+          <CreateOptionButton
+            icon={<FiUpload className="w-7 h-7" />}
+            label="Publish with external tools"
+            onClick={() => {
+              alert("Coming soon");
+            }}
+          />
+        </div>
+      </Modal>
     </>
+  );
+};
+
+const CreateOptionButton: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+}> = ({ icon, label, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      className="group flex aspect-square w-80 items-center justify-center bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-lg border border-light-divider dark:border-dark-divider"
+    >
+      <div className="flex flex-col text-center items-center max-w-[120px] gap-3">
+        <div className="group-hover:text-emerald-500 transition-all">
+          {icon}
+        </div>
+        <span className="text-light-text-secondary dark:text-dark-text-secondary text-sm font-medium">
+          {label}
+        </span>
+      </div>
+    </button>
   );
 };
 
