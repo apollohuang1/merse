@@ -47,7 +47,7 @@ const Modal: React.FC<{
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className={`flex flex-col overflow-hidden rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-xl transition-all max-w-${size} w-full border border-light-divider dark:border-dark-divider`}>
+              <Dialog.Panel className={`flex flex-col overflow-hidden rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-xl transition-all max-w-lg w-full border border-light-divider dark:border-dark-divider`}>
                 <div className="flex flex-col items-start h-full w-full">
                   <div className="flex items-center justify-between w-full px-3 py-5">
                     <Dialog.Title

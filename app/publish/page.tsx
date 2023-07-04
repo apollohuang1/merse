@@ -52,7 +52,7 @@ const PublishPage = (props: Props) => {
 
             <Menu as="div" className="relative flex text-left w-full">
               <Menu.Button className="outline-none">
-                <div className="group relative flex w-60 h-60 rounded-md border border-light-divider dark:border-dark-divider aspect-square overflow-clip flex-shrink-0 items-center justify-center">
+                <div className="group relative flex w-60 h-60 rounded-md border border-light-divider dark:border-dark-divider aspect-square overflow-clip flex-shrink-0 items-center justify-center hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary transition-all">
                   {coverImageURL === "" ? (
                     <div className="flex flex-col items-center gap-3">
                       <FiUpload className="w-8 h-8 text-light-text-secondary dark:text-dark-text-secondary" />
@@ -127,23 +127,27 @@ const PublishPage = (props: Props) => {
                         </button>
                       )}
                     </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          onClick={() => setCoverImageURL("")}
-                          className={clsx(
-                            "w-full flex items-center px-4 h-10 text-sm hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary text-light-red dark:text-dark-red",
-                            {
-                              "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                active,
-                            }
-                          )}
-                        >
-                          <FiTrash className="w-4 h-4 mr-2" />
-                          Remove
-                        </button>
-                      )}
-                    </Menu.Item>
+
+                    { coverImageURL !== "" &&
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            onClick={() => setCoverImageURL("")}
+                            className={clsx(
+                              "w-full flex items-center px-4 h-10 text-sm hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary text-light-red dark:text-dark-red",
+                              {
+                                "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                  active,
+                              }
+                            )}
+                          >
+                            <FiTrash className="w-4 h-4 mr-2" />
+                            Remove
+                          </button>
+                        )}
+                      </Menu.Item>
+                    }
+                    
                   </div>
                 </Menu.Items>
               </Transition>
@@ -253,7 +257,7 @@ const PublishPage = (props: Props) => {
         title="Add cover Image from URL"
         withPaddingTop={false}
       >
-        <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full h-full gap-6">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -269,12 +273,12 @@ const PublishPage = (props: Props) => {
               value={addingCoverURLText}
               placeholder="Paste the image link..."
               onChange={(e) => setAddingCoverURLText(e.target.value)}
-              className="flex flex-row w-full h-10 px-4 rounded-md bg-transparent border border-light-divider dark:border-dark-divider focus:border-emerald-500 dark:focus:border-emerald-500 focus:outline-1 outline-none transition-all text-light-text-primary dark:text-dark-text-primary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
+              className="flex flex-row w-full h-10 px-4 rounded-md border border-light-divider dark:border-dark-divider bg-light-background-secondary dark:bg-dark-background-secondary focus:border-emerald-500 dark:focus:border-emerald-500 focus:outline-1 outline-none transition-all text-light-text-primary dark:text-dark-text-primary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary"
             />
           </form>
 
           {/* cancel and add buttons on the right hand side */}
-          <div className="flex flex-row w-full h-12 gap-2 mt-4 justify-end">
+          <div className="flex flex-row w-full gap-2 justify-end">
             <button
               onClick={() => {
                 setShowCoverURLInputModal(false);
