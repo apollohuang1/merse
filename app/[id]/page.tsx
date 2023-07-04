@@ -327,8 +327,9 @@ const ProfilePage = (props: Props) => {
   };
 
   const tabs = [
-    { name: "Calendar", href: "calendar" },
+    { name: "Series", href: "series"},
     { name: "Entries", href: "entries" },
+    { name: "Calendar", href: "calendar" },
     { name: "Collection", href: "collection" },
     { name: "About", href: "about" },
   ];

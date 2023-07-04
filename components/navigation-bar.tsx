@@ -162,52 +162,15 @@ const NavigationBar: React.FC<{
               </>
             )}
 
-            {auth?.currentUser ? (
-              <ProfileMenu>
-                <button
-                  onClick={() => {
-                    // logOut();
-                  }}
-                  className="flex flex-row gap-3"
-                >
-                  <div
-                    className={clsx(
-                      "relative w-6 h-6 rounded-full bg-dark-text-secondary overflow-hidden",
-                      { "w-7 h-7": isAuthenticated }
-                    )}
-                  >
-                    <svg
-                      className="absolute h-full w-full text-gray-300"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-
-                    <img
-                      src={auth?.currentUser?.profile_image_url}
-                      className={"absolute w-full h-full rounded-full"}
-                      alt="user profile image"
-                      onError={(e) => {
-                        e.currentTarget.src =
-                          "https://media.discordapp.net/attachments/1090027780525273153/1095187382095061085/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_fe116faf-39b2-46d2-8dbe-b46f9b0b4ef1.png?width=686&height=686";
-                      }}
-                    />
-                  </div>
-
-                  {/* <span>{auth?.currentUser?.name ?? "Unknown"}</span> */}
-                </button>
-              </ProfileMenu>
-            ) : (
-              <button
-                onClick={() => {
-                  setShowLoginModal(true);
-                }}
-                className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-6"
-              >
-                <span className="text-sm font-medium">Login</span>
-              </button>
-            )}
+            <button
+              onClick={() => {
+                setShowLoginModal(true);
+              }}
+              className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-6"
+            >
+              <span className="text-sm font-medium">Login</span>
+            </button>
+            
           </div>
         </div>
       </div>
