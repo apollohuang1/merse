@@ -38,44 +38,44 @@ export default function RootLayout({
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  useEffect(() => {
-    reloadCurrentLocalUser()
-      .then((user: any) => {
-        if (user) {
-          dispatch(setEntryAuthor(user?._id));
+  // useEffect(() => {
+  //   reloadCurrentLocalUser()
+  //     .then((user: any) => {
+  //       if (user) {
+  //         dispatch(setEntryAuthor(user?._id));
 
-          // const newEntryId = new mongoose.Types.ObjectId().toString();
-          // dispatch(setEntryId(newEntryId));
+  //         // const newEntryId = new mongoose.Types.ObjectId().toString();
+  //         // dispatch(setEntryId(newEntryId));
 
-          if (!pathname) {
-            throw new Error("pathname is undefined");
-          };
+  //         if (!pathname) {
+  //           throw new Error("pathname is undefined");
+  //         };
 
-          // redirect to create page
+  //         // redirect to create page
 
-          // /create/6450e38683b35bc751cbec60/styles
+  //         // /create/6450e38683b35bc751cbec60/styles
 
-          // if that id exist, don't redirect
-          const detectedId = pathname.split("/")[2];
-          if (detectedId) {
-            // console.log("Detected entry id: ", detectedId);
-            dispatch(setEntryId(detectedId));
-            return;
-          }
+  //         // if that id exist, don't redirect
+  //         const detectedId = pathname.split("/")[2];
+  //         if (detectedId) {
+  //           // console.log("Detected entry id: ", detectedId);
+  //           dispatch(setEntryId(detectedId));
+  //           return;
+  //         }
 
-          const newEntryId = new mongoose.Types.ObjectId().toString();
+  //         const newEntryId = new mongoose.Types.ObjectId().toString();
 
-          console.log("Redirecting to create page...")
+  //         console.log("Redirecting to create page...")
 
-          router.push(`/create/${newEntryId}/styles`)
-        }
-      })
-      .catch((err) => {
-        // redirect to home/authentication page
-        // alert("Please log in to continue");
-        // window.location.href = "/";
-      });
-  }, []);
+  //         router.push(`/create/${newEntryId}/styles`)
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       // redirect to home/authentication page
+  //       // alert("Please log in to continue");
+  //       // window.location.href = "/";
+  //     });
+  // }, []);
 
   return (
     <div className="grid grid-cols-[250px_auto] max-lg:grid-cols-[175px_auto] max-sm:flex max-sm:flex-col w-full h-full bg-light-background-primary dark:bg-dark-background-primary text-light-text-primary dark:text-dark-text-primary max-h-screen">

@@ -61,11 +61,17 @@ const useCreateEntry = () => {
       // if (entry?.autor?._id !== auth?.currentUser?._id) {
       //   throw new Error("You are not the owner of this entry.");
       // }
+
+      const authorId = auth?.currentUser?._id;
+
+      if (!authorId) {
+        throw new Error("Unauthorized User.");
+      }
       
       const response = await axios({
         method: "POST",
         url: "/api/entries",
-        data: entry,
+        data: { ...entry, author: authorId },
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
           "Content-Type": "application/json",

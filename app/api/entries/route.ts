@@ -67,9 +67,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No body provided" }, { status: 400 });
     }
 
-    if (!body._id) {
-      return NextResponse.json({ error: "No _id provided" }, { status: 400 });
-    }
+    // if (!body._id) {
+    //   return NextResponse.json({ error: "No _id provided" }, { status: 400 });
+    // }
 
     // check if exist
     const updatedEntry = await MDBEntry.findByIdAndUpdate(
@@ -94,6 +94,7 @@ export async function POST(request: NextRequest) {
 
     const newEntry = new MDBEntry({
       ...body,
+      _id: new mongoose.Types.ObjectId().toHexString(),
       created_at: new Date(),
       updated_at: new Date(),
       cover: {

@@ -689,7 +689,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             icon={<FiEdit className="w-7 h-7" />}
             label="Create with our built-in tool"
             onClick={() => {
-              router.push(`/create/${new mongoose.Types.ObjectId().toHexString()}`);
+              router.push("/create");
               setShowCreateOptionModal(false);
             }}
           />
