@@ -7,7 +7,10 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { FiBookOpen, FiChevronRight, FiLogOut, FiUser } from "react-icons/fi";
 
-type Props = { children: React.ReactNode };
+type Props = { 
+  children: React.ReactNode,
+  onCreateClicked: () => void
+};
 
 const ProfileMenu = (props: Props) => {
   const { logOut } = useAuth();
@@ -28,9 +31,7 @@ const ProfileMenu = (props: Props) => {
     {
       icon: <FiBookOpen />,
       label: "Create Comic",
-      onClick: () => {
-        window.location.href = `/create/${new mongoose.Types.ObjectId().toHexString()}`;
-      },
+      onClick: props.onCreateClicked,
     },
     {
       icon: <FiLogOut />,

@@ -263,41 +263,13 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     )}
                   >
                     <div className="flex flex-row items-center gap-3">
-                      <FiPlus className="h-[18px] w-[18px]" />
+                      <FiEdit className="h-[18px] w-[18px]" />
                       {showFullSidebar && (
                         <span className="flex flex-shrink-0 font-normal">
                           Create
                         </span>
                       )}
                     </div>
-                  </button>
-
-                  {/* publish button */}
-                  <button
-                    onClick={() => {}}
-                    className={clsx(
-                      "flex flex-row items-center gap-3 w-full transition-all rounded-xl bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary",
-                      {
-                        "flex-col justify-center h-12 w-12 aspect-square":
-                          !showFullSidebar,
-                      },
-                      {
-                        "flex-row justify-between pl-6 pr-3 h-12":
-                          showFullSidebar,
-                      }
-                    )}
-                    disabled
-                  >
-                    <div className="flex flex-row items-center gap-3">
-                      <FiEdit className="h-[18px] w-[18px]" />
-                      {showFullSidebar && (
-                        <span className="flex flex-shrink-0 font-normal">
-                          Publish
-                        </span>
-                      )}
-                    </div>
-
-                    {/* <span className="flex items-center justify-center text-xs font-medium text-light-text-secondary dark:text-dark-text-secondary py-1 px-2 rounded-full">Coming Soon</span> */}
                   </button>
 
                   {/* navigation menus */}
@@ -583,7 +555,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       <FiSun className="w-5 h-5" />
                     </button>
 
-                    <ProfileMenu>
+                    <ProfileMenu
+                      onCreateClicked={() => setShowCreateOptionModal(true)}
+                    >
                       <div className="flex items-center justify-center aspect-square">
                         <img
                           src={auth?.currentUser?.profile_image_url}
