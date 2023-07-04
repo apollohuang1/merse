@@ -696,7 +696,8 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             icon={<FiUpload className="w-7 h-7" />}
             label="Publish with external tools"
             onClick={() => {
-              alert("Coming soon");
+              setShowCreateOptionModal(false);
+              router.push("/publish");
             }}
           />
         </div>

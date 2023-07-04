@@ -76,10 +76,10 @@ module.exports = {
           background: {
             primary: '#FFFFFF', // white
             // primary: "#F5F5F7", // apple
-            secondary: "#F5F5F5",
+            secondary: "#F5F7F5",
             // secondary: "#F5F5F7",
             // secondary: "#E8E8ED",
-            tertiary: "#E8E8ED",
+            tertiary: "#E8EDE8",
           },
           text: {
             // primary: '#000000', // black
