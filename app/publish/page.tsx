@@ -20,14 +20,18 @@ const PublishPage = (props: Props) => {
   const [coverImageURL, setCoverImageURL] = React.useState<string>("");
 
   const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
-  const [addingCoverURLText, setAddingCoverURLText] = React.useState<string>("");
-  const [showCoverURLInputModal, setShowCoverURLInputModal] = React.useState<boolean>(false);
+  const [addingCoverURLText, setAddingCoverURLText] =
+    React.useState<string>("");
+  const [showCoverURLInputModal, setShowCoverURLInputModal] =
+    React.useState<boolean>(false);
+
+  const imgInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSelectedFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setCoverImageURL(URL.createObjectURL(file));
-  }
+  };
 
   return (
     <>
@@ -36,10 +40,27 @@ const PublishPage = (props: Props) => {
           {/* series cover image */}
 
           <div className="flex flex-col gap-3">
-            {coverImageURL !== "" ? (
-              <Menu as="div" className="relative flex text-left w-full">
-                <Menu.Button>
-                  <div className="group relative flex w-60 h-60 rounded-md border border-light-divider dark:border-dark-divider aspect-square overflow-clip flex-shrink-0 items-center justify-center">
+
+            <input
+              ref={imgInputRef}
+              type="file"
+              accept="image/*"
+              id="cover-image"
+              className="absolute inset-0 w-full h-full hidden opacity-0 cursor-pointer"
+              onChange={handleSelectedFile}
+            />
+
+            <Menu as="div" className="relative flex text-left w-full">
+              <Menu.Button className="outline-none">
+                <div className="group relative flex w-60 h-60 rounded-md border border-light-divider dark:border-dark-divider aspect-square overflow-clip flex-shrink-0 items-center justify-center">
+                  {coverImageURL === "" ? (
+                    <div className="flex flex-col items-center gap-3">
+                      <FiUpload className="w-8 h-8 text-light-text-secondary dark:text-dark-text-secondary" />
+                      <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary text-center">
+                        Upload Cover Photo or <br /> Drag and Drop
+                      </span>
+                    </div>
+                  ) : (
                     <img
                       src={coverImageURL}
                       className="w-full h-full object-cover aspect-square"
@@ -47,100 +68,86 @@ const PublishPage = (props: Props) => {
                         setCoverImageURL("");
                       }}
                     />
-                  </div>
-                </Menu.Button>
+                  )}
 
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="absolute z-10 top-3/4 left-1/2 w-56 origin-center rounded-md bg-light-background-primary dark:bg-dark-background-secondary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-2xl">
-                    <div className="py-1">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            className={clsx(
-                              "relative w-full flex items-center px-4 h-10 text-sm text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                              {
-                                "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                  active,
-                              }
-                            )}
-                          >
-                            <FiUpload className="w-4 h-4 mr-2" />
-                            Upload Photo
-                            <input
-                              type="file"
-                              accept="image/*"
-                              id="cover-image"
-                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                              onChange={(e) => handleSelectedFile(e)}
-                            />
-                          </button>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            onClick={() => setShowCoverURLInputModal(true)}
-                            className={clsx(
-                              "w-full flex items-center px-4 h-10 text-sm text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
-                              {
-                                "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                  active,
-                              }
-                            )}
-                          >
-                            <FiLink className="w-4 h-4 mr-2" />
-                            Link Photo
-                          </button>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            onClick={() => setCoverImageURL("")}
-                            className={clsx(
-                              "w-full flex items-center px-4 h-10 text-sm hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary text-light-red dark:text-dark-red",
-                              {
-                                "bg-light-background-secondary dark:bg-dark-background-tertiary":
-                                  active,
-                              }
-                            )}
-                          >
-                            <FiTrash className="w-4 h-4 mr-2" />
-                            Remove
-                          </button>
-                        )}
-                      </Menu.Item>
-                    </div>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-            ) : (
-              <div className="group relative flex w-60 h-60 rounded-md border border-light-divider dark:border-dark-divider aspect-square overflow-clip flex-shrink-0 items-center justify-center">
-
-                <div className="flex flex-col items-center gap-3">
-                  <FiUpload className="w-8 h-8 text-light-text-secondary dark:text-dark-text-secondary" />
-                  <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary text-center">
-                    Upload Cover Photo or <br/> Drag and Drop
-                  </span>
+                  {/* <input
+                    type="file"
+                    accept="image/*"
+                    id="cover-image"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    onChange={(e) => handleSelectedFile(e)}
+                  /> */}
                 </div>
+              </Menu.Button>
 
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="cover-image"
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  onChange={(e) => handleSelectedFile(e)}
-                />
-              </div>
-            )}
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute z-10 top-3/4 left-1/2 w-56 origin-center rounded-md bg-light-background-primary dark:bg-dark-background-secondary shadow-lg focus:outline-none ring-1 ring-light-divider dark:ring-dark-divider drop-shadow-2xl">
+                  <div className="py-1">
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          onClick={() => {
+                            imgInputRef?.current?.click();
+                          }}
+                          className={clsx(
+                            "relative w-full flex items-center px-4 h-10 text-sm text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                            {
+                              "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                active,
+                            }
+                          )}
+                        >
+                          <FiUpload className="w-4 h-4 mr-2" />
+                          Upload Photo
+                        </button>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          onClick={() => setShowCoverURLInputModal(true)}
+                          className={clsx(
+                            "w-full flex items-center px-4 h-10 text-sm text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary",
+                            {
+                              "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                active,
+                            }
+                          )}
+                        >
+                          <FiLink className="w-4 h-4 mr-2" />
+                          URL Link
+                        </button>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          onClick={() => setCoverImageURL("")}
+                          className={clsx(
+                            "w-full flex items-center px-4 h-10 text-sm hover:bg-light-background-secondary dark:hover:bg-dark-background-tertiary text-light-red dark:text-dark-red",
+                            {
+                              "bg-light-background-secondary dark:bg-dark-background-tertiary":
+                                active,
+                            }
+                          )}
+                        >
+                          <FiTrash className="w-4 h-4 mr-2" />
+                          Remove
+                        </button>
+                      )}
+                    </Menu.Item>
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
           </div>
 
           <div className="flex flex-col w-full gap-12 pb-10">
@@ -200,7 +207,9 @@ const PublishPage = (props: Props) => {
                       <FiCheck
                         className={clsx(
                           "w-4 h-4",
-                          { "text-emerald-500": selectedGenres.includes(genre) },
+                          {
+                            "text-emerald-500": selectedGenres.includes(genre),
+                          },
                           {
                             "text-light-text-tertiary dark:text-dark-text-tertiary":
                               !selectedGenres.includes(genre),
@@ -242,8 +251,9 @@ const PublishPage = (props: Props) => {
         onClose={() => setShowCoverURLInputModal(false)}
         withCloseButton={false}
         title="Add cover Image from URL"
+        withPaddingTop={false}
       >
-        <div className="flex flex-col w-full h-full px-3">
+        <div className="flex flex-col w-full h-full">
           <form
             onSubmit={(e) => {
               e.preventDefault();
