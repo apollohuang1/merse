@@ -9,6 +9,7 @@ const Modal: React.FC<{
   title?: string;
   withCloseButton?: boolean;
   withPaddingTop?: boolean;
+  size?: "lg" | "xl";
   children: React.ReactNode;
 }> = ({
   isOpen,
@@ -17,6 +18,7 @@ const Modal: React.FC<{
   withCloseButton = true,
   withPaddingTop = true,
   children,
+  size = "lg",
 }) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -31,7 +33,7 @@ const Modal: React.FC<{
           leaveTo="opacity-0"
         >
           {/* <div className="fixed inset-0 bg-black dark:bg-white bg-opacity-50 dark:bg-opacity-30 transition-opacity" /> */}
-          <div className="fixed inset-0 bg-black bg-opacity-30 transition-opacity" />
+          <div className="fixed inset-0 bg-black bg-opacity-30 dark:bg-opacity-50 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -45,9 +47,9 @@ const Modal: React.FC<{
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="flex flex-col overflow-hidden rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-xl transition-all max-w-lg w-full border border-light-divider dark:border-dark-divider">
+              <Dialog.Panel className={`flex flex-col overflow-hidden rounded-lg bg-light-background-primary dark:bg-dark-background-primary shadow-xl transition-all max-w-${size} w-full border border-light-divider dark:border-dark-divider`}>
                 <div className="flex flex-col items-start h-full w-full">
-                  <div className="flex items-center justify-between w-full p-3">
+                  <div className="flex items-center justify-between w-full px-3 py-5">
                     <Dialog.Title
                       as="h3"
                       className="text-base font-medium text-light-text-primary dark:text-dark-text-primary pl-3"

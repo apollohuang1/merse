@@ -682,8 +682,9 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         isOpen={showCreateOptionModal}
         onClose={() => setShowCreateOptionModal(false)}
         withPaddingTop={false}
+        size="xl"
       >
-        <div className="flex flex-row w-full gap-6 text-light-text-primary dark:text-dark-text-primary">
+        <div className="flex flex-row w-full gap-6 text-light-text-primary dark:text-dark-text-primary max-sm:gap-3">
           <CreateOptionButton
             icon={<FiEdit className="w-7 h-7" />}
             label="Create with our built-in tool"
@@ -714,7 +715,7 @@ const CreateOptionButton: React.FC<{
   return (
     <button
       onClick={onClick}
-      className="group flex aspect-square w-80 items-center justify-center bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-lg border border-light-divider dark:border-dark-divider"
+      className="group flex aspect-[4/3] w-96 items-center justify-center bg-light-background-secondary dark:bg-dark-background-secondary hover:bg-light-background-tertiary dark:hover:bg-dark-background-tertiary rounded-lg border border-light-divider dark:border-dark-divider"
     >
       <div className="flex flex-col text-center items-center max-w-[120px] gap-3">
         <div className="group-hover:text-emerald-500 transition-all">
