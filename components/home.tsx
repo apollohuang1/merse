@@ -39,15 +39,13 @@ const Home = (props: Props) => {
 
   // functions
   const handleGenresChange = (genre: string) => {
-    setCurrentGenre(genre)
+    setCurrentGenre(genre);
     if (genre === "All") {
       setFilteredSeries(series);
     } else {
-      setFilteredSeries(
-        series.filter((series) => series.genres.includes(currentGenre))
-      );
+      setFilteredSeries(series.filter((s) => s.genres?.includes(genre)));
     }
-  }
+  };
 
   // useEffects
   React.useEffect(() => {
@@ -117,8 +115,8 @@ const Home = (props: Props) => {
           </button>
         </div>
 
-        { /* series */}
-        { series.length > 0 && 
+        {/* series */}
+        {series.length > 0 && (
           <div className="flex flex-col w-full gap-3 px-6 py-3">
             <div className="flex flex-row items-center gap-3">
               <h2>Series</h2>
@@ -164,10 +162,9 @@ const Home = (props: Props) => {
               ))}
             </div>
           </div>
-        }
+        )}
 
         <div className="flex flex-col w-full gap-3 px-6 py-3">
-
           <div className="flex flex-row items-center gap-3">
             <h2>Placeholders</h2>
             <button className="text-sm font-medium text-emerald-500 hover:text-emerald-600">
