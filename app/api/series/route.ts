@@ -3,6 +3,26 @@ import dbConnect from "@/server/utils/dbConnect";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(request: NextRequest) {
+  try {
+    await dbConnect();
+
+    // get api key from bear token
+    const token = request.headers.get("authorization");
+
+    // if key is not process.env.MERSE_API_KEY
+    if (token !== `Bearer ${process.env.MERSE_API_KEY}`) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const series = await MDBSeries.find({});
+
+    return NextResponse.json(series, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json(error.message, { status: 500 });
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
 

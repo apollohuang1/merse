@@ -1,7 +1,9 @@
+import { Episode } from "@/models/episode";
+import { Series } from "@/models/series";
 import axios from "axios";
 
 export const usePubish = () => {
-  const createNewSeries = async (series: any) => {
+  const createNewSeries = async (series: Series) => {
     try {
       const response = await axios({
         method: "POST",
@@ -18,6 +20,9 @@ export const usePubish = () => {
       console.log("Failed to create new series, message: ", error.message);
     }
   };
+
+  const createNewEpisode = async (episode: Episode) => {
+  }
 
   return { createNewSeries };
 };
