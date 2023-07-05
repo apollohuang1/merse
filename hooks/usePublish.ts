@@ -15,7 +15,6 @@ export const usePubish = () => {
 
       console.log("successfully created new series, response: ", response.data);
     } catch (error: any) {
-      console.log(error)
       console.log("Failed to create new series, message: ", error.message);
     }
   };

@@ -3,6 +3,7 @@
 import Modal from "@/components/modal";
 import { usePubish } from "@/hooks/usePublish";
 import { Series } from "@/models/series";
+import { useAppSelector } from "@/redux-store/hooks";
 import { genres } from "@/util/constants/home-constant";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
@@ -19,9 +20,9 @@ import {
 type Props = {};
 
 const PublishPage = (props: Props) => {
-
   // hooks
   const { createNewSeries } = usePubish();
+  const auth = useAppSelector((state) => state.auth);
 
   // states
   const [title, setTitle] = React.useState<string>("");
@@ -43,14 +44,22 @@ const PublishPage = (props: Props) => {
   };
 
   const handleCreateNewSeries = async () => {
-    const newSeries: Series = {
-      title,
-      description: description,
-      genres: selectedGenres,
-      cover_image_url: coverImageURL,
-    };
+    try {
+      const authorId = auth?.currentUser?._id;
+      if (!authorId) throw new Error("Author id is not provided");
 
-    await createNewSeries(newSeries);
+      const newSeries: Series = {
+        title,
+        author: authorId,
+        description: description,
+        genres: selectedGenres,
+        cover_image_url: coverImageURL,
+      };
+
+      await createNewSeries(newSeries);
+    } catch (error: any) {
+      console.log("Failed to create new series: ", error.message);
+    }
   };
 
   return (
@@ -60,7 +69,6 @@ const PublishPage = (props: Props) => {
           {/* series cover image */}
 
           <div className="flex flex-col gap-3">
-
             <input
               ref={imgInputRef}
               type="file"
@@ -148,7 +156,7 @@ const PublishPage = (props: Props) => {
                       )}
                     </Menu.Item>
 
-                    { coverImageURL !== "" &&
+                    {coverImageURL !== "" && (
                       <Menu.Item>
                         {({ active }) => (
                           <button
@@ -166,8 +174,7 @@ const PublishPage = (props: Props) => {
                           </button>
                         )}
                       </Menu.Item>
-                    }
-                    
+                    )}
                   </div>
                 </Menu.Items>
               </Transition>
@@ -253,7 +260,7 @@ const PublishPage = (props: Props) => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 id="description"
-                className="w-full p-4 h-48 bg-transparent outline-none font-normal bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary border-none border-light-dividerContrast dark:border-dark-dividerContrast focus:ring-1 focus:ring-emerald-500 transition-all resize-none"
+                className="w-full p-4 h-48 outline-none font-normal bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary border-none border-light-dividerContrast dark:border-dark-dividerContrast focus:ring-1 focus:ring-emerald-500 transition-all resize-none"
                 placeholder="Description"
               />
             </div>
@@ -314,8 +321,9 @@ const PublishPage = (props: Props) => {
 
             <button
               onClick={() => {
-                setShowCoverURLInputModal(false);
-                setAddingCoverURLText("");
+                setCoverImageURL(addingCoverURLText); // change the cover image url state
+                setShowCoverURLInputModal(false); // close the modal
+                setAddingCoverURLText(""); // reset text input field
               }}
               className="flex flex-row h-8 w-20 text-sm rounded-full bg-accent border border-accent focus:outline-accent outline-none transition-all text-light-text-primary dark:text-dark-text-primary items-center justify-center"
             >

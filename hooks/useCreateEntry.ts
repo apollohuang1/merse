@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import { Editor, JSONContent } from "@tiptap/react";
 import axios from "axios";
 
-
 import {
   Configuration,
   CreateChatCompletionRequest,
@@ -37,7 +36,7 @@ import { manualWhitelistedEmails } from "@/util/constants/create-constants";
 // Hook for creating new entries
 const useCreateEntry = () => {
   // redux states
-  
+
   const entry = useAppSelector((state) => state.entry);
   const entryHelper = useAppSelector((state) => state.entryHelper);
   const auth = useAppSelector((state) => state.auth);
@@ -57,17 +56,10 @@ const useCreateEntry = () => {
   const saveEntry = async () => {
     try {
 
-      // guard check if user is the owner
-      // if (entry?.autor?._id !== auth?.currentUser?._id) {
-      //   throw new Error("You are not the owner of this entry.");
-      // }
-
       const authorId = auth?.currentUser?._id;
 
-      if (!authorId) {
-        throw new Error("Unauthorized User.");
-      }
-      
+      if (!authorId) throw new Error("Unauthorized User.");
+
       const response = await axios({
         method: "POST",
         url: "/api/entries",
@@ -86,10 +78,12 @@ const useCreateEntry = () => {
 
       setTimeout(() => {
         dispatch(setShowNotifications(true));
-        dispatch(setNotificationContent({
-          title: "Saved!",
-          message: "Your entry has been saved successfully.",
-        }));
+        dispatch(
+          setNotificationContent({
+            title: "Saved!",
+            message: "Your entry has been saved successfully.",
+          })
+        );
       }, 1000);
     } catch (error: any) {
       console.log(`Failed to save entry, message: ${error?.message}`);
@@ -126,8 +120,8 @@ const useCreateEntry = () => {
       // scenes text from gpt3.5 as generating prompts
       const scenesControlPrompt =
         'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed, but DO NOT generate new storylines that are not in TEXT_STORY) \nTEXT_STORY: ';
-        //'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ';
-        const generatedText = await createGenericChatCompletion(
+      //'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ';
+      const generatedText = await createGenericChatCompletion(
         textContent,
         scenesControlPrompt
       );
@@ -159,7 +153,6 @@ const useCreateEntry = () => {
         "###--------------------SPLITTED SCENES--------------------###"
       );
       console.log(sceneTextsArray);
-
 
       // comment this out to generate only 1 image
       // const base64String = await createImageFromText(sceneTextsArray[0]);
@@ -203,7 +196,8 @@ const useCreateEntry = () => {
       // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
       // iterate through splitedSceneText array
       // for (let i = 0; i < sceneTextsArray.length; i++) {
-      for (let i = 0; i < 2; i++) { //changed to 2 6/18
+      for (let i = 0; i < 2; i++) {
+        //changed to 2 6/18
         const base64String = await createImageFromText(sceneTextsArray[i]);
         const newScene: Scene = {
           _id: new mongoose.Types.ObjectId().toString(),
@@ -225,10 +219,9 @@ const useCreateEntry = () => {
       // };
       // dispatch(addScene(newScene));
       // dispatch(setShowGeneratedStoryboard(true));
-
     } catch (error: any) {
       console.log(`Failed to generate storyboard, message: ${error?.message}`);
-      console.log(error)
+      console.log(error);
     } finally {
       stopGeneratingStoryboard();
     }
@@ -243,7 +236,7 @@ const useCreateEntry = () => {
       displayed_text: prompt,
     };
     dispatch(addScene(newScene));
-  }
+  };
 
   /**
    * Universal function for chatgpt response that returns a string promise (resolve and reject)
@@ -329,7 +322,7 @@ const useCreateEntry = () => {
           {
             // text: "A lighthouse on a cliff",
             text: formattedPromptWithStyle,
-            weight: 0.5
+            weight: 0.5,
           },
         ],
         //cfg_scale: 7,
@@ -345,7 +338,6 @@ const useCreateEntry = () => {
         Accept: "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
-      
     });
 
     interface GenerationResponse {
@@ -364,20 +356,18 @@ const useCreateEntry = () => {
     return base64String;
   };
 
-
   /**
    * ❌ DO NOT USE THIS FUNCTION. OPENAI USAGE WILL SPIKE SUPER HIGH. WE WILL ADD THIS LATER TO MAKE EDITOR SIMILAR TO GITHUB CO-PILOT WHEN REVENUE BREAKS EVEN.
-   * @param input 
+   * @param input
    */
   const getOpenAIInsertedText = async (input: string) => {
     try {
-
       const configuration = new Configuration({
         apiKey: process.env.OPENAI_API_KEY,
       });
 
       const openai = new OpenAIApi(configuration);
-  
+
       const response = await openai.createCompletion({
         model: "text-davinci-003",
         prompt: input,
