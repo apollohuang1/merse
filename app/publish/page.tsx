@@ -1,6 +1,8 @@
 "use client";
 
 import Modal from "@/components/modal";
+import { usePubish } from "@/hooks/usePublish";
+import { Series } from "@/models/series";
 import { genres } from "@/util/constants/home-constant";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
@@ -9,6 +11,7 @@ import {
   FiCheck,
   FiChevronRight,
   FiLink,
+  FiPlus,
   FiTrash,
   FiUpload,
 } from "react-icons/fi";
@@ -16,7 +19,13 @@ import {
 type Props = {};
 
 const PublishPage = (props: Props) => {
+
+  // hooks
+  const { createNewSeries } = usePubish();
+
+  // states
   const [title, setTitle] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string>("");
   const [coverImageURL, setCoverImageURL] = React.useState<string>("");
 
   const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
@@ -31,6 +40,17 @@ const PublishPage = (props: Props) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setCoverImageURL(URL.createObjectURL(file));
+  };
+
+  const handleCreateNewSeries = async () => {
+    const newSeries: Series = {
+      title,
+      description: description,
+      genres: selectedGenres,
+      cover_image_url: coverImageURL,
+    };
+
+    await createNewSeries(newSeries);
   };
 
   return (
@@ -230,6 +250,8 @@ const PublishPage = (props: Props) => {
             <div className="flex flex-col gap-3">
               <h3 className="">Description</h3>
               <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 id="description"
                 className="w-full p-4 h-48 bg-transparent outline-none font-normal bg-light-background-secondary dark:bg-dark-background-secondary placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary border-none border-light-dividerContrast dark:border-dark-dividerContrast focus:ring-1 focus:ring-emerald-500 transition-all resize-none"
                 placeholder="Description"
@@ -237,12 +259,13 @@ const PublishPage = (props: Props) => {
             </div>
 
             <div className="flex flex-row justify-end">
-              <button className="px-4 h-10 bg-emerald-500 rounded-full text-white font-medium text-sm hover:bg-emerald-600">
+              <button
+                onClick={handleCreateNewSeries}
+                className="px-4 h-10 bg-emerald-500 rounded-full text-white font-medium text-sm hover:bg-emerald-600"
+              >
                 <div className="flex flex-row gap-1 items-center">
+                  {/* <div><FiPlus className="w-4 h-4" /></div> */}
                   <span>Create Series</span>
-                  <div>
-                    <FiChevronRight className="w-5 h-5" />
-                  </div>
                 </div>
               </button>
             </div>
