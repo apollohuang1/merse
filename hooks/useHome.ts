@@ -1,9 +1,13 @@
+'use client';
+
 import { Episode } from "@/models/episode";
 import { Series } from "@/models/series";
 import axios, { AxiosResponse } from "axios";
+import React from "react";
 
 export const useHome = () => {
-  const fetchAllSeries = async () => {
+
+  const fetchAllSeries = async (): Promise<Series[]> => {
     try {
       const response = await axios({
         method: "GET",
@@ -17,6 +21,8 @@ export const useHome = () => {
       return series;
     } catch (error) {
       console.log(error);
+      console.log("Failed to fetch all series")
+      return [];
     }
   };
 

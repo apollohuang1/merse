@@ -51,11 +51,18 @@ const Home = (props: Props) => {
 
   // useEffects
   React.useEffect(() => {
-    fetchAllSeries().then((fetchedSeries) => {
-      setSeries(fetchedSeries);
-      setFilteredSeries(fetchedSeries);
-      setIsFetchingSeries(false);
-    });
+    setIsFetchingSeries(true);
+    fetchAllSeries()
+      .then((fetchedSeries) => {
+        setSeries(fetchedSeries);
+        setFilteredSeries(fetchedSeries);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("Failed to fetch series, message: ", err.message);
+      }).finally(() => {
+        setIsFetchingSeries(false);
+      });
   }, []);
 
   return (
@@ -125,74 +132,86 @@ const Home = (props: Props) => {
         {/* series */}
         {filteredSeries.length > 0 && (
           <div className="flex flex-col w-full gap-3 px-6 py-3">
-            <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 w-full gap-7 items-center justify-between overflow-auto">
+            <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 w-full gap-6 items-center justify-between overflow-auto">
               {/* first 8 elements of filtered series */}
-              {filteredSeries
-                // .slice(0, 8)
-                .map((series: Series, index: number) => (
-                  <div
-                    key={index}
-                    className="group flex flex-col justify-start h-full w-full"
-                  >
-                    <button
-                      onClick={() => {
-                        router.push(`/series/${series._id}`);
-                      }}
-                      className="relative aspect-video rounded-lg overflow-clip"
-                    >
-                      <img
-                        src={series?.cover_image_url}
-                        className="inset-0 w-full h-full object-cover"
-                      />
-
-                      {/* overlay */}
-                      <div className="absolute flex flex-col items-start justify-end bottom-0 bg-gradient-to-t from-[rgb(0,0,0,0.75)] to-transparent w-full h-1/2 p-4 text-lg" />
-                    </button>
-
-                    <div className="flex flex-row justify-between w-ful gap-3 py-3">
-                      <div className="text-left w-full">
-                        <span className="text-light-text-primary dark:text-dark-text-primary text-lg font-semibold">
-                          {series.title}
-                        </span>
-                        <span className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-2 w-full text-sm">
-                          {series.description.substring(0, 100)}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-row gap-3 items-center justify-between">
-                      <div className="flex flex-row gap-3">
-                        {/* <div className="flex flex-row gap-2 items-center">
-                          <img
-                            src={series.author?.profile_image_url}
-                            className="w-7 h-7 object-cover rounded-full"
-                            alt="profile image"
-                          />
-
-                          <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
-                            @{series.author?.username}
-                          </span>
-                        </div> */}
-
-                        {series.genres.map((genre, index) => (
-                          <span
-                            key={index}
-                            className="text-xs text-light-text-secondary dark:text-dark-text-secondary bg-light-background-tertiary dark:bg-dark-background-tertiary rounded-sm px-2 py-1"
+              {isFetchingSeries ? (
+                <>
+                   { [...Array(8)].map((_, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col aspect-square h-full w-full bg-light-background-secondary dark:bg-dark-background-secondary animate-pulse rounded-lg overflow-clip"
+                    ></div>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {filteredSeries
+                    // .slice(0, 8)
+                    .map((series: Series, index: number) => (
+                      <div key={index}>
+                        <div className="group flex flex-col justify-start h-full w-full">
+                          <button
+                            onClick={() => {
+                              router.push(`/series/${series._id}`);
+                            }}
+                            className="relative aspect-video rounded-lg overflow-clip"
                           >
-                            {genre}
-                          </span>
-                        ))}
-                      </div>
+                            <img
+                              src={series?.cover_image_url}
+                              className="inset-0 w-full h-full object-cover"
+                            />
 
-                      {/* <div className="flex flex-row gap-2 items-center">
-                        <FiHeart
-                          className={clsx("w-4 h-4 fill-emerald-500 dark:fill-dark-background-tertiary text-light-background-tertiary dark:text-dark-background-tertiary")}
-                        />
-                        <span className="text-sm">1.2K</span>
-                      </div> */}
-                    </div>
-                  </div>
-                ))}
+                            {/* overlay */}
+                            <div className="absolute flex flex-col items-start justify-end bottom-0 bg-gradient-to-t from-[rgb(0,0,0,0.75)] to-transparent w-full h-1/2 p-4 text-lg" />
+                          </button>
+
+                          <div className="flex flex-row justify-between w-ful gap-3 py-3">
+                            <div className="text-left w-full">
+                              <span className="text-light-text-primary dark:text-dark-text-primary text-lg font-semibold">
+                                {series.title}
+                              </span>
+                              <span className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-2 w-full text-sm">
+                                {series.description.substring(0, 100)}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-row gap-3 items-center justify-between">
+                            <div className="flex flex-row gap-3">
+                              {/* <div className="flex flex-row gap-2 items-center">
+                                  <img
+                                    src={series.author?.profile_image_url}
+                                    className="w-7 h-7 object-cover rounded-full"
+                                    alt="profile image"
+                                  />
+      
+                                  <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
+                                    @{series.author?.username}
+                                  </span>
+                                </div> */}
+
+                              {series.genres.map((genre, index) => (
+                                <span
+                                  key={index}
+                                  className="text-xs text-light-text-secondary dark:text-dark-text-secondary bg-light-background-tertiary dark:bg-dark-background-tertiary rounded-md px-2 py-1"
+                                >
+                                  {genre}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* <div className="flex flex-row gap-2 items-center">
+                                <FiHeart
+                                  className={clsx("w-4 h-4 fill-emerald-500 dark:fill-dark-background-tertiary text-light-background-tertiary dark:text-dark-background-tertiary")}
+                                />
+                                <span className="text-sm">1.2K</span>
+                              </div> */}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </>
+              )}
             </div>
           </div>
         )}

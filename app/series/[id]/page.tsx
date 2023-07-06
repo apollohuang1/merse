@@ -50,7 +50,7 @@ const SeriesPage = (props: Props) => {
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary" />
+            <div className="w-full h-full bg-light-background-secondary dark:bg-dark-background-secondary animate-pulse" />
           )}
         </div>
 
@@ -77,11 +77,15 @@ const SeriesPage = (props: Props) => {
                       {index + 1}
                     </span>
 
-                    <img
-                      src={series?.cover_image_url}
-                      className="h-full aspect-square object-cover"
-                      alt="episode cover image"
-                    />
+                    { series?.cover_image_url ? (
+                      <img
+                        src={series?.cover_image_url}
+                        className="h-full aspect-square object-cover"
+                        alt="episode cover image"
+                      />
+                    ) : (
+                      <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary animate-pulse" />
+                    )}
 
                     <div className="flex flex-col justify-start items-start">
                       <span className="text-lg font-semibold">
