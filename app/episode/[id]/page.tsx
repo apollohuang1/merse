@@ -1,6 +1,7 @@
-import React from 'react'
+import React from "react";
+import { FiChevronRight, FiHeart, FiMessageCircle } from "react-icons/fi";
 
-type Props = {}
+type Props = {};
 
 const testImages = [
   "https://scontent.fbkk3-6.fna.fbcdn.net/v/t39.30808-6/353818920_10159807046743163_8737942603971987796_n.jpg?_nc_cat=106&cb=99be929b-59f725be&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeG8-BwkW8RUkYyAcLm6CatKnmam6WSO0KueZqbpZI7Qq_RfgsOA8U7Q821uDFh55lXmZTPD0mTzmlq8dlBPhs0U&_nc_ohc=6a7e0FBsRGoAX_3OZow&_nc_zt=23&_nc_ht=scontent.fbkk3-6.fna&oh=00_AfB6bE9_dJJ7XGH1_Hwi5aUohuIEpiNk7bfAfHBFbjtEkg&oe=64ABB905",
@@ -16,18 +17,50 @@ const testImages = [
   "https://scontent.fbkk3-2.fna.fbcdn.net/v/t39.30808-6/354026303_10159807049368163_7670566124623912684_n.jpg?_nc_cat=104&cb=99be929b-59f725be&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeGLyuIKszf1HM1EWJHfebFqwV-R4k1rkuzBX5HiTWuS7Nuiyzpbdl85do7ZPA0GJZBShVeURAAyPVwKxuEQ4pGG&_nc_ohc=rQqIh2nnzDAAX_bh6UA&_nc_zt=23&_nc_ht=scontent.fbkk3-2.fna&oh=00_AfAMWGueirHLaJShiKVC9rtvSN7y1fP8MIwc9xWEyalkUQ&oe=64ABB640",
   "https://scontent.fbkk4-2.fna.fbcdn.net/v/t39.30808-6/354056141_10159807048913163_8098018975763440381_n.jpg?_nc_cat=110&cb=99be929b-59f725be&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeGcVbZU68Te_JG9rkzH8feYhWTGQDLcF7CFZMZAMtwXsPAPgaspSLs9frGGglEuVh6YLFxViSfbYaCyz2mup2Ao&_nc_ohc=921prCZz3sEAX_2BK91&_nc_zt=23&_nc_ht=scontent.fbkk4-2.fna&oh=00_AfBS71y9D-5Q3wE6_DsddX5bptWk_AsLf-J5H-WDKP-mXg&oe=64ACBC6F",
   "https://scontent.fbkk4-3.fna.fbcdn.net/v/t39.30808-6/354038012_10159807049143163_5805163108994394131_n.jpg?_nc_cat=100&cb=99be929b-59f725be&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeHDgeUnI0WOS5zFW-k2Kb1sK7eyD0uQ4gsrt7IPS5DiCzbYjb0A-KpeL7I7UOcBh7pGpbz_4CoXrUhKx6ai5bmQ&_nc_ohc=cIAKyamdWywAX_4IkGR&_nc_zt=23&_nc_ht=scontent.fbkk4-3.fna&oh=00_AfCf7CBsQEp3HFutXi11UosEEgdTeYKJRRLwuaLZM7ojYg&oe=64AB97FC",
-  "https://scontent.fbkk4-3.fna.fbcdn.net/v/t39.30808-6/354237334_10159807049533163_4518734925427971046_n.jpg?_nc_cat=100&cb=99be929b-59f725be&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeEk5_mC7VmObiALUV96vtNiZLfvxiU31Uhkt-_GJTfVSAGNG9EoICn-2IL7ec4L2-K2g896ZEJhc16c1GnmjCNf&_nc_ohc=i-M9NJ1nG68AX-scw7z&_nc_oc=AQlDbMX1k7T_3duWDjfJEwFUQoMROh79o-Gfdlc7kCHqE_UFuMy4uvmVrjKww64UniU&_nc_zt=23&_nc_ht=scontent.fbkk4-3.fna&oh=00_AfAEP649p9uRb7EJbo-XhYXl8DW0gQbbNEFf-N4eKOJeVg&oe=64ABB658"
-]
+  "https://scontent.fbkk4-3.fna.fbcdn.net/v/t39.30808-6/354237334_10159807049533163_4518734925427971046_n.jpg?_nc_cat=100&cb=99be929b-59f725be&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeEk5_mC7VmObiALUV96vtNiZLfvxiU31Uhkt-_GJTfVSAGNG9EoICn-2IL7ec4L2-K2g896ZEJhc16c1GnmjCNf&_nc_ohc=i-M9NJ1nG68AX-scw7z&_nc_oc=AQlDbMX1k7T_3duWDjfJEwFUQoMROh79o-Gfdlc7kCHqE_UFuMy4uvmVrjKww64UniU&_nc_zt=23&_nc_ht=scontent.fbkk4-3.fna&oh=00_AfAEP649p9uRb7EJbo-XhYXl8DW0gQbbNEFf-N4eKOJeVg&oe=64ABB658",
+];
 const EpisodePage = (props: Props) => {
   return (
-    <div className='flex flex-col w-full h-full overflow-auto items-center'>
-      <div className='flex flex-col w-full max-w-3xl h-[300vh]'>
-        { testImages.map((image, index) => (
-          <img src={image} key={index} className='w-full h-auto' />
-        )) }
+    <div className="flex flex-col w-full items-center overflow-auto">
+
+      {/* navigation bar */}
+      <div className="flex sticky top-0 flex-row items-center justify-between w-full p-3 bg-light-background-primary dark:bg-dark-background-primary backdrop-blur-xl bg-opacity-90 dark:bg-opacity-90 border-y border-light-divider dark:border-dark-divider px-6">
+        <div className=" flex flex-row items-center gap-3">
+          <button>
+            <span className="font-semibold">Episode Title</span>
+          </button>
+          <FiChevronRight className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary"/>
+
+          <button>
+            <span className="font-medium text-light-text-secondary dark:text-dark-text-secondary">Episode #12345</span>
+          </button>
+        </div>
+
+        <div className=" flex flex-row items-center gap-3">
+          <div className=" flex flex-row items-center gap-2">
+            <FiHeart className="w-[18px] h-[18px] text-light-text-secondary dark:text-dark-text-secondary"/>
+            <span className="">1.2k</span>
+          </div>
+
+          <div className=" flex flex-row items-center gap-2">
+            <FiMessageCircle className="w-[18px] h-[18px] text-light-text-secondary dark:text-dark-text-secondary"/>
+            <span className="">1.2k</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div className="flex flex-col w-full max-w-3xl h-[300vh]">
+      {testImages.map((image, index) => (
+          <img
+            src={image}
+            key={index}
+            className="w-full h-auto"
+          />
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default EpisodePage;
