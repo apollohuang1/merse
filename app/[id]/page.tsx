@@ -347,6 +347,7 @@ const ProfilePage = (props: Props) => {
   return (
     <>
       <div className="flex flex-col w-full items-center">
+        
         {/* banner */}
         <div className="flex w-full h-[30vh] bg-light-background-secondary dark:bg-dark-background-secondary flex-shrink-0">
           {user?.banner_image_url ? (

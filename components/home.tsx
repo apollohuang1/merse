@@ -9,6 +9,8 @@ import {
   FiChevronLeft,
   FiChevronRight,
   FiGrid,
+  FiHeart,
+  FiPlus,
   FiSearch,
   FiSun,
 } from "react-icons/fi";
@@ -32,8 +34,8 @@ const Home = (props: Props) => {
 
   // states
   const [series, setSeries] = React.useState<Series[]>([]);
-
   const [filteredSeries, setFilteredSeries] = React.useState<Series[]>([]);
+  const [isFetchingSeries, setIsFetchingSeries] = React.useState<boolean>(true);
 
   const [currentGenre, setCurrentGenre] = React.useState<string>("All");
 
@@ -52,6 +54,7 @@ const Home = (props: Props) => {
     fetchAllSeries().then((fetchedSeries) => {
       setSeries(fetchedSeries);
       setFilteredSeries(fetchedSeries);
+      setIsFetchingSeries(false);
     });
   }, []);
 
@@ -122,19 +125,21 @@ const Home = (props: Props) => {
         {/* series */}
         {filteredSeries.length > 0 && (
           <div className="flex flex-col w-full gap-3 px-6 py-3">
-            <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 w-full gap-6 items-center justify-between overflow-auto">
+            <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 w-full gap-7 items-center justify-between overflow-auto">
               {/* first 8 elements of filtered series */}
               {filteredSeries
-                .slice(0, 8)
+                // .slice(0, 8)
                 .map((series: Series, index: number) => (
                   <div
                     key={index}
-                    className="group flex flex-col justify-start h-full w-full cursor-pointer"
-                    onClick={() => {
-                      // router.push(`/series/${series?._id}`);
-                    }}
+                    className="group flex flex-col justify-start h-full w-full"
                   >
-                    <button className="relative aspect-video rounded-lg overflow-clip">
+                    <button
+                      onClick={() => {
+                        router.push(`/series/${series._id}`);
+                      }}
+                      className="relative aspect-video rounded-lg overflow-clip"
+                    >
                       <img
                         src={series?.cover_image_url}
                         className="inset-0 w-full h-full object-cover"
@@ -155,84 +160,42 @@ const Home = (props: Props) => {
                       </div>
                     </div>
 
-                    <div className="flex flex-row gap-3">
+                    <div className="flex flex-row gap-3 items-center justify-between">
+                      <div className="flex flex-row gap-3">
+                        {/* <div className="flex flex-row gap-2 items-center">
+                          <img
+                            src={series.author?.profile_image_url}
+                            className="w-7 h-7 object-cover rounded-full"
+                            alt="profile image"
+                          />
+
+                          <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
+                            @{series.author?.username}
+                          </span>
+                        </div> */}
+
+                        {series.genres.map((genre, index) => (
+                          <span
+                            key={index}
+                            className="text-xs text-light-text-secondary dark:text-dark-text-secondary bg-light-background-tertiary dark:bg-dark-background-tertiary rounded-sm px-2 py-1"
+                          >
+                            {genre}
+                          </span>
+                        ))}
+                      </div>
+
                       {/* <div className="flex flex-row gap-2 items-center">
-                        <img
-                          src={series.author?.profile_image_url}
-                          className="w-7 h-7 object-cover rounded-full"
-                          alt="profile image"
+                        <FiHeart
+                          className={clsx("w-4 h-4 fill-emerald-500 dark:fill-dark-background-tertiary text-light-background-tertiary dark:text-dark-background-tertiary")}
                         />
-
-                        <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
-                          @{series.author?.username}
-                        </span>
+                        <span className="text-sm">1.2K</span>
                       </div> */}
-
-                      {series.genres.map((genre, index) => (
-                        <span
-                          key={index}
-                          className="text-xs text-light-text-secondary dark:text-dark-text-secondary bg-light-background-tertiary dark:bg-dark-background-tertiary rounded-md px-2 py-1"
-                        >
-                          {genre}
-                        </span>
-                      ))}
-
-
                     </div>
                   </div>
                 ))}
             </div>
           </div>
         )}
-
-        <div className="flex flex-col w-full gap-3 px-6 py-3 hidden">
-          <div className="flex flex-row items-center gap-3">
-            <h2>Placeholders</h2>
-            <button className="text-sm font-medium text-emerald-500 hover:text-emerald-600">
-              See All
-            </button>
-          </div>
-
-          <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 w-full gap-6 items-center justify-between overflow-auto">
-            {storyboardSamples.map((scene: any, index: number) => {
-              return (
-                <div
-                  key={index}
-                  className="group flex flex-col justify-start h-full"
-                >
-                  <button className="relative aspect-video rounded-lg overflow-clip">
-                    <img
-                      src={scene?.artwork.url}
-                      className="inset-0 w-full h-full object-cover"
-                    />
-
-                    {/* overlay */}
-                    <div className="absolute flex flex-col items-start justify-end bottom-0 bg-gradient-to-t from-[rgb(0,0,0,0.75)] to-transparent w-full h-1/2 p-4 text-lg" />
-                  </button>
-
-                  <div className="flex flex-row justify-between">
-                    <div className="text-left py-2">
-                      <span className="text-light-text-primary dark:text-dark-text-primary text-lg font-semibold">
-                        Puuung Sample {index + 1}
-                      </span>
-                      <span className="text-light-text-secondary dark:text-dark-text-secondary line-clamp-2 w-5/6">
-                        {scene.text}
-                      </span>
-                    </div>
-
-                    {/* <div className="flex flex-row flex-shrink-0 gap-2 items-center bg-transparent pl-3 pr-4 py-2 rounded-full">
-                        <img
-                        src={sampleArtists[1].profile_image_url}
-                        className="w-6 h-6 rounded-full"
-                        />
-                        <span>Puuung</span>
-                      </div> */}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
 
         <div className="w-full h-[50vh]"></div>
       </div>
