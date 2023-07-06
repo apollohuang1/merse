@@ -1,8 +1,10 @@
 "use client";
 
+import { Episode } from "@/models/episode";
 import { Series } from "@/models/series";
 import axios from "axios";
-import { usePathname } from "next/navigation";
+import clsx from "clsx";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { FiChevronRight } from "react-icons/fi";
 
@@ -10,6 +12,7 @@ type Props = {};
 
 const SeriesPage = (props: Props) => {
   const pathname = usePathname();
+  const router = useRouter();
 
   // states
   const [series, setSeries] = React.useState<Series | null>(null);
@@ -56,10 +59,17 @@ const SeriesPage = (props: Props) => {
 
         {/* <div className="flex flex-col px-6 w-full items-center -translate-y-[64px]"> */}
         <div className="flex flex-col w-full max-w-5xl gap-10 break-words p-6 h-screen">
-          <span className="w-full outline-none text-6xl font-semibold text-[#0E100E] dark:text-[#E7FCE8]">
-            {series?.title}
+          <span
+            className={clsx(
+              "w-full outline-none text-6xl font-semibold text-[#0E100E] dark:text-[#E7FCE8]",
+              { "opacity-100" : series?.title },
+              { "opacity-0" : !series?.title }
+            )}
+          >
+            {series?.title ?? "Untitled"}
           </span>
-          <p>{series?.description}</p>
+
+          {series?.description && <p>{series?.description}</p>}
 
           <div className="flex flex-col w-full gap-3">
             <div className="flex flex-row items-center gap-3">
@@ -67,33 +77,40 @@ const SeriesPage = (props: Props) => {
             </div>
 
             <div className="flex flex-col gap-0 divide-y divide-light-divider dark:divide-dark-divider">
-              {[1, 2, 3, 4, 5, 6].map((episode, index) => (
+              {[1, 2, 3, 4, 5, 6].map((episode: any, index) => (
                 <button
                   key={index}
+                  onClick={() => {
+                    router.push(`/episode/12345`);
+                  }}
                   className="flex flex-row hover:bg-light-background-secondary dark:hover:bg-dark-background-secondary h-20 p-3 items-center justify-between gap-6"
                 >
-                  <div className="flex flex-row gap-6 items-center h-full">
+                  <div className="flex flex-row gap-6 items-center h-full w-full">
                     <span className="text-light-text-secondary dark:text-dark-text-secondary">
                       {index + 1}
                     </span>
 
-                    { series?.cover_image_url ? (
-                      <img
-                        src={series?.cover_image_url}
-                        className="h-full aspect-square object-cover"
-                        alt="episode cover image"
-                      />
-                    ) : (
-                      <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary animate-pulse" />
-                    )}
+                    <div className="flex flex-row items-start w-full h-full gap-3">
+                      <>
+                        {series?.cover_image_url ? (
+                          <img
+                            src={series?.cover_image_url}
+                            className="h-full aspect-square object-cover"
+                            alt="episode cover image"
+                          />
+                        ) : (
+                          <div className="h-full aspect-square bg-light-background-secondary dark:bg-dark-background-secondary animate-pulse border border-light-dividerContrast dark:border-dark-divider" />
+                        )}
+                      </>
 
-                    <div className="flex flex-col justify-start items-start">
-                      <span className="text-lg font-semibold">
-                        Episode {index + 1}
-                      </span>
-                      <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
-                        Episode description placeholder
-                      </span>
+                      <div className="flex flex-col w-full justify-start items-start text-start h-full">
+                        <span className="text-lg font-semibold">
+                          Episode {index + 1}
+                        </span>
+                        <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
+                          Episode description placeholder
+                        </span>
+                      </div>
                     </div>
                   </div>
 
