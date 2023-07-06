@@ -1,4 +1,5 @@
 import MDBSeries from "@/server/models/MDBSeries";
+import MDBUser from "@/server/models/MDBUser";
 import dbConnect from "@/server/utils/dbConnect";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
@@ -15,7 +16,11 @@ export async function GET(request: NextRequest) {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const series = await MDBSeries.find({});
+    const series = await MDBSeries.find({}).lean().populate({
+      path: "author",
+      select: "profile_image_url username",
+      model: MDBUser,
+    });
 
     return NextResponse.json(series, { status: 200 });
   } catch (error: any) {
@@ -25,7 +30,6 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-
     await dbConnect();
     const body = await request.json();
 
