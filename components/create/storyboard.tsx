@@ -196,11 +196,15 @@ const Storyboard = (props: Props) => {
 
     // for loop 4 times
     for (let i = 0; i < 4; i++) {
-      const base64String = await createImageFromText(
-        entry.scenes[index].prompt
-      );
+      const base64String = await createImageFromText(entry.scenes[index].prompt);
       updated_image_base64_variants.push(base64String);
     }
+    // for (let i = 0; i < 4; i++) {
+    //   const base64String = await createImageFromText(
+    //     entry.scenes[index].prompt
+    //   );
+    //   updated_image_base64_variants.push(base64String);
+    // }
 
     // Update local state
     const existingEntryIndex = imageVariants.findIndex(
