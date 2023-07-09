@@ -67,12 +67,14 @@ const Landing = (props: Props) => {
           setShowLoginModal={setShowLoginModal}
         />
 
+        {/* I am writing a code heheheheheheh */}
+
         {/* main content */}
         <div className="flex flex-col gap-0">
           {/* Hero */}
           <div
             id="about"
-            className="flex relative items-center justify-center h-screen w-screen"
+            className="flex relative items-center justify-center h-[100dvh] w-screen"
           >
             <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
               {midjourneyGeneratedImages.map((item, index) => {
@@ -122,7 +124,7 @@ const Landing = (props: Props) => {
               </div> */}
 
               <button
-                className="flex flex-row items-center gap-1 rounded-full bg-white hover:bg-opacity-80 backdrop-blur-xl px-4 h-10 text-sm font-medium text-light-text-primary shadow-sm hover:scale-105 active:scale-100 transition-all"
+                className="flex flex-row items-center gap-1 rounded-full bg-[rgb(55,55,55,0.5)] hover:bg-opacity-80 backdrop-blur-xl pl-5 pr-3 h-10 text-sm font-medium text-dark-text-primary shadow-sm transition-all border border-dark-divider hover:border-dark-dividerContrast"
                 onClick={() => {
                   setShowLoginModal(true);
                 }}
@@ -132,6 +134,18 @@ const Landing = (props: Props) => {
               </button>
             </div>
           </div>
+
+          <div className="flex flex-row p-6 items-center justify-center bg-[rgb(13,13,13)] border-y border-dark-divider text-dark-text-secondary transition-all">
+            <a href="https://vercel.com/ai-accelerator" target="_blank">
+              <div className="flex flex-row gap-3 items-center hover:underline">
+                <img src="/vercel.svg" className="h-5 w-5" />
+                <span>
+                  Backed by to Vercel AI Accelerator
+                </span>
+              </div>
+            </a>
+          </div>
+
           <div
             id="storyboard"
             className="relative flex flex-col w-full h-auto max-lg:h-auto bg-[#F5F5F7] items-center justify-between px-6 gap-[calc(42px+24px)]"
@@ -186,7 +200,7 @@ const Landing = (props: Props) => {
           <div
             id="wall-of-love"
             // className="flex flex-col items-center justify-center max-lg:px-7 h-screen max-lg:h-auto gap-[calc(42px+24px)] py-[calc(42px+24px)]"
-            className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6"
+            className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6 border-t border-dark-dividerContrast"
           >
             {/* team header text */}
             <div className="flex flex-col text-center items-center">
@@ -243,7 +257,7 @@ const Landing = (props: Props) => {
           {/* team section */}
           <div
             id="team"
-            className="flex flex-col w-full bg-[rgb(13,13,15)] max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6"
+            className="flex flex-col w-full bg-[rgb(13,13,15)] max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6 border-t border-dark-divider"
           >
             {/* team header text */}
             <div className="flex flex-col text-center items-center">
@@ -432,7 +446,10 @@ const Landing = (props: Props) => {
                     type="text"
                     className={clsx(
                       "w-full p-3 placeholder:text-light-text-tertiary dark:placeholder:text-dark-text-tertiary outline-0 focus:ring-2 focus:ring-accent rounded-md border border-light-divider dark:border-dark-divider bg-transparent",
-                      { "focus:ring-light-red dark:focus:ring-dark-red" : registeringUserData?.username?.length > 15 },
+                      {
+                        "focus:ring-light-red dark:focus:ring-dark-red":
+                          registeringUserData?.username?.length > 15,
+                      }
                     )}
                     value={registeringUserData?.username ?? ""}
                     placeholder="Username"
