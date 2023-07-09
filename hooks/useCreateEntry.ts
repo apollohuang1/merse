@@ -59,35 +59,41 @@ const useCreateEntry = () => {
   
       if (!authorId) throw new Error("Unauthorized User.");
   
-      // Assuming updated_image_base64_variants holds your base64 images
-      for (let i = 0; i < updated_image_base64_variants.length; i++) {
-        const base64Image = updated_image_base64_variants[i];
+
+      // FOR EMILY: COMMENT THIS OUT TO CONTINUE YOUR CODE!! ❤️❤️❤️❤️❤️
+      // I commented it out bc I will have to deploy on prod
+
+      // // Assuming updated_image_base64_variants holds your base64 images
+      // for (let i = 0; i < updated_image_base64_variants.length; i++) {
+      //   const base64Image = updated_image_base64_variants[i];
   
-        // Convert base64 image to a Blob
-        const blob = await fetch(`data:image/png;base64,${base64Image}`).then((res) => res.blob());
+      //   // Convert base64 image to a Blob
+      //   const blob = await fetch(`data:image/png;base64,${base64Image}`).then((res) => res.blob());
   
-        // Get the upload URL from the server
-        const { url } = await fetch("/s3Url").then((res) => res.json());
+      //   // Get the upload URL from the server
+      //   const { url } = await fetch("/s3Url").then((res) => res.json());
   
-        // Upload the Blob to S3
-        await fetch(url, {
-          method: "PUT",
-          headers: {
-            "Content-Type": blob.type
-          },
-          body: blob
-        });
+      //   // Upload the Blob to S3
+      //   await fetch(url, {
+      //     method: "PUT",
+      //     headers: {
+      //       "Content-Type": blob.type
+      //     },
+      //     body: blob
+      //   });
   
-        // Replace the base64 image with the S3 URL in the entry
-        const s3Url = url.split('?')[0];
-        updated_image_base64_variants[i] = s3Url;
-      }
+      //   // Replace the base64 image with the S3 URL in the entry
+      //   const s3Url = url.split('?')[0];
+      //   updated_image_base64_variants[i] = s3Url;
+      // }
   
       // Save the entry with the S3 URLs instead of the base64 images
       const response = await axios({
         method: "POST",
         url: "/api/entries",
-        data: { ...entry, images: updated_image_base64_variants, author: authorId },
+        data: { ...entry, author: authorId },
+        // switch the code line here to use your s3 code as well!✨
+        // data: { ...entry, images: updated_image_base64_variants, author: authorId },
         headers: {
           Authorization: `Bearer ${process.env.MERSE_API_KEY}`,
           "Content-Type": "application/json",
