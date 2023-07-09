@@ -140,7 +140,7 @@ const Landing = (props: Props) => {
               <div className="flex flex-row gap-3 items-center hover:underline">
                 <img src="/vercel.svg" className="h-5 w-5" />
                 <span>
-                  Backed by to Vercel AI Accelerator
+                  Backed by Vercel AI Accelerator
                 </span>
               </div>
             </a>
