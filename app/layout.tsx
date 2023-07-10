@@ -10,6 +10,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import HomeLayout from "@/components/home-layout";
 
 import { loadStripe } from "@stripe/stripe-js";
+import Head from "next/head";
 
 const metadata = {
   title: "Merse Comic",
@@ -46,7 +47,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <head>
+      <Head>
         {/* title */}
         <title>{metadata.title}</title>
         <meta charSet="utf-8" />
@@ -54,7 +55,9 @@ export default function RootLayout({
         <meta name="description" content={metadata.description} />
         <link rel="icon" href="/merse-logo.png" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
-      </head>
+
+        <script async src="https://platform.twitter.com/widgets.js"></script>
+      </Head>
 
       <body className="bg-light-background-primary dark:bg-dark-background-primary">
         {/* <body className="bg-dark-background-primary"> */}

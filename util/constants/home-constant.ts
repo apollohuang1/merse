@@ -45,7 +45,8 @@ export const sampleArtists: SampleArtist[] = [
     name: "Mark",
     username: "mark",
     _id: "6436f3032b67ae01b9c884bb",
-    profile_image_url: "https://pbs.twimg.com/profile_images/1669924632881942529/uVVtVMaK_400x400.jpg"
+    profile_image_url:
+      "https://pbs.twimg.com/profile_images/1669924632881942529/uVVtVMaK_400x400.jpg",
   },
   {
     name: "Emily",
@@ -83,7 +84,6 @@ export const genres = [
   "Heartwarming",
 ];
 
-
 interface SampleEpisode {
   image_url: string;
 }
@@ -102,5 +102,5 @@ export const tweets = [
   },
 ];
 
-export const ryanTweetHtml = `<blockquote class="twitter-tweet" data-theme="light"><p lang="en" dir="ltr"><a href="https://twitter.com/markrachapoom?ref_src=twsrc%5Etfw">@markrachapoom</a> saw your Journal-to-Comic project on Airchat. Impressive. :)</p>&mdash; Ryan Hoover (@rrhoover) <a href="https://twitter.com/rrhoover/status/1654879487014719488?ref_src=twsrc%5Etfw">May 6, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`
-export const markQuoteRyanTweetHtml = `<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Shall we soon launch on his Product Hunt <a href="https://twitter.com/mlaparkk?ref_src=twsrc%5Etfw">@mlaparkk</a> <a href="https://twitter.com/jyotiinar?ref_src=twsrc%5Etfw">@jyotiinar</a>?☺️❤️ <a href="https://t.co/SFPxZFwcVm">https://t.co/SFPxZFwcVm</a></p>&mdash; Mark (@markrachapoom) <a href="https://twitter.com/markrachapoom/status/1654882869637152769?ref_src=twsrc%5Etfw">May 6, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`
+export const ryanTweetHtml = `<blockquote class="twitter-tweet" data-theme="light"><p lang="en" dir="ltr"><a href="https://twitter.com/markrachapoom?ref_src=twsrc%5Etfw">@markrachapoom</a> saw your Journal-to-Comic project on Airchat. Impressive. :)</p>&mdash; Ryan Hoover (@rrhoover) <a href="https://twitter.com/rrhoover/status/1654879487014719488?ref_src=twsrc%5Etfw">May 6, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`;
+export const markQuoteRyanTweetHtml = `<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Shall we soon launch on his Product Hunt <a href="https://twitter.com/mlaparkk?ref_src=twsrc%5Etfw">@mlaparkk</a> <a href="https://twitter.com/jyotiinar?ref_src=twsrc%5Etfw">@jyotiinar</a>?☺️❤️ <a href="https://t.co/SFPxZFwcVm">https://t.co/SFPxZFwcVm</a></p>&mdash; Mark (@markrachapoom) <a href="https://twitter.com/markrachapoom/status/1654882869637152769?ref_src=twsrc%5Etfw">May 6, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`;
