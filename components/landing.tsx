@@ -144,11 +144,11 @@ const Landing = (props: Props) => {
         {/* I am writing a code heheheheheheh */}
 
         {/* main content */}
-        <div className="flex flex-col gap-0">
+        <div className="flex flex-col gap-0 overflow-hidden">
           {/* Hero */}
           <div
             id="about"
-            className="flex relative items-center justify-center h-[100dvh] w-screen"
+            className="flex relative items-center justify-center h-[100dvh] w-full"
           >
             <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
               {midjourneyGeneratedImages.map((item, index) => {
@@ -286,7 +286,7 @@ const Landing = (props: Props) => {
               </span>
             </div>
 
-            <div className="flex flex-row items-center gap-8 max-lg:flex-col max-lg:items-center max-w-screen max-lg:w-full justify-center max-lg:gap-16 max-w-5xl w-full">
+            <div className="flex flex-row items-center gap-5 max-lg:flex-col max-lg:items-center max-w-screen max-lg:w-full justify-center max-lg:gap-16 max-w-5xl w-full">
               {/* ryan tweets container */}
               <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] max-lg:w-full items-start max-lg:items-center">
 
@@ -298,7 +298,7 @@ const Landing = (props: Props) => {
                     // target blank open ryanhover twitter profile
                     window.open("https://twitter.com/rrhoover", "_blank");
                   }}
-                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-2xl border border-dark-dividerContrast hover:bg-dark-background-secondary"
+                  className="flex flex-row px-6 h-12 gap-1 items-center justify-center rounded-full border border-dark-dividerContrast hover:bg-dark-background-secondary lg:w-full"
                 >
                   <span className=" max-sm:text-sm">
                     Ryan Hoover, Founder of Product Hunt
@@ -318,7 +318,7 @@ const Landing = (props: Props) => {
                     // target blank open ryanhover twitter profile
                     window.open("https://twitter.com/naval", "_blank");
                   }}
-                  className="flex flex-row px-6 py-2 gap-1 items-center justify-center rounded-2xl border border-dark-dividerContrast hover:bg-dark-background-secondary"
+                  className="flex flex-row px-6 h-12 gap-1 items-center justify-center rounded-full border border-dark-dividerContrast hover:bg-dark-background-secondary"
                 >
                   <span className=" max-sm:text-sm">
                     Naval Ravikant, Founder of AngelList
