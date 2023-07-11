@@ -309,7 +309,7 @@ const Landing = (props: Props) => {
 
               <div className="flex flex-col gap-4">
                 <iframe
-                  src="https://www.getairchat.com/sigil/sideprojects/afcfab29-9896-4ba0-b547-52d8d6b8197d"
+                  src="https://www.getairchat.com/c/sigil/sideprojects/afcfab29-9896-4ba0-b547-52d8d6b8197d"
                   title="Naval's Reponse"
                   className="aspect-[9/16] rounded-xl h-full"
                 />
