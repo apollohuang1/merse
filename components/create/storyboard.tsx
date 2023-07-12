@@ -235,6 +235,7 @@ const Storyboard = (props: Props) => {
       const newState = [...prevState];
       return newState.filter((v) => v.sceneIndex !== index);
     });
+    // onImageGenerated(updated_image_base64_variants); // Use the callback
   };
 
   const handleVariantClick = (sceneIndex: number, variantIndex: number) => {
