@@ -172,6 +172,7 @@ const Landing = (props: Props) => {
             {/* text in the first section */}
             <div className="absolute flex flex-col items-center w-full h-full justify-end gap-6 px-6 py-28 max-sm:py-14">
               <div className="flex flex-col leading-6 items-center text-center">
+
                 <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
                   {/* Transform Journals into Comics, Effortlessly */}
                   {/* Journaling-to-Comic Made Simple */}
@@ -211,7 +212,9 @@ const Landing = (props: Props) => {
           </div>
 
           <div className="flex flex-row p-6 max-sm:p-5 items-center justify-center bg-[rgb(13,13,13)] border-y border-dark-divider text-dark-text-primary transition-all">
+          {/* <div className="flex flex-row p-6 max-sm:p-5 items-center justify-center bg-[rgb(13,13,13)] border-none border-dark-divider text-dark-text-primary transition-all"> */}
             <a href="https://vercel.com/ai-accelerator" target="_blank">
+              {/* <img src="./accelerator-badge-dark.png" className="h-14" /> */}
               <div className="flex flex-row gap-3 items-center hover:underline">
                 <img src="/vercel.svg" className="h-5 w-5 max-sm:w-4 max-sm:h-4" />
                 <span className="max-sm:text-sm">Accepted to Vercel AI Accelerator</span>
@@ -309,7 +312,7 @@ const Landing = (props: Props) => {
 
               <div className="flex flex-col gap-4">
                 <iframe
-                  src="https://www.getairchat.com/c/sigil/sideprojects/afcfab29-9896-4ba0-b547-52d8d6b8197d"
+                  src="https://www.getairchat.com/sigil/sideprojects/afcfab29-9896-4ba0-b547-52d8d6b8197d"
                   title="Naval's Reponse"
                   className="aspect-[9/16] rounded-xl h-full"
                 />
