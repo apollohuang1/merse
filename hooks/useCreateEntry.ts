@@ -63,7 +63,7 @@ const useCreateEntry = () => {
       // FOR EMILY: COMMENT THIS OUT TO CONTINUE YOUR CODE!! ❤️❤️❤️❤️❤️
       // I commented it out bc I will have to deploy on prod
 
-      // // Assuming updated_image_base64_variants holds your base64 images
+      // Assuming updated_image_base64_variants holds your base64 images
       // for (let i = 0; i < updated_image_base64_variants.length; i++) {
       //   const base64Image = updated_image_base64_variants[i];
   
@@ -416,43 +416,48 @@ const useCreateEntry = () => {
 
   //new 4/30 -----
   const handleFileUpload = async (file: File) => {
-    try {
-      // error guards
-      if (!file) throw new Error("Missing file.");
 
-      if (
-        !process.env.AMAZON_S3_ACCESS_KEY_ID ||
-        !process.env.AMAZON_S3_SECRET_ACCESS_KEY
-      ) {
-        throw new Error("Missing Amazon S3 credentials.");
-      }
+    const accessKeyId = process.env.AMAZON_S3_ACCESS_KEY_ID;
+    const secretAccessKey = process.env.AMAZON_S3_SECRET_ACCESS_KEY;
 
-      if (!process.env.AMAZON_S3_BUCKET_NAME) {
-        throw new Error("Missing Amazon S3 bucket name.");
-      }
-
-      const s3 = new S3Client({
-        region: "us-east-1",
-        credentials: {
-          accessKeyId: process.env.AMAZON_S3_ACCESS_KEY_ID,
-          secretAccessKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
-        },
-      });
-
-      const params: PutObjectCommandInput = {
-        Bucket: process.env.AMAZON_S3_BUCKET_NAME,
-        Key: `images/${file.name}`,
-        Body: file,
-        ContentType: file.type,
-        ACL: "public-read",
-      };
-
-      const command = new PutObjectCommand(params);
-      const response = await s3.send(command);
-      // console.log(response.Location);
-    } catch (error: any) {
-      console.error("Failed to upload file, message: ", error.message);
+    if (!accessKeyId || !secretAccessKey) {
+      throw new Error("Missing AWS credentials");
     }
+
+    const client = new S3Client({
+      region: "us-west-2",
+      credentials: {
+        accessKeyId: accessKeyId,
+        secretAccessKey: secretAccessKey,
+      },
+    });
+
+    const command = new PutObjectCommand({
+      Bucket: process.env.AMAZON_S3_BUCKET_NAME,
+      Key: file.name,
+      Body: file,
+    });
+  
+    try {
+      const response = await client.send(command);
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+
+    // console.log("file from handler: ", file);
+
+    // const uploadResponse = await axios({
+    //   method: "POST",
+    //   url: "/api/upload",
+    //   data: file,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "Authorization": `Bearer ${process.env.MERSE_API_KEY}`,
+    //   },
+    // })
+
+    // console.log("Upload response: ", uploadResponse);
   };
 
   const getImageURLFromBase64 = (base64: string) => {
