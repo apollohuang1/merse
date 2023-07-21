@@ -28,6 +28,8 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux-store/store";
@@ -56,9 +58,8 @@ const useCreateEntry = () => {
   const saveEntry = async () => {
     try {
       const authorId = auth?.currentUser?._id;
-  
+
       if (!authorId) throw new Error("Unauthorized User.");
-  
 
       // FOR EMILY: COMMENT THIS OUT TO CONTINUE YOUR CODE!! ❤️❤️❤️❤️❤️
       // I commented it out bc I will have to deploy on prod
@@ -66,13 +67,13 @@ const useCreateEntry = () => {
       // Assuming updated_image_base64_variants holds your base64 images
       // for (let i = 0; i < updated_image_base64_variants.length; i++) {
       //   const base64Image = updated_image_base64_variants[i];
-  
+
       //   // Convert base64 image to a Blob
       //   const blob = await fetch(`data:image/png;base64,${base64Image}`).then((res) => res.blob());
-  
+
       //   // Get the upload URL from the server
       //   const { url } = await fetch("/s3Url").then((res) => res.json());
-  
+
       //   // Upload the Blob to S3
       //   await fetch(url, {
       //     method: "PUT",
@@ -81,12 +82,12 @@ const useCreateEntry = () => {
       //     },
       //     body: blob
       //   });
-  
+
       //   // Replace the base64 image with the S3 URL in the entry
       //   const s3Url = url.split('?')[0];
       //   updated_image_base64_variants[i] = s3Url;
       // }
-  
+
       // Save the entry with the S3 URLs instead of the base64 images
       const response = await axios({
         method: "POST",
@@ -99,13 +100,13 @@ const useCreateEntry = () => {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (response.status === 200 && response.data.reason === "update") {
         router.push(`/entry/${response.data.updatedEntry._id}`);
       } else {
         router.push(`/`);
       }
-  
+
       setTimeout(() => {
         dispatch(setShowNotifications(true));
         dispatch(
@@ -119,7 +120,6 @@ const useCreateEntry = () => {
       console.log(`Failed to save entry, message: ${error?.message}`);
     }
   };
-  
 
   // Only use try catch block here. sub-functions should handle/throw their own errors to this like a dumb
   const generateStoryboard = async (editor: Editor | null) => {
@@ -416,7 +416,6 @@ const useCreateEntry = () => {
 
   //new 4/30 -----
   const handleFileUpload = async (file: File) => {
-
     const accessKeyId = process.env.AMAZON_S3_ACCESS_KEY_ID;
     const secretAccessKey = process.env.AMAZON_S3_SECRET_ACCESS_KEY;
 
@@ -437,10 +436,14 @@ const useCreateEntry = () => {
       Key: file.name,
       Body: file,
     });
-  
+
     try {
       const response = await client.send(command);
+      // get url from uploaded image
+      // @ts-ignore
+      const url = await getSignedUrl(client, command, { expiresIn: 3600 });
       console.log(response);
+      console.log("url: ", url);
     } catch (err) {
       console.error(err);
     }
