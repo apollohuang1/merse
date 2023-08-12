@@ -235,7 +235,7 @@ const Landing = (props: Props) => {
           </div>
 
           <div
-            id="storyboard"
+            id="demo"
             className="relative flex flex-col w-full h-auto max-lg:h-auto bg-[#F5F5F7] items-center justify-between px-6 gap-[calc(42px+24px)]"
           >
             <div className="flex flex-col text-center items-center pt-[calc(42px+24px)]">

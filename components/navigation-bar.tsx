@@ -51,8 +51,8 @@ const NavigationBar: React.FC<{
       sectionName: "about",
     },
     {
-      sectionTitle: "Storyboard",
-      sectionName: "storyboard",
+      sectionTitle: "Demo",
+      sectionName: "demo",
     },
     {
       sectionTitle: "Wall of Love",
