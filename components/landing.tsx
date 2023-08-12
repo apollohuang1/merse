@@ -107,8 +107,10 @@ const footerNavigation = {
 
 const Landing = (props: Props) => {
   const demoVideoRef = useRef<HTMLVideoElement>(null);
+  const canvasVideoRef = useRef<HTMLVideoElement>(null);
   const [isDemoVidePlaying, setIsDemoVideoPlaying] =
     React.useState<boolean>(true);
+  const [isCanvasVideoPlaying, setIsCanvasVideoPlaying] = React.useState<boolean>(true);
 
   const {
     showLoginModal,
@@ -126,6 +128,16 @@ const Landing = (props: Props) => {
         demoVideoRef.current.play();
       } else {
         demoVideoRef.current.pause();
+      }
+    }
+  };
+
+  const toggleCanvasDemoState = () => {
+    if (canvasVideoRef.current) {
+      if (canvasVideoRef.current.paused) {
+        canvasVideoRef.current.play();
+      } else {
+        canvasVideoRef.current.pause();
       }
     }
   };
@@ -264,6 +276,56 @@ const Landing = (props: Props) => {
                   className="flex items-center justify-center w-10 h-10 max-sm:w-8 max-sm:h-8 rounded-full border border-neutral-400 text-white hover:scale-105 active:scale-100 transition-all"
                 >
                   {isDemoVidePlaying ? (
+                    <HiPause className="w-5 h-5 max-sm:w-4 max-sm:h-4" />
+                  ) : (
+                    <HiPlay className="w-5 h-5 max-sm:w-4 max-sm:h-4 pl-[2px]" />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="storyboard"
+            className="relative flex flex-col w-full h-auto max-lg:h-auto bg-[rgb(13,13,15)] items-center justify-between px-6 gap-[calc(42px+24px)]"
+          >
+            <div className="flex flex-col text-center items-center pt-[calc(42px+24px)]">
+              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
+                {/* Storyboard */}
+                Canvas
+              </h1>
+              <span className="flex text-dark-text-secondary text-opacity-80 font-light text-xl max-sm:text-base max-w-3xl max-md:max-w-xl">
+                Boundless Imagination
+              </span>
+            </div>
+
+            <div className="relative max-w-5xl">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                ref={canvasVideoRef}
+                src="./merse-comic-editor-demo.mp4"
+                poster="./screenshot-storyboard.png"
+                className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.7)] bg-dark-background-primary rounded-t-2xl"
+                onPlay={() => {
+                  setIsCanvasVideoPlaying(true);
+                }}
+                onPause={() => {
+                  setIsCanvasVideoPlaying(false);
+                }}
+              />
+
+              {/* play/pause button row with gradient overlay */}
+              <div className="absolute bottom-0 right-0 flex flex-row w-full justify-end gap-2 px-4 pb-4 pt-6 bg-gradient-to-t from-[rgb(0,0,0,0.7)] to-transparent">
+                <button
+                  onClick={() => {
+                    toggleCanvasDemoState();
+                  }}
+                  className="flex items-center justify-center w-10 h-10 max-sm:w-8 max-sm:h-8 rounded-full border border-neutral-400 text-white hover:scale-105 active:scale-100 transition-all"
+                >
+                  {isCanvasVideoPlaying ? (
                     <HiPause className="w-5 h-5 max-sm:w-4 max-sm:h-4" />
                   ) : (
                     <HiPlay className="w-5 h-5 max-sm:w-4 max-sm:h-4 pl-[2px]" />
