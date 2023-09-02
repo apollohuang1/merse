@@ -20,13 +20,19 @@ export const midjourneyGeneratedImages = [
       "https://media.discordapp.net/attachments/1090027780525273153/1095187060266107010/markrachapoom_boy_and_girl_looking_at_each_other_with_a_smile_i_9cc31a01-d495-4ddd-9013-86365f09805d.png?width=1402&height=1402",
   },
   {
-    image_url:
-      "https://media.discordapp.net/attachments/1090027780525273153/1095192962029338674/markrachapoom__Emily_is_walking_in_New_York_City_dduring_Christ_e6d8df6e-5020-4aab-bb8f-338b9403c4b9.png?width=1402&height=1402",
+    image_url: "https://media.discordapp.net/attachments/1085234205996367923/1096388861304766545/markrachapoom_beautiful_forest_with_handful_of_cure_characters__09866b40-f6cd-41aa-9ac1-ae798fd49aeb.png?width=2430&height=1402"
   },
   {
-    image_url:
-      "https://media.discordapp.net/attachments/1090027780525273153/1095193054387904542/markrachapoom_Jyoti_is_walking_in_New_York_City_dduring_Christm_a1edac93-fd0e-4404-911e-bbdc47c0cba2.png?width=1402&height=1402",
+    image_url: "https://media.discordapp.net/attachments/1085234205996367923/1091066652549976134/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_937a6d50-b843-48ec-96cf-ec9cd06cd685.png?width=1024&height=1024"
   },
+  // {
+  //   image_url:
+  //     "https://media.discordapp.net/attachments/1090027780525273153/1095192962029338674/markrachapoom__Emily_is_walking_in_New_York_City_dduring_Christ_e6d8df6e-5020-4aab-bb8f-338b9403c4b9.png?width=1402&height=1402",
+  // },
+  // {
+  //   image_url:
+  //     "https://media.discordapp.net/attachments/1090027780525273153/1095193054387904542/markrachapoom_Jyoti_is_walking_in_New_York_City_dduring_Christm_a1edac93-fd0e-4404-911e-bbdc47c0cba2.png?width=1402&height=1402",
+  // },
   {
     image_url:
       "https://media.discordapp.net/attachments/1090027780525273153/1095189802879561838/markrachapoom_a_boy_a_girl_cat_and_their_puppy_sitting_in_an_ap_3b74d0de-5d5c-429e-a204-7bc4a807acdb.png?width=1402&height=1402",

@@ -23,6 +23,7 @@ import { Spinner } from "@chakra-ui/react";
 import {
   markQuoteRyanTweetHtml,
   ryanTweetHtml,
+  markQuoteVercel,
   tweets,
 } from "@/util/constants/home-constant";
 import parse from "html-react-parser";
@@ -356,7 +357,8 @@ const Landing = (props: Props) => {
               <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] max-lg:w-full items-start max-lg:items-center">
 
                 {parse(ryanTweetHtml)}
-                {parse(markQuoteRyanTweetHtml)}
+                {/* {parse(markQuoteRyanTweetHtml)} */}
+                {/* {parse(markQuoteVercel)} */}
 
                 <button
                   onClick={() => {
@@ -373,8 +375,9 @@ const Landing = (props: Props) => {
               </div>
 
               <div className="flex flex-col gap-4">
+
                 <iframe
-                  src="https://www.getairchat.com/sigil/sideprojects/afcfab29-9896-4ba0-b547-52d8d6b8197d"
+                  src="https://www.getairchat.com/sigil/sideprojects?r=afcfab29-9896-4ba0-b547-52d8d6b8197d"
                   title="Naval's Reponse"
                   className="aspect-[9/16] rounded-xl h-full"
                 />
@@ -395,11 +398,10 @@ const Landing = (props: Props) => {
           </div>
 
           {/* team section */}
-          <div
+          {/* <div
             id="team"
             className="flex flex-col w-full bg-[rgb(13,13,15)] max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6 border-t border-dark-divider"
           >
-            {/* team header text */}
             <div className="flex flex-col text-center items-center">
               <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
                 Our Team
@@ -413,7 +415,6 @@ const Landing = (props: Props) => {
               <div className="grid grid-cols-3 max-md:grid-cols-2 w-full gap-6 max-w-5xl max-sm:gap-4">
                 {teamMembers.map((member, index) => {
                   return (
-                    // member detail
                     <Link
                       key={index}
                       className="group flex flex-col bg-dark-background-secondary rounded-lg overflow-hidden"
@@ -436,7 +437,7 @@ const Landing = (props: Props) => {
                 })}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
