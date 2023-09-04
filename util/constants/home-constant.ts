@@ -41,27 +41,27 @@ export const sampleArtists: SampleArtist[] = [
     profile_image_url:
       "https://pbs.twimg.com/profile_images/1634515185300807682/FTOEZDkp_400x400.jpg",
   },
-  {
-    name: "Mark",
-    username: "mark",
-    _id: "6436f3032b67ae01b9c884bb",
-    profile_image_url:
-      "https://pbs.twimg.com/profile_images/1669924632881942529/uVVtVMaK_400x400.jpg",
-  },
-  {
-    name: "Emily",
-    username: "emily",
-    _id: "643824151cb80eec2f543e85",
-    profile_image_url:
-      "https://pbs.twimg.com/profile_images/1653106037262798848/xIwPY8Ws_400x400.jpg",
-  },
-  {
-    name: "Jyoti",
-    username: "jyoti",
-    _id: "643ae2a7b5cf0cd55b8f4393",
-    profile_image_url:
-      "https://pbs.twimg.com/profile_images/1512137188988710912/1p11Xf_Y_400x400.jpg",
-  },
+  // {
+  //   name: "Mark",
+  //   username: "mark",
+  //   _id: "6436f3032b67ae01b9c884bb",
+  //   profile_image_url:
+  //     "https://pbs.twimg.com/profile_images/1669924632881942529/uVVtVMaK_400x400.jpg",
+  // },
+  // {
+  //   name: "Emily",
+  //   username: "emily",
+  //   _id: "643824151cb80eec2f543e85",
+  //   profile_image_url:
+  //     "https://pbs.twimg.com/profile_images/1653106037262798848/xIwPY8Ws_400x400.jpg",
+  // },
+  // {
+  //   name: "Jyoti",
+  //   username: "jyoti",
+  //   _id: "643ae2a7b5cf0cd55b8f4393",
+  //   profile_image_url:
+  //     "https://pbs.twimg.com/profile_images/1512137188988710912/1p11Xf_Y_400x400.jpg",
+  // },
 ];
 
 export const genres = [

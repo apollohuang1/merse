@@ -58,10 +58,10 @@ const NavigationBar: React.FC<{
       sectionTitle: "Wall of Love",
       sectionName: "wall-of-love",
     },
-    {
-      sectionTitle: "Team",
-      sectionName: "team",
-    },
+    // {
+    //   sectionTitle: "Team",
+    //   sectionName: "team",
+    // },
     // {
     //   sectionTitle: "Contact",
     // }
