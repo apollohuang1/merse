@@ -398,7 +398,7 @@ const Landing = (props: Props) => {
           </div>
 
           {/* team section */}
-          <div
+          {/* <div
             id="team"
             className="flex flex-col w-full bg-[rgb(13,13,15)] max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6 border-t border-dark-divider"
           >
@@ -437,7 +437,7 @@ const Landing = (props: Props) => {
                 })}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
