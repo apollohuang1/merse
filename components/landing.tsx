@@ -111,7 +111,8 @@ const Landing = (props: Props) => {
   const canvasVideoRef = useRef<HTMLVideoElement>(null);
   const [isDemoVidePlaying, setIsDemoVideoPlaying] =
     React.useState<boolean>(true);
-  const [isCanvasVideoPlaying, setIsCanvasVideoPlaying] = React.useState<boolean>(true);
+  const [isCanvasVideoPlaying, setIsCanvasVideoPlaying] =
+    React.useState<boolean>(true);
 
   const {
     showLoginModal,
@@ -185,7 +186,6 @@ const Landing = (props: Props) => {
             {/* text in the first section */}
             <div className="absolute flex flex-col items-center w-full h-full justify-end gap-6 px-6 py-28 max-sm:py-14">
               <div className="flex flex-col leading-6 items-center text-center">
-
                 <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
                   {/* Transform Journals into Comics, Effortlessly */}
                   {/* Journaling-to-Comic Made Simple */}
@@ -225,12 +225,17 @@ const Landing = (props: Props) => {
           </div>
 
           <div className="flex flex-row p-6 max-sm:p-5 items-center justify-center bg-[rgb(13,13,13)] border-y border-dark-divider text-dark-text-primary transition-all">
-          {/* <div className="flex flex-row p-6 max-sm:p-5 items-center justify-center bg-[rgb(13,13,13)] border-none border-dark-divider text-dark-text-primary transition-all"> */}
+            {/* <div className="flex flex-row p-6 max-sm:p-5 items-center justify-center bg-[rgb(13,13,13)] border-none border-dark-divider text-dark-text-primary transition-all"> */}
             <a href="https://vercel.com/ai-accelerator" target="_blank">
               {/* <img src="./accelerator-badge-dark.png" className="h-14" /> */}
               <div className="flex flex-row gap-3 items-center hover:underline">
-                <img src="/vercel.svg" className="h-5 w-5 max-sm:w-4 max-sm:h-4" />
-                <span className="max-sm:text-sm">Accepted to Vercel AI Accelerator</span>
+                <img
+                  src="/vercel.svg"
+                  className="h-5 w-5 max-sm:w-4 max-sm:h-4"
+                />
+                <span className="max-sm:text-sm">
+                  Accepted to Vercel AI Accelerator
+                </span>
               </div>
             </a>
           </div>
@@ -355,7 +360,6 @@ const Landing = (props: Props) => {
             <div className="flex flex-row items-center gap-5 max-lg:flex-col max-lg:items-center max-w-screen max-lg:w-full justify-center max-lg:gap-16 max-w-5xl w-full">
               {/* ryan tweets container */}
               <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] max-lg:w-full items-start max-lg:items-center">
-
                 {parse(ryanTweetHtml)}
                 {/* {parse(markQuoteRyanTweetHtml)} */}
                 {/* {parse(markQuoteVercel)} */}
@@ -375,7 +379,6 @@ const Landing = (props: Props) => {
               </div>
 
               <div className="flex flex-col gap-4">
-
                 <iframe
                   src="https://www.getairchat.com/sigil/sideprojects?r=afcfab29-9896-4ba0-b547-52d8d6b8197d"
                   title="Naval's Reponse"
@@ -395,6 +398,19 @@ const Landing = (props: Props) => {
                 </button>
               </div>
             </div>
+          </div>
+
+          <div className="flex text-white p-5 items-center justify-center w-full border-t border-dark-divider">
+            <span>
+              By{" "}
+              <Link
+                href={"https://x.com/markrachapoom"}
+                target="_blank"
+                className="text-white font-medium underline opacity-80"
+              >
+                @markrachapoom
+              </Link>
+            </span>
           </div>
 
           {/* team section */}
