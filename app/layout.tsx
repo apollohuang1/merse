@@ -55,7 +55,6 @@ export default function RootLayout({
         <meta name="description" content={metadata.description} />
         <link rel="icon" href="/merse-logo.png" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
-
         <script async src="https://platform.twitter.com/widgets.js"></script>
       </Head>
 

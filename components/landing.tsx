@@ -109,6 +109,7 @@ const footerNavigation = {
 const Landing = (props: Props) => {
   const demoVideoRef = useRef<HTMLVideoElement>(null);
   const canvasVideoRef = useRef<HTMLVideoElement>(null);
+  const [isAlexandriaVideoPlaying, setIsAlexandriaVideoPlaying] = React.useState<boolean>(true);
   const [isDemoVidePlaying, setIsDemoVideoPlaying] =
     React.useState<boolean>(true);
   const [isCanvasVideoPlaying, setIsCanvasVideoPlaying] =
@@ -164,7 +165,7 @@ const Landing = (props: Props) => {
             id="about"
             className="flex relative items-center justify-center h-[100dvh] w-full"
           >
-            <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
+            {/* <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
               {midjourneyGeneratedImages.map((item, index) => {
                 return (
                   <div key={index} className="overflow-hidden w-full h-full">
@@ -175,7 +176,36 @@ const Landing = (props: Props) => {
                   </div>
                 );
               })}
-            </div>
+            </div> */}
+
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              ref={demoVideoRef}
+              src="./alexandria.mp4"
+              // poster="./screenshot-storyboard.png"
+              // className="w-full h-full object-cover shadow-[4px_24px_60px_rgb(0,0,0,0.7)] bg-dark-background-primary rounded-t-2xl"
+              className="h-full w-full object-cover"
+              onPlay={() => {
+                setIsAlexandriaVideoPlaying(true);
+              }}
+              onPause={() => {
+                setIsAlexandriaVideoPlaying(false);
+              }}
+            />
+
+            {/* <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/GO7R78zAoA4?autoplay=1&controls=0&showinfo=0&autohide=1&loop=1&mute=1&playlist=GO7R78zAoA4"
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              title="Alexandria"
+              className="h-full w-full object-cover"
+            ></iframe> */}
 
             {/* overlay */}
             <div className="absolute bg-opacity-[0.03] w-full h-full bg-gradient-to-tl from-[#FF9F0A30] to-transparent" />
@@ -186,10 +216,10 @@ const Landing = (props: Props) => {
             {/* text in the first section */}
             <div className="absolute flex flex-col items-center w-full h-full justify-end gap-6 px-6 py-28 max-sm:py-14">
               <div className="flex flex-col leading-6 items-center text-center">
-                <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight">
+                <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight font-serif">
                   {/* Transform Journals into Comics, Effortlessly */}
                   {/* Journaling-to-Comic Made Simple */}
-                  Personalized Comic Made Simple
+                  The Best Internet Archive, Yet.
                 </h1>
 
                 <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
