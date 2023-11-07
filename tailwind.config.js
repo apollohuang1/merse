@@ -12,9 +12,6 @@ module.exports = {
   theme: {
     extend: {
       // tailwind height
-      fontFamily: {
-        'garamond': ['EB Garamond'],
-      },
       height: {
         'landingNavigationBar': '42px',
         // 'navigationBar': '56px',
@@ -56,15 +53,17 @@ module.exports = {
       },
       colors: {
         // accent: "#4D9D7D", // green
-        accent: "#10b981",
+        // accent: "#10b981",
+        accent: "#0A84FF",
         accentSecondary: "#5FA78A", // secondary green
         // accent: "#972B34", // crimson
         // accentSecondary: "#A14048", // crimson
         transparent: "transparent",
         test: "#FF0000 dark:#00FF00",
         light: {
-          accent: "#E52B12",
-          appleBlue: "#007AFF", // blue
+          // accent: "#E52B12",
+          accent: "#007AFF",
+          // appleBlue: "#007AFF", // blue
           divider: "#EFEFEF", // opque
           dividerContrast: "#E7E7E7", // more contrast
           blue: "#007AFF",
@@ -95,7 +94,8 @@ module.exports = {
           },
         },
         dark: {
-          accent: "#E52B12",
+          // accent: "#E52B12",
+          accent: "#0A84FF",
           appleBlue: '#0A84FF', // blue
           divider: "#262626", // opaque
           dividerContrast: "#3F3F42", // opaque
@@ -110,8 +110,8 @@ module.exports = {
             background: '#4D3003',
           },
           background: {
-            // primary: '#000000', // black
-            primary: "#0E100E", // green satoshi fontshare
+            primary: '#000000', // black
+            // primary: "#0E100E", // green satoshi fontshare
             // primary: "#0D0D0D", // 13 13 13 rgb
             // primary: "#0E1010", // blue satoshi fontshare
             secondary: "#161816", // green satoshi secondary

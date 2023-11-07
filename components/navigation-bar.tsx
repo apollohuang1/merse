@@ -51,6 +51,10 @@ const NavigationBar: React.FC<{
       sectionName: "about",
     },
     {
+      sectionTitle: "Manifesto",
+      sectionName: "manifesto",
+    },
+    {
       sectionTitle: "Demo",
       sectionName: "demo",
     },
@@ -113,7 +117,7 @@ const NavigationBar: React.FC<{
             }}
           >
             <MerseLogo theme="dark" />
-            <span className="text-white">Comic</span>
+            <span className="text-white">Merse</span>
           </div>
 
           {/* section navigator */}
@@ -162,14 +166,16 @@ const NavigationBar: React.FC<{
               </>
             )}
 
-            <button
+            <span className="text-sm font-serif text-neutral-200">Coming Soon.</span>
+
+            {/* <button
               onClick={() => {
                 setShowLoginModal(true);
               }}
-              className="flex items-center justify-center text-white bg-accent hover:bg-emerald-600 px-3 rounded-full h-6"
+              className="flex items-center justify-center text-black bg-white hover:opacity-70 px-3 rounded-full h-6"
             >
               <span className="text-sm font-medium">Login</span>
-            </button>
+            </button> */}
             
           </div>
         </div>

@@ -29,6 +29,7 @@ import {
 import parse from "html-react-parser";
 import { Transition } from "@headlessui/react";
 import clsx from "clsx";
+import Divider from "./divider";
 
 type Props = {};
 
@@ -109,7 +110,8 @@ const footerNavigation = {
 const Landing = (props: Props) => {
   const demoVideoRef = useRef<HTMLVideoElement>(null);
   const canvasVideoRef = useRef<HTMLVideoElement>(null);
-  const [isAlexandriaVideoPlaying, setIsAlexandriaVideoPlaying] = React.useState<boolean>(true);
+  const [isAlexandriaVideoPlaying, setIsAlexandriaVideoPlaying] =
+    React.useState<boolean>(true);
   const [isDemoVidePlaying, setIsDemoVideoPlaying] =
     React.useState<boolean>(true);
   const [isCanvasVideoPlaying, setIsCanvasVideoPlaying] =
@@ -224,8 +226,8 @@ const Landing = (props: Props) => {
 
                 <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
                   Effortlessly transform journal entries into personalized
-                  comics using our intuitive app. Publish, share, and monetize
-                  your creations within a supportive community.
+                  comics and autobiography. Publish, share, and monetize your
+                  creations within a supportive community.
                 </span>
               </div>
 
@@ -268,6 +270,51 @@ const Landing = (props: Props) => {
                 </span>
               </div>
             </a>
+          </div>
+
+          <div
+            id="manifesto"
+            className="relative flex flex-col w-full h-[100vh] max-lg:h-auto bg-black items-center justify-center px-6 py-24 gap-[calc(42px+24px)]"
+          >
+            <div className="flex flex-col max-w-5xl gap-7 font-serif text-lg font-thin p-6 opacity-70">
+              <h2>The Merse Manifesto</h2>
+
+              <Divider />
+
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Tellus pellentesque eu tincidunt tortor aliquam nulla. Sed
+                elementum tempus egestas sed sed risus pretium quam vulputate.
+                Sed odio morbi quis commodo odio aenean sed adipiscing. Interdum
+                velit laoreet id donec ultrices tincidunt. Bibendum arcu vitae
+                elementum curabitur vitae. Morbi enim nunc faucibus a
+                pellentesque sit. Commodo ullamcorper a lacus vestibulum sed.
+                Sit amet porttitor eget dolor morbi non. Pharetra convallis
+                posuere morbi leo urna molestie. Aliquam malesuada bibendum arcu
+                vitae elementum. Condimentum mattis pellentesque id nibh tortor.
+                Aliquam faucibus purus in massa tempor nec. Nulla facilisi
+                nullam vehicula ipsum a. Nunc vel risus commodo viverra
+                maecenas. Cras pulvinar mattis nunc sed. Cras semper auctor
+                neque vitae tempus quam pellentesque nec. Eu ultrices vitae
+                auctor eu augue ut. Placerat vestibulum lectus mauris ultrices.
+                Tempor orci eu lobortis elementum nibh tellus molestie nunc.
+                Rutrum quisque non tellus orci. Duis convallis convallis tellus
+                id interdum velit laoreet id. Aliquam ut porttitor leo a diam
+                sollicitudin. Et odio pellentesque diam volutpat commodo sed
+                egestas egestas fringilla. Arcu bibendum at varius vel pharetra
+                vel turpis nunc. At quis risus sed vulputate odio ut enim
+                blandit volutpat. Donec ac odio tempor orci. Molestie a iaculis
+                at erat. Morbi enim nunc faucibus a pellentesque sit amet
+                porttitor. Scelerisque eu ultrices vitae auctor eu. Risus in
+                hendrerit gravida rutrum quisque non tellus orci ac. Tempor nec
+                feugiat nisl pretium fusce id velit ut.
+              </p>
+
+              <span>We&apos;re developing more tools, each designed to ensure your stories, your experiences, and your legacy resonate through the centuries.</span>
+
+              <span>Mark, Kumar, and GPT-4</span>
+            </div>
           </div>
 
           <div
@@ -354,7 +401,7 @@ const Landing = (props: Props) => {
               />
 
               {/* play/pause button row with gradient overlay */}
-              <div className="absolute bottom-0 right-0 flex flex-row w-full justify-end gap-2 px-4 pb-4 pt-6 bg-gradient-to-t from-[rgb(0,0,0,0.7)] to-transparent">
+              <div className="absolute bottom-0 right-0 flex flex-row w-full justify-end gap-2 px-4 pb-4 pt-6 from-[rgb(0,0,0,0.7)] to-transparent">
                 <button
                   onClick={() => {
                     toggleCanvasDemoState();
@@ -374,7 +421,7 @@ const Landing = (props: Props) => {
           <div
             id="wall-of-love"
             // className="flex flex-col items-center justify-center max-lg:px-7 h-screen max-lg:h-auto gap-[calc(42px+24px)] py-[calc(42px+24px)]"
-            className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6 border-t border-dark-dividerContrast"
+            className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6 bg-dark-background-primary"
           >
             {/* team header text */}
             <div className="flex flex-col text-center items-center">
@@ -436,9 +483,17 @@ const Landing = (props: Props) => {
               <Link
                 href={"https://x.com/markrachapoom"}
                 target="_blank"
-                className="text-white font-medium underline opacity-80"
+                className="text-white underline opacity-80"
               >
                 @markrachapoom
+              </Link>{" "}
+              and{" "}
+              <Link
+                href={"https://x.com/kumareth"}
+                target="_blank"
+                className="text-white underline opacity-80"
+              >
+                @kumareth
               </Link>
             </span>
           </div>
@@ -500,7 +555,7 @@ const Landing = (props: Props) => {
               <FiBookOpen className="w-10 h-10" />
 
               <div>
-                <h1 className="font-normal">Welcome to Comic</h1>
+                <h1 className="font-normal">Welcome to Merse</h1>
                 <p className="text-light-text-secondary dark:text-dark-text-secondary">
                   Turning your journaling entry into comic book
                 </p>
