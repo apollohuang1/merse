@@ -168,14 +168,14 @@ const NavigationBar: React.FC<{
 
             <span className="text-sm font-serif text-neutral-200">Coming Soon.</span>
 
-            {/* <button
+            <button
               onClick={() => {
                 setShowLoginModal(true);
               }}
               className="flex items-center justify-center text-black bg-white hover:opacity-70 px-3 rounded-full h-6"
             >
               <span className="text-sm font-medium">Login</span>
-            </button> */}
+            </button>
             
           </div>
         </div>

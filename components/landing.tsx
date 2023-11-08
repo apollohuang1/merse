@@ -221,13 +221,12 @@ const Landing = (props: Props) => {
                 <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight font-serif">
                   {/* Transform Journals into Comics, Effortlessly */}
                   {/* Journaling-to-Comic Made Simple */}
-                  The Best Internet Archive, Yet.
+                  Your Stories. To Every Format.
+                  {/* The Best Internet Archive, Yet. */}
                 </h1>
 
                 <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
-                  Effortlessly transform journal entries into personalized
-                  comics and autobiography. Publish, share, and monetize your
-                  creations within a supportive community.
+                  We&apos;re crafting tools that transform your everyday moments into lasting legacies in every form — comics, books, films, voice recordings, autobiographies, and beyond.
                 </span>
               </div>
 
@@ -309,6 +308,9 @@ const Landing = (props: Props) => {
                 porttitor. Scelerisque eu ultrices vitae auctor eu. Risus in
                 hendrerit gravida rutrum quisque non tellus orci ac. Tempor nec
                 feugiat nisl pretium fusce id velit ut.
+
+                Humans are just wrappers to the same core ideas. Individual credibility and the way their expression makes a dent in the universe set them apart.
+                
               </p>
 
               <span>We&apos;re developing more tools, each designed to ensure your stories, your experiences, and your legacy resonate through the centuries.</span>
