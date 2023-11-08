@@ -52,7 +52,6 @@ export interface Reply {
 // scene model
 export interface Scene {
   _id: string;
-  image_base64: string;
+  image_url: string;
   prompt: string;
-  displayed_text: string;
 }

@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux-store/store";
 import { manualWhitelistedEmails } from "@/util/constants/create-constants";
+import { json } from "stream/consumers";
 
 // Hook for creating new entries
 const useCreateEntry = () => {
@@ -118,7 +119,9 @@ const useCreateEntry = () => {
 
   // Only use try catch block here. sub-functions should handle/throw their own errors to this like a dumb
   const generateStoryboard = async (editor: Editor | null) => {
+
     try {
+
       // guard log in to prevent anonymous users from burning our API credits
       if (auth?.currentUser === null) {
         alert(
@@ -143,21 +146,12 @@ const useCreateEntry = () => {
       const editorJSON = editor.getJSON();
       const textContent: string = convertTiptapJSONToText(editorJSON);
 
-      // scenes text from gpt3.5 as generating prompts
-      const scenesControlPrompt =
-        'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed, but DO NOT generate new storylines that are not in TEXT_STORY) \nTEXT_STORY: ';
-      //'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ';
-      // const generatedText = await createGenericChatCompletion(
-      //   textContent,
-      //   scenesControlPrompt
-      // );
-
-      const openai = new OpenAI();
+      const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
       const response = await openai.chat.completions.create({
-        model: "gpt-4-vision-preview",
+        model: "gpt-4-1106-preview",
         messages: [
-          { role: "system", content: "You are assistance for generating comic panel texts from tiptap editor content and return json array with format { image_prompt: string }" },
+          { role: "system", content: "Create a JSON array with 7 objects, each containing a single key-value pair. The key should be 'image_prompt' followed by a descriptive string for a comic panel. There should be a root element called prompts" },
           { role: "user", content: textContent },
         ],
         response_format: {
@@ -165,103 +159,39 @@ const useCreateEntry = () => {
         },
       });
 
-      const testText = response.choices[0].message.content
+      const promptsArrayString = response.choices[0].message.content
+      const panels = JSON.parse(promptsArrayString as string)
 
-      console.log(testText)
+      console.log("###--------------------GENERATED PANELS--------------------###");
+      console.log(panels.prompts.length);
 
-      // // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now.
-      // console.log(
-      //   "###--------------------GENERATED TEXT--------------------###"
-      // );
-      // console.log(generatedText);
+      // loop in panels.prompts length
+      // for (let i = 0; i < panels.prompts.length; i++) {
+      for (let i = 0; i < 2; i++) {
+        const prompt = panels.prompts[i].image_prompt
+        const response = await openai.images.generate({
+          model: "dall-e-3",
+          prompt: prompt + "in comic style",
+          n: 1,
+          size: "1024x1024",
+        });
 
-      // const sceneText: string = getStripText(generatedText);
+        const image_url = response.data[0].url
 
-      // if (!sceneText || sceneText === "") {
-      //   throw new Error("No scene text generated");
-      // }
+        console.log("###--------------------GENERATED IMAGE URL--------------------###");
+        console.log(image_url);
 
-      // // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now :))
-      // console.log("###--------------------SCENES--------------------###");
-      // console.log(sceneText);
+        const newScene: Scene = {
+          _id: new mongoose.Types.ObjectId().toString(),
+          image_url: image_url as string,
+          prompt: prompt,
+        };
 
-      // // array of scenes, each have a scene description but not for displaying. only for generating images.
-      // let sceneTextsArray: string[] = sceneText
-      //   .split("\n")
-      //   .filter((line) => line.startsWith("Scene: "))
-      //   .map((line) => line.substring("Scene: ".length).trim());
+        dispatch(addScene(newScene));
+        dispatch(setShowGeneratedStoryboard(true));
 
-      // // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now :))
-      // console.log(
-      //   "###--------------------SPLITTED SCENES--------------------###"
-      // );
-      // console.log(sceneTextsArray);
+      }
 
-      // // comment this out to generate only 1 image
-      // // const base64String = await createImageFromText(sceneTextsArray[0]);
-
-      // // diary text
-      // const splittedSceneText: string[] = sceneText
-      //   ?.split("\n")
-      //   .filter((line) => line.startsWith("Scene: "))
-      //   .map((line) => line.substring("Scene: ".length).trim());
-      // const sceneDescriptions: string = splittedSceneText.join("\n");
-
-      // // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now :))
-      // console.log(
-      //   "###--------------------SCENE DESCRIPTIONS--------------------###"
-      // );
-      // console.log(sceneDescriptions);
-
-      // const diaryTextControlPrompt =
-      //   'For EACH of the "Scene" below, generate a very short narrative description in a diary-format (2-3 sentences). Number each scene and put the description (for example, Scene 1: Today was a good day!). Do not put create lots of additional information than what is already stated:\nSCENE_TEXT: ';
-      // const generatedDiaryText: string = await createGenericChatCompletion(
-      //   sceneDescriptions,
-      //   diaryTextControlPrompt
-      // );
-
-      // // ❌ SENSITIVE, COMMENT OUT BEFORE COMMITTING when whitelisted users are not our team. It's okay for now :))
-      // console.log(
-      //   "###--------------------GENERATED DIARY TEXT--------------------###"
-      // );
-      // console.log(generatedDiaryText);
-
-      // const splittedDiaryTexts: string[] = generatedDiaryText
-      //   ?.split("\n")
-      //   .filter((line) => line.startsWith("Scene "))
-      //   .map((line) => line.split(":")[1].trim());
-
-      // console.log(
-      //   "###--------------------SPLITTED DIARY TEXT--------------------###"
-      // );
-      // console.log(splittedDiaryTexts);
-
-      // // 🚨 Comment this out to generate the entire storyboard. This will burn a lot of the API quota.
-      // // iterate through splitedSceneText array
-      // // for (let i = 0; i < sceneTextsArray.length; i++) {
-      // for (let i = 0; i < 2; i++) {
-      //   //changed to 2 6/18
-      //   const base64String = await createImageFromText(sceneTextsArray[i]);
-      //   const newScene: Scene = {
-      //     _id: new mongoose.Types.ObjectId().toString(),
-      //     image_base64: base64String,
-      //     prompt: sceneTextsArray[1],
-      //     displayed_text: splittedDiaryTexts[i],
-      //   };
-      //   dispatch(addScene(newScene));
-      //   dispatch(setShowGeneratedStoryboard(true));
-      // }
-
-      // // // push ONLY 1 scene to storyboard UI
-      // // const newScene: Scene = {
-      // //   _id: new mongoose.Types.ObjectId().toString(),
-      // //   image_base64: base64String,
-      // //   prompt: sceneTextsArray[0],
-      // //   displayed_text:
-      // //     "Annyeong Emily❤️ Diary text should be here, check out the newScene: Scene interface in useCreateEntry hook :))",
-      // // };
-      // // dispatch(addScene(newScene));
-      // // dispatch(setShowGeneratedStoryboard(true));
     } catch (error: any) {
       console.log(`Failed to generate storyboard, message: ${error?.message}`);
       console.log(error);
@@ -271,67 +201,16 @@ const useCreateEntry = () => {
   };
 
   const addSceneFromCustomPrompt = async (prompt: string) => {
-    const imageBase64String = await createImageFromText(prompt);
-    const newScene: Scene = {
-      _id: new mongoose.Types.ObjectId().toString(),
-      image_base64: imageBase64String,
-      prompt: prompt,
-      displayed_text: prompt,
-    };
-    dispatch(addScene(newScene));
+    // const imageBase64String = await createImageFromText(prompt);
+    // const newScene: Scene = {
+    //   _id: new mongoose.Types.ObjectId().toString(),
+    //   image_base64: imageBase64String,
+    //   prompt: prompt,
+    //   displayed_text: prompt,
+    // };
+    // dispatch(addScene(newScene));
   };
 
-  /**
-   * Universal function for chatgpt response that returns a string promise (resolve and reject)
-   * @param input text to be sent :)
-   * @param control_prompt command to tell gpt3.5 what to do
-   * @returns promise of string
-   */
-  const createGenericChatCompletion = async (
-    input: string,
-    control_prompt: string
-  ): Promise<string> => {
-    const openaiApiKey = process.env.OPENAI_API_KEY;
-    //const control_prompt = "For the \"TEXT\" below, generate content for a graphic novel in the following \"FORMAT\":\nFORMAT:\nPanel 1:\n (Scene: make sure the description is detailed of roughly 100 words, formatted as a text-to-image prompt input.) \nDialogue: should be labeled by which character is speaking WITHOUT parentheses. \nTEXT: " + input;
-    // const control_prompt = 'For the "TEXT_STORY" below, generate content for a graphic novel in the following "FORMAT":\nFORMAT:\nPanel #:\n (Scene: put the scene description *all* in parantheses and make it very detailed) \nDialogue: should be labeled (without parantheses) by which character is speaking. \nTEXT_STORY: ' + input;
-
-    const openai = new OpenAI({apiKey: openaiApiKey});
-
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        { role: "system", content: "You are assistance for generating comic panel" },
-        { role: "user", content: "Who won the world series in 2020?" },
-      ],
-      response_format: {
-        type: "json_object",
-      },
-    });
-
-    // const configuration = new Configuration({
-    //   apiKey: openaiApiKey,
-    // });
-    // const openai = new OpenAIApi(configuration);
-
-    // const completion = await openai.createChatCompletion({
-    //   model: "gpt-3.5-turbo",
-    //   messages: [{ role: "user", content: control_prompt + input }],
-    //   temperature: 0.7,
-    // });
-
-    const generatedText = response?.choices[0]?.message?.content;
-
-    // guard if generated text is null
-    if (!generatedText || generatedText === "") {
-      throw new Error("Generated text is null");
-    }
-
-    if (entry?.style_reference?.artist === null) {
-      throw new Error("Entry style reference is null");
-    }
-
-    return generatedText;
-  };
 
   /**
    *
