@@ -167,19 +167,6 @@ const Landing = (props: Props) => {
             id="about"
             className="flex relative items-center justify-center h-[100dvh] w-full"
           >
-            {/* <div className="grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full">
-              {midjourneyGeneratedImages.map((item, index) => {
-                return (
-                  <div key={index} className="overflow-hidden w-full h-full">
-                    <img
-                      src={item.image_url}
-                      className="object-cover w-full h-full z-auto scale-110"
-                    />
-                  </div>
-                );
-              })}
-            </div> */}
-
             <video
               autoPlay
               loop
@@ -226,7 +213,9 @@ const Landing = (props: Props) => {
                 </h1>
 
                 <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
-                  We&apos;re crafting tools that transform your everyday moments into lasting legacies in every form — comics, books, films, voice recordings, autobiographies, and beyond.
+                  We&apos;re crafting tools that transform your everyday moments
+                  into lasting legacies in every form — comics, books, films,
+                  voice recordings, autobiographies, and beyond.
                 </span>
               </div>
 
@@ -281,39 +270,39 @@ const Landing = (props: Props) => {
               <Divider />
 
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Tellus pellentesque eu tincidunt tortor aliquam nulla. Sed
-                elementum tempus egestas sed sed risus pretium quam vulputate.
-                Sed odio morbi quis commodo odio aenean sed adipiscing. Interdum
-                velit laoreet id donec ultrices tincidunt. Bibendum arcu vitae
-                elementum curabitur vitae. Morbi enim nunc faucibus a
-                pellentesque sit. Commodo ullamcorper a lacus vestibulum sed.
-                Sit amet porttitor eget dolor morbi non. Pharetra convallis
-                posuere morbi leo urna molestie. Aliquam malesuada bibendum arcu
-                vitae elementum. Condimentum mattis pellentesque id nibh tortor.
-                Aliquam faucibus purus in massa tempor nec. Nulla facilisi
-                nullam vehicula ipsum a. Nunc vel risus commodo viverra
-                maecenas. Cras pulvinar mattis nunc sed. Cras semper auctor
-                neque vitae tempus quam pellentesque nec. Eu ultrices vitae
-                auctor eu augue ut. Placerat vestibulum lectus mauris ultrices.
-                Tempor orci eu lobortis elementum nibh tellus molestie nunc.
-                Rutrum quisque non tellus orci. Duis convallis convallis tellus
-                id interdum velit laoreet id. Aliquam ut porttitor leo a diam
-                sollicitudin. Et odio pellentesque diam volutpat commodo sed
-                egestas egestas fringilla. Arcu bibendum at varius vel pharetra
-                vel turpis nunc. At quis risus sed vulputate odio ut enim
-                blandit volutpat. Donec ac odio tempor orci. Molestie a iaculis
-                at erat. Morbi enim nunc faucibus a pellentesque sit amet
-                porttitor. Scelerisque eu ultrices vitae auctor eu. Risus in
-                hendrerit gravida rutrum quisque non tellus orci ac. Tempor nec
-                feugiat nisl pretium fusce id velit ut.
-
-                Humans are just wrappers to the same core ideas. Individual credibility and the way their expression makes a dent in the universe set them apart.
-                
+                With the simplicity of a scribe and the might of a studio, this
+                tool transcends the ordinary, enabling every individual to mold
+                their experiences into a pantheon of formats—be they the visual
+                allure of comics, the tactile charm of books, or the cinematic
+                grandeur of films. It is the embodiment of a dream once
+                articulated by visionaries like Steve Jobs: to merge technology
+                with the humanities, creating tools that amplify the human
+                experience. Humans are just wrappers to the same core ideas.
+                Individual credibility and the way their expression makes a dent
+                in the universe set them apart.
               </p>
 
-              <span>We&apos;re developing more tools, each designed to ensure your stories, your experiences, and your legacy resonate through the centuries.</span>
+              <p>
+                As we gaze into the star-studded canvas of our ever-expanding
+                universe, this innovation stands as a beacon of our
+                techno-optimist vision, a testament to our relentless pursuit of
+                progress. It&apos;s not just a platform; it&apos;s a cultural
+                metamorphosis, a digital Renaissance that democratizes creation,
+                giving voice to the voiceless and wings to the tales that ground
+                us. In this space, every spoken word, every whispered dream has
+                the potential to echo through the ages, as we forge our personal
+                legacies with the tools that once seemed the province of the
+                gods. Our stories become more than memories; they are the
+                building blocks of a civilization that values every narrative,
+                crafting a legacy that transcends time and space, imbued with
+                the essence of our collective journey.
+              </p>
+
+              <span>
+                We&apos;re developing more tools, each designed to ensure your
+                stories, your experiences, and your legacy resonate through the
+                centuries.
+              </span>
 
               <span>Mark, Kumar, and GPT-4</span>
             </div>
@@ -321,16 +310,32 @@ const Landing = (props: Props) => {
 
           <div
             id="demo"
-            className="relative flex flex-col w-full h-auto max-lg:h-auto bg-[#F5F5F7] items-center justify-between px-6 gap-[calc(42px+24px)]"
+            className="relative flex flex-col w-full h-auto max-lg:h-auto bg-dark-background-primary items-center justify-between px-6 gap-[calc(42px+24px)] border-t border-dark-divider"
           >
-            <div className="flex flex-col text-center items-center pt-[calc(42px+24px)]">
-              <h1 className="text-5xl text-light-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
+
+            <div className="absolute grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full opacity-[0.02] z-0">
+              {midjourneyGeneratedImages.map((item, index) => {
+                return (
+                  <div key={index} className="overflow-hidden w-full h-full">
+                    <img
+                      src={item.image_url}
+                      className="object-cover w-full h-full z-auto scale-110"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* <div className="flex w-full h-full bg-black absolute opacity-5" /> */}
+
+            <div className="flex flex-col text-center items-center pt-[calc(42px+24px)] z-20">
+              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
                 {/* Storyboard */}
                 Jot. Generate. Publish.
               </h1>
               <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm:text-base max-w-3xl max-md:max-w-xl">
                 {/* Jot. Generate. Publish. */}
-                create a daily entry
+                create comic book from a daily entry
               </span>
             </div>
 
@@ -372,7 +377,7 @@ const Landing = (props: Props) => {
 
           <div
             id="storyboard"
-            className="relative flex flex-col w-full h-auto max-lg:h-auto bg-[rgb(13,13,15)] items-center justify-between px-6 gap-[calc(42px+24px)]"
+            className="relative flex flex-col w-full h-auto max-lg:h-auto items-center justify-between px-6 gap-[calc(42px+24px)] border-t border-dark-divider"
           >
             <div className="flex flex-col text-center items-center pt-[calc(42px+24px)]">
               <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
@@ -403,7 +408,7 @@ const Landing = (props: Props) => {
               />
 
               {/* play/pause button row with gradient overlay */}
-              <div className="absolute bottom-0 right-0 flex flex-row w-full justify-end gap-2 px-4 pb-4 pt-6 from-[rgb(0,0,0,0.7)] to-transparent">
+              <div className="absolute bottom-0 right-0 flex flex-row w-full justify-end gap-2 px-4 pb-4 pt-6 bg-gradient-to-t from-[rgb(0,0,0,0.7)] to-transparent">
                 <button
                   onClick={() => {
                     toggleCanvasDemoState();
@@ -423,7 +428,7 @@ const Landing = (props: Props) => {
           <div
             id="wall-of-love"
             // className="flex flex-col items-center justify-center max-lg:px-7 h-screen max-lg:h-auto gap-[calc(42px+24px)] py-[calc(42px+24px)]"
-            className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6 bg-dark-background-primary"
+            className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6 bg-dark-background-primary border-t border-dark-divider"
           >
             {/* team header text */}
             <div className="flex flex-col text-center items-center">

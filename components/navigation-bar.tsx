@@ -166,7 +166,7 @@ const NavigationBar: React.FC<{
               </>
             )}
 
-            <span className="text-sm font-serif text-neutral-200">Coming Soon.</span>
+            {/* <span className="text-sm font-serif text-neutral-200">Coming Soon.</span> */}
 
             <button
               onClick={() => {
