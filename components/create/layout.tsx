@@ -1492,11 +1492,7 @@ const Layout = (props: Props) => {
                         onClick={() => handleToggleStoryboard(index)}
                       >
                         <img
-                          src={
-                            scene?.image_base64
-                              ? "data:image/png;base64," + scene.image_base64
-                              : scene?.artwork?.url ?? ""
-                          }
+                          src={scene.image_url}
                           alt="comic book cover"
                           className="object-cover aspect-[4/3] relative fade-top"
                           style={createFadeTopStyle()}
@@ -1506,7 +1502,7 @@ const Layout = (props: Props) => {
                         {expandedStoryboardIndex === index && (
                           <div className="flex p-4">
                             <p className="text-light-text-primary dark:text-dark-text-primary line-clamp-[8]">
-                              {scene?.displayed_text || scene?.text || ""}
+                              { scene?.prompt }
                             </p>
                           </div>
                         )}

@@ -5,7 +5,6 @@ import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import mongoose, { Types } from "mongoose";
 import { ObjectId } from "mongoose";
-import { ChatCompletionRequestMessage } from "openai";
 import { StyleReference } from "../models/types";
 
 const initialState: Entry = {
@@ -73,13 +72,6 @@ const entrySlice = createSlice({
     },
     setContent: (state: Entry, action) => {
       state.content = action.payload;
-    },
-    setChatMessages: (state: Entry, action: PayloadAction<ChatCompletionRequestMessage[]>) => {
-      state.chat_messages = action.payload;
-    },
-    addChatMessage: (state: Entry, action: PayloadAction<ChatCompletionRequestMessage>) => {
-      // add chat message to storyboard
-      state.chat_messages.push(action.payload);
     },
     setScenes: (state: Entry, action) => {
       state.scenes = action.payload;
@@ -206,8 +198,6 @@ export const {
   removeCharacter,
   setTitle,
   setContent,
-  setChatMessages,
-  addChatMessage,
   setScenes,
   addScene,
   setCanvas,

@@ -50,7 +50,6 @@ import {
 
 import { useAppDispatch, useAppSelector } from "@/redux-store/hooks";
 import {
-  addChatMessage,
   setContent,
   setNotificationContent,
   setScenes,

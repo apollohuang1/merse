@@ -422,16 +422,16 @@ const ReadPage = (props: Props) => {
                   >
                     <img
                       // base64 image url source
-                      src={"data:image/png;base64," + scene.image_base64}
+                      src={scene.image_url}
                       alt="scene"
                       className="w-full h-full object-cover"
                     />
 
-                    { scene.displayed_text && scene.displayed_text !== "" && 
+                    { scene.prompt && 
                       <div className="absolute flex flex-col justify-end w-full h-full">
                         <div className="group-hover:opacity-100 opacity-0 transition-opacity duration-300 bg-dark-background-secondary bg-opacity-80 backdrop-blur-2xl w-full rounded-none px-3 py-6">
                           <p className="text-white">
-                            { scene.displayed_text }
+                            { scene.prompt }
                           </p>
                         </div>
                       </div>

@@ -5,9 +5,8 @@ import mongoose, { Schema } from 'mongoose';
 
 const SceneSchema = new mongoose.Schema<Scene>({
   _id: { type: String, required: true },
-  image_base64: { type: String, required: false },
+  image_url: { type: String, required: false },
   prompt: { type: String, required: false },
-  displayed_text: { type: String, required: false },
 });
 
 const CommentSchema = new mongoose.Schema<Comment>({
