@@ -262,49 +262,50 @@ const Landing = (props: Props) => {
 
           <div
             id="manifesto"
-            className="relative flex flex-col w-full h-[100vh] max-lg:h-auto bg-black items-center justify-center px-6 py-24 gap-[calc(42px+24px)]"
+            className="relative flex flex-col w-full h-[100vh] max-lg:h-auto bg-black items-center justify-center px-6 py-24 max-sm:text-xs max-sm:py-12 gap-[calc(42px+24px)]"
           >
-            <div className="flex flex-col max-w-5xl gap-7 font-serif text-lg font-thin p-6 opacity-70">
-              <h2>The Merse Manifesto</h2>
+            <div className="flex flex-col max-w-5xl gap-7 font-serif text-lg font-thin">
+              <h1 className="text-dark-text-primary opacity-90">
+                The Merse Manifesto
+              </h1>
 
-              <Divider />
+              <div className="flex flex-col gap-7 font-serif text-lg font-thin opacity-70">
+                <p>
+                  With the simplicity of a scribe and the might of a studio,
+                  this tool transcends the ordinary, enabling every individual
+                  to mold their experiences into a pantheon of formats—be they
+                  the visual allure of comics, the tactile charm of books, or
+                  the cinematic grandeur of films. It is the embodiment of a
+                  dream once articulated by visionaries like Steve Jobs: to
+                  merge technology with the humanities, creating tools that
+                  amplify the human experience.
+                </p>
 
-              <p>
-                With the simplicity of a scribe and the might of a studio, this
-                tool transcends the ordinary, enabling every individual to mold
-                their experiences into a pantheon of formats—be they the visual
-                allure of comics, the tactile charm of books, or the cinematic
-                grandeur of films. It is the embodiment of a dream once
-                articulated by visionaries like Steve Jobs: to merge technology
-                with the humanities, creating tools that amplify the human
-                experience. Humans are just wrappers to the same core ideas.
-                Individual credibility and the way their expression makes a dent
-                in the universe set them apart.
-              </p>
+                <p>
+                  As we gaze into the star-studded canvas of our ever-expanding
+                  universe, this innovation stands as a beacon of our
+                  techno-optimist vision, a testament to our relentless pursuit
+                  of progress. It&apos;s not just a platform; it&apos;s a
+                  cultural metamorphosis, a digital Renaissance that
+                  democratizes creation, giving voice to the voiceless and wings
+                  to the tales that ground us. In this space, every spoken word,
+                  every whispered dream has the potential to echo through the
+                  ages, as we forge our personal legacies with the tools that
+                  once seemed the province of the gods. Our stories become more
+                  than memories; they are the building blocks of a civilization
+                  that values every narrative, crafting a legacy that transcends
+                  time and space, imbued with the essence of our collective
+                  journey.
+                </p>
 
-              <p>
-                As we gaze into the star-studded canvas of our ever-expanding
-                universe, this innovation stands as a beacon of our
-                techno-optimist vision, a testament to our relentless pursuit of
-                progress. It&apos;s not just a platform; it&apos;s a cultural
-                metamorphosis, a digital Renaissance that democratizes creation,
-                giving voice to the voiceless and wings to the tales that ground
-                us. In this space, every spoken word, every whispered dream has
-                the potential to echo through the ages, as we forge our personal
-                legacies with the tools that once seemed the province of the
-                gods. Our stories become more than memories; they are the
-                building blocks of a civilization that values every narrative,
-                crafting a legacy that transcends time and space, imbued with
-                the essence of our collective journey.
-              </p>
+                <span>
+                  We&apos;re developing more tools, each designed to ensure your
+                  stories, your experiences, and your legacy resonate through
+                  the centuries.
+                </span>
 
-              <span>
-                We&apos;re developing more tools, each designed to ensure your
-                stories, your experiences, and your legacy resonate through the
-                centuries.
-              </span>
-
-              <span>Mark, Kumar, and GPT-4</span>
+                <span>Mark, Kumar, and GPT-4</span>
+              </div>
             </div>
           </div>
 
@@ -312,7 +313,6 @@ const Landing = (props: Props) => {
             id="demo"
             className="relative flex flex-col w-full h-auto max-lg:h-auto bg-dark-background-primary items-center justify-between px-6 gap-[calc(42px+24px)] border-t border-dark-divider"
           >
-
             <div className="absolute grid grid-cols-4 grid-rows-3 max-md:grid-cols-3 max-md:grid-rows-4 h-full opacity-[0.02] z-0">
               {midjourneyGeneratedImages.map((item, index) => {
                 return (
@@ -328,8 +328,8 @@ const Landing = (props: Props) => {
 
             {/* <div className="flex w-full h-full bg-black absolute opacity-5" /> */}
 
-            <div className="flex flex-col text-center items-center pt-[calc(42px+24px)] z-20">
-              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
+            <div className="flex flex-col text-center items-center pt-[calc(42px+48px)] z-20">
+              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl font-serif">
                 {/* Storyboard */}
                 Jot. Generate. Publish.
               </h1>
@@ -379,13 +379,13 @@ const Landing = (props: Props) => {
             id="storyboard"
             className="relative flex flex-col w-full h-auto max-lg:h-auto items-center justify-between px-6 gap-[calc(42px+24px)] border-t border-dark-divider"
           >
-            <div className="flex flex-col text-center items-center pt-[calc(42px+24px)]">
-              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
+            <div className="flex flex-col text-center items-center pt-[calc(42px+48px)]">
+              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl font-serif">
                 {/* Storyboard */}
                 Canvas
               </h1>
               <span className="flex text-dark-text-secondary text-opacity-80 font-light text-xl max-sm:text-base max-w-3xl max-md:max-w-xl">
-                Boundless Imagination
+                Boundless imagination and more tools are yet to come.
               </span>
             </div>
 
@@ -427,12 +427,11 @@ const Landing = (props: Props) => {
 
           <div
             id="wall-of-love"
-            // className="flex flex-col items-center justify-center max-lg:px-7 h-screen max-lg:h-auto gap-[calc(42px+24px)] py-[calc(42px+24px)]"
-            className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+24px)] px-6 bg-dark-background-primary border-t border-dark-divider"
+            className="flex flex-col w-full max-lg:h-auto items-center justify-start gap-[calc(42px+24px)] py-[calc(42px+48px)] px-6 bg-dark-background-primary border-t border-dark-divider"
           >
             {/* team header text */}
             <div className="flex flex-col text-center items-center">
-              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl">
+              <h1 className="text-5xl text-dark-text-primary font-medium leading-snug line-clamp-3 max-md::text-4xl max-sm:text-3xl font-serif">
                 Wall of Love
               </h1>
               <span className="flex text-light-text-secondary text-opacity-80 font-light text-xl max-sm:text-base max-w-3xl max-md:max-w-xl">
@@ -444,9 +443,8 @@ const Landing = (props: Props) => {
             <div className="flex flex-row items-center gap-5 max-lg:flex-col max-lg:items-center max-w-screen max-lg:w-full justify-center max-lg:gap-16 max-w-5xl w-full">
               {/* ryan tweets container */}
               <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] max-lg:w-full items-start max-lg:items-center">
+
                 {parse(ryanTweetHtml)}
-                {/* {parse(markQuoteRyanTweetHtml)} */}
-                {/* {parse(markQuoteVercel)} */}
 
                 <button
                   onClick={() => {
@@ -460,6 +458,7 @@ const Landing = (props: Props) => {
                   </span>
                   <FiChevronRight className="text-accent font-medium" />
                 </button>
+
               </div>
 
               <div className="flex flex-col gap-4">
