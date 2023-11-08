@@ -18,6 +18,7 @@ import { FcGoogle } from "react-icons/fc";
 import Modal from "./modal";
 import useAuth from "@/hooks/useAuth";
 import { Spinner } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 
 // Tweets
 import {
@@ -203,7 +204,12 @@ const Landing = (props: Props) => {
             <div className="absolute bg-opacity-75 w-full h-full bg-gradient-to-t from-[rgb(13,13,13)] to-transparent" />
 
             {/* text in the first section */}
-            <div className="absolute flex flex-col items-center w-full h-full justify-end gap-6 px-6 py-28 max-sm:py-14">
+            <motion.div
+              className="absolute flex flex-col items-center w-full h-full justify-end gap-6 px-6 py-28 max-sm:py-14"
+              initial={{ opacity: 0, y: 10 }} // start with opacity 0 and slightly above the final position
+              animate={{ opacity: 1, y: 0 }} // animate to full opacity and final position
+              transition={{ duration: 0.8 }} // duration of the animation
+            >
               <div className="flex flex-col leading-6 items-center text-center">
                 <h1 className="text-5xl text-white font-normal line-clamp-3 max-md::text-4xl max-sm:text-3xl leading-tight font-serif">
                   {/* Transform Journals into Comics, Effortlessly */}
@@ -232,16 +238,28 @@ const Landing = (props: Props) => {
                 </button>
               </div> */}
 
-              <button
-                className="flex flex-row items-center gap-1 rounded-full bg-[rgb(60,60,60,0.5)] hover:bg-opacity-80 backdrop-blur-xl pl-5 pr-3 h-10 text-sm font-medium text-dark-text-primary shadow-sm transition-all border border-dark-dividerContrast border-opacity-40 hover:border-opacity-100"
-                onClick={() => {
-                  setShowLoginModal(true);
-                }}
-              >
-                <span className=" font-medium">Browse the app</span>
-                <FiChevronRight className="w-4 h-4" />
-              </button>
-            </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  className="flex flex-row items-center gap-1 rounded-full bg-transparent backdrop-blur-xl px-5 h-10 text-sm font-medium text-dark-text-primary shadow-sm transition-all border border-dark-dividerContrast border-opacity-40 hover:border-opacity-100"
+                  onClick={() => {
+                    window.open("https://www.youtube.com/watch?v=GO7R78zAoA4");
+                  }}
+                >
+                  <span className=" font-medium">Video by Alexandria</span>
+                </button>
+
+                <button
+                  className="flex flex-row items-center gap-1 rounded-full bg-[rgb(60,60,60,0.5)] hover:bg-opacity-80 backdrop-blur-xl pl-5 pr-3 h-10 text-sm font-medium text-dark-text-primary shadow-sm transition-all border border-dark-dividerContrast border-opacity-40 hover:border-opacity-100"
+                  onClick={() => {
+                    setShowLoginModal(true);
+                  }}
+                >
+                  <span className=" font-medium">Browse the app</span>
+                  <FiChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+
+            </motion.div>
           </div>
 
           <div className="flex flex-row p-6 max-sm:p-5 items-center justify-center bg-[rgb(13,13,13)] border-y border-dark-divider text-dark-text-primary transition-all">
@@ -443,7 +461,6 @@ const Landing = (props: Props) => {
             <div className="flex flex-row items-center gap-5 max-lg:flex-col max-lg:items-center max-w-screen max-lg:w-full justify-center max-lg:gap-16 max-w-5xl w-full">
               {/* ryan tweets container */}
               <div className="flex flex-col max-sm:w-[calc(100vw-(28*2)px)] max-lg:w-full items-start max-lg:items-center">
-
                 {parse(ryanTweetHtml)}
 
                 <button
@@ -458,7 +475,6 @@ const Landing = (props: Props) => {
                   </span>
                   <FiChevronRight className="text-accent font-medium" />
                 </button>
-
               </div>
 
               <div className="flex flex-col gap-4">
