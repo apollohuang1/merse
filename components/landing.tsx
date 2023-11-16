@@ -219,9 +219,14 @@ const Landing = (props: Props) => {
                 </h1>
 
                 <span className="flex text-neutral-400 text-opacity-80 font-light text-lg max-md:text-base max-w-3xl max-md:max-w-xl">
-                  We&apos;re crafting tools that transform your everyday moments
+                  We&apos;re crafting tools that transform your everyday moments, stories, experiences
                   into lasting legacies in every form — comics, books, films,
-                  voice recordings, autobiographies, and beyond.
+                  voice recordings, autobiographies, and beyond. 
+                  
+                  We&apos;re
+                  developing more tools, each designed to ensure your stories,
+                  your experiences, and your legacy resonate through the
+                  centuries.
                 </span>
               </div>
 
@@ -258,7 +263,6 @@ const Landing = (props: Props) => {
                   <FiChevronRight className="w-4 h-4" />
                 </button>
               </div>
-
             </motion.div>
           </div>
 
@@ -278,7 +282,7 @@ const Landing = (props: Props) => {
             </a>
           </div>
 
-          <div
+          {/* <div
             id="manifesto"
             className="relative flex flex-col w-full h-[100vh] max-lg:h-auto bg-black items-center justify-center px-6 py-24 max-sm:text-xs max-sm:py-12 gap-[calc(42px+24px)]"
           >
@@ -325,7 +329,7 @@ const Landing = (props: Props) => {
                 <span>Mark, Kumar, and GPT-4</span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div
             id="demo"
@@ -509,14 +513,17 @@ const Landing = (props: Props) => {
               >
                 @markrachapoom
               </Link>{" "}
-              and{" "}
-              <Link
+
+              {/* and{" "} */}
+
+              {/* <Link
                 href={"https://x.com/kumareth"}
                 target="_blank"
                 className="text-white underline opacity-80"
               >
                 @kumareth
-              </Link>
+              </Link> */}
+
             </span>
           </div>
 
